@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-
   root "home#index"
 
   # Registration and Auth
@@ -17,5 +16,12 @@ Rails.application.routes.draw do
   delete "/logout", to: "sessions#destroy"
 
   get '/dashboard', to: "dashboard#index"
+
+  # Games
+
+  get '/game_create', to: 'games#new'
+  post '/game_create', to: 'games#create'
+
+  get '/games_showcase', to: 'games#catalog'
 
 end
