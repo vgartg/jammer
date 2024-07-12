@@ -1,18 +1,16 @@
 class UsersController < ApplicationController
   def new
     @user = User.new
-    @errors = {}
   end
 
   def create
     @user = User.new(user_params)
-    @errors = validate(@user)
-    if @errors.empty? && @user.save
+    if @user.save
       session[:current_user] = @user.id
       redirect_to dashboard_path
     else
-      puts @errors
-      render :new
+      flash[:errors] = @user.errors.full_messages
+      render :new, status: :see_other
     end
   end
 

@@ -1,47 +1,52 @@
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <%= form_for :user, html: { novalidate: true } do |f|%>
-        <div class="mt-4">
-          <%= f.label :email, "Email", class: "block text-sm font-medium text-gray-700" %>
-          <div class="mt-1">
-            <%= f.email_field :email, autocomplete: "email", required: true,
-                                        class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
-          </div>
-          <% if @errors[:email].present? %>
-          <div class="text-xs mt-1">
-            <% @errors[:email].each do |error| %>
-              <p class="text-red-500"><%= error %></p>
-            <% end %>
-          </div>
-          <% end %>
+
+    <% if flash[:errors].present? %>
+      <div class="text-xs mt-1">
+        <% flash[:errors].each do |error| %>
+          <p class="text-red-500">
+            <%= error %>
+          </p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= form_for :user do |f| %>
+      <div class="mt-4">
+        <%= f.label :email, "Email", class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= f.email_field :email, autocomplete: "email", required: true,
+                            class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
         </div>
 
+      </div>
 
-        <div class="mt-4">
-          <%= f.label :name, "Видимое имя", class: "block text-sm font-medium text-gray-700" %>
-          <div class="mt-1">
-            <%= f.text_field :name, required: true,
-                                       class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
-          </div>
-        </div>
 
-        <div class="mt-4">
-          <%= f.label :password, "Пароль",
-                                class: "block text-sm font-medium text-gray-700" %>
-          <div class="mt-1">
-            <%= f.password_field :password, autocomplete: "new-password", required: true, class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
-          </div>
+      <div class="mt-4">
+        <%= f.label :name, "Видимое имя", class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= f.text_field :name, required: true,
+                           class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
         </div>
+      </div>
 
-        <div class="mt-4">
-          <%= f.label :password_confirmation, "Снова пароль", class: "block text-sm font-medium text-gray-700" %>
-          <div class="mt-1">
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", required: true, class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
-          </div>
+      <div class="mt-4">
+        <%= f.label :password, "Пароль",
+                    class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= f.password_field :password, autocomplete: "new-password", required: true, class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
         </div>
+      </div>
+
+      <div class="mt-4">
+        <%= f.label :password_confirmation, "Снова пароль", class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", required: true, class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+      </div>
       <%= submit_tag 'Регистрация', class: "mt-4 flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
 
-  <% end %>
+    <% end %>
     <div class="mt-6 text-center">
        <span class="text-sm text-gray-500">
           Есть аккаунт?
