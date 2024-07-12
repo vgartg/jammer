@@ -9,18 +9,18 @@
 Чтобы подготовить проект к запуску локально, нужно сделать следующее:
 
 ```bash
-bundle install 
+bundle install
 yarn install
 bundle exec rake db:create
-budle exec rake db:migrate
+bundle exec rake db:migrate
 ```
-Для запуска web-сервера и сборки клиента нужно выполнить
+
+Для запуска web-сервера и сборки клиента нужно выполнить:
 ```bash
 foreman start -f Procfile.dev
 ```
 
-Для cборки клиента без запуска сервера нужно выполнить
+Для cборки клиента без запуска сервера нужно выполнить:
 ```bash
 foreman start -f Procfile.front
 ```
-
