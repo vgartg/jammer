@@ -1,11 +1,15 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user
+  before_action :authenticate_user, only: [:new, :create]
   def new
 
   end
 
   def showcase
     @games = Game.all
+  end
+
+  def show
+    @game = Game.find(params[:id])
   end
 
   def create
@@ -23,7 +27,11 @@ class GamesController < ApplicationController
 
   private
   def game_params
+    link = '/users/' + session[:current_user].to_s
+    puts session[:current_user].to_s
+    puts link
     params.require(:game)
-          .permit(:name, :description, :author_link)
+      .permit(:name, :description)
+      .merge(author_link: link)
   end
 end

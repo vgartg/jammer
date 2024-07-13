@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   get '/game_create', to: 'games#new'
   post '/game_create', to: 'games#create'
 
+  get '/games/:id', to: "games#show", as: 'game_profile'
+
   get '/games_showcase', to: 'games#showcase'
 
 end

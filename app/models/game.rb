@@ -1,3 +1,3 @@
 class Game < ActiveRecord::Base
-  validates :name, :description, :author_link, presence: true
+  validates :name, :description, presence: true
 end

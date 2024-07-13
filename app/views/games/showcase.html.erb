@@ -8,17 +8,24 @@
           <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
             <img src="https://leader-id.storage.yandexcloud.net/event_photo/314316/62e949cd36dde049855435.jpg" alt="<%= game.name %>" class="h-full w-full object-cover object-center lg:h-full lg:w-full">
           </div>
-          <div class="mt-4 flex justify-between">
-            <div>
-              <h3 class="text-sm text-gray-700">
-                <a href="#">
+          <div class="mt-4 justify-between line-clamp-2">
+            <div class="flex-1">
+              <h3 class="text-sm text-gray-700 truncate">
+                <a href="/games/<%= game.id %>">
                   <span aria-hidden="true" class="absolute inset-0"></span>
                   <%= game.name %>
                 </a>
               </h3>
-              <p class="mt-1 text-sm text-gray-500"><%= game.description %></p>
+              <p class="mt-1 text-sm text-gray-500 line-clamp-2"><%= game.description %></p>
             </div>
-            <p class="text-sm font-medium text-gray-900"><%= game.author_link %></p>
+            <% author = User.find_by_id(game.author_link.split('/')[2]) %>
+            <% if author %>
+              <a class="text-sm font-medium text-gray-900" href="<%= game.author_link %>">
+                <%= author.name %>
+              </a>
+            <% else %>
+              Ссылка недоступна
+            <% end %>
           </div>
         </div>
       <% end %>
