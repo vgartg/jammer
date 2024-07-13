@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: "dashboard#index"
   get '/users/:id', to: "users#show", as: 'user_profile'
+  get '/all_users', to: "users#all_users"
 
   # Games
 

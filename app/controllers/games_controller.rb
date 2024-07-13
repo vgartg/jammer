@@ -28,8 +28,6 @@ class GamesController < ApplicationController
   private
   def game_params
     link = '/users/' + session[:current_user].to_s
-    puts session[:current_user].to_s
-    puts link
     params.require(:game)
       .permit(:name, :description)
       .merge(author_link: link)
