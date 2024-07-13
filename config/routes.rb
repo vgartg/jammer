@@ -22,6 +22,6 @@ Rails.application.routes.draw do
   get '/game_create', to: 'games#new'
   post '/game_create', to: 'games#create'
 
-  get '/games_showcase', to: 'games#catalog'
+  get '/games_showcase', to: 'games#showcase'
 
 end
