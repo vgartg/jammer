@@ -3,16 +3,21 @@
 </h1>
 
 <%= button_to "Выйти", logout_path, method: :delete,
-              class: "mt-4 flex w-20 justify-center rounded-md border
+              class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
 
 <%= button_to "Создать игру", game_create_path, method: :get,
-              class: "mt-4 flex w-20 justify-center rounded-md border
+              class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
 
-<%= button_to "Просмотреть каталог", games_showcase_path, method: :get,
-              class: "mt-4 flex w-20 justify-center rounded-md border
+<%= button_to "Каталог игр", games_showcase_path, method: :get,
+              class: "mt-4 flex w-50 justify-center rounded-md border
+                      border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                      shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+
+<%= button_to "Личный кабинет", user_profile_path(id: session[:current_user]), method: :get,
+              class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>

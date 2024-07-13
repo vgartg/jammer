@@ -15,7 +15,10 @@ Rails.application.routes.draw do
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
 
+  # Auth Zone
+
   get '/dashboard', to: "dashboard#index"
+  get '/users/:id', to: "users#show", as: 'user_profile'
 
   # Games
 

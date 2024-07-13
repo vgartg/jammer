@@ -1,0 +1,34 @@
+<div class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div class="flex items-center space-x-4 mb-6">
+      <div class="flex-shrink-0">
+        <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
+      </div>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Имя: <%= @user.name %></h2>
+        <p class="text-gray-600">Email: <%= @user.email %></p>
+      </div>
+    </div>
+    <div>
+      <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-300">Личные данные</h3>
+      <div class="space-y-4">
+        <div class="flex justify-between items-center py-2 border-b border-gray-200">
+          <span class="text-gray-600">Имя:</span>
+          <span class="text-gray-900">Информации нет</span>
+        </div>
+        <div class="flex justify-between items-center py-2 border-b border-gray-200">
+          <span class="text-gray-600">Дата рождения:</span>
+          <span class="text-gray-900">Информации нет</span>
+        </div>
+        <div class="flex justify-between items-center py-2 border-b border-gray-200">
+          <span class="text-gray-600">Адрес:</span>
+          <span class="text-gray-900">Информации нет</span>
+        </div>
+        <div class="flex justify-between items-center py-2">
+          <span class="text-gray-600">Телефон:</span>
+          <span class="text-gray-900">Информации нет</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
