@@ -9,6 +9,34 @@
         <p class="text-gray-600">Email: <%= @user.email %></p>
       </div>
     </div>
+    <% if @user.id != session[:current_user] %>
+      <% friendship = User.find_by_id(session[:current_user]).friendship_with(@user) %>
+      <% if friendship.nil? %>
+        <%= button_to "Добавить в друзья", user_friendships_path(@user), method: :post,
+                      class: "mt-4 flex w-50 justify-center rounded-md border
+                        border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                        shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+      <% elsif friendship.status == 'pending' && friendship.user == User.find_by_id(session[:current_user]) %>
+        <%= button_to "Отменить заявку в друзья", cancel_user_friendship_path(@user, friendship),
+                      method: :delete, class: "mt-4 flex w-50 justify-center rounded-md border
+                        border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                        shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+      <% elsif friendship.status == 'accepted' %>
+        <%= button_to "Удалить из друзей", user_friendship_path(@user, friendship), method: :delete,
+                      class: "mt-4 flex w-50 justify-center rounded-md border
+                        border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                        shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+      <% elsif friendship.status == 'pending' && friendship.user != User.find_by_id(session[:current_user]) %>
+        <%= button_to "Принять запрос", user_friendship_path(User.find_by_id(session[:current_user]), request), method: :put,
+                      class: "mt-4 flex w-50 justify-center rounded-md border
+                      border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                      shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+        <%= button_to "Отклонить запрос", cancel_user_friendship_path(User.find_by_id(session[:current_user]), request), method: :delete,
+                      class: "mt-4 flex w-50 justify-center rounded-md border
+                      border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                      shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+      <% end %>
+    <% end %>
     <div>
       <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-300">Личные данные</h3>
       <div class="space-y-4">
@@ -27,6 +55,21 @@
         <div class="flex justify-between items-center py-2">
           <span class="text-gray-600">Телефон:</span>
           <span class="text-gray-900">Информации нет</span>
+        </div>
+        <div class="flex justify-between items-center py-2">
+          <span class="text-gray-600">Загруженные игры:</span>
+          <% a_link = '/users/' + @user.id.to_s  %>
+          <% user_games = Game.all.where(author_link: a_link) %>
+          <% if !user_games.blank? %>
+            <% user_games.each do |game| %>
+              <% g_link = '/games/' + game.id.to_s %>
+              <a href="<%= g_link  %>">
+                <span class="text-gray-900"><%=game.name %></span>
+              </a>
+            <% end %>
+          <% else %>
+            <span class="text-gray-900">Информации нет</span>
+          <% end %>
         </div>
       </div>
     </div>

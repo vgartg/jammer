@@ -21,6 +21,17 @@ Rails.application.routes.draw do
   get '/users/:id', to: "users#show", as: 'user_profile'
   get '/all_users', to: "users#all_users"
 
+  # Friendship
+
+  get '/friends', to: 'friendships#index'
+  resources :users do
+    resources :friendships, only: [:create, :update, :destroy] do
+      member do
+        delete :cancel
+      end
+    end
+  end
+
   # Games
 
   get '/game_create', to: 'games#new'
