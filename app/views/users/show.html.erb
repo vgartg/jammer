@@ -2,7 +2,11 @@
   <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
     <div class="flex items-center space-x-4 mb-6">
       <div class="flex-shrink-0">
-        <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
+        <% if @user.avatar.attached? %>
+          <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
+        <% else %>
+          <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
+        <% end %>
       </div>
       <div>
         <h2 class="text-2xl font-bold text-gray-800">Имя: <%= @user.name %></h2>

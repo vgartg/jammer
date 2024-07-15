@@ -29,7 +29,7 @@ class GamesController < ApplicationController
   def game_params
     link = '/users/' + session[:current_user].to_s
     params.require(:game)
-      .permit(:name, :description)
+      .permit(:name, :description, :cover)
       .merge(author_link: link)
   end
 end
