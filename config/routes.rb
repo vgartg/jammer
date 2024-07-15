@@ -18,8 +18,14 @@ Rails.application.routes.draw do
   # Auth Zone
 
   get '/dashboard', to: "dashboard#index"
+
   get '/users/:id', to: "users#show", as: 'user_profile'
   get '/all_users', to: "users#all_users"
+
+  # Edit/Update user
+
+  get '/edit_user', to: "users#edit_user"
+  put '/users/:id', to: 'users#update_user'
 
   # Friendship
 

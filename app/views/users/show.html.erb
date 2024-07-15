@@ -27,34 +27,63 @@
                         border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                         shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
       <% elsif friendship.status == 'pending' && friendship.user != User.find_by_id(session[:current_user]) %>
-        <%= button_to "Принять запрос", user_friendship_path(User.find_by_id(session[:current_user]), request), method: :put,
+        <%= button_to "Принять запрос", user_friendship_path(User.find_by_id(session[:current_user]), friendship), method: :put,
                       class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-        <%= button_to "Отклонить запрос", cancel_user_friendship_path(User.find_by_id(session[:current_user]), request), method: :delete,
+        <%= button_to "Отклонить запрос", cancel_user_friendship_path(User.find_by_id(session[:current_user]), friendship), method: :delete,
                       class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
       <% end %>
+      <% else %>
+      <%= button_to "Редактировать профиль", edit_user_path, method: :get,
+                    class: "mt-4 flex w-50 justify-center rounded-md border
+                        border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                        shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
     <% end %>
     <div>
       <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-300">Личные данные</h3>
       <div class="space-y-4">
         <div class="flex justify-between items-center py-2 border-b border-gray-200">
-          <span class="text-gray-600">Имя:</span>
-          <span class="text-gray-900">Информации нет</span>
+          <span class="text-gray-600">Статус:</span>
+          <% if @user.status.blank? %>
+            <span class="text-gray-900" id="old-real_name">Информации нет</span>
+          <% else %>
+            <span class="text-gray-900" id="old-real_name"><%= @user.status %></span>
+          <% end %>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-gray-200">
-          <span class="text-gray-600">Дата рождения:</span>
-          <span class="text-gray-900">Информации нет</span>
+          <span class="text-gray-600">Настоящее имя:</span>
+          <% if @user.real_name.blank? %>
+            <span class="text-gray-900" id="old-real_name">Информации нет</span>
+          <% else %>
+            <span class="text-gray-900" id="old-real_name"><%= @user.real_name %></span>
+          <% end %>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-gray-200">
-          <span class="text-gray-600">Адрес:</span>
-          <span class="text-gray-900">Информации нет</span>
+          <span class="text-gray-600">День рождения:</span>
+          <% if @user.birthday.blank? %>
+            <span class="text-gray-900" id="old-birthday">Информации нет</span>
+          <% else %>
+            <span class="text-gray-900" id="old-birthday"><%= @user.birthday %></span>
+          <% end %>
+        </div>
+        <div class="flex justify-between items-center py-2 border-b border-gray-200">
+          <span class="text-gray-600">Местоположение:</span>
+          <% if @user.location.blank? %>
+            <span class="text-gray-900" id="old-location">Информации нет</span>
+          <% else %>
+            <span class="text-gray-900" id="old-location"><%= @user.location %></span>
+          <% end %>
         </div>
         <div class="flex justify-between items-center py-2">
-          <span class="text-gray-600">Телефон:</span>
-          <span class="text-gray-900">Информации нет</span>
+          <span class="text-gray-600">Номер телефона:</span>
+          <% if @user.phone_number.blank? %>
+            <span class="text-gray-900" id="old-phone_number">Информации нет</span>
+          <% else %>
+            <span class="text-gray-900" id="old-phone_number"><%= @user.phone_number %></span>
+          <% end %>
         </div>
         <div class="flex justify-between items-center py-2">
           <span class="text-gray-600">Загруженные игры:</span>
