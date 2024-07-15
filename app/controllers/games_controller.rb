@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user, only: [:new, :create]
+  before_action :authenticate_user, only: [:new, :create, :edit, :update]
   def new
 
   end
@@ -22,6 +22,20 @@ class GamesController < ApplicationController
       puts 'Игра не создана'
       flash[:errors] = @game.errors.full_messages
       render :new, status: :see_other
+    end
+  end
+
+  def edit
+    @game = Game.find_by_id(params[:id])
+  end
+
+  def update
+    @game = Game.find(params[:id])
+    if @game.update(game_params)
+      redirect_to game_profile_path, notice: 'Игра успешно обновлена'
+    else
+      flash[:errors] = @game.errors.full_messages
+      render :edit, status: :unprocessable_entity
     end
   end
 

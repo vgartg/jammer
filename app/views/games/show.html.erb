@@ -47,6 +47,13 @@
           </div>
         </div>
       </div>
+
+      <% if session[:current_user].to_s == @game.author_link.split('/')[2] %>
+        <%= button_to "Редактировать профиль", edit_game_path(@game), method: :get,
+                      class: "mt-4 flex w-50 justify-center rounded-md border
+                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                              shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+      <% end %>
     </div>
   </div>
 </div>
