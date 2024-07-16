@@ -15,14 +15,14 @@ class GamesController < ApplicationController
   def create
     @game = Game.new(game_params.merge(author: current_user))
     if @game.save
-      puts 'Игра создана:'
-      puts @game
       redirect_to dashboard_path
     else
-      puts 'Игра не создана'
       flash[:errors] = @game.errors.full_messages
       render :new, status: :see_other
     end
+    rescue ActiveRecord::RecordNotUnique => e
+      flash[:errors] = ["Игра с таким названием уже существует"]
+      render :new, status: :see_other
   end
 
   def edit

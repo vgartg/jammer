@@ -27,9 +27,13 @@
               </h3>
               <p class="mt-1 text-sm text-gray-500 line-clamp-2"><%= game.description %></p>
             </div>
-            <a class="break-all" href="<%= user_profile_path(game.author) %>">
-              <%= game.author.name %>
-            </a>
+            <% if game.author.present? %>
+              <a class="break-all" href="<%= user_profile_path(game.author) %>">
+                <%= game.author.name %>
+              </a>
+            <% else %>
+              <p>Автор не найден</p>
+            <% end %>
           </div>
         </div>
       <% end %>
