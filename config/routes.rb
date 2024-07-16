@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
+  delete '/destroy', to: "users#destroy", as: 'user_destroy'
 
   # Auth Zone
 
@@ -25,8 +26,11 @@ Rails.application.routes.draw do
 
   get '/game_create', to: 'games#new'
   post '/game_create', to: 'games#create'
-  get '/game/:id/edit', to: 'games#edit', as: 'edit_game'
-  patch '/game/:id', to: 'games#update', as: 'update_game'
+
+  get '/game/:id/edit', to: 'games#edit', as: 'game_edit'
+  patch '/game/:id', to: 'games#update', as: 'game_update'
+
+  delete '/game/:id/destroy', to: 'games#destroy', as: 'game_destroy'
 
   get '/games/:id', to: "games#show", as: 'game_profile'
 
