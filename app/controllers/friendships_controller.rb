@@ -4,6 +4,7 @@ class FriendshipsController < ApplicationController
     @friendships = current_user.friendships.where(status: 'accepted') + current_user.inverse_friendships.where(status: 'accepted')
     @sent_requests = current_user.friendships.where(status: 'pending')
     @received_requests = current_user.inverse_friendships.where(status: 'pending')
+    @current_user = User.find_by_id(session[:current_user])
   end
   def create
     # Проверяем, существует ли уже запрос дружбы между текущим пользователем и выбранным пользователем

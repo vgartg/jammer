@@ -10,13 +10,13 @@
       </div>
     </div>
     <% if @user.id != session[:current_user] %>
-      <% friendship = User.find_by_id(session[:current_user]).friendship_with(@user) %>
+      <% friendship = @current_user.friendship_with(@user) %>
       <% if friendship.nil? %>
         <%= button_to "Добавить в друзья", user_friendships_path(@user), method: :post,
                       class: "mt-4 flex w-50 justify-center rounded-md border
                         border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                         shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-      <% elsif friendship.status == 'pending' && friendship.user == User.find_by_id(session[:current_user]) %>
+      <% elsif friendship.status == 'pending' && friendship.user == @current_user %>
         <%= button_to "Отменить заявку в друзья", cancel_user_friendship_path(@user, friendship),
                       method: :delete, class: "mt-4 flex w-50 justify-center rounded-md border
                         border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
@@ -26,12 +26,12 @@
                       class: "mt-4 flex w-50 justify-center rounded-md border
                         border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                         shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-      <% elsif friendship.status == 'pending' && friendship.user != User.find_by_id(session[:current_user]) %>
-        <%= button_to "Принять запрос", user_friendship_path(User.find_by_id(session[:current_user]), friendship), method: :put,
+      <% elsif friendship.status == 'pending' && friendship.user != @current_user %>
+        <%= button_to "Принять запрос", user_friendship_path(@current_user, friendship), method: :put,
                       class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-        <%= button_to "Отклонить запрос", cancel_user_friendship_path(User.find_by_id(session[:current_user]), friendship), method: :delete,
+        <%= button_to "Отклонить запрос", cancel_user_friendship_path(@current_user, friendship), method: :delete,
                       class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>

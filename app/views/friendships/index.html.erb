@@ -26,7 +26,7 @@
                   <p class="text-gray-600"><%= friend.email %></p>
                 </div>
               </a>
-                <%= button_to "Удалить из друзей", user_friendship_path(User.find_by_id(session[:current_user]), friendship), method: :delete,
+                <%= button_to "Удалить из друзей", user_friendship_path(@current_user, friendship), method: :delete,
                               class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
@@ -48,7 +48,7 @@
                   <p class="text-gray-600"><%= request.friend.email %></p>
                 </div>
               </a>
-                <%= button_to "Отменить запрос", cancel_user_friendship_path(User.find_by_id(session[:current_user]), request), method: :delete,
+                <%= button_to "Отменить запрос", cancel_user_friendship_path(@current_user, request), method: :delete,
                               class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
@@ -57,7 +57,7 @@
         </div>
       </div>
 
-      <div id="received_requests" class="tabcontent" style="display:none">
+      <div id="received_requests" class="tabcontent hidden">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <% @received_requests.each do |request| %>
             <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
@@ -70,11 +70,11 @@
                   <p class="text-gray-600"><%= request.user.email %></p>
                 </div>
               </a>
-                <%= button_to "Принять запрос", user_friendship_path(User.find_by_id(session[:current_user]), request), method: :put,
+                <%= button_to "Принять запрос", user_friendship_path(@current_user, request), method: :put,
                               class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-                <%= button_to "Отклонить запрос", cancel_user_friendship_path(User.find_by_id(session[:current_user]), request), method: :delete,
+                <%= button_to "Отклонить запрос", cancel_user_friendship_path(@current_user, request), method: :delete,
                               class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
@@ -88,7 +88,7 @@
 
 <script>
     function openTab(evt, tabName) {
-        var i, tabcontent, tablinks;
+        let i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
         for (i = 0; i < tabcontent.length; i++) {
             tabcontent[i].style.display = "none";
