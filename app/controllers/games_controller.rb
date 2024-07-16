@@ -40,7 +40,7 @@ class GamesController < ApplicationController
   end
 
   def destroy
-    @game = current_user.find_by_id(params[:id])
+    @game = current_user.games.find_by_id(params[:id])
     @game.destroy
     redirect_to games_showcase_path
   end
