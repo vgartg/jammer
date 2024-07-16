@@ -30,7 +30,7 @@ class GamesController < ApplicationController
   end
 
   def update
-    @game = current_user.games._by_id(params[:id])
+    @game = current_user.games.find_by_id(params[:id])
     if @game.update(game_params)
       redirect_to game_profile_path, notice: 'Игра успешно обновлена'
     else
