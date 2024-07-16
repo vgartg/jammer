@@ -33,16 +33,10 @@
 
           <div class="mt-10">
             <h2 class="text-sm font-medium text-gray-900">Автор:</h2>
-
             <div class="prose prose-sm mt-4 text-gray-500">
-              <% author = User.find_by_id(@game.author_link.split('/')[2]) %>
-              <% if author %>
-                <a class="break-all" href="<%= @game.author_link %>">
-                  <%= author.name %>
+                <a class="break-all" href="<%= user_profile_path(@game.author) %>">
+                  <%= @game.author.name %>
                 </a>
-              <% else %>
-                Ссылка недоступна
-              <% end %>
             </div>
           </div>
         </div>

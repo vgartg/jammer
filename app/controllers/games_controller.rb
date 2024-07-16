@@ -13,7 +13,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    @game = Game.new(game_params)
+    @game = Game.new(game_params.merge(author: current_user))
     if @game.save
       puts 'Игра создана:'
       puts @game
@@ -26,11 +26,11 @@ class GamesController < ApplicationController
   end
 
   def edit
-    @game = Game.find_by_id(params[:id])
+    @game = current_user.games.find_by_id(params[:id])
   end
 
   def update
-    @game = Game.find(params[:id])
+    @game = current_user.games._by_id(params[:id])
     if @game.update(game_params)
       redirect_to game_profile_path, notice: 'Игра успешно обновлена'
     else
@@ -40,16 +40,15 @@ class GamesController < ApplicationController
   end
 
   def destroy
-    @game = Game.find_by_id(params[:id])
+    @game = current_user.find_by_id(params[:id])
     @game.destroy
     redirect_to games_showcase_path
   end
 
   private
   def game_params
-    link = '/users/' + session[:current_user].to_s
     params.require(:game)
       .permit(:name, :description, :cover)
-      .merge(author_link: link)
+
   end
 end
