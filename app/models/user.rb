@@ -4,9 +4,13 @@ class User < ActiveRecord::Base
 
   validate :password_length
   has_secure_password
+
   def password_length
     if password.nil? || password.length < 5
       errors.add(:password, type: :invalid, message: 'must be at least 5 characters long')
     end
   end
+
+  has_one_attached :avatar
+
 end
