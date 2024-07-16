@@ -20,18 +20,15 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: "dashboard#index"
   get '/users/:id', to: "users#show", as: 'user_profile'
-  get '/all_users', to: "users#all_users"
+  get '/users', to: "users#index"
 
   # Games
 
-  get '/game_create', to: 'games#new'
-  post '/game_create', to: 'games#create'
-
-  get '/game/:id/edit', to: 'games#edit', as: 'game_edit'
-  patch '/game/:id', to: 'games#update', as: 'game_update'
-
-  delete '/game/:id/destroy', to: 'games#destroy', as: 'game_destroy'
-
+  get '/games/new', to: 'games#new'
+  post '/games', to: 'games#create'
+  get '/games/:id/edit', to: 'games#edit', as: 'game_edit'
+  patch '/games/:id', to: 'games#update', as: 'game_update'
+  delete '/games/:id', to: 'games#destroy', as: 'game_destroy'
   get '/games/:id', to: "games#show", as: 'game_profile'
 
   get '/games_showcase', to: 'games#showcase'

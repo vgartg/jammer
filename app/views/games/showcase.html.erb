@@ -27,14 +27,9 @@
               </h3>
               <p class="mt-1 text-sm text-gray-500 line-clamp-2"><%= game.description %></p>
             </div>
-            <% author = User.find_by_id(game.author_link.split('/')[2]) %>
-            <% if author %>
-              <a class="text-sm font-medium text-gray-900" href="<%= game.author_link %>">
-                <%= author.name %>
-              </a>
-            <% else %>
-              Ссылка недоступна
-            <% end %>
+            <a class="break-all" href="<%= user_profile_path(game.author) %>">
+              <%= game.author.name %>
+            </a>
           </div>
         </div>
       <% end %>
