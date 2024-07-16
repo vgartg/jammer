@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  def all_users
+  def index
     @users = User.all
   end
 
@@ -24,12 +24,6 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(session[:current_user])
-    @games = Game.all
-    @games.each do |game|
-      if session[:current_user].to_s == game.author_link.split('/')[2]
-        game.destroy
-      end
-    end
     @user.destroy
     redirect_to register_path
   end
