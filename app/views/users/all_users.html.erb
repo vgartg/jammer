@@ -1,0 +1,23 @@
+<div class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="max-w-lg w-full bg-white rounded-lg shadow-lg overflow-hidden">
+    <div class="px-6 py-4">
+      <h2 class="text-2xl font-semibold text-gray-800">Найдите своих друзей</h2>
+      <% @users.each do |user| %>
+        <% unless user.id == session[:current_user] %>
+          <div class="mt-4">
+            <a href="<%= '/users/' + user.id.to_s %>">
+              <div class="flex items-center space-x-4">
+                <% if user.avatar.attached? %>
+                  <%= image_tag url_for(user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
+                <% else %>
+                  <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
+                <% end %>
+                <span class="text-gray-900"><%= user.name %></span>
+              </div>
+            </a>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="bg-white">
+  <div class="pb-16 pt-6 sm:pb-24">
+    <div class="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div class="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="flex justify-between">
+            <h1 class="text-xl font-medium text-gray-900 break-all"><%= @game.name %></h1>
+          </div>
+        </div>
+
+        <!-- Image gallery -->
+        <div class="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
+          <div class="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
+            <% if @game.cover.attached? %>
+              <%= image_tag url_for(@game.cover), alt: @game.name, class: "rounded-md bg-gray-200 w-full h-full lg:h-80 lg:w-full object-cover object-center group-hover:opacity-75" %>
+            <% else %>
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                <img src="https://via.placeholder.com/300" alt="<%= @game.name %>" class="h-full w-full object-cover object-center lg:h-full lg:w-full">
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="mt-8 lg:col-span-5">
+
+          <div class="mt-10">
+            <h2 class="text-sm font-medium text-gray-900">Описание:</h2>
+
+            <div class="prose prose-sm mt-4 text-gray-500">
+              <p class="break-all"><%= @game.description %></p>
+            </div>
+          </div>
+
+          <div class="mt-10">
+            <h2 class="text-sm font-medium text-gray-900">Автор:</h2>
+
+            <div class="prose prose-sm mt-4 text-gray-500">
+              <% author = User.find_by_id(@game.author_link.split('/')[2]) %>
+              <% if author %>
+                <a class="break-all" href="<%= @game.author_link %>">
+                  <%= author.name %>
+                </a>
+              <% else %>
+                Ссылка недоступна
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% if session[:current_user].to_s == @game.author_link.split('/')[2] %>
+        <%= button_to "Редактировать игру", game_edit_path(@game), method: :get,
+                      class: "mt-4 flex w-50 justify-center rounded-md border
+                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                              shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+        <%= button_to "Удалить игру", game_destroy_path(@game), method: :delete,
+                      class: "mt-4 flex w-50 justify-center rounded-md border
+                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                              shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+      <% end %>
+    </div>
+  </div>
+</div>
