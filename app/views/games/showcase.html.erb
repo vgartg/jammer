@@ -4,10 +4,20 @@
 
     <%= button_to "Вернуться на главный экран", dashboard_path, method: :get,
                   class: "mt-4 flex w-50 justify-center rounded-md border
-                      border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                      border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
 
-    <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+    <%= form_with(url: games_showcase_path, method: :get, class: "mt-6 mb-4 flex", id: "game-search-form") do %>
+      <%= text_field_tag :search, params[:search], placeholder: "Поиск по названию или описанию игры", class: "block w-full max-w-lg sm:max-w-xs px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", id: "game-search-input", autocomplete: "off" %>
+      <%= submit_tag "Искать", class: "ml-2 inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500", id: "game-search-submit" %>
+    <% end %>
+
+    <div id="autocomplete-results" class="autocomplete-results-popup">
+      <!-- Сюда будут добавляться результаты поиска -->
+    </div>
+
+
+    <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
       <% @games.each do |game| %>
         <div class="group relative">
           <% if game.cover.attached? %>
@@ -34,6 +44,6 @@
         </div>
       <% end %>
     </div>
-
   </div>
 </div>
+

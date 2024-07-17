@@ -5,7 +5,16 @@ class GamesController < ApplicationController
   end
 
   def showcase
-    @games = Game.all
+    if params[:search].present?
+      @games = Game.where("name LIKE ? OR description LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%")
+    else
+      @games = Game.all
+    end
+
+    respond_to do |format|
+      format.html # showcase.html.erb
+      format.json { render json: @games } # Для AJAX запросов
+    end
   end
 
   def show
@@ -49,6 +58,5 @@ class GamesController < ApplicationController
   def game_params
     params.require(:game)
       .permit(:name, :description, :cover)
-
   end
 end
