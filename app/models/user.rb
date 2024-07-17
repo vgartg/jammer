@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
   validates :name, :email, presence: true, uniqueness: true
-  validates :password,  :password_confirmation, presence: true
+  validates :password,  :password_confirmation, presence: true, on: :create
 
-  validate :password_length
+  validate :password_length, on: :create
   has_secure_password
   has_one_attached :avatar
   has_many :games, foreign_key: "author_id", dependent: :destroy

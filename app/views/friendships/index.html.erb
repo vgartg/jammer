@@ -19,7 +19,11 @@
             <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
               <a href='<%= '/users/' + friend.id.to_s %>'>
                 <div class="flex-shrink-0">
-                  <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-16 w-16 rounded-full border-2 border-gray-300">
+                  <% if @user && @user.avatar.attached? %>
+                    <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
+                  <% else %>
+                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
+                  <% end %>
                 </div>
                 <div>
                   <h3 class="text-lg font-bold text-gray-800"><%= friend.name %></h3>
@@ -41,7 +45,11 @@
             <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
               <a href='<%= '/users/' + request.friend.id.to_s %>'>
                 <div class="flex-shrink-0">
-                  <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-16 w-16 rounded-full border-2 border-gray-300">
+                  <% if request.user && request.user.avatar.attached? %>
+                    <%= image_tag url_for(request.user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
+                  <% else %>
+                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
+                  <% end %>
                 </div>
                 <div>
                   <h3 class="text-lg font-bold text-gray-800"><%= request.friend.name %></h3>
@@ -63,7 +71,11 @@
             <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
               <a href='<%= '/users/' + request.user.id.to_s %>'>
                 <div class="flex-shrink-0">
-                  <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-16 w-16 rounded-full border-2 border-gray-300">
+                  <% if request.user && request.user.avatar.attached? %>
+                    <%= image_tag url_for(request.user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
+                  <% else %>
+                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
+                  <% end %>
                 </div>
                 <div>
                   <h3 class="text-lg font-bold text-gray-800"><%= request.user.name %></h3>
@@ -116,9 +128,3 @@
         }
     }
 </script>
-
-<style>
-    .bg-orange-500 {
-        background-color: #f59e0b; /* Replace with your desired orange color */
-    }
-</style>

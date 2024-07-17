@@ -2,7 +2,7 @@
   <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
     <div class="flex items-center space-x-4 mb-6">
       <div class="flex-shrink-0">
-        <% if @user.avatar.attached? %>
+        <% if @user && @user.avatar.attached? %>
           <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
         <% else %>
           <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
@@ -14,28 +14,27 @@
       </div>
     </div>
     <% if @user.id != session[:current_user] %>
-      <% friendship = @current_user.friendship_with(@user) %>
-      <% if friendship.nil? %>
+      <% if @friendship.nil? %>
         <%= button_to "Добавить в друзья", user_friendships_path(@user), method: :post,
                       class: "mt-4 flex w-50 justify-center rounded-md border
                         border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                         shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-      <% elsif friendship.status == 'pending' && friendship.user == @current_user %>
-        <%= button_to "Отменить заявку в друзья", cancel_user_friendship_path(@user, friendship),
+      <% elsif @friendship.status == 'pending' && @friendship.user == @current_user %>
+        <%= button_to "Отменить заявку в друзья", cancel_user_friendship_path(@user, @friendship),
                       method: :delete, class: "mt-4 flex w-50 justify-center rounded-md border
                         border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                         shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-      <% elsif friendship.status == 'accepted' %>
-        <%= button_to "Удалить из друзей", user_friendship_path(@user, friendship), method: :delete,
+      <% elsif @friendship.status == 'accepted' %>
+        <%= button_to "Удалить из друзей", user_friendship_path(@user, @friendship), method: :delete,
                       class: "mt-4 flex w-50 justify-center rounded-md border
                         border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                         shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-      <% elsif friendship.status == 'pending' && friendship.user != @current_user %>
-        <%= button_to "Принять запрос", user_friendship_path(@current_user, friendship), method: :put,
+      <% elsif @friendship.status == 'pending' && @friendship.user != @current_user %>
+        <%= button_to "Принять запрос", user_friendship_path(@current_user, @friendship), method: :put,
                       class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-        <%= button_to "Отклонить запрос", cancel_user_friendship_path(@current_user, friendship), method: :delete,
+        <%= button_to "Отклонить запрос", cancel_user_friendship_path(@current_user, @friendship), method: :delete,
                       class: "mt-4 flex w-50 justify-center rounded-md border
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
@@ -45,6 +44,11 @@
                     class: "mt-4 flex w-50 justify-center rounded-md border
                         border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                         shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+
+      <%= button_to "Удалить профиль", user_destroy_path, method: :delete,
+                    class: "mt-4 flex w-50 justify-center rounded-md border
+                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                              shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
     <% end %>
     <div>
       <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-300">Личные данные</h3>
@@ -91,10 +95,8 @@
         </div>
         <div class="flex justify-between items-center py-2">
           <span class="text-gray-600">Загруженные игры:</span>
-          <% a_link = '/users/' + @user.id.to_s  %>
-          <% user_games = Game.all.where(author_link: a_link) %>
-          <% if !user_games.blank? %>
-            <% user_games.each do |game| %>
+          <% if @user.games.any? %>
+            <% @user.games.each do |game| %>
               <% g_link = '/games/' + game.id.to_s %>
               <a href="<%= g_link  %>">
                 <span class="text-gray-900"><%=game.name %></span>
@@ -108,7 +110,3 @@
     </div>
   </div>
 </div>
-<%= button_to "Удалить профиль", user_destroy_path, method: :delete,
-              class: "mt-4 flex w-50 justify-center rounded-md border
-                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                              shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
