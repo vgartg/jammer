@@ -19,6 +19,7 @@ class FriendshipsController < ApplicationController
       @friendship.save
       redirect_to user_profile_path(@user)
     end
+
   end
 
   def update

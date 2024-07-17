@@ -1,0 +1,4 @@
+todd:
+  name: Todd Howard
+  email: todd@bethesda.com
+  password_digest: <%= BCrypt::Password.create("P@ssw0rd") %>

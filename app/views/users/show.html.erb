@@ -91,10 +91,10 @@
         </div>
         <div class="flex justify-between items-center py-2">
           <span class="text-gray-600">Загруженные игры:</span>
-          <% a_link = '/users/' + @user.id.to_s  %>
-          <% user_games = Game.all.where(author_link: a_link) %>
-          <% if !user_games.blank? %>
-            <% user_games.each do |game| %>
+
+
+          <% if @user.games.any? %>
+            <% @user.games.each do |game| %>
               <% g_link = '/games/' + game.id.to_s %>
               <a href="<%= g_link  %>">
                 <span class="text-gray-900"><%=game.name %></span>
