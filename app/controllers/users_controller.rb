@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     @user = User.find(session[:current_user])
     @user.destroy
     redirect_to register_path
-
+  end
   def edit_user
     @user = User.find(session[:current_user])
   end
@@ -47,7 +47,8 @@ class UsersController < ApplicationController
   private
   def user_params
     params.require(:user)
-          .permit(:name, :email, :password, :password_confirmation, :status, :real_name, :location, :birthday, :phone_number)
+          .permit(:name, :email, :password, :password_confirmation,
+                  :status, :real_name, :location, :birthday, :phone_number)
 
   end
 end
