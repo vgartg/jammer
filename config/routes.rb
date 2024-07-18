@@ -19,8 +19,25 @@ Rails.application.routes.draw do
   # Auth Zone
 
   get '/dashboard', to: "dashboard#index"
+
   get '/users/:id', to: "users#show", as: 'user_profile'
   get '/users', to: "users#index"
+
+  # Edit/Update user
+
+  get '/edit_user', to: "users#edit_user"
+  put '/users/:id', to: 'users#update_user'
+
+  # Friendship
+
+  get '/friends', to: 'friendships#index'
+  resources :users do
+    resources :friendships, only: [:create, :update, :destroy] do
+      member do
+        delete :cancel
+      end
+    end
+  end
 
   # Games
 

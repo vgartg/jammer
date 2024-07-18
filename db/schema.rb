@@ -42,6 +42,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_16_121409) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "friendships", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "friend_id", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "games", force: :cascade do |t|
     t.string "name", null: false
     t.string "description", null: false
@@ -57,6 +65,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_16_121409) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "real_name"
+    t.string "birthday"
+    t.string "location"
+    t.string "phone_number"
+    t.string "status"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
   end

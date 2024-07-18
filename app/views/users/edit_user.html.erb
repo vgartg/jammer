@@ -1,0 +1,170 @@
+<div class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div class="flex items-center space-x-4 mb-6">
+      <div class="flex-shrink-0">
+        <% if @user && @user.avatar.attached? %>
+          <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
+        <% else %>
+          <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
+        <% end %>
+      </div>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Имя: <%= @user.name %></h2>
+        <p class="text-gray-600">Email: <%= @user.email %></p>
+      </div>
+    </div>
+    <%= form_for @user, url: user_path(@user), method: :put do |f| %>
+      <div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-300">Личные данные</h3>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center py-2 border-b border-gray-200">
+            <span class="text-gray-600">Статус:</span>
+
+            <div id="display-info-status">
+              <% if @user.status.blank? %>
+                <span class="text-gray-900" id="old-status">Информации нет</span>
+              <% else %>
+                <span class="text-gray-900" id="old-status"><%= @user.status %></span>
+              <% end %>
+              <span class="text-gray-900 hidden" id="new-status"></span>
+              <button type="button" onclick="toggleEditField('status', false)">Изменить</button>
+            </div>
+
+            <div id="edit-field-status" class="hidden">
+              <%= f.text_field :status, id: 'status_input',
+                               class: 'block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm' %>
+              <button type="button" onclick="toggleEditField('status', true)">Сохранить</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-gray-200">
+            <span class="text-gray-600">Настоящее имя:</span>
+
+            <div id="display-info-real_name">
+              <% if @user.real_name.blank? %>
+                <span class="text-gray-900" id="old-real_name">Информации нет</span>
+              <% else %>
+                <span class="text-gray-900" id="old-real_name"><%= @user.real_name %></span>
+              <% end %>
+              <span class="text-gray-900 hidden" id="new-real_name"></span>
+              <button type="button" onclick="toggleEditField('real_name', false)">Изменить</button>
+            </div>
+
+            <div id="edit-field-real_name" class="hidden">
+              <%= f.text_field :real_name, id: 'real_name_input',
+                               class: 'block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm' %>
+              <button type="button" onclick="toggleEditField('real_name', true)">Сохранить</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-gray-200">
+            <span class="text-gray-600">День рождения:</span>
+
+            <div id="display-info-birthday">
+              <% if @user.birthday.blank? %>
+                <span class="text-gray-900" id="old-birthday">Информации нет</span>
+              <% else %>
+                <span class="text-gray-900" id="old-birthday"><%= @user.birthday %></span>
+              <% end %>
+              <span class="text-gray-900 hidden" id="new-birthday"></span>
+              <button type="button" onclick="toggleEditField('birthday', false)">Изменить</button>
+            </div>
+
+            <div id="edit-field-birthday" class="hidden">
+              <%= f.date_field :birthday, id: 'birthday_input',
+                               class: 'block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm' %>
+              <button type="button" onclick="toggleEditField('birthday', true)">Сохранить</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-gray-200">
+            <span class="text-gray-600">Местоположение:</span>
+
+            <div id="display-info-location">
+              <% if @user.location.blank? %>
+                <span class="text-gray-900" id="old-location">Информации нет</span>
+              <% else %>
+                <span class="text-gray-900" id="old-location"><%= @user.location %></span>
+              <% end %>
+              <span class="text-gray-900 hidden" id="new-location"></span>
+              <button type="button" onclick="toggleEditField('location', false)">Изменить</button>
+            </div>
+
+            <div id="edit-field-location" class="hidden">
+              <%= f.text_field :location, id: 'location_input',
+                               class: 'block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm' %>
+              <button type="button" onclick="toggleEditField('location', true)">Сохранить</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-gray-200">
+            <span class="text-gray-600">Номер телефона:</span>
+
+            <div id="display-info-phone_number">
+              <% if @user.phone_number.blank? %>
+                <span class="text-gray-900" id="old-phone_number">Информации нет</span>
+              <% else %>
+                <span class="text-gray-900" id="old-phone_number"><%= @user.phone_number %></span>
+              <% end %>
+              <span class="text-gray-900 hidden" id="new-phone_number"></span>
+              <button type="button" onclick="toggleEditField('phone_number', false)">Изменить</button>
+            </div>
+
+            <div id="edit-field-phone_number" class="hidden">
+              <%= f.text_field :phone_number, id: 'phone_number_input',
+                               class: 'block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm' %>
+              <button type="button" onclick="toggleEditField('phone_number', true)">Сохранить</button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center py-2">
+            <span class="text-gray-600">Загруженные игры:</span>
+            <% if @user.games.any? %>
+              <% @user.games.each do |game| %>
+                <a href="/games/<%= game.id %>">
+                  <span class="text-gray-900"><%= game.name %></span>
+                </a>
+              <% end %>
+            <% else %>
+              <span class="text-gray-900">Информации нет</span>
+            <% end %>
+          </div>
+        </div>
+        <% if @user.id == session[:current_user] %>
+          <%= button_to "Сохранить", edit_user_path(@user), method: :put,
+                        class: "mt-4 flex w-50 justify-center rounded-md border
+                         border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                         shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<script>
+    function toggleEditField(field, fl) {
+        let displayInfo = document.getElementById('display-info-' + field);
+        let editField = document.getElementById('edit-field-' + field);
+        let new_ = document.getElementById('new-' + field);
+        let old_ = document.getElementById('old-' + field);
+
+        if (editField.classList.contains('hidden')) {
+            editField.classList.remove('hidden');
+            displayInfo.classList.add('hidden');
+        } else {
+            editField.classList.add('hidden');
+            displayInfo.classList.remove('hidden');
+        }
+
+        if (fl) {
+            new_.classList.remove('hidden');
+            old_.classList.add('hidden');
+        }
+    }
+
+    function updateValue(value, field) {
+        let newSpan = document.getElementById('new-' + field);
+        value.trim() === '' ? newSpan.textContent = 'Информации нет' : newSpan.textContent = value;
+
+        // Добавляем скрытое поле с новым значением в форму
+        let hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'user[' + field + ']'; // Название поля должно соответствовать вашей модели
+        hiddenInput.value = value;
+        document.querySelector('form[name="user"]').appendChild(hiddenInput);
+    }
+</script>

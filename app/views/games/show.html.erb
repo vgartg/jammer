@@ -11,7 +11,7 @@
         <!-- Image gallery -->
         <div class="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
           <div class="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
-            <% if @game.cover.attached? %>
+            <% if @game && @game.cover.attached? %>
               <%= image_tag url_for(@game.cover), alt: @game.name,
                             class: "rounded-md bg-gray-200
                             object-cover object-center group-hover:opacity-75" %>
@@ -40,12 +40,16 @@
           <div class="mt-10">
             <h2 class="text-sm font-medium text-gray-900">Автор:</h2>
             <div class="prose prose-sm mt-4 text-gray-500">
+              <% if @game.author.present? %>
                 <a class="break-all" href="<%= user_profile_path(@game.author) %>">
                   <%= @game.author.name %>
                 </a>
+              <% else %>
+                <p>Автор не найден</p>
+              <% end %>
             </div>
           </div>
-          <% if session[:current_user] == @game.author.id %>
+          <% if @game.author.present? && session[:current_user] == @game.author.id %>
             <div>
               <%= button_to "Редактировать игру", game_edit_path(@game), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md border
@@ -57,7 +61,6 @@
                               shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
           <% end %>
             </div>
-
         </div>
       </div>
     </div>
