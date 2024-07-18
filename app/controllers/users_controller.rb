@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
   before_action :authenticate_user, only: [:edit_user, :update_user, :destroy]
   def new
-    @user = User.new
+    if current_user
+      redirect_to user_path(current_user.id)
+    end
   end
 
   def show

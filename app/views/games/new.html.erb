@@ -1,16 +1,8 @@
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-
-  <% if flash[:errors].present? %>
-    <div class="text-xs mt-1">
-      <% flash[:errors].each do |error| %>
-        <p class="text-red-500">
-          <%= error %>
-        </p>
-      <% end %>
-    </div>
-  <% end %>
-
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+
+    <%= render partial: 'helpers/errors' %>
+
     <%= form_for :game, url: games_url do |f| %>
       <div class="mt-4">
         <%= f.label :name, "Название игры", class: "block text-sm font-medium text-gray-700" %>
