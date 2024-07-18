@@ -1,0 +1,22 @@
+<header class="bg-white shadow-lg">
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <a href="/" class="text-2xl font-bold text-gray-800 hover:text-gray-700">Jammer</a>
+    <nav class="w-40 flex space-x-4 justify-between">
+      <a href="/" class="text-gray-600 hover:text-gray-800">Home</a>
+      <a href="/games_showcase" class="text-gray-600 hover:text-gray-800">Games</a>
+      <a href="/dashboard" class="text-gray-600 hover:text-gray-800">Dashboard</a>
+    </nav>
+    <% if current_user %>
+      <div class="flex space-x-4">
+        <a href="/dashboard" class="text-gray-600 hover:text-gray-800">Dashboard</a>
+        <%= button_to "Sign out", logout_path, method: :delete,
+                      class:"text-gray-600 hover:text-gray-800" %>
+      </div>
+      <% else %>
+      <div class="flex space-x-4">
+        <a href="/login" class="text-gray-600 hover:text-gray-800">Sign In</a>
+        <a href="/register" class="text-gray-600 hover:text-gray-800">Sign Up</a>
+      </div>
+    <% end %>
+  </div>
+</header>
