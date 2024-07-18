@@ -11,23 +11,19 @@
       <div id="friends" class="tabcontent">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <% @friendships.each do |friendship| %>
-            <% if friendship.friend.id != session[:current_user] %>
-              <% friend = friendship.friend %>
-            <% else %>
-              <% friend = friendship.user %>
-            <% end %>
+            <% if find_friend(friendship) %>
             <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
-              <a href='<%= '/users/' + friend.id.to_s %>'>
+              <a href='<%= '/users/' + find_friend(friendship).id.to_s %>'>
                 <div class="flex-shrink-0">
-                  <% if @user && @user.avatar.attached? %>
-                    <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
+                  <% if find_friend(friendship).avatar.attached? %>
+                    <%= image_tag url_for(find_friend(friendship).avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
                   <% else %>
                     <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
                   <% end %>
                 </div>
                 <div>
-                  <h3 class="text-lg font-bold text-gray-800"><%= friend.name %></h3>
-                  <p class="text-gray-600"><%= friend.email %></p>
+                  <h3 class="text-lg font-bold text-gray-800"><%= find_friend(friendship).name %></h3>
+                  <p class="text-gray-600"><%= find_friend(friendship).email %></p>
                 </div>
               </a>
                 <%= button_to "Удалить из друзей", user_friendship_path(@current_user, friendship), method: :delete,
@@ -35,6 +31,7 @@
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
             </div>
+            <% end %>
           <% end %>
         </div>
       </div>
@@ -42,11 +39,12 @@
       <div id="sent_requests" class="tabcontent" style="display:none">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <% @sent_requests.each do |request| %>
+            <% if request.friend %>
             <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
               <a href='<%= '/users/' + request.friend.id.to_s %>'>
                 <div class="flex-shrink-0">
-                  <% if request.user && request.user.avatar.attached? %>
-                    <%= image_tag url_for(request.user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
+                  <% if request.friend.avatar.attached? %>
+                    <%= image_tag url_for(request.friend.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
                   <% else %>
                     <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
                   <% end %>
@@ -61,6 +59,7 @@
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
             </div>
+            <% end %>
           <% end %>
         </div>
       </div>
@@ -68,6 +67,7 @@
       <div id="received_requests" class="tabcontent hidden">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <% @received_requests.each do |request| %>
+            <% if request.user %>
             <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
               <a href='<%= '/users/' + request.user.id.to_s %>'>
                 <div class="flex-shrink-0">
@@ -91,6 +91,7 @@
                       border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
             </div>
+            <% end %>
           <% end %>
         </div>
       </div>

@@ -1,5 +1,6 @@
 class FriendshipsController < ApplicationController
   before_action :authenticate_user
+  helper_method :find_friend
   def index
     @friendships = current_user.friendships.where(status: 'accepted') + current_user.inverse_friendships.where(status: 'accepted')
     @sent_requests = current_user.friendships.where(status: 'pending')
@@ -42,5 +43,10 @@ class FriendshipsController < ApplicationController
     @friendship.destroy
     flash[:notice] = "Дружба отменена."
     redirect_to user_profile_path(@friendship.friend)
+  end
+
+  private
+  def find_friend(friendship)
+    friendship.friend.id != current_user.id ? friendship.friend : friendship.user
   end
 end
