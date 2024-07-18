@@ -1,0 +1,10 @@
+<%- if results.present? %>
+  <div>
+    <%- results.each do |result| %>
+      <p>
+        <%= result.name %>
+      </p>
+    <% end %>
+  </div>
+<% end %>
+

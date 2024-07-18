@@ -5,15 +5,21 @@ class GamesController < ApplicationController
   end
 
   def showcase
-    if params[:search].present?
-      @games = Game.where("name LIKE ? OR description LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%")
+    @search_results = nil
+
+    if should_search?
+      lower_case_search =  "%#{params[:search].downcase}%"
+      @games = Game.where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?",
+                          lower_case_search,lower_case_search)
+
     else
       @games = Game.all
+
     end
 
     respond_to do |format|
-      format.html # showcase.html.erb
-      format.json { render json: @games } # Для AJAX запросов
+      format.html
+      format.turbo_stream { @search_results =  should_search? ? @games : nil }
     end
   end
 
@@ -58,5 +64,9 @@ class GamesController < ApplicationController
   def game_params
     params.require(:game)
       .permit(:name, :description, :cover)
+  end
+
+  def should_search?
+    params[:search].present? && !params[:search].empty?
   end
 end
