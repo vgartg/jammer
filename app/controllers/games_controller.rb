@@ -11,10 +11,8 @@ class GamesController < ApplicationController
       lower_case_search =  "%#{params[:search].downcase}%"
       @games = Game.where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?",
                           lower_case_search,lower_case_search)
-
     else
       @games = Game.all
-
     end
 
     respond_to do |format|

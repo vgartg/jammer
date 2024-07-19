@@ -19,7 +19,7 @@ export default class extends Controller {
     performSearch() {
         const url = new URL(window.location.href)
         url.searchParams.set('search', this.inputTarget.value)
-            fetch(url.toString(), {
+        fetch(url.toString(), {
             headers: {
                 "Accept": "text/vnd.turbo-stream.html"
             }
