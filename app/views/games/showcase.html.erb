@@ -29,7 +29,9 @@
                  locals: { results: @search_results } if @search_results %>
     </div>
 
-    <%= render partial: 'showcase_grid', locals: {games: @games} %>
+    <div class="mt-6">
+      <%= render partial: 'showcase_grid', locals: {games: @games} %>
+    </div>
 
   </div>
 </div>
