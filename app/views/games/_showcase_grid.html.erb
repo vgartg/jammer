@@ -24,6 +24,11 @@
             <%= game.description %>
           </p>
         </div>
+        <div class="mt-4 text-gray-500 flex flex-wrap gap-2">
+          <% game.tags.each do |tag| %>
+            <span class="bg-gray-200 px-3 py-1 rounded-full text-sm font-medium text-gray-700"><%= tag.name %></span>
+          <% end %>
+        </div>
         <% if game.author.present? %>
           <a class="break-all" href="<%= user_profile_path(game.author) %>">
             <%= game.author.name %>

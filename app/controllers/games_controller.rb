@@ -6,13 +6,18 @@ class GamesController < ApplicationController
 
   def showcase
     @search_results = nil
+    @tags = Tag.all
 
     if should_search?
       lower_case_search =  "%#{params[:search].downcase}%"
-      @games = Game.where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?",
+      @games = Game.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
                           lower_case_search,lower_case_search)
     else
       @games = Game.all
+    end
+
+    if params[:tag_ids].present?
+      @games = @games.joins(:tags).where(tags: { id: params[:tag_ids] }).distinct
     end
 
     respond_to do |format|
