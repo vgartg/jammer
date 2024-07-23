@@ -27,6 +27,7 @@ class GamesController < ApplicationController
 
   def create
     @game = Game.new(game_params.merge(author: current_user))
+    @tags = Tag.all
     if @game.save
       redirect_to dashboard_path
     else
@@ -40,6 +41,7 @@ class GamesController < ApplicationController
 
   def edit
     @game = current_user.games.find_by_id(params[:id])
+    @tags = Tag.all
   end
 
   def update
@@ -61,7 +63,7 @@ class GamesController < ApplicationController
   private
   def game_params
     params.require(:game)
-      .permit(:name, :description, :cover)
+      .permit(:name, :description, :cover, tag_ids: [])
   end
 
   def should_search?
