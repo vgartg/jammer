@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = [ "input" ]
+    static targets = [ "input", "tagCheckbox" ]
 
 
     connect() {
@@ -19,6 +19,13 @@ export default class extends Controller {
     performSearch() {
         const url = new URL(window.location.href)
         url.searchParams.set('search', this.inputTarget.value)
+
+        this.tagCheckboxTargets.forEach(checkbox => {
+            if (checkbox.checked) {
+                url.searchParams.append('tag_ids[]', checkbox.value)
+            }
+        })
+
         fetch(url.toString(), {
             headers: {
                 "Accept": "text/vnd.turbo-stream.html"
