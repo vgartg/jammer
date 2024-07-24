@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
     user = User.find_by_email(auth_params[:email])
     if user.present? && user.authenticate(auth_params[:password])
       session[:current_user] = user.id
+      user.update(last_seen_at: Time.zone.now)
       redirect_to dashboard_path
     else
       flash[:errors] = ["Invalid email or password"]

@@ -10,6 +10,11 @@
       </div>
       <div>
         <h2 class="text-2xl font-bold text-gray-800">Имя: <%= @user.name %></h2>
+        <% if @user.last_seen_at %>
+        <p class="text-gray-600">Последний вход:<br><%= @user.last_seen_at.strftime("%d.%m.%Y, %H:%M") %></p>
+          <% else %>
+          <p class="text-gray-600">Последний вход: Давно</p>
+          <% end %>
         <p class="text-gray-600">Email: <%= @user.email %></p>
       </div>
     </div>
