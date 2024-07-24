@@ -30,10 +30,17 @@
           <div>
             <%= check_box_tag 'tag_ids[]', tag.id, params[:tag_ids]&.include?(tag.id.to_s),
                               id: "tag_#{tag.id}", class: "mr-2",
-                              data: { games_target: "tagCheckbox", action: "change->games#search" }%>
+                              data: { games_target: "tagCheckbox", action: "change->games#search" } %>
             <%= label_tag "tag_#{tag.id}", tag.name, class: "text-sm font-medium text-gray-700" %>
           </div>
         <% end %>
+      </div>
+
+      <%= hidden_field_tag :tag_mode, params[:tag_mode] || 'all', data: { games_target: "tagMode" } %>
+
+      <div class="mt-4 flex flex-wrap gap-2">
+        <%= check_box_tag :toggle_tag_mode, 'any', params[:tag_mode] == 'any', data: { action: "change->games#toggleTagMode", games_target: "toggleTagMode" } %>
+        <%= label_tag :toggle_tag_mode, " Искать хотя бы с одним из выбранных тегов", class: "text-sm font-medium text-gray-700" %>
       </div>
     <% end %>
 

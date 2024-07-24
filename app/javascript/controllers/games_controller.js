@@ -1,7 +1,7 @@
-import { Controller } from "@hotwired/stimulus"
+import {Controller} from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = [ "input", "tagCheckbox" ]
+    static targets = ["input", "tagCheckbox", "tagMode", "toggleTagMode"]
 
 
     connect() {
@@ -28,22 +28,28 @@ export default class extends Controller {
             }
         })
 
+        url.searchParams.set('tag_mode', this.tagModeTarget.value)
+
         fetch(url.toString(), {
             headers: {
                 "Accept": "text/vnd.turbo-stream.html"
             }
         })
             .then(response => {
-                if (response.ok){
+                if (response.ok) {
                     return response.text();
-                }
-               else{
-                   throw new Error("Can't load results")
+                } else {
+                    throw new Error("Can't load results")
                 }
             })
             .then(html => {
                 Turbo.renderStreamMessage(html)
             })
-                .catch()
+            .catch()
+    }
+
+    toggleTagMode(event) {
+        this.tagModeTarget.value = this.toggleTagModeTarget.checked ? 'any' : 'all'
+        this.search()
     }
 }
