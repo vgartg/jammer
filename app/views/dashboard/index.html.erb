@@ -54,9 +54,10 @@
             <ul role="list" class="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul role="list" class="-mx-2 space-y-1">
-                  <li>
-                    <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
-                    <a href="/dashboard" class="group flex gap-x-3 rounded-md bg-gray-800 p-2 text-sm
+                  <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400
+              bg-gray-800 cursor-pointer hover:bg-gray-800 selected"
+                      data-content-id="dashboard" data-action="click->dashboard#dashboardChanger">
+                    <a class="group flex gap-x-3 rounded-md p-2 text-sm
                      font-semibold leading-6 text-white">
                       <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                            stroke="currentColor" aria-hidden="true">
@@ -66,9 +67,11 @@
                       Dashboard
                     </a>
                   </li>
-                  <li>
-                    <a href="/friends" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold
-                    leading-6 text-gray-400 hover:bg-gray-800 hover:text-white">
+                  <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                  hover:bg-gray-800 text-gray-400 cursor-pointer"
+                      data-content-id="friends" data-action="click->dashboard#dashboardChanger">
+                    <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold
+                    leading-6 text-gray-400">
                       <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                            stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -77,9 +80,11 @@
                       Friends
                     </a>
                   </li>
-                  <li>
-                    <a href="/games_showcase" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                     text-gray-400 hover:bg-gray-800 hover:text-white">
+                  <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                  hover:bg-gray-800 text-gray-400 cursor-pointer"
+                      data-content-id="games" data-action="click->dashboard#dashboardChanger">
+                    <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                     text-gray-400">
                       <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                            stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -88,9 +93,11 @@
                       Games
                     </a>
                   </li>
-                  <li>
-                    <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                    text-gray-400 hover:bg-gray-800 hover:text-white">
+                  <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                  hover:bg-gray-800 text-gray-400 cursor-pointer"
+                      data-content-id="zaglushka" data-action="click->dashboard#dashboardChanger">
+                    <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                    text-gray-400">
                       <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                            stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -99,9 +106,11 @@
                       Пока заглушка..
                     </a>
                   </li>
-                  <li>
-                    <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                    text-gray-400 hover:bg-gray-800 hover:text-white">
+                  <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                  hover:bg-gray-800 text-gray-400 cursor-pointer"
+                      data-content-id="zaglushka" data-action="click->dashboard#dashboardChanger">
+                    <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                    text-gray-400">
                       <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                            stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -110,9 +119,11 @@
                       Пока заглушка..
                     </a>
                   </li>
-                  <li>
-                    <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                    text-gray-400 hover:bg-gray-800 hover:text-white">
+                  <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                  hover:bg-gray-800 text-gray-400 cursor-pointer"
+                      data-content-id="zaglushka" data-action="click->dashboard#dashboardChanger">
+                    <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                    text-gray-400">
                       <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                            stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
@@ -126,27 +137,26 @@
               <li>
                 <div class="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
                 <ul role="list" class="-mx-2 mt-2 space-y-1">
-                  <li>
-                    <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
+                  <li class="hover:bg-gray-800">
                     <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                     text-gray-400 hover:bg-gray-800 hover:text-white">
+                     text-gray-400 hover:bg-gray-800 cursor-pointer">
                       <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border
                        border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">П</span>
                       <span class="truncate">Пока заглушка..</span>
                     </a>
                   </li>
-                  <li>
+                  <li class="hover:bg-gray-800">
                     <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                     text-gray-400 hover:bg-gray-800 hover:text-white">
+                     text-gray-400 hover:bg-gray-800 cursor-pointer">
                       <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border
                        border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400
                        group-hover:text-white">П</span>
                       <span class="truncate">Пока заглушка..</span>
                     </a>
                   </li>
-                  <li>
+                  <li class="hover:bg-gray-800">
                     <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                     text-gray-400 hover:bg-gray-800 hover:text-white">
+                     text-gray-400 hover:bg-gray-800">
                       <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border
                        border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400
                         group-hover:text-white">П</span>
@@ -155,7 +165,7 @@
                   </li>
                 </ul>
               </li>
-              <li class="mt-auto">
+              <li class="mt-auto hover:bg-gray-800">
                 <a href="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
                  text-gray-400 hover:bg-gray-800 hover:text-white">
                   <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -175,9 +185,7 @@
     </div>
   </div>
 
-  <!-- Static sidebar for desktop -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-    <!-- Sidebar component, swap this element with another sidebar if you like -->
     <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
       <div class="flex h-16 shrink-0 items-center">
         <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
@@ -187,10 +195,10 @@
         <ul role="list" class="flex flex-1 flex-col gap-y-7">
           <li>
             <ul role="list" class="-mx-2 space-y-1">
-              <li>
-                <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
-                <a href="/dashboard" class="group flex gap-x-3 rounded-md bg-gray-800 p-2 text-sm font-semibold
-                leading-6 text-white">
+              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400
+              bg-gray-800 cursor-pointer hover:bg-gray-800 selected"
+                  data-content-id="dashboard" data-action="click->dashboard#dashboardChanger">
+                <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-white">
                   <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                        stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -199,9 +207,11 @@
                   Dashboard
                 </a>
               </li>
-              <li>
-                <a href="/friends" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                text-gray-400 hover:bg-gray-800 hover:text-white">
+              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 cursor-pointer
+               hover:bg-gray-800"
+                  data-content-id="friends" data-action="click->dashboard#dashboardChanger">
+                <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                text-gray-400">
                   <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                        stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -210,9 +220,11 @@
                   Friends
                 </a>
               </li>
-              <li>
-                <a href="/games_showcase" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                 text-gray-400 hover:bg-gray-800 hover:text-white">
+              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 cursor-pointer
+               hover:bg-gray-800"
+                  data-content-id="games" data-action="click->dashboard#dashboardChanger">
+                <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                 text-gray-400">
                   <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                        stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -221,9 +233,11 @@
                   Games
                 </a>
               </li>
-              <li>
-                <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                 text-gray-400 hover:bg-gray-800 hover:text-white">
+              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 cursor-pointer
+               hover:bg-gray-800"
+                  data-content-id="zaglushka" data-action="click->dashboard#dashboardChanger">
+                <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                 text-gray-400">
                   <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                        stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -232,9 +246,11 @@
                   Пока заглушка..
                 </a>
               </li>
-              <li>
-                <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                 text-gray-400 hover:bg-gray-800 hover:text-white">
+              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 cursor-pointer
+               hover:bg-gray-800"
+                  data-content-id="zaglushka" data-action="click->dashboard#dashboardChanger">
+                <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                 text-gray-400">
                   <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                        stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -243,9 +259,11 @@
                   Пока заглушка..
                 </a>
               </li>
-              <li>
-                <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                text-gray-400 hover:bg-gray-800 hover:text-white">
+              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 cursor-pointer
+               hover:bg-gray-800"
+                  data-content-id="zaglushka" data-action="click->dashboard#dashboardChanger">
+                <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                text-gray-400">
                   <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                        stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
@@ -259,26 +277,25 @@
           <li>
             <div class="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
             <ul role="list" class="-mx-2 mt-2 space-y-1">
-              <li>
-                <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
-                <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                text-gray-400 hover:bg-gray-800 hover:text-white">
+              <li class="cursor-pointer">
+                <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                text-gray-400 hover:bg-gray-800">
                   <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border
                    border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">П</span>
                   <span class="truncate">Пока заглушка..</span>
                 </a>
               </li>
-              <li>
-                <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                text-gray-400 hover:bg-gray-800 hover:text-white">
+              <li class="cursor-pointer">
+                <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                text-gray-400 hover:bg-gray-800">
                   <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border
                    border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">П</span>
                   <span class="truncate">Пока заглушка..</span>
                 </a>
               </li>
-              <li>
+              <li class="cursor-pointer">
                 <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                 text-gray-400 hover:bg-gray-800 hover:text-white">
+                 text-gray-400 hover:bg-gray-800">
                   <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border
                    border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400
                    group-hover:text-white">П</span>
@@ -287,9 +304,9 @@
               </li>
             </ul>
           </li>
-          <li class="mt-auto">
+          <li class="mt-auto cursor-pointer">
             <a href="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-            text-gray-400 hover:bg-gray-800 hover:text-white">
+            text-gray-400 hover:bg-gray-800">
               <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                    stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -315,7 +332,6 @@
         </svg>
       </button>
 
-      <!-- Separator -->
       <div class="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true"></div>
 
       <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
@@ -339,10 +355,8 @@
             </svg>
           </button>
 
-          <!-- Separator -->
           <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10" aria-hidden="true"></div>
 
-          <!-- Profile dropdown -->
           <div class="relative">
             <button type="button" class="-m-1.5 flex items-center p-1.5" data-action="click->dashboard#toggleProfileMenu"
                     aria-expanded="false" aria-haspopup="true">
@@ -361,17 +375,6 @@
                 </svg>
               </span>
             </button>
-
-            <!--
-              Dropdown menu, show/hide based on menu state.
-
-              Entering: "transition ease-out duration-100"
-                From: "transform opacity-0 scale-95"
-                To: "transform opacity-100 scale-100"
-              Leaving: "transition ease-in duration-75"
-                From: "transform opacity-100 scale-100"
-                To: "transform opacity-0 scale-95"
-            -->
             <div class="hidden absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2
             shadow-lg ring-1 ring-gray-900/5 focus:outline-none" role="menu" aria-orientation="vertical"
                  aria-labelledby="user-menu-button" tabindex="-1" id="dashboard_profile_menu">
@@ -388,7 +391,18 @@
 
     <main class="py-10">
       <div class="px-4 sm:px-6 lg:px-8">
-        <!-- Your content -->
+        <div id="dashboard" class="content">
+
+        </div>
+        <div id="friends" class="content hidden">
+          <%= render partial: 'friendships/index' %>
+        </div>
+        <div id="games" class="content hidden">
+          <%= render partial: 'games/showcase' %>
+        </div>
+        <div id="zaglushka" class="content hidden">
+
+        </div>
       </div>
     </main>
   </div>

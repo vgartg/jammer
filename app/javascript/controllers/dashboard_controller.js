@@ -1,6 +1,8 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
+    static targets = ["profileMenu", "grayBlock", "leftBlock", "menuItem", "content"];
+
     toggleProfileMenu() {
         const profileMenu = this.element.querySelector('#dashboard_profile_menu');
         if (profileMenu.classList.contains('hidden')) {
@@ -30,5 +32,34 @@ export default class extends Controller {
         grayBlock.classList.add('opacity-0');
         leftBlock.classList.add('-translate-x-full');
         grayBlock.classList.add('hidden');
+    }
+
+    dashboardChanger(event) {
+        const menuItem = event.target.closest('li');
+        if (!menuItem) return;
+
+        const menuItems = document.querySelectorAll('.group.flex.gap-x-3.rounded-md.p-2.text-sm.font-semibold.leading-6.text-gray-400');
+        menuItems.forEach(item => {
+            item.classList.remove('selected', 'bg-gray-800');
+            const link = item.querySelector('a');
+            if (link) {
+                link.classList.remove('text-white');
+            }
+        });
+
+        menuItem.classList.add('selected', 'bg-gray-800');
+        menuItem.querySelector('a').classList.add('text-white');
+
+        const selectedContentId = menuItem.getAttribute('data-content-id');
+
+        const allContents = document.querySelectorAll('.content');
+        allContents.forEach(content => {
+            content.classList.add('hidden');
+        });
+
+        const selectedContent = document.getElementById(selectedContentId);
+        if (selectedContent) {
+            selectedContent.classList.remove('hidden');
+        }
     }
 }

@@ -36,8 +36,6 @@
         </a>
       </div>
     <% end %>
-
-
   </nav>
 
   <div class="lg:hidden" role="dialog" aria-modal="true">
@@ -71,9 +69,10 @@
             <div class="py-6">
               <a href="/dashboard" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
             text-white hover:bg-gray-800">Dashboard</a>
-              <%= button_to "Sign out", logout_path, method: :delete,
-                            class:"-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
-            text-white hover:bg-gray-800" %>
+              <a class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
+              text-white hover:bg-gray-800 cursor-pointer" >
+                <%= button_to "Sign out", logout_path, method: :delete, class: "w-full flex justify-start" %>
+              </a>
             </div>
           <% else %>
             <div class="py-6">
