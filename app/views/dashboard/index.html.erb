@@ -1,4 +1,4 @@
-<div>
+<div data-controller="dashboard">
   <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
   <div class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
     <!--
@@ -36,8 +36,7 @@
             To: "opacity-0"
         -->
         <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-          <button type="button" class="-m-2.5 p-2.5" id="dashboard_close_mobile_menu">
-            <span class="sr-only">Close sidebar</span>
+          <button type="button" class="-m-2.5 p-2.5" data-action="click->dashboard#closeMobileMenu">
             <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                  aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -309,8 +308,7 @@
   <div class="lg:pl-72">
     <div class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200
      bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-      <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" id="dashboard_open_mobile_menu">
-        <span class="sr-only">Open sidebar</span>
+      <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" data-action="click->dashboard#openMobileMenu">
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
              aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -334,7 +332,6 @@
         </form>
         <div class="flex items-center gap-x-4 lg:gap-x-6">
           <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
-            <span class="sr-only">View notifications</span>
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -347,7 +344,7 @@
 
           <!-- Profile dropdown -->
           <div class="relative">
-            <button type="button" class="-m-1.5 flex items-center p-1.5" id="dashboard_user_menu_button"
+            <button type="button" class="-m-1.5 flex items-center p-1.5" data-action="click->dashboard#toggleProfileMenu"
                     aria-expanded="false" aria-haspopup="true">
               <% if @user && @user.avatar.attached? %>
                 <%= image_tag url_for(@user.avatar), alt: "Profile Picture",
