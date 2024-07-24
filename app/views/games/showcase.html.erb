@@ -8,7 +8,7 @@
                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
 
     <%= form_with url: games_showcase_path, method: :get,
-                  data: { action: "input->games#search change->games#search" },
+                  data: { action: "input->games#search" },
                   class: "mt-6 mb-4" do |f| %>
       <div class="flex flex-wrap gap-4">
         <%= f.text_field :search,
@@ -30,7 +30,7 @@
           <div>
             <%= check_box_tag 'tag_ids[]', tag.id, params[:tag_ids]&.include?(tag.id.to_s),
                               id: "tag_#{tag.id}", class: "mr-2",
-                              data: { games_target: "tagCheckbox" }%>
+                              data: { games_target: "tagCheckbox", action: "change->games#search" }%>
             <%= label_tag "tag_#{tag.id}", tag.name, class: "text-sm font-medium text-gray-700" %>
           </div>
         <% end %>

@@ -20,6 +20,8 @@ export default class extends Controller {
         const url = new URL(window.location.href)
         url.searchParams.set('search', this.inputTarget.value)
 
+        url.searchParams.delete('tag_ids[]')
+
         this.tagCheckboxTargets.forEach(checkbox => {
             if (checkbox.checked) {
                 url.searchParams.append('tag_ids[]', checkbox.value)
