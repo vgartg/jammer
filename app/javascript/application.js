@@ -3,3 +3,5 @@ import "@hotwired/turbo-rails"
 import "@hotwired/turbo-rails"
 // @ts-ignore
 import "./controllers"
+// @ts-ignore
+import "./update_activity"

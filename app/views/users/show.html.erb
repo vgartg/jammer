@@ -58,7 +58,9 @@
       </div>
     </div>
     <p class="mt-6">
-      <% if @user.last_seen_at %>
+      <% if @user.online? %>
+        <span class="text-gray-600">Online</span>
+      <% elsif @user.last_seen_at %>
               <span class="text-gray-600">Последний вход:
                 <%= @user.last_seen_at.strftime("%d.%m.%Y, %H:%M") %>
               </span>

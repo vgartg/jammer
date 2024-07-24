@@ -43,4 +43,8 @@ class User < ActiveRecord::Base
     friendship.status
   end
 
+  def online?
+    last_active_at.present? && last_active_at > 5.minutes.ago
+  end
+
 end
