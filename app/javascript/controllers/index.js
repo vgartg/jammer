@@ -16,3 +16,7 @@ application.register("dashboard", DashboardController)
 // @ts-ignore
 import HeaderController from "./header_controller"
 application.register("header", HeaderController)
+
+// @ts-ignore
+import FriendsController from "./friends_controller"
+application.register("friends", FriendsController)
