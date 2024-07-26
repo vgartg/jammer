@@ -12,7 +12,6 @@ class SessionsController < ApplicationController
       if params[:remember_me] == "1"
         remember(user)
       end
-      user.update(last_seen_at: Time.zone.now)
       redirect_to dashboard_path
     else
       flash[:errors] = ["Invalid email or password"]

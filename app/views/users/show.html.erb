@@ -17,7 +17,7 @@
             <% end %>
         <% if @user.online? %>
               <span class="absolute bottom-1 right-1 block h-6 w-6 rounded-full bg-green-400 ring-2 ring-white"></span>
-            <% elsif @user.last_seen_at %>
+            <% elsif @user.last_active_at %>
               <span class="absolute bottom-1 right-1 block h-6 w-6 rounded-full bg-gray-400 ring-2 ring-white"></span>
             <% end %>
           </span>
@@ -67,7 +67,7 @@
     <p class="mt-6">
       <% if @user.online? %>
         <span class="text-sm text-green-500">Online</span>
-      <% elsif @user.last_seen_at %>
+      <% elsif @user.last_active_at %>
               <span class="text-sm text-gray-600">
                 Last active: <%= @user.last_active_at.strftime("%H:%M") %>
               </span>

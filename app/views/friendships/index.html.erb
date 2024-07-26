@@ -14,7 +14,7 @@
       </div>
 
       <div id="friends" class="tab_content">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 p-4">
           <% @friendships.each do |friendship| %>
             <% if find_friend(friendship) %>
               <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200
@@ -32,7 +32,7 @@
             <% if find_friend(friendship).online? %>
               <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400
                ring-2 ring-white"></span>
-            <% elsif find_friend(friendship).last_seen_at %>
+            <% elsif find_friend(friendship).last_active_at %>
               <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400
                ring-2 ring-white"></span>
             <% end %>
@@ -62,7 +62,7 @@
       </div>
 
       <div id="sent_requests" class="tab_content hidden">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 p-4">
           <% @sent_requests.each do |request| %>
             <% if request.friend %>
               <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
@@ -79,7 +79,7 @@
                     <% if request.friend.online? %>
               <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
                bg-green-400 ring-2 ring-white"></span>
-            <% elsif request.friend.last_seen_at %>
+            <% elsif request.friend.last_active_at %>
               <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
                bg-gray-400 ring-2 ring-white"></span>
             <% end %>
@@ -88,7 +88,7 @@
                     <h3 class="text-lg font-semibold text-gray-800"><%= request.friend.name %></h3>
                     <% if request.friend.online? %>
                       <span class="text-sm text-green-500">Online</span>
-                    <% elsif request.friend.last_seen_at %>
+                    <% elsif request.friend.last_active_at %>
               <span class="text-sm text-gray-600">
                 Last active: <%= request.friend.last_active_at.strftime("%H:%M") %>
               </span>
@@ -107,7 +107,7 @@
       </div>
 
       <div id="received_requests" class="tab_content hidden">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 p-4">
           <% @received_requests.each do |request| %>
             <% if request.user %>
               <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
@@ -123,7 +123,7 @@
                     <% if request.user.online? %>
               <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
                bg-green-400 ring-2 ring-white"></span>
-            <% elsif request.user.last_seen_at %>
+            <% elsif request.user.last_active_at %>
               <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
                bg-gray-400 ring-2 ring-white"></span>
             <% end %>
@@ -132,7 +132,7 @@
                     <h3 class="text-lg font-semibold text-gray-800"><%= request.user.name %></h3>
                     <% if request.user.online? %>
                       <span class="text-sm text-green-500">Online</span>
-                    <% elsif request.user.last_seen_at %>
+                    <% elsif request.user.last_active_at %>
               <span class="text-sm text-gray-600">
                 Last active: <%= request.user.last_active_at.strftime("%H:%M") %>
               </span>
