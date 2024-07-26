@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
+  attr_accessor :remember_token
+
   validates :name, :email, presence: true, uniqueness: true
-  validates :password,  :password_confirmation, presence: true, on: :create
+  validates :password, :password_confirmation, presence: true, on: :create
 
   validate :password_length, on: :create
   has_secure_password
@@ -47,4 +49,23 @@ class User < ActiveRecord::Base
     last_active_at.present? && last_active_at > 5.minutes.ago
   end
 
+  def remember_me
+    self.remember_token = SecureRandom.urlsafe_base64
+    update_column(:remember_token_digest, digest(remember_token))
+  end
+
+  def forget_me
+    update_column(:remember_token_digest, nil)
+    self.remember_token = nil
+  end
+
+  def digest(string)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    BCrypt::Password.create(string, cost: cost)
+  end
+
+  def remember_token_authenticated?(remember_token)
+    return false unless remember_token_digest.present?
+    BCrypt::Password.new(remember_token_digest).is_password?(remember_token)
+  end
 end

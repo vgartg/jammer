@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_24_220302) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_26_074825) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -72,6 +72,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_24_220302) do
     t.string "status"
     t.datetime "last_seen_at"
     t.datetime "last_active_at"
+    t.string "remember_token_digest"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
   end
