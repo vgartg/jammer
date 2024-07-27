@@ -1,41 +1,58 @@
-<div class="bg-white">
-  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+<div class="bg-white" data-controller="games">
+  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
     <h2 class="text-2xl font-bold tracking-tight text-gray-900">Каталог игр</h2>
 
-    <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-      <% @games.each do |game| %>
-        <div class="group relative">
-          <% if game && game.cover.attached? %>
-            <%= image_tag url_for(game.cover), alt: game.name, class: "rounded-md bg-gray-200 w-full h-full
-            lg:h-80 lg:w-full object-cover object-center group-hover:opacity-75" %>
-          <% else %>
-            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none
-             group-hover:opacity-75 lg:h-80">
-              <img src="https://via.placeholder.com/300" alt="<%= game.name %>" class="h-full w-full object-cover
-               object-center lg:h-full lg:w-full">
-            </div>
-          <% end %>
-          <div class="mt-4 justify-between line-clamp-2">
-            <div class="flex-1">
-              <h3 class="text-sm text-gray-700 truncate">
-                <a href="/games/<%= game.id %>">
-                  <span aria-hidden="true" class="absolute inset-0"></span>
-                  <%= game.name %>
-                </a>
-              </h3>
-              <p class="mt-1 text-sm text-gray-500 line-clamp-2"><%= game.description %></p>
-            </div>
-            <% if game.author.present? %>
-              <a class="break-all" href="<%= user_profile_path(game.author) %>">
-                <%= game.author.name %>
-              </a>
-            <% else %>
-              <p>Автор не найден</p>
-            <% end %>
+    <%= button_to "Вернуться на главный экран", dashboard_path, method: :get,
+                  class: "mt-4 flex w-50 justify-center rounded-md border
+                      border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                      shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+
+    <%= form_with url: games_showcase_path, method: :get,
+                  data: { action: "input->games#search" },
+                  class: "mt-6 mb-4" do |f| %>
+      <div class="flex flex-wrap gap-4">
+        <%= f.text_field :search,
+                         value: params[:search],
+                         placeholder: "Поиск по названию или описанию игры",
+                         data: { games_target: "input" }, autocomplete: "off",
+                         class: "block w-full max-w-lg sm:max-w-xs px-4 py-3 border
+                         border-gray-300 rounded-md shadow-sm focus:outline-none
+                         focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+        <%= submit_tag "Искать",
+                       class: "ml-2 inline-flex items-center justify-center px-4 py-2
+      border border-transparent rounded-md shadow-sm text-sm
+      font-medium text-white bg-indigo-600 hover:bg-indigo-700
+      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      </div>
+
+      <div class="mt-4 flex flex-wrap gap-2">
+        <% @tags.each do |tag| %>
+          <div>
+            <%= check_box_tag 'tag_ids[]', tag.id, params[:tag_ids]&.include?(tag.id.to_s),
+                              id: "tag_#{tag.id}", class: "mr-2",
+                              data: { games_target: "tagCheckbox", action: "change->games#search" } %>
+            <%= label_tag "tag_#{tag.id}", tag.name, class: "text-sm font-medium text-gray-700" %>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
+
+      <%= hidden_field_tag :tag_mode, params[:tag_mode] || 'all', data: { games_target: "tagMode" } %>
+
+      <div class="mt-4 flex flex-wrap gap-2">
+        <%= check_box_tag :toggle_tag_mode, 'any', params[:tag_mode] == 'any', data: { action: "change->games#toggleTagMode", games_target: "toggleTagMode" } %>
+        <%= label_tag :toggle_tag_mode, " Искать хотя бы с одним из выбранных тегов", class: "text-sm font-medium text-gray-700" %>
+      </div>
+    <% end %>
+
+    <div id="autocomplete-results" class="autocomplete-results-popup">
+      <%= render partial: 'autocomplete_results',
+                 locals: { results: @search_results } if @search_results %>
+    </div>
+
+    <div class="mt-6">
+      <%= render partial: 'showcase_grid', locals: { games: @games } %>
     </div>
 
   </div>
 </div>
+

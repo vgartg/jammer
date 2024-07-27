@@ -1,0 +1,15 @@
+<%- if results.present? %>
+  <div class="grid grid-cols-4 gap-4">
+    <%- results.each do |result| %>
+      <div class="p-4 border border-gray-200 rounded-md shadow-sm hover:shadow-lg transition duration-300 flex">
+        <%= link_to game_profile_path(result.id), class: "flex items-center" do %>
+          <%= image_tag(result.cover, alt: result.name, class: "w-20 h-20 object-cover rounded-md mr-4") %>
+          <div>
+            <span class="text-sm font-medium text-gray-800"><%= result.name %></span>
+            <p class="text-xs text-gray-500 mt-1 line-clamp-2"><%= result.description %></p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

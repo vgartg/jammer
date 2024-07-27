@@ -28,6 +28,18 @@
         </div>
       </div>
 
+      <div class="mt-4">
+        <%= f.label :tags, "Теги", class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>
+            <div class="flex items-center">
+              <%= b.check_box(class: "mr-2") %>
+              <%= b.label(class: "text-sm font-medium text-gray-700") %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
       <%= submit_tag 'Создать игру', class: "mt-4 flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
 
     <% end %>
