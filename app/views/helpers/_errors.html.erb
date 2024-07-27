@@ -1,0 +1,9 @@
+<% if flash[:errors].present? %>
+  <div class="text-xs mt-1">
+    <% flash[:errors].each do |error| %>
+      <p class="text-red-500">
+        <%= error %>
+      </p>
+    <% end %>
+  </div>
+<% end %>

@@ -2,3 +2,18 @@ todd:
   name: Todd Howard
   email: todd@bethesda.com
   password_digest: <%= BCrypt::Password.create("P@ssw0rd") %>
+bob:
+  name: 'Bob Bob'
+  email: 'bob@bob'
+  password_digest: <%= BCrypt::Password.create('1234') %>
+
+roza:
+  name: 'Roza Roza'
+  email: 'roza@roza'
+  password_digest: <%= BCrypt::Password.create('1234') %>
+
+tod:
+  name: 'Tod Tod'
+  email: 'tod@tod'
+  password_digest: <%= BCrypt::Password.create('1234') %>
+

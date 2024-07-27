@@ -1,7 +1,6 @@
 <div class="bg-white">
   <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
     <h2 class="text-2xl font-bold tracking-tight text-gray-900">Каталог игр</h2>
-
     <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
       <% @games.each do |game| %>
         <div class="group relative">
@@ -11,8 +10,8 @@
           <% else %>
             <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none
              group-hover:opacity-75 lg:h-80">
-              <img src="https://via.placeholder.com/300" alt="<%= game.name %>" class="h-full w-full object-cover
-               object-center lg:h-full lg:w-full">
+              <img src="https://via.placeholder.com/300" alt="<%= game.name %>" class="h-full w-full
+              object-cover object-center lg:h-full lg:w-full">
             </div>
           <% end %>
           <div class="mt-4 justify-between line-clamp-2">
@@ -36,6 +35,5 @@
         </div>
       <% end %>
     </div>
-
   </div>
 </div>

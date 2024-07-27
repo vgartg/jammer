@@ -2,7 +2,11 @@
   <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
     <div class="flex items-center space-x-4 mb-6">
       <div class="flex-shrink-0">
-        <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
+        <% if @user && @user.avatar.attached? %>
+          <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
+        <% else %>
+          <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
+        <% end %>
       </div>
       <div>
         <h2 class="text-2xl font-bold text-gray-800">Имя: <%= @user.name %></h2>
@@ -13,6 +17,11 @@
       <div>
         <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-300">Личные данные</h3>
         <div class="space-y-4">
+          <div class="mb-4">
+            <%= f.label :avatar, "Аватар", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.file_field :avatar, class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+
           <div class="flex justify-between items-center py-2 border-b border-gray-200">
             <span class="text-gray-600">Статус:</span>
 
@@ -110,12 +119,9 @@
           </div>
           <div class="flex justify-between items-center py-2">
             <span class="text-gray-600">Загруженные игры:</span>
-            <% a_link = '/users/' + @user.id.to_s %>
-            <% user_games = Game.all.where(author_link: a_link) %>
-            <% if !user_games.blank? %>
-              <% user_games.each do |game| %>
-                <% g_link = '/games/' + game.id.to_s %>
-                <a href="<%= g_link %>">
+            <% if @user.games.any? %>
+              <% @user.games.each do |game| %>
+                <a href="/games/<%= game.id %>">
                   <span class="text-gray-900"><%= game.name %></span>
                 </a>
               <% end %>
