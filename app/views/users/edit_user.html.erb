@@ -17,6 +17,11 @@
       <div>
         <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-300">Личные данные</h3>
         <div class="space-y-4">
+          <div class="mb-4">
+            <%= f.label :avatar, "Аватар", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.file_field :avatar, class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+
           <div class="flex justify-between items-center py-2 border-b border-gray-200">
             <span class="text-gray-600">Статус:</span>
 

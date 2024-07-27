@@ -2,10 +2,20 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
+// @ts-ignore
 import { application } from "./application"
-
+// @ts-ignore
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
-
+// @ts-ignore
 import GamesController from "./games_controller"
 application.register("games", GamesController)
+// @ts-ignore
+import DashboardController from "./dashboard_controller"
+application.register("dashboard", DashboardController)
+// @ts-ignore
+import HeaderController from "./header_controller"
+application.register("header", HeaderController)
+// @ts-ignore
+import FriendsController from "./friends_controller"
+application.register("friends", FriendsController)

@@ -18,6 +18,7 @@ class FriendshipsController < ApplicationController
       @friendship.save
       redirect_to user_profile_path(@user)
     end
+
   end
 
   def update
@@ -42,7 +43,8 @@ class FriendshipsController < ApplicationController
     @friendship = Friendship.find(params[:id])
     @friendship.destroy
     flash[:notice] = "Дружба отменена."
-    redirect_to user_profile_path(@friendship.friend)
+    @friendship.friend.id != current_user.id ? friend = @friendship.friend : friend = @friendship.user
+    redirect_to user_profile_path(friend)
   end
 
   private

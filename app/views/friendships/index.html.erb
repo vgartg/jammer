@@ -1,96 +1,155 @@
-<div class="bg-gray-100 min-h-screen">
+<div class="bg-gray-100 min-h-screen" data-controller="friends">
   <div class="container mx-auto p-8">
     <div class="bg-white p-6 rounded-lg shadow-lg">
-      <h2 class="text-2xl font-bold text-gray-800 mb-4">Мои друзья</h2>
       <div class="mb-4">
-        <button id="btnFriends" class="tablinks bg-indigo-600 text-white py-2 px-4 rounded-md mr-2 bg-orange-500" onclick="openTab(event, 'friends')">Друзья</button>
-        <button id="btnSentRequests" class="tablinks bg-indigo-600 text-white py-2 px-4 rounded-md mr-2" onclick="openTab(event, 'sent_requests')">Отправленные заявки</button>
-        <button id="btnReceivedRequests" class="tablinks bg-indigo-600 text-white py-2 px-4 rounded-md" onclick="openTab(event, 'received_requests')">Входящие заявки</button>
+        <button id="btnFriends" class="tab_links bg-indigo-600 text-white py-2 px-4 rounded-md mr-2 bg-orange-500"
+                data-action="click->friends#openTab" data-tab-name="friends">Friends
+        </button>
+        <button id="btnSentRequests" class="tab_links bg-indigo-600 text-white py-2 px-4 rounded-md mr-2"
+                data-action="click->friends#openTab" data-tab-name="sent_requests">Sent applications
+        </button>
+        <button id="btnReceivedRequests" class="tab_links bg-indigo-600 text-white py-2 px-4 rounded-md"
+                data-action="click->friends#openTab" data-tab-name="received_requests">Incoming applications
+        </button>
       </div>
 
-      <div id="friends" class="tabcontent">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div id="friends" class="tab_content">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 p-4">
           <% @friendships.each do |friendship| %>
             <% if find_friend(friendship) %>
-            <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
-              <a href='<%= '/users/' + find_friend(friendship).id.to_s %>'>
-                <div class="flex-shrink-0">
-                  <% if find_friend(friendship).avatar.attached? %>
-                    <%= image_tag url_for(find_friend(friendship).avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
-                  <% else %>
-                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
-                  <% end %>
-                </div>
+              <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200
+              flex items-center space-x-4">
+                <a href='<%= '/users/' + find_friend(friendship).id.to_s %>' class="flex items-center
+                 space-x-4 flex-grow">
+          <span class="relative">
+            <% if find_friend(friendship).avatar.attached? %>
+              <%= image_tag url_for(find_friend(friendship).avatar), alt: "Profile Picture",
+                            class: "h-16 w-16 rounded-full" %>
+            <% else %>
+              <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                   class="h-16 w-16 rounded-full">
+            <% end %>
+            <% if find_friend(friendship).online? %>
+              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400
+               ring-2 ring-white"></span>
+            <% elsif find_friend(friendship).last_active_at %>
+              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400
+               ring-2 ring-white"></span>
+            <% end %>
+          </span>
+                  <div>
+                    <h2 class="text-lg font-semibold text-gray-800"><%= find_friend(friendship).name %></h2>
+                    <% if find_friend(friendship).online? %>
+                      <span class="text-sm text-green-500">Online</span>
+                    <% elsif find_friend(friendship).last_active_at %>
+                      <span class="text-sm text-gray-600">
+                        Last active: <%= find_friend(friendship).last_active_at.strftime("%H:%M") %>
+                      </span>
+                    <% else %>
+                      <span class="text-sm text-gray-600">Offline</span>
+                    <% end %>
+                  </div>
+                </a>
                 <div>
-                  <h3 class="text-lg font-bold text-gray-800"><%= find_friend(friendship).name %></h3>
-                  <p class="text-gray-600"><%= find_friend(friendship).email %></p>
+                  <%= button_to "Remove", user_friendship_path(@current_user, friendship), method: :delete,
+                                class: "bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600
+                                transition-colors duration-200" %>
                 </div>
-              </a>
-                <%= button_to "Удалить из друзей", user_friendship_path(@current_user, friendship), method: :delete,
-                              class: "mt-4 flex w-50 justify-center rounded-md border
-                      border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                      shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-            </div>
+              </div>
             <% end %>
           <% end %>
         </div>
       </div>
 
-      <div id="sent_requests" class="tabcontent" style="display:none">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div id="sent_requests" class="tab_content hidden">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 p-4">
           <% @sent_requests.each do |request| %>
             <% if request.friend %>
-            <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
-              <a href='<%= '/users/' + request.friend.id.to_s %>'>
-                <div class="flex-shrink-0">
-                  <% if request.friend.avatar.attached? %>
-                    <%= image_tag url_for(request.friend.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
-                  <% else %>
-                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
-                  <% end %>
-                </div>
-                <div>
-                  <h3 class="text-lg font-bold text-gray-800"><%= request.friend.name %></h3>
-                  <p class="text-gray-600"><%= request.friend.email %></p>
-                </div>
-              </a>
-                <%= button_to "Отменить запрос", cancel_user_friendship_path(@current_user, request), method: :delete,
-                              class: "mt-4 flex w-50 justify-center rounded-md border
-                      border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                      shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-            </div>
+              <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
+      duration-200 flex items-center space-x-4">
+                <a href='<%= '/users/' + request.friend.id.to_s %>' class="flex items-center space-x-4 flex-grow">
+                  <span class="relative">
+                    <% if request.friend.avatar.attached? %>
+                      <%= image_tag url_for(request.friend.avatar), alt: "Profile Picture",
+                                    class: "h-16 w-16 rounded-full" %>
+                    <% else %>
+                      <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                           class="h-16 w-16 rounded-full">
+                    <% end %>
+                    <% if request.friend.online? %>
+              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
+               bg-green-400 ring-2 ring-white"></span>
+            <% elsif request.friend.last_active_at %>
+              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
+               bg-gray-400 ring-2 ring-white"></span>
+            <% end %>
+          </span>
+                  <div>
+                    <h3 class="text-lg font-semibold text-gray-800"><%= request.friend.name %></h3>
+                    <% if request.friend.online? %>
+                      <span class="text-sm text-green-500">Online</span>
+                    <% elsif request.friend.last_active_at %>
+              <span class="text-sm text-gray-600">
+                Last active: <%= request.friend.last_active_at.strftime("%H:%M") %>
+              </span>
+                    <% else %>
+                      <span class="text-sm text-gray-600">Offline</span>
+                    <% end %>
+                  </div>
+                </a>
+                <%= button_to "Cancel", cancel_user_friendship_path(@current_user, request), method: :delete,
+                              class: "bg-red-500 text-white px-3 py-1 rounded-full
+                        hover:bg-red-600 transition-colors duration-200" %>
+              </div>
             <% end %>
           <% end %>
         </div>
       </div>
 
-      <div id="received_requests" class="tabcontent hidden">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div id="received_requests" class="tab_content hidden">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 p-4">
           <% @received_requests.each do |request| %>
             <% if request.user %>
-            <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
-              <a href='<%= '/users/' + request.user.id.to_s %>'>
-                <div class="flex-shrink-0">
-                  <% if request.user && request.user.avatar.attached? %>
-                    <%= image_tag url_for(request.user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
-                  <% else %>
-                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
-                  <% end %>
+              <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
+                <a href='<%= '/users/' + request.user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
+                  <span class="relative">
+                    <% if request.user.avatar.attached? %>
+                      <%= image_tag url_for(request.user.avatar), alt: "Profile Picture",
+                                    class: "h-16 w-16 rounded-full" %>
+                    <% else %>
+                      <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                           class="h-16 w-16 rounded-full">
+                    <% end %>
+                    <% if request.user.online? %>
+              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
+               bg-green-400 ring-2 ring-white"></span>
+            <% elsif request.user.last_active_at %>
+              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
+               bg-gray-400 ring-2 ring-white"></span>
+            <% end %>
+          </span>
+                  <div>
+                    <h3 class="text-lg font-semibold text-gray-800"><%= request.user.name %></h3>
+                    <% if request.user.online? %>
+                      <span class="text-sm text-green-500">Online</span>
+                    <% elsif request.user.last_active_at %>
+              <span class="text-sm text-gray-600">
+                Last active: <%= request.user.last_active_at.strftime("%H:%M") %>
+              </span>
+                    <% else %>
+                      <span class="text-sm text-gray-600">Offline</span>
+                    <% end %>
+                  </div>
+                </a>
+                <div class="flex flex-col gap-0.5">
+                  <%= button_to "Accept", user_friendship_path(@current_user, request), method: :put,
+                                class: "bg-green-500 text-white px-3 py-1 rounded-full
+                        hover:bg-green-600 transition-colors duration-200 mb-2" %>
+                  <%= button_to "Cancel", cancel_user_friendship_path(@current_user, request), method: :delete,
+                                class: "bg-red-500 text-white px-3 py-1 rounded-full
+                        hover:bg-red-600 transition-colors duration-200" %>
                 </div>
-                <div>
-                  <h3 class="text-lg font-bold text-gray-800"><%= request.user.name %></h3>
-                  <p class="text-gray-600"><%= request.user.email %></p>
-                </div>
-              </a>
-                <%= button_to "Принять запрос", user_friendship_path(@current_user, request), method: :put,
-                              class: "mt-4 flex w-50 justify-center rounded-md border
-                      border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                      shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-                <%= button_to "Отклонить запрос", cancel_user_friendship_path(@current_user, request), method: :delete,
-                              class: "mt-4 flex w-50 justify-center rounded-md border
-                      border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                      shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-            </div>
+              </div>
             <% end %>
           <% end %>
         </div>
@@ -98,34 +157,3 @@
     </div>
   </div>
 </div>
-
-<script>
-    function openTab(evt, tabName) {
-        let i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " active";
-
-        // Highlight active button with orange background
-        if (tabName === 'friends') {
-            document.getElementById("btnFriends").classList.add("bg-orange-500");
-            document.getElementById("btnSentRequests").classList.remove("bg-orange-500");
-            document.getElementById("btnReceivedRequests").classList.remove("bg-orange-500");
-        } else if (tabName === 'sent_requests') {
-            document.getElementById("btnFriends").classList.remove("bg-orange-500");
-            document.getElementById("btnSentRequests").classList.add("bg-orange-500");
-            document.getElementById("btnReceivedRequests").classList.remove("bg-orange-500");
-        } else if (tabName === 'received_requests') {
-            document.getElementById("btnFriends").classList.remove("bg-orange-500");
-            document.getElementById("btnSentRequests").classList.remove("bg-orange-500");
-            document.getElementById("btnReceivedRequests").classList.add("bg-orange-500");
-        }
-    }
-</script>

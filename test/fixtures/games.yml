@@ -1,0 +1,12 @@
+tes3:
+  name: TES III
+  description: Morrowind
+  author: :todd
+tes4:
+  name: TES IV
+  description: Oblivion
+  author: :todd
+tes5:
+  name: TES V
+  description: Skyrim
+  author: :todd

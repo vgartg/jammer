@@ -11,6 +11,10 @@
   </head>
 
   <body class="h-full">
+  <%= render partial: 'layouts/header' %>
+  <main role="main" class="min-h-full">
     <%= yield %>
+  </main>
+  <%= render partial: 'layouts/footer' %>
   </body>
 </html>
