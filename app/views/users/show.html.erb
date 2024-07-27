@@ -1,111 +1,165 @@
-<div class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-    <div class="flex items-center space-x-4 mb-6">
-      <div class="flex-shrink-0">
-        <% if @user && @user.avatar.attached? %>
-          <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
-        <% else %>
-          <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
-        <% end %>
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-gray-800">Имя: <%= @user.name %></h2>
-        <p class="text-gray-600">Email: <%= @user.email %></p>
-      </div>
-    </div>
-    <% if @user.id != session[:current_user] %>
-      <% if @friendship.nil? %>
-        <%= button_to "Добавить в друзья", user_friendships_path(@user), method: :post,
-                      class: "mt-4 flex w-50 justify-center rounded-md border
-                        border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                        shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-      <% elsif @friendship.status == 'pending' && @friendship.user == @current_user %>
-        <%= button_to "Отменить заявку в друзья", cancel_user_friendship_path(@user, @friendship),
-                      method: :delete, class: "mt-4 flex w-50 justify-center rounded-md border
-                        border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                        shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-      <% elsif @friendship.status == 'accepted' %>
-        <%= button_to "Удалить из друзей", user_friendship_path(@user, @friendship), method: :delete,
-                      class: "mt-4 flex w-50 justify-center rounded-md border
-                        border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                        shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-      <% elsif @friendship.status == 'pending' && @friendship.user != @current_user %>
-        <%= button_to "Принять запрос", user_friendship_path(@current_user, @friendship), method: :put,
-                      class: "mt-4 flex w-50 justify-center rounded-md border
-                      border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                      shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-        <%= button_to "Отклонить запрос", cancel_user_friendship_path(@current_user, @friendship), method: :delete,
-                      class: "mt-4 flex w-50 justify-center rounded-md border
-                      border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                      shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-      <% end %>
-      <% else %>
-      <%= button_to "Редактировать профиль", edit_user_path, method: :get,
-                    class: "mt-4 flex w-50 justify-center rounded-md border
-                        border-tranparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                        shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-
-      <%= button_to "Удалить профиль", user_destroy_path, method: :delete,
-                    class: "mt-4 flex w-50 justify-center rounded-md border
-                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                              shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-    <% end %>
-    <div>
-      <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-300">Личные данные</h3>
-      <div class="space-y-4">
-        <div class="flex justify-between items-center py-2 border-b border-gray-200">
-          <span class="text-gray-600">Статус:</span>
-          <% if @user.status.blank? %>
-            <span class="text-gray-900" id="old-real_name">Информации нет</span>
-          <% else %>
-            <span class="text-gray-900" id="old-real_name"><%= @user.status %></span>
-          <% end %>
+<div>
+  <div>
+    <img class="h-32 w-full object-cover lg:h-48"
+         src="https://images.unsplash.com/photo-1444628838545-ac4016a5418a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="">
+  </div>
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <div class="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
+      <span class="relative">
+            <% if @user.avatar.attached? %>
+              <%= image_tag url_for(@user.avatar), alt: "Profile Picture",
+                            class: "h-24 w-24 rounded-full ring-4
+      ring-white sm:h-32 sm:w-32" %>
+            <% else %>
+              <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                   class="h-24 w-24 rounded-full ring-4
+      ring-white sm:h-32 sm:w-32">
+            <% end %>
+        <% if @user.online? %>
+              <span class="absolute bottom-1 right-1 block h-6 w-6 rounded-full bg-green-400 ring-2 ring-white"></span>
+            <% elsif @user.last_active_at %>
+              <span class="absolute bottom-1 right-1 block h-6 w-6 rounded-full bg-gray-400 ring-2 ring-white"></span>
+            <% end %>
+          </span>
+      <div class="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
+        <div class="mt-6 min-w-0 flex-1 sm:hidden md:block">
+          <h1 class="truncate text-2xl font-bold text-gray-900"><%= @user.name %></h1>
+          <p class="truncate mt-1">
+            <% unless @user.status.blank? %>
+              <span class="text-gray-900"><%= @user.status %></span>
+            <% end %>
+          </p>
         </div>
-        <div class="flex justify-between items-center py-2 border-b border-gray-200">
-          <span class="text-gray-600">Настоящее имя:</span>
-          <% if @user.real_name.blank? %>
-            <span class="text-gray-900" id="old-real_name">Информации нет</span>
-          <% else %>
-            <span class="text-gray-900" id="old-real_name"><%= @user.real_name %></span>
-          <% end %>
-        </div>
-        <div class="flex justify-between items-center py-2 border-b border-gray-200">
-          <span class="text-gray-600">День рождения:</span>
-          <% if @user.birthday.blank? %>
-            <span class="text-gray-900" id="old-birthday">Информации нет</span>
-          <% else %>
-            <span class="text-gray-900" id="old-birthday"><%= @user.birthday %></span>
-          <% end %>
-        </div>
-        <div class="flex justify-between items-center py-2 border-b border-gray-200">
-          <span class="text-gray-600">Местоположение:</span>
-          <% if @user.location.blank? %>
-            <span class="text-gray-900" id="old-location">Информации нет</span>
-          <% else %>
-            <span class="text-gray-900" id="old-location"><%= @user.location %></span>
-          <% end %>
-        </div>
-        <div class="flex justify-between items-center py-2">
-          <span class="text-gray-600">Номер телефона:</span>
-          <% if @user.phone_number.blank? %>
-            <span class="text-gray-900" id="old-phone_number">Информации нет</span>
-          <% else %>
-            <span class="text-gray-900" id="old-phone_number"><%= @user.phone_number %></span>
-          <% end %>
-        </div>
-        <div class="flex justify-between items-center py-2">
-          <span class="text-gray-600">Загруженные игры:</span>
-          <% if @user.games.any? %>
-            <% @user.games.each do |game| %>
-              <% g_link = '/games/' + game.id.to_s %>
-              <a href="<%= g_link  %>">
-                <span class="text-gray-900"><%=game.name %></span>
-              </a>
+        <div class="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0">
+          <% if @user.id != session[:current_user] %>
+            <% if @friendship.nil? %>
+              <%= button_to "Add friend", user_friendships_path(@user), method: :post,
+                            class: "bg-green-500 text-white px-3 py-1 rounded-full
+                        hover:bg-green-600 transition-colors duration-200" %>
+            <% elsif @friendship.status == 'pending' && @friendship.user == @current_user %>
+              <%= button_to "Cancel application", cancel_user_friendship_path(@user, @friendship),
+                            method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full
+                        hover:bg-red-600 transition-colors duration-200" %>
+            <% elsif @friendship.status == 'accepted' %>
+              <%= button_to "Remove friend", user_friendship_path(@user, @friendship), method: :delete,
+                            class: "bg-red-500 text-white px-3 py-1 rounded-full
+                        hover:bg-red-600 transition-colors duration-200" %>
+            <% elsif @friendship.status == 'pending' && @friendship.user != @current_user %>
+              <%= button_to "Accept application", user_friendship_path(@current_user, @friendship), method: :put,
+                            class: "bg-green-500 text-white px-3 py-1 rounded-full
+                        hover:bg-green-600 transition-colors duration-200" %>
+              <%= button_to "Cancel application", cancel_user_friendship_path(@current_user, @friendship), method: :delete,
+                            class: "bg-red-500 text-white px-3 py-1 rounded-full
+                        hover:bg-red-600 transition-colors duration-200" %>
             <% end %>
           <% else %>
-            <span class="text-gray-900">Информации нет</span>
+            <%= button_to "Edit profile", edit_user_path, method: :get,
+                          class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
+                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+
+            <%= button_to "Delete profile", user_destroy_path, method: :delete,
+                          class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
+                          text-red-900 shadow-sm ring-1 ring-inset ring-red-300 hover:bg-gray-50" %>
           <% end %>
         </div>
+      </div>
+    </div>
+    <p class="mt-6">
+      <% if @user.online? %>
+        <span class="text-sm text-green-500">Online</span>
+      <% elsif @user.last_active_at %>
+              <span class="text-sm text-gray-600">
+                Last active: <%= @user.last_active_at.strftime("%H:%M") %>
+              </span>
+      <% else %>
+        <span class="text-sm text-gray-600">Offline</span>
+      <% end %>
+    </p>
+    <div class="mt-6">
+      <div class="mt-6 border-t border-gray-100">
+        <ul class="divide-y divide-gray-100">
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Full name</dt>
+            <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <% if @user.real_name.blank? %>
+                <span>Информации нет</span>
+              <% else %>
+                <span><%= @user.real_name %></span>
+              <% end %>
+            </dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">E-mail</dt>
+            <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @user.email %></dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Birthday</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <% if @user.birthday.blank? %>
+                <span>Информации нет</span>
+              <% else %>
+                <span><%= @user.birthday %></span>
+              <% end %>
+            </dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Location</dt>
+            <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <% if @user.location.blank? %>
+                <span>Информации нет</span>
+              <% else %>
+                <span><%= @user.location %></span>
+              <% end %>
+            </dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Phone number</dt>
+            <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <% if @user.phone_number.blank? %>
+                <span>Информации нет</span>
+              <% else %>
+                <span><%= @user.phone_number %></span>
+              <% end %>
+            </dd>
+          </div>
+
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Games</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+
+              <% if @user.games.any? %>
+                <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3
+                sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                  <% @user.games.each do |game| %>
+                    <li class="relative">
+                      <a href="/games/<%= game.id %>">
+                        <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
+                        focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
+                         focus-within:ring-offset-gray-100">
+                          <% if game && game.cover.attached? %>
+                            <%= image_tag url_for(game.cover), alt: game.name,
+                                          class: "pointer-events-none object-cover group-hover:opacity-75" %>
+                          <% else %>
+                            <img src="https://via.placeholder.com/300" alt="<%= game.name %>"
+                                 class="pointer-events-none object-cover group-hover:opacity-75">
+                          <% end %>
+                        </div>
+                        <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
+                          <%= game.name %>
+                        </p>
+                        <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
+                          <%= game.description %>
+                        </p>
+                      </a>
+                    </li>
+                  <% end %>
+                </ul>
+              <% else %>
+                <span class="text-gray-900">Информации нет</span>
+              <% end %>
+            </dd>
+          </div>
+        </ul>
       </div>
     </div>
   </div>

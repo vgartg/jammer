@@ -1,23 +1,39 @@
 <div class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="max-w-lg w-full bg-white rounded-lg shadow-lg overflow-hidden">
-    <div class="px-6 py-4">
-      <h2 class="text-2xl font-semibold text-gray-800">Найдите своих друзей</h2>
+  <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
       <% @users.each do |user| %>
         <% unless user.id == session[:current_user] %>
-          <div class="mt-4">
-            <a href="<%= '/users/' + user.id.to_s %>">
-              <div class="flex items-center space-x-4">
-                <% if user.avatar.attached? %>
-                  <%= image_tag url_for(user.avatar), alt: "Profile Picture", class: "rounded-full border-2 border-gray-300", width: 150, height: 150 %>
-                <% else %>
-                  <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-24 w-24 rounded-full border-2 border-gray-300">
-                <% end %>
-                <span class="text-gray-900"><%= user.name %></span>
-              </div>
-            </a>
-          </div>
+        <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
+      duration-200 flex items-center space-x-4">
+          <a href='<%= '/users/' + user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
+          <span class="relative">
+            <% if user && user.avatar.attached? %>
+              <%= image_tag url_for(user.avatar), alt: "Profile Picture",
+                            class: "h-16 w-16 rounded-full" %>
+            <% else %>
+              <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                   class="h-16 w-16 rounded-full">
+            <% end %>
+            <% if user.online? %>
+              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
+            <% elsif user.last_active_at %>
+              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
+            <% end %>
+          </span>
+            <div>
+              <h2 class="text-lg font-semibold text-gray-800"><%= user.name %></h2>
+              <% if user.online? %>
+                <span class="text-sm text-green-500">Online</span>
+              <% elsif user.last_active_at %>
+              <span class="text-sm text-gray-600">
+                Last active: <%= user.last_active_at.strftime("%H:%M") %>
+              </span>
+              <% else %>
+                <span class="text-sm text-gray-600">Offline</span>
+              <% end %>
+            </div>
+          </a>
+        </div>
         <% end %>
       <% end %>
-    </div>
   </div>
 </div>
