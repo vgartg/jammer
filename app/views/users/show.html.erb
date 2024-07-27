@@ -30,37 +30,14 @@
             <% end %>
           </p>
         </div>
-        <div class="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0">
-          <% if @user.id != session[:current_user] %>
-            <% if @friendship.nil? %>
-              <%= button_to "Add friend", user_friendships_path(@user), method: :post,
-                            class: "bg-green-500 text-white px-3 py-1 rounded-full
-                        hover:bg-green-600 transition-colors duration-200" %>
-            <% elsif @friendship.status == 'pending' && @friendship.user == @current_user %>
-              <%= button_to "Cancel application", cancel_user_friendship_path(@user, @friendship),
-                            method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full
-                        hover:bg-red-600 transition-colors duration-200" %>
-            <% elsif @friendship.status == 'accepted' %>
-              <%= button_to "Remove friend", user_friendship_path(@user, @friendship), method: :delete,
-                            class: "bg-red-500 text-white px-3 py-1 rounded-full
-                        hover:bg-red-600 transition-colors duration-200" %>
-            <% elsif @friendship.status == 'pending' && @friendship.user != @current_user %>
-              <%= button_to "Accept application", user_friendship_path(@current_user, @friendship), method: :put,
-                            class: "bg-green-500 text-white px-3 py-1 rounded-full
-                        hover:bg-green-600 transition-colors duration-200" %>
-              <%= button_to "Cancel application", cancel_user_friendship_path(@current_user, @friendship), method: :delete,
-                            class: "bg-red-500 text-white px-3 py-1 rounded-full
-                        hover:bg-red-600 transition-colors duration-200" %>
-            <% end %>
-          <% else %>
-            <%= button_to "Edit profile", edit_user_path, method: :get,
+        <div class="flex justify-between items-center py-2">
+            <%= button_to "Редактировать профиль", edit_user_path, method: :get,
                           class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
                           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
 
-            <%= button_to "Delete profile", user_destroy_path, method: :delete,
+            <%= button_to "Удалить профиль", user_destroy_path, method: :delete,
                           class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
                           text-red-900 shadow-sm ring-1 ring-inset ring-red-300 hover:bg-gray-50" %>
-          <% end %>
         </div>
       </div>
     </div>
