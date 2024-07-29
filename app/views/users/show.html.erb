@@ -18,7 +18,12 @@
         <% if @user.online? %>
               <span class="absolute bottom-1 right-1 block h-6 w-6 rounded-full bg-green-400 ring-2 ring-white"></span>
             <% elsif @user.last_active_at %>
-              <span class="absolute bottom-1 right-1 block h-6 w-6 rounded-full bg-gray-400 ring-2 ring-white"></span>
+              <span
+                class="absolute bottom-1 right-1 block h-6 w-6 rounded-full bg-gray-400 ring-2 ring-white">
+                <!-- Возможно, будем использовать title позже.
+                     Сейчас он отображает время, не ориентируясь на часовой пояс -->
+                <!-- title="Последний раз в сети: < %= @user.last_active_at.strftime("%d.%m.%Y, %H:%M") % >" -->
+              </span>
             <% end %>
           </span>
       <div class="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
