@@ -20,15 +20,16 @@
           </span>
           <div>
             <h2 class="text-lg font-semibold text-gray-800"><%= find_friend(friendship).name %></h2>
-            <% if find_friend(friendship).online? %>
-              <span class="text-sm text-green-500">Online</span>
-            <% elsif find_friend(friendship).last_active_at %>
-              <span class="text-sm text-gray-600">
-                Last active: <%= find_friend(friendship).last_active_at.strftime("%H:%M") %>
-              </span>
-            <% else %>
-              <span class="text-sm text-gray-600">Offline</span>
-            <% end %>
+            <p class="mt-6"
+               data-controller="online">
+              <% if find_friend(friendship).last_active_at.present? %>
+      <span id="user-status" class="text-sm text-gray-600"
+            data-online-target="lastActiveAt"
+            data-last-active-at="<%= find_friend(friendship).last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+            data-action="load->online#updateStatus"></span>
+              <% else %>
+                <span class="text-sm text-gray-600">Offline</span>
+              <% end %>
           </div>
         </a>
         <div>

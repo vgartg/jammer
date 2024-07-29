@@ -39,15 +39,17 @@
           </span>
                   <div>
                     <h2 class="text-lg font-semibold text-gray-800"><%= find_friend(friendship).name %></h2>
-                    <% if find_friend(friendship).online? %>
-                      <span class="text-sm text-green-500">Online</span>
-                    <% elsif find_friend(friendship).last_active_at %>
-                      <span class="text-sm text-gray-600">
-                        Last active: <%= find_friend(friendship).last_active_at.strftime("%H:%M") %>
-                      </span>
-                    <% else %>
-                      <span class="text-sm text-gray-600">Offline</span>
-                    <% end %>
+                    <p class="mt-6"
+                       data-controller="online">
+                      <% if find_friend(friendship).last_active_at.present? %>
+      <span id="user-status" class="text-sm text-gray-600"
+            data-online-target="lastActiveAt"
+            data-last-active-at="<%= find_friend(friendship).last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+            data-action="load->online#updateStatus"></span>
+                      <% else %>
+                        <span class="text-sm text-gray-600">Offline</span>
+                      <% end %>
+                    </p>
                   </div>
                 </a>
                 <div>
@@ -86,15 +88,17 @@
           </span>
                   <div>
                     <h3 class="text-lg font-semibold text-gray-800"><%= request.friend.name %></h3>
-                    <% if request.friend.online? %>
-                      <span class="text-sm text-green-500">Online</span>
-                    <% elsif request.friend.last_active_at %>
-              <span class="text-sm text-gray-600">
-                Last active: <%= request.friend.last_active_at.strftime("%H:%M") %>
-              </span>
-                    <% else %>
-                      <span class="text-sm text-gray-600">Offline</span>
-                    <% end %>
+                    <p class="mt-6"
+                       data-controller="online">
+                      <% if request.friend.last_active_at.present? %>
+      <span id="user-status" class="text-sm text-gray-600"
+            data-online-target="lastActiveAt"
+            data-last-active-at="<%= request.friend.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+            data-action="load->online#updateStatus"></span>
+                      <% else %>
+                        <span class="text-sm text-gray-600">Offline</span>
+                      <% end %>
+                    </p>
                   </div>
                 </a>
                 <%= button_to "Cancel", cancel_user_friendship_path(@current_user, request), method: :delete,
@@ -130,15 +134,17 @@
           </span>
                   <div>
                     <h3 class="text-lg font-semibold text-gray-800"><%= request.user.name %></h3>
-                    <% if request.user.online? %>
-                      <span class="text-sm text-green-500">Online</span>
-                    <% elsif request.user.last_active_at %>
-              <span class="text-sm text-gray-600">
-                Last active: <%= request.user.last_active_at.strftime("%H:%M") %>
-              </span>
-                    <% else %>
-                      <span class="text-sm text-gray-600">Offline</span>
-                    <% end %>
+                    <p class="mt-6"
+                       data-controller="online">
+                      <% if request.user.last_active_at.present? %>
+      <span id="user-status" class="text-sm text-gray-600"
+            data-online-target="lastActiveAt"
+            data-last-active-at="<%= request.user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+            data-action="load->online#updateStatus"></span>
+                      <% else %>
+                        <span class="text-sm text-gray-600">Offline</span>
+                      <% end %>
+                    </p>
                   </div>
                 </a>
                 <div class="flex flex-col gap-0.5">

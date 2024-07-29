@@ -30,7 +30,7 @@
             <% end %>
           </p>
         </div>
-        <div class="flex justify-between items-center py-2">
+        <div class="flex justify-between items-center py-2 mt-6 gap-5">
             <%= button_to "Редактировать профиль", edit_user_path, method: :get,
                           class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
                           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
@@ -41,13 +41,13 @@
         </div>
       </div>
     </div>
-    <p class="mt-6">
-      <% if @user.online? %>
-        <span class="text-sm text-green-500">Online</span>
-      <% elsif @user.last_active_at %>
-              <span class="text-sm text-gray-600">
-                Last active: <%= @user.last_active_at.strftime("%H:%M") %>
-              </span>
+    <p class="mt-6"
+       data-controller="online">
+      <% if @user.last_active_at.present? %>
+      <span id="user-status" class="text-sm text-gray-600"
+            data-online-target="lastActiveAt"
+            data-last-active-at="<%= @user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+            data-action="load->online#updateStatus"></span>
       <% else %>
         <span class="text-sm text-gray-600">Offline</span>
       <% end %>

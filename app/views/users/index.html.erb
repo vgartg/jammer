@@ -21,15 +21,17 @@
           </span>
             <div>
               <h2 class="text-lg font-semibold text-gray-800"><%= user.name %></h2>
-              <% if user.online? %>
-                <span class="text-sm text-green-500">Online</span>
-              <% elsif user.last_active_at %>
-              <span class="text-sm text-gray-600">
-                Last active: <%= user.last_active_at.strftime("%H:%M") %>
-              </span>
-              <% else %>
+              <p class="mt-6"
+                 data-controller="online">
+                <% if user.last_active_at.present? %>
+      <span id="user-status" class="text-sm text-gray-600"
+            data-online-target="lastActiveAt"
+            data-last-active-at="<%= user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+            data-action="load->online#updateStatus"></span>
+                  <% else %>
                 <span class="text-sm text-gray-600">Offline</span>
-              <% end %>
+                <% end %>
+              </p>
             </div>
           </a>
         </div>
