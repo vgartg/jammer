@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   end
 
   def online?
-    last_active_at.present? && last_active_at > 5.minutes.ago
+    last_active_at.present? && last_active_at > 1.minutes.ago
   end
 
   def remember_me
