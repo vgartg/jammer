@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user, only: [:edit_user, :update_user, :destroy]
+  before_action :require_subdomain, only: :frontpage
   def new
     if current_user
       redirect_to user_path(current_user.id)
@@ -56,6 +57,10 @@ class UsersController < ApplicationController
     else
       head :unauthorized
     end
+  end
+
+  def frontpage
+
   end
 
   private

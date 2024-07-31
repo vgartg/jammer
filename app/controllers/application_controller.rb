@@ -1,8 +1,10 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user
+  helper_method :require_subdomain
   before_action :update_last_active_at
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from ActionController::RoutingError, with: :render_404
+
 
   protected
 
@@ -43,4 +45,11 @@ class ApplicationController < ActionController::Base
     end
     render template: 'errors/not_found', status: 404
   end
+
+  def require_subdomain
+    subdomain = Subdomain.extract_subdomain(request)
+    @subdomain_owner = User.find_by_link_username(subdomain)
+    render_404 unless @subdomain_owner
+  end
+
 end
