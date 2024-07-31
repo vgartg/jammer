@@ -60,7 +60,8 @@ class UsersController < ApplicationController
   end
 
   def frontpage
-
+    subdomain = Subdomain.extract_subdomain(request)
+    @user = User.find_by_link_username(subdomain)
   end
 
   private

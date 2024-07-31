@@ -1,0 +1,151 @@
+<div>
+  <div>
+    <img class="h-32 w-full object-cover lg:h-48"
+         src="https://images.unsplash.com/photo-1444628838545-ac4016a5418a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="">
+  </div>
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <div class="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
+      <span class="relative">
+            <% if @user.avatar.attached? %>
+              <%= image_tag url_for(@user.avatar), alt: "Profile Picture",
+                            class: "h-24 w-24 rounded-full ring-4
+      ring-white sm:h-32 sm:w-32" %>
+            <% else %>
+              <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                   class="h-24 w-24 rounded-full ring-4
+      ring-white sm:h-32 sm:w-32">
+            <% end %>
+        <% if @user.online? %>
+              <span class="absolute bottom-1 right-1 block h-6 w-6
+              rounded-full bg-green-400 ring-2 ring-white"></span>
+            <% elsif @user.last_active_at %>
+              <span
+                class="absolute bottom-1 right-1 block h-6 w-6 rounded-full bg-gray-400 ring-2 ring-white">
+                <!-- Возможно, будем использовать title позже.
+                     Сейчас он отображает время, не ориентируясь на часовой пояс -->
+                <!-- title="Последний раз в сети: < %= @user.last_active_at.strftime("%d.%m.%Y, %H:%M") % >" -->
+              </span>
+            <% end %>
+          </span>
+      <div class="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
+        <div class="mt-6 min-w-0 flex-1 sm:hidden md:block">
+          <h1 class="truncate text-2xl font-bold text-gray-900"><%= @user.name %></h1>
+          <p class="truncate mt-1">
+            <% unless @user.status.blank? %>
+              <span class="text-gray-900"><%= @user.status %></span>
+            <% end %>
+          </p>
+        </div>
+        <div class="flex justify-between items-center py-2 mt-6 gap-5">
+          <%= button_to "Редактировать профиль", edit_user_path, method: :get,
+                        class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
+                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+
+          <%= button_to "Удалить профиль", user_destroy_path, method: :delete,
+                        class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
+                          text-red-900 shadow-sm ring-1 ring-inset ring-red-300 hover:bg-gray-50" %>
+        </div>
+      </div>
+    </div>
+    <p class="mt-6"
+       data-controller="online">
+      <% if @user.last_active_at.present? %>
+      <span id="user-status" class="text-sm text-gray-600"
+            data-online-target="lastActiveAt"
+            data-last-active-at="<%= @user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+            data-action="load->online#updateStatus"></span>
+      <% else %>
+        <span class="text-sm text-gray-600">Offline</span>
+      <% end %>
+    </p>
+    <div class="mt-6">
+      <div class="mt-6 border-t border-gray-100">
+        <ul class="divide-y divide-gray-100">
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Full name</dt>
+            <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <% if @user.real_name.blank? %>
+                <span>Информации нет</span>
+              <% else %>
+                <span><%= @user.real_name %></span>
+              <% end %>
+            </dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">E-mail</dt>
+            <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <%= @user.email %>
+            </dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Birthday</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <% if @user.birthday.blank? %>
+                <span>Информации нет</span>
+              <% else %>
+                <span><%= @user.birthday %></span>
+              <% end %>
+            </dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Location</dt>
+            <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <% if @user.location.blank? %>
+                <span>Информации нет</span>
+              <% else %>
+                <span><%= @user.location %></span>
+              <% end %>
+            </dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Phone number</dt>
+            <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <% if @user.phone_number.blank? %>
+                <span>Информации нет</span>
+              <% else %>
+                <span><%= @user.phone_number %></span>
+              <% end %>
+            </dd>
+          </div>
+
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Games</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+
+              <% if @user.games.any? %>
+                <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3
+                sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                  <% @user.games.each do |game| %>
+                    <li class="relative">
+                      <a href="/games/<%= game.id %>">
+                        <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
+                        focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
+                         focus-within:ring-offset-gray-100">
+                          <% if game && game.cover.attached? %>
+                            <%= image_tag url_for(game.cover), alt: game.name,
+                                          class: "pointer-events-none object-cover group-hover:opacity-75" %>
+                          <% else %>
+                            <img src="https://via.placeholder.com/300" alt="<%= game.name %>"
+                                 class="pointer-events-none object-cover group-hover:opacity-75">
+                          <% end %>
+                        </div>
+                        <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
+                          <%= game.name %>
+                        </p>
+                        <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
+                          <%= game.description %>
+                        </p>
+                      </a>
+                    </li>
+                  <% end %>
+                </ul>
+              <% else %>
+                <span class="text-gray-900">Информации нет</span>
+              <% end %>
+            </dd>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

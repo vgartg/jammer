@@ -25,3 +25,6 @@ application.register("user", UserController)
 // @ts-ignore
 import OnlineController from "./online_controller"
 application.register("online", OnlineController)
+// @ts-ignore
+import SettingsController from "./settings_controller"
+application.register("settings", SettingsController)

@@ -48,8 +48,16 @@ class ApplicationController < ActionController::Base
 
   def require_subdomain
     subdomain = Subdomain.extract_subdomain(request)
-    @subdomain_owner = User.find_by_link_username(subdomain)
-    render_404 unless @subdomain_owner
+    if subdomain == "localhost" # Пока такой костыль, на продакшене нужно поменять
+      render 'home/index'
+    else
+      @subdomain_owner = User.find_by_link_username(subdomain)
+      render_404 unless @subdomain_owner
+    end
   end
 
+  # Сброс поддомена
+  def redirect_without_subdomain
+    redirect_to(request.path, subdomain: nil)
+  end
 end

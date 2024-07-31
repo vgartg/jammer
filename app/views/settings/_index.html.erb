@@ -1,4 +1,4 @@
-<div class="bg-gray-900">
+<div class="bg-gray-900" data-controller="settings">
 <h1 class="sr-only">Account Settings</h1>
 
   <header class="border-b border-white/5">
@@ -90,16 +90,29 @@
           </div>
 
           <div class="col-span-full">
-            <label for="link_username" class="block text-sm font-medium leading-6 text-white">Персональная ссылка</label>
+            <label for="link_username" class="block text-sm font-medium leading-6 text-white">
+              Персональная ссылка
+            </label>
             <div class="mt-2">
               <div class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2
-              focus-within:ring-inset focus-within:ring-indigo-500">
-                <span class="flex select-none items-center pl-3 text-gray-400 sm:text-sm">jammer.ru/</span>
+      focus-within:ring-inset focus-within:ring-indigo-500">
                 <%= f.text_field :link_username, id: 'link_username', autocomplete: 'username',
-                                 class: 'flex-1 border-0 bg-transparent py-1.5 pl-1 text-white
-                                 focus:ring-0 sm:text-sm sm:leading-6', placeholder: 'username' %>
+                                 class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
+                      shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                      focus:ring-indigo-500 sm:text-sm sm:leading-6', placeholder: 'Username',
+                                 data: { settings_target: 'username' },
+                                 pattern: '[a-zA-Z0-9-]+' %>
               </div>
             </div>
+            <% if @user.link_username.present? %>
+              <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
+                https://<%= @user.link_username %>.jammer.ru/
+              </p>
+            <% else %>
+              <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
+                https://username.jammer.ru/
+              </p>
+            <% end %>
           </div>
 
           <div class="col-span-full">
@@ -233,7 +246,9 @@
       <form class="md:col-span-2">
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
           <div class="col-span-full">
-            <label for="current-password" class="block text-sm font-medium leading-6 text-white">Current password</label>
+            <label for="current-password" class="block text-sm font-medium leading-6 text-white">
+              Current password
+            </label>
             <div class="mt-2">
               <input id="current-password" name="current_password" type="password" autocomplete="current-password"
                      class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1
@@ -253,7 +268,9 @@
           </div>
 
           <div class="col-span-full">
-            <label for="confirm-password" class="block text-sm font-medium leading-6 text-white">Confirm password</label>
+            <label for="confirm-password" class="block text-sm font-medium leading-6 text-white">
+              Confirm password
+            </label>
             <div class="mt-2">
               <input id="confirm-password" name="confirm_password" type="password" autocomplete="new-password"
                      class="block w-full rounded-md border-0 bg-white/5 py-1.5
@@ -275,7 +292,8 @@
       <div>
         <h2 class="text-base font-semibold leading-7 text-white">Log out other sessions</h2>
         <p class="mt-1 text-sm leading-6 text-gray-400">
-          Please enter your password to confirm you would like to log out of your other sessions across all of your devices.
+          Please enter your password to confirm you would like to log out of your other
+          sessions across all of your devices.
         </p>
       </div>
 
