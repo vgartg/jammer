@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
   has_many :inverse_friendships, class_name: "Friendship", foreign_key: "friend_id", dependent: :destroy
   has_many :inverse_friends, through: :inverse_friendships, source: :user, dependent: :destroy
 
+  attr_accessor :current_password
+
   def password_length
     if password.nil? || password.length < 5
       errors.add(:password, type: :invalid, message: 'must be at least 5 characters long')
