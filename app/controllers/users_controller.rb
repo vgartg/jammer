@@ -75,7 +75,7 @@ class UsersController < ApplicationController
       end
     end
 
-    if @user.update(user_params.except(:current_password))
+    if @user.update(user_params)
       flash[:success] = "Successfully saved!"
       redirect_to dashboard_path
     else
