@@ -36,18 +36,12 @@
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
           <div class="col-span-full flex items-center gap-x-8">
             <% if @user && @user.avatar.attached? %>
-              <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "avatar-image
-               rounded-full h-24 w-24 border-2 border-gray-300 object-cover",
-                            data: { target: 'user.avatarImage' } %>
+              <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24 w-24 border-2 border-gray-300 object-cover", data: { target: 'user.avatarImage' } %>
             <% else %>
-              <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                   class="avatar-image
-               rounded-full h-24 w-24 border-2 border-gray-300 object-cover"
-                   data-target="user.avatarImage">
+              <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-image rounded-full h-24 w-24 border-2 border-gray-300 object-cover" data-target="user.avatarImage">
             <% end %>
             <div>
-              <%= f.label :avatar, "Change avatar", class: "rounded-md bg-white/10 px-3 py-2 text-sm
-             font-semibold text-white shadow-sm hover:bg-white/20" %>
+              <%= f.label :avatar, "Change avatar", class: "rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20" %>
               <%= f.file_field :avatar, class: "hidden" %>
               <p class="mt-2 text-xs leading-5 text-gray-400">JPG, GIF or PNG. 1MB max.</p>
             </div>
@@ -332,10 +326,11 @@
         </p>
       </div>
 
-      <form class="flex items-start md:col-span-2">
-        <button type="submit" class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold
-         text-white shadow-sm hover:bg-red-400">Yes, delete my account</button>
-      </form>
+      <div class="flex items-start md:col-span-2">
+        <%= button_to "Yes, delete my account", user_destroy_path, method: :delete,
+                      class: "rounded-md bg-red-500 px-3 py-2 text-sm font-semibold
+         text-white shadow-sm hover:bg-red-400" %>
+      </div>
     </div>
   </div>
 </div>
