@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
   has_many :inverse_friendships, class_name: "Friendship", foreign_key: "friend_id", dependent: :destroy
   has_many :inverse_friends, through: :inverse_friendships, source: :user, dependent: :destroy
 
+  has_many :sessions, dependent: :destroy
+
   attr_accessor :current_password
 
   def password_length
@@ -69,5 +71,10 @@ class User < ActiveRecord::Base
   def remember_token_authenticated?(remember_token)
     return false unless remember_token_digest.present?
     BCrypt::Password.new(remember_token_digest).is_password?(remember_token)
+  end
+
+  def invalidate_other_sessions(current_session_id)
+    sessions.where.not(session_id: current_session_id).destroy_all
+    update(last_active_at: Time.current)
   end
 end

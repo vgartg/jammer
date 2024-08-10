@@ -39,6 +39,11 @@ Rails.application.routes.draw do
     end
   end
 
+  # Sessions
+  resources :sessions do
+    post 'logout_other_sessions', on: :collection
+  end
+
   # Games
   get '/games/new', to: 'games#new'
   post '/games', to: 'games#create'
@@ -49,4 +54,3 @@ Rails.application.routes.draw do
   get '/games_showcase', to: 'games#showcase'
 
 end
-

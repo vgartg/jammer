@@ -12,7 +12,7 @@ class UsersController < ApplicationController
     @current_user = User.find_by_id(session[:current_user])
     if @current_user
       @friendship = @current_user.friendship_with(@user)
-      end
+    end
   end
 
   def index
@@ -80,15 +80,6 @@ class UsersController < ApplicationController
       redirect_to dashboard_path
     else
       render :edit_user
-    end
-  end
-
-  def update_activity
-    if current_user
-      current_user.update(last_active_at: Time.current)
-      head :ok
-    else
-      head :unauthorized
     end
   end
 

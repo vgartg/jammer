@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_30_105718) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_10_193344) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -68,6 +68,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_105718) do
     t.index ["tag_id"], name: "index_games_tags_on_tag_id"
   end
 
+  create_table "sessions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "session_id"
+    t.string "ip_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -99,4 +108,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_105718) do
   add_foreign_key "games", "users", column: "author_id"
   add_foreign_key "games_tags", "games"
   add_foreign_key "games_tags", "tags"
+  add_foreign_key "sessions", "users"
 end

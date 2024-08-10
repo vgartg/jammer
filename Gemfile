@@ -49,6 +49,7 @@ gem "image_processing", "~> 1.2"
 
 gem 'rexml', '>= 3.3.3'
 
+gem 'browser'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
