@@ -9,6 +9,4 @@ import "./controllers"
 // @ts-ignore
 import "./update_activity"
 // @ts-ignore
-import "./settings"
-// @ts-ignore
 import "./cropper"

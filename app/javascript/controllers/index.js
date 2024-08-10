@@ -28,3 +28,6 @@ application.register("online", OnlineController)
 // @ts-ignore
 import SettingsController from "./settings_controller"
 application.register("settings", SettingsController)
+// @ts-ignore
+import CropperController from "./cropper_controller"
+application.register("cropper", CropperController)

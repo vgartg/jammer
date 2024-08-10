@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
 
   def require_subdomain
     subdomain = Subdomain.extract_subdomain(request)
-    if subdomain == "localhost" # Пока такой костыль, на продакшене нужно поменять
+    if subdomain == "localhost" || subdomain == "127" # Пока такой костыль, на продакшене нужно поменять
       render 'home/index'
     else
       @subdomain_owner = User.find_by_link_username(subdomain)

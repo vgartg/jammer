@@ -6,6 +6,38 @@ export default class extends Controller {
     connect() {
         this.updateLink();
         this.usernameTarget.addEventListener('input', () => this.updateLink());
+
+        this.formatPhoneNumber();
+    }
+
+    close_notice() {
+        this.element.remove();
+    }
+
+    formatPhoneNumber() {
+        let phoneInput = this.element.querySelector('#phone_number');
+
+        if (phoneInput) {
+            phoneInput.addEventListener('input', (e) => {
+                let x = e.target.value.replace(/\D/g, '');
+                let formattedValue = '+7 (';
+
+                if (x.length > 1) {
+                    formattedValue += x.substring(1, 4);
+                }
+                if (x.length > 4) {
+                    formattedValue += ') ' + x.substring(4, 7);
+                }
+                if (x.length > 7) {
+                    formattedValue += '-' + x.substring(7, 9);
+                }
+                if (x.length > 9) {
+                    formattedValue += '-' + x.substring(9, 11);
+                }
+
+                e.target.value = formattedValue;
+            });
+        }
     }
 
     updateLink() {
