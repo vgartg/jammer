@@ -83,6 +83,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def update_activity
+    if current_user
+      current_user.update(last_active_at: Time.current)
+      head :ok
+    else
+      head :unauthorized
+    end
+  end
+
   def frontpage
     subdomain = Subdomain.extract_subdomain(request)
     @user = User.find_by_link_username(subdomain)
