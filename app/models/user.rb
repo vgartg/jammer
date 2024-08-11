@@ -1,8 +1,14 @@
 class User < ActiveRecord::Base
   attr_accessor :remember_token
 
+  VISIBILITY_ALL = 'All'
+  VISIBILITY_FRIENDS = 'Friends'
+  VISIBILITY_NONE = 'None'
+
   validates :name, :email, presence: true, uniqueness: true
   validates :password, :password_confirmation, presence: true, on: :create
+
+  validates :visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
 
   validate :password_length, on: :create
   has_secure_password
@@ -76,5 +82,16 @@ class User < ActiveRecord::Base
   def invalidate_other_sessions(current_session_id)
     sessions.where.not(session_id: current_session_id).destroy_all
     update(last_active_at: Time.current)
+  end
+
+  def can_see_online?(other_user)
+    case self.visibility
+    when VISIBILITY_ALL
+      return true
+    when VISIBILITY_FRIENDS
+      return self.friends.include?(other_user) || other_user.friends.include?(self)
+    when VISIBILITY_NONE
+      return false
+    end
   end
 end

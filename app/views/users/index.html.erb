@@ -13,14 +13,17 @@
               <img src="https://via.placeholder.com/150" alt="Profile Picture"
                    class="h-16 w-16 rounded-full">
             <% end %>
+            <% if user.can_see_online?(current_user) %>
             <% if user.online? %>
               <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
             <% elsif user.last_active_at %>
               <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
             <% end %>
+              <% end %>
           </span>
             <div>
               <h2 class="text-lg font-semibold text-gray-800"><%= user.name %></h2>
+              <% if user.can_see_online?(current_user) %>
               <p class="mt-6"
                  data-controller="online">
                 <% if user.last_active_at.present? %>
@@ -32,6 +35,7 @@
                 <span class="text-sm text-gray-600">Offline</span>
                 <% end %>
               </p>
+              <% end %>
             </div>
           </a>
         </div>

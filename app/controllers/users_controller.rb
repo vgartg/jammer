@@ -23,6 +23,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       session[:current_user] = @user.id
+      Session.create_session(@user.id, session[:session_id], request.remote_ip)
       @user.update(last_seen_at: Time.zone.now)
       redirect_to dashboard_path
     else
@@ -85,7 +86,7 @@ class UsersController < ApplicationController
 
   def update_activity
     if current_user
-      current_user.update(last_active_at: Time.current)
+      current_user.update(last_active_at: Time.current, visibility: params[:visibility])
       head :ok
     else
       head :unauthorized
@@ -101,6 +102,7 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user)
           .permit(:name, :email, :password, :password_confirmation, :avatar,
-                  :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username)
+                  :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
+                  :visibility)
   end
 end

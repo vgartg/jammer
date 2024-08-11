@@ -1,12 +1,14 @@
 class FriendshipsController < ApplicationController
   before_action :authenticate_user
   helper_method :find_friend
+
   def index
     @friendships = current_user.friendships.where(status: 'accepted') + current_user.inverse_friendships.where(status: 'accepted')
     @sent_requests = current_user.friendships.where(status: 'pending')
     @received_requests = current_user.inverse_friendships.where(status: 'pending')
     @current_user = current_user
   end
+
   def create
     # Проверяем, существует ли уже запрос дружбы между текущим пользователем и выбранным пользователем
     existing_friendship = current_user.friendships.find_by(friend: @user) ||
@@ -48,7 +50,10 @@ class FriendshipsController < ApplicationController
   end
 
   private
+
   def find_friend(friendship)
-    friendship.friend.id != current_user.id ? friendship.friend : friendship.user
+    if friendship.friend
+      friendship.friend.id != current_user.id ? friendship.friend : friendship.user
+    end
   end
 end

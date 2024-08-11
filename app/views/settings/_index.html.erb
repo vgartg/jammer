@@ -36,12 +36,15 @@
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
           <div class="col-span-full flex items-center gap-x-8">
             <% if @user && @user.avatar.attached? %>
-              <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24 w-24 border-2 border-gray-300 object-cover", data: { target: 'user.avatarImage' } %>
+              <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24
+               w-24 border-2 border-gray-300 object-cover", data: { target: 'user.avatarImage' } %>
             <% else %>
-              <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-image rounded-full h-24 w-24 border-2 border-gray-300 object-cover" data-target="user.avatarImage">
+              <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-image rounded-full h-24
+               w-24 border-2 border-gray-300 object-cover" data-target="user.avatarImage">
             <% end %>
             <div>
-              <%= f.label :avatar, "Change avatar", class: "rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20" %>
+              <%= f.label :avatar, "Change avatar", class: "rounded-md bg-white/10 px-3 py-2 text-sm font-semibold
+              text-white shadow-sm hover:bg-white/20" %>
               <%= f.file_field :avatar, class: "hidden" %>
               <p class="mt-2 text-xs leading-5 text-gray-400">JPG, GIF or PNG. 1MB max.</p>
             </div>
@@ -74,7 +77,7 @@
           <div class="col-span-full">
             <label for="email" class="block text-sm font-medium leading-6 text-white">Email</label>
             <div class="mt-2">
-              <%= f.text_field :email, id: 'email',
+              <%= f.email_field :email, id: 'email',
                                value: @user.email,
                                autocomplete: 'email',
                                class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
@@ -232,6 +235,44 @@
 
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
+        <h2 class="text-base font-semibold leading-7 text-white">Set Online Visibility</h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400">
+          Select who can see your online status.
+        </p>
+      </div>
+
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
+        <div class="col-span-full">
+          <label for="timezone" class="block text-sm font-medium leading-6 text-white">Часовой пояс</label>
+          <div class="mt-2 relative">
+          <%= f.select :visibility,
+                       options_for_select([
+                                            ['All'],
+                                            ['Friends'],
+                                            ['None']
+                                          ], selected: @user.visibility),
+                       {},
+                       class: 'block w-full appearance-none rounded-md bg-gray-800 text-white py-2
+                           px-3 leading-tight focus:outline-none focus:ring-2
+                           focus:ring-indigo-500 max-h-48 overflow-y-auto',
+                       id: 'visibility' %>
+          </div>
+
+        <% if @user.id == session[:current_user] %>
+          <div class="mt-4">
+            <%= f.submit "Save", id: "account-online-info-button-save", class: "mt-4 flex w-50 justify-center rounded-md border
+                         border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                         shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                          focus:ring-offset-2 cursor-pointer" %>
+          </div>
+        <% end %>
+        </div>
+      <% end %>
+    </div>
+
+
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
         <h2 class="text-base font-semibold leading-7 text-white">Change password</h2>
         <p class="mt-1 text-sm leading-6 text-gray-400">Update your password associated with your account.</p>
       </div>
@@ -304,7 +345,8 @@
             <label for="logout-password" class="block text-sm font-medium leading-6 text-white">Your password</label>
             <div class="mt-2">
               <%= password_field_tag :password, nil, id: 'logout-password', autocomplete: 'current-password',
-                                     class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1
+                                     class: 'block w-full rounded-md border-0
+                                      bg-white/5 py-1.5 text-white shadow-sm ring-1
                                   ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500
                                   sm:text-sm sm:leading-6' %>
             </div>
