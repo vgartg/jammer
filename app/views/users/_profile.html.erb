@@ -16,75 +16,75 @@
       ring-white sm:h-32 sm:w-32">
             <% end %>
         <% if @user.can_see_online?(current_user) %>
-        <% if @user.online? %>
-              <span class="absolute bottom-1 right-1 block h-6 w-6
-              rounded-full bg-green-400 ring-2 ring-white"></span>
-            <% elsif @user.last_active_at %>
-              <span
-                class="absolute bottom-1 right-1 block h-6 w-6 rounded-full bg-gray-400 ring-2 ring-white">
-                <!-- Возможно, будем использовать title позже.
-                     Сейчас он отображает время, не ориентируясь на часовой пояс -->
-                <!-- title="Последний раз в сети: < %= @user.last_active_at.strftime("%d.%m.%Y, %H:%M") % >" -->
-              </span>
-            </span>
+          <% if @user.online? %>
+                <span class="absolute bottom-1 right-1 block h-6 w-6
+                rounded-full bg-green-400 ring-2 ring-white"></span>
+              <% elsif @user.last_active_at %>
+                <span
+                  class="absolute bottom-1 right-1 block h-6 w-6 rounded-full bg-gray-400 ring-2 ring-white">
+                  <!-- Возможно, будем использовать title позже.
+                       Сейчас он отображает время, не ориентируясь на часовой пояс -->
+                  <!-- title="Последний раз в сети: < %= @user.last_active_at.strftime("%d.%m.%Y, %H:%M") % >" -->
+                </span>
+              <% end %>
           <% end %>
-        <% end %>
-        <div class="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
-          <div class="mt-6 min-w-0 flex-1 sm:hidden md:block">
-            <h1 class="truncate text-2xl font-bold text-gray-900"><%= @user.name %></h1>
-            <p class="truncate mt-1">
-              <% unless @user.status.blank? %>
-                <span class="text-gray-900"><%= @user.status %></span>
-              <% end %>
-            </p>
-          </div>
-          <div class="flex justify-between items-center py-2 mt-6 gap-5">
-            <% if @user.id != session[:current_user] %>
-              <% if @friendship.nil? %>
-                <%= button_to "Add friend", user_friendships_path(@user), method: :post,
-                              class: "bg-green-500 text-white px-3 py-1 rounded-full
+          </span>
+      <div class="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
+        <div class="mt-6 min-w-0 flex-1 sm:hidden md:block">
+          <h1 class="truncate text-2xl font-bold text-gray-900"><%= @user.name %></h1>
+          <p class="truncate mt-1">
+            <% unless @user.status.blank? %>
+              <span class="text-gray-900"><%= @user.status %></span>
+            <% end %>
+          </p>
+        </div>
+        <div class="flex justify-between items-center py-2 mt-6 gap-5">
+          <% if @user.id != session[:current_user] %>
+            <% if @friendship.nil? %>
+              <%= button_to "Add friend", user_friendships_path(@user), method: :post,
+                            class: "bg-green-500 text-white px-3 py-1 rounded-full
                         hover:bg-green-600 transition-colors duration-200" %>
-              <% elsif @friendship.status == 'pending' && @friendship.user == @current_user %>
-                <%= button_to "Cancel application", cancel_user_friendship_path(@user, @friendship),
-                              method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full
+            <% elsif @friendship.status == 'pending' && @friendship.user == @current_user %>
+              <%= button_to "Cancel application", cancel_user_friendship_path(@user, @friendship),
+                            method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full
                         hover:bg-red-600 transition-colors duration-200" %>
-              <% elsif @friendship.status == 'accepted' %>
-                <%= button_to "Remove friend", user_friendship_path(@user, @friendship), method: :delete,
-                              class: "bg-red-500 text-white px-3 py-1 rounded-full
+            <% elsif @friendship.status == 'accepted' %>
+              <%= button_to "Remove friend", user_friendship_path(@user, @friendship), method: :delete,
+                            class: "bg-red-500 text-white px-3 py-1 rounded-full
                         hover:bg-red-600 transition-colors duration-200" %>
-              <% elsif @friendship.status == 'pending' && @friendship.user != @current_user %>
-                <%= button_to "Accept application", user_friendship_path(@current_user, @friendship), method: :put,
-                              class: "bg-green-500 text-white px-3 py-1 rounded-full
+            <% elsif @friendship.status == 'pending' && @friendship.user != @current_user %>
+              <%= button_to "Accept application", user_friendship_path(@current_user, @friendship), method: :put,
+                            class: "bg-green-500 text-white px-3 py-1 rounded-full
                         hover:bg-green-600 transition-colors duration-200" %>
-                <%= button_to "Cancel application", cancel_user_friendship_path(@current_user, @friendship), method: :delete,
-                              class: "bg-red-500 text-white px-3 py-1 rounded-full
-                        hover:bg-red-600 transition-colors duration-200" %>
-              <% end %>
-            <% else %>
-              <%= button_to "Edit profile", edit_user_path, method: :get,
-                            class: "bg-white-500 text-black px-3 py-1 rounded-full
-                        hover:bg-white-600 transition-colors duration-200 border" %>
-
-              <%= button_to "Delete profile", user_destroy_path, method: :delete,
+              <%= button_to "Cancel application", cancel_user_friendship_path(@current_user, @friendship), method: :delete,
                             class: "bg-red-500 text-white px-3 py-1 rounded-full
                         hover:bg-red-600 transition-colors duration-200" %>
             <% end %>
-          </div>
+          <% else %>
+            <%= button_to "Edit profile", edit_user_path, method: :get,
+                          class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
+                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+
+            <%= button_to "Delete profile", user_destroy_path, method: :delete,
+                          class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
+                          text-red-900 shadow-sm ring-1 ring-inset ring-red-300 hover:bg-gray-50" %>
+          <% end %>
         </div>
-        </div>
+      </div>
+    </div>
     <% if @user.can_see_online?(current_user) %>
-      <p class="mt-6"
-         data-controller="online">
-        <% if @user.last_active_at.present? %>
+    <p class="mt-6"
+       data-controller="online">
+      <% if @user.last_active_at.present? %>
       <span id="user-status" class="text-sm text-gray-600"
             data-online-target="lastActiveAt"
             data-last-active-at="<%= @user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
             data-action="load->online#updateStatus"></span>
-        <% else %>
-          <span class="text-sm text-gray-600">Offline</span>
-        <% end %>
-      </p>
-    <% end %>
+      <% else %>
+        <span class="text-sm text-gray-600">Offline</span>
+      <% end %>
+    </p>
+      <% end %>
     <div class="mt-6">
       <div class="mt-6 border-t border-gray-100">
         <ul class="divide-y divide-gray-100">
