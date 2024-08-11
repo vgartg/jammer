@@ -1,4 +1,5 @@
 import { Controller } from "stimulus";
+import flatpickr from 'flatpickr';
 
 export default class extends Controller {
     static targets = ["username", "fullLink"];
@@ -8,6 +9,7 @@ export default class extends Controller {
         this.usernameTarget.addEventListener('input', () => this.updateLink());
 
         this.formatPhoneNumber();
+        this.initFlatpickr();
     }
 
     close_notice() {
@@ -41,15 +43,12 @@ export default class extends Controller {
     }
 
     updateLink() {
-        let username = this.usernameTarget.value.trim(); // Удаляем начальные и конечные пробелы
+        let username = this.usernameTarget.value.trim();
 
-        // Очищаем ввод от недопустимых символов
         username = username.replace(/[^a-zA-Z0-9-]/g, '');
 
-        // Проверяем, что username соответствует шаблону
         const validUsername = /^[a-zA-Z0-9-]*$/.test(username);
 
-        // Устанавливаем значение поля ввода
         this.usernameTarget.value = username;
 
         if (validUsername && username !== '') {
@@ -57,5 +56,12 @@ export default class extends Controller {
         } else {
             this.fullLinkTarget.textContent = `https://username.jammer.ru/`;
         }
+    }
+
+    initFlatpickr() {
+        flatpickr('.flatpickr', {
+            dateFormat: 'Y-m-d',
+            theme: 'dark',
+        });
     }
 }
