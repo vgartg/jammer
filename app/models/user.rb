@@ -89,7 +89,9 @@ class User < ActiveRecord::Base
     when VISIBILITY_ALL
       return true
     when VISIBILITY_FRIENDS
-      return self.friends.include?(other_user) || other_user.friends.include?(self)
+      active_friendships = self.friendships.where(status: 'accepted').pluck(:friend_id) +
+        self.inverse_friendships.where(status: 'accepted').pluck(:user_id)
+      return active_friendships.include?(other_user.id) if other_user
     when VISIBILITY_NONE
       return false
     end

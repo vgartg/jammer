@@ -23,7 +23,12 @@ class ApplicationController < ActionController::Base
         @current_user = user
       end
     end
-    @current_user
+
+    if @current_user && session[:session_id].present? && @current_user.sessions.where(session_id: session[:session_id]).exists?
+      return @current_user
+    end
+
+    @current_user = nil
   end
 
   def sign_in(user)
