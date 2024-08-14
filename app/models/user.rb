@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   validate :password_length, on: :create
   has_secure_password
   has_one_attached :avatar
+  has_one_attached :background_image
   has_many :games, foreign_key: "author_id", dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships, dependent: :destroy

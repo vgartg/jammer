@@ -72,6 +72,12 @@
             <% end %>
           </div>
         </div>
+
+        <div class="field">
+          <%= f.label :background_image, "Background Image" %>
+          <%= f.file_field :background_image %>
+        </div>
+
         <% if @user.id == session[:current_user] %>
           <%= button_to "Сохранить", edit_user_path(@user), method: :put,
                         class: "mt-4 flex w-50 justify-center rounded-md border
