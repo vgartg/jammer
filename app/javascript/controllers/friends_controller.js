@@ -20,18 +20,12 @@ export default class extends Controller {
         document.getElementById(tabName).style.display = "block";
         event.currentTarget.className += " active";
 
-        if (tabName === 'friends') {
-            document.getElementById("btnFriends").classList.add("bg-orange-500");
-            document.getElementById("btnSentRequests").classList.remove("bg-orange-500");
-            document.getElementById("btnReceivedRequests").classList.remove("bg-orange-500");
-        } else if (tabName === 'sent_requests') {
-            document.getElementById("btnFriends").classList.remove("bg-orange-500");
-            document.getElementById("btnSentRequests").classList.add("bg-orange-500");
-            document.getElementById("btnReceivedRequests").classList.remove("bg-orange-500");
+        if (tabName === 'sent_requests') {
+            document.getElementById("btnSentRequests").classList.add("bg-blue-700");
+            document.getElementById("btnReceivedRequests").classList.remove("bg-blue-700");
         } else if (tabName === 'received_requests') {
-            document.getElementById("btnFriends").classList.remove("bg-orange-500");
-            document.getElementById("btnSentRequests").classList.remove("bg-orange-500");
-            document.getElementById("btnReceivedRequests").classList.add("bg-orange-500");
+            document.getElementById("btnSentRequests").classList.remove("bg-blue-700");
+            document.getElementById("btnReceivedRequests").classList.add("bg-blue-700");
         }
     }
 }

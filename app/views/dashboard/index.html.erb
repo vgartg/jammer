@@ -1,6 +1,7 @@
 <div data-controller="dashboard">
   <div class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
-    <div class="hidden opacity-0 fixed inset-0 bg-gray-900/80" id="dashboard_gray_opacity_block" aria-hidden="true"></div>
+    <div class="hidden opacity-0 fixed inset-0 bg-gray-900/80"
+         id="dashboard_gray_opacity_block" aria-hidden="true"></div>
     <div class="-translate-x-full fixed inset-0 flex" id="dashboard_left_mobile_block">
       <div class="relative mr-16 flex w-full max-w-xs flex-1">
         <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
@@ -46,6 +47,20 @@
                               d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                       </svg>
                       Friends
+                    </a>
+                  </li>
+                  <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                  hover:bg-gray-800 text-gray-400 cursor-pointer"
+                      data-content-id="requests" data-action="click->dashboard#dashboardChanger
+                      click->dashboard#closeMobileMenu">
+                    <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold
+                    leading-6 text-gray-400">
+                      <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                           stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                      </svg>
+                      Requests
                     </a>
                   </li>
                   <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
@@ -113,7 +128,8 @@
                     <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
                      text-gray-400 hover:bg-gray-800 cursor-pointer">
                       <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border
-                       border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">П</span>
+                       border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400
+                        group-hover:text-white">П</span>
                       <span class="truncate">Пока заглушка..</span>
                     </a>
                   </li>
@@ -170,7 +186,8 @@
         <ul role="list" class="flex flex-1 flex-col gap-y-7">
           <li>
             <ul role="list" class="-mx-2 space-y-1">
-              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400
+              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+               text-gray-400
               bg-gray-800 cursor-pointer hover:bg-gray-800 selected"
                   data-content-id="dashboard" data-action="click->dashboard#dashboardChanger">
                 <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-white">
@@ -182,7 +199,8 @@
                   Dashboard
                 </a>
               </li>
-              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 cursor-pointer
+              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+               text-gray-400 cursor-pointer
                hover:bg-gray-800"
                   data-content-id="friends" data-action="click->dashboard#dashboardChanger">
                 <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
@@ -195,7 +213,22 @@
                   Friends
                 </a>
               </li>
-              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 cursor-pointer
+              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+               text-gray-400 cursor-pointer
+               hover:bg-gray-800"
+                  data-content-id="requests" data-action="click->dashboard#dashboardChanger">
+                <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                text-gray-400">
+                  <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                       stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                  </svg>
+                  Requests
+                </a>
+              </li>
+              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+               text-gray-400 cursor-pointer
                hover:bg-gray-800"
                   data-content-id="games" data-action="click->dashboard#dashboardChanger">
                 <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
@@ -208,7 +241,8 @@
                   Games
                 </a>
               </li>
-              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 cursor-pointer
+              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+               text-gray-400 cursor-pointer
                hover:bg-gray-800"
                   data-content-id="zaglushka" data-action="click->dashboard#dashboardChanger">
                 <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
@@ -221,7 +255,8 @@
                   Пока заглушка..
                 </a>
               </li>
-              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 cursor-pointer
+              <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+               text-gray-400 cursor-pointer
                hover:bg-gray-800"
                   data-content-id="zaglushka" data-action="click->dashboard#dashboardChanger">
                 <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
@@ -256,7 +291,8 @@
                 <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
                 text-gray-400 hover:bg-gray-800">
                   <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border
-                   border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">П</span>
+                   border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400
+                    group-hover:text-white">П</span>
                   <span class="truncate">Пока заглушка..</span>
                 </a>
               </li>
@@ -264,7 +300,8 @@
                 <a href="#" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
                 text-gray-400 hover:bg-gray-800">
                   <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border
-                   border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">П</span>
+                   border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400
+                    group-hover:text-white">П</span>
                   <span class="truncate">Пока заглушка..</span>
                 </a>
               </li>
@@ -279,7 +316,8 @@
               </li>
             </ul>
           </li>
-          <li class="mt-auto group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 cursor-pointer
+          <li class="mt-auto group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+           text-gray-400 cursor-pointer
                hover:bg-gray-800 px-4"
               data-content-id="settings"
               data-action="click->dashboard#dashboardChanger">
@@ -309,6 +347,9 @@
         </div>
         <div id="friends" class="content hidden">
           <%= render partial: 'friendships/friends' %>
+        </div>
+        <div id="requests" class="content hidden">
+          <%= render partial: 'friendships/requests' %>
         </div>
         <div id="games" class="content hidden">
           <%= render partial: 'games/showcase' %>

@@ -45,8 +45,9 @@
             <div>
               <%= f.label :avatar, "Change avatar", class: "rounded-md bg-white/10 px-3 py-2 text-sm font-semibold
               text-white shadow-sm hover:bg-white/20" %>
-              <%= f.file_field :avatar, class: "hidden" %>
-              <p class="mt-2 text-xs leading-5 text-gray-400">JPG, GIF or PNG. 1MB max.</p>
+              <%= f.file_field :avatar, class: "hidden", accept: "image/jpeg,image/png",
+                               data: { max_size: 1.megabytes.to_i } %>
+              <p class="mt-2 text-xs leading-5 text-gray-400">JPG or PNG. 1MB max.</p>
             </div>
           </div>
 
@@ -246,7 +247,7 @@
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
 
           <div class="col-span-full">
-            <label for="timezone" class="block text-sm font-medium leading-6 text-white">Часовой пояс</label>
+            <label for="timezone" class="block text-sm font-medium leading-6 text-white">Who can see my online?</label>
             <div class="mt-2 relative">
               <%= f.select :visibility,
                            options_for_select([
