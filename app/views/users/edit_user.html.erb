@@ -1,7 +1,7 @@
 <div class="bg-gray-100 flex items-center justify-center min-h-screen" data-controller="user">
   <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
 
-    <%= form_for @user, url: user_path(@user), method: :put do |f| %>
+    <%= form_for @user, url: user_path(@user), method: :put, html: { multipart: true } do |f| %>
       <div class="flex items-center space-x-4 mb-6">
         <div class="relative group w-36 h-36">
           <div class="flex-shrink-0 w-36 h-36">
@@ -58,25 +58,20 @@
               </div>
             </div>
           <% end %>
-
-          <div class="flex justify-between items-center py-2 border-b border-gray-200">
-            <span class="text-gray-600">Загруженные игры:</span>
-            <% if @user.games.any? %>
-              <% @user.games.each do |game| %>
-                <a href="/games/<%= game.id %>">
-                  <span class="text-gray-900"><%= game.name %></span>
-                </a>
-              <% end %>
-            <% else %>
-              <span class="text-gray-900">Информации нет</span>
-            <% end %>
-          </div>
         </div>
 
         <div class="field">
-          <%= f.label :background_image, "Background Image" %>
-          <%= f.file_field :background_image %>
+          <label for="background_image" class="block text-sm font-medium text-gray-700">Заставка</label>
+          <div class="relative">
+            <div class="border-dashed border-2 border-gray-300 p-6 text-center rounded-md relative">
+              <input type="file" name="user[background_image]" id="background_image" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" onchange="previewImage(event)">
+              <p class="text-gray-600">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
+              <p class="text-gray-500 text-xs">Рекомендуемый размер: 1920x1080 пикселей</p>
+              <img id="preview-img" src="#" alt="Предварительный просмотр изображения" class="mt-4 hidden w-full h-auto object-cover rounded-md">
+            </div>
+          </div>
         </div>
+
 
         <% if @user.id == session[:current_user] %>
           <%= button_to "Сохранить", edit_user_path(@user), method: :put,
@@ -89,3 +84,23 @@
     <% end %>
   </div>
 </div>
+
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        const previewImg = document.getElementById('preview-img');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                previewImg.classList.remove('hidden');
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            previewImg.classList.add('hidden');
+        }
+    }
+</script>
