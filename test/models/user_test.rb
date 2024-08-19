@@ -7,7 +7,7 @@ class UserTest < ActiveSupport::TestCase
     todd.destroy!
 
     assert_raises ActiveRecord::RecordNotFound do
-      games(:tes3)
+      Game.find(games(:tes3).id)
     end
   end
 
