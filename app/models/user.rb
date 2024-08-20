@@ -36,9 +36,10 @@ class User < ActiveRecord::Base
   end
 
   def accept_friend_request(user)
-    friendship = friendships.find_by(friend: user)
+    friendship = friendships.find_by(friend: user) || inverse_friendships.find_by(user: user)
     friendship.update(status: 'accepted') if friendship
   end
+
 
   def remove_friend(user)
     friendship = friendships.find_by(friend: user)
