@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_14_150222) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_30_101010) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,7 +45,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_14_150222) do
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "friend_id", null: false
-    t.string "status", default: "pending", null: false
+    t.string "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -66,6 +66,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_14_150222) do
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_games_tags_on_game_id"
     t.index ["tag_id"], name: "index_games_tags_on_tag_id"
+  end
+
+  create_table "jams", force: :cascade do |t|
+    t.string "name"
+    t.integer "author_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.date "start_date"
+    t.date "deadline"
+    t.date "end_date"
+    t.binary "cover"
+    t.binary "logo"
+    t.string "description"
+    t.index ["author_id"], name: "index_jams_on_author_id"
+    t.index ["name"], name: "index_jams_on_name"
   end
 
   create_table "sessions", force: :cascade do |t|

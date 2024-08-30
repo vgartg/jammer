@@ -53,4 +53,12 @@ Rails.application.routes.draw do
   get '/games/:id', to: "games#show", as: 'game_profile'
   get '/games_showcase', to: 'games#showcase'
 
+  # Jams
+  get '/jams/new', to: 'jams#new'
+  post '/jams', to: 'jams#create'
+  get '/jams/:id/edit', to: 'jams#edit', as: 'jam_edit'
+  patch '/jams/:id', to: 'jams#update', as: 'jam_update'
+  delete '/jams/:id', to: 'jams#destroy', as: 'jam_destroy'
+  get '/jams/:id', to: "jams#show", as: 'jam_profile'
+  get '/jams_showcase', to: 'jams#showcase'
 end

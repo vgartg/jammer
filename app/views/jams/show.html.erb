@@ -1,0 +1,70 @@
+<div class="bg-white">
+  <div class="pb-16 pt-6 sm:pb-24">
+    <div class="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div class="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="flex justify-between">
+            <h1 class="text-xl font-medium text-gray-900 break-all"><%= @jam.name %></h1>
+          </div>
+        </div>
+
+        <!-- Image gallery -->
+        <div class="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
+          <div class="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
+            <% if @jam && @jam.cover.attached? %>
+              <%= image_tag url_for(@jam.cover), alt: @jam.name,
+                            class: "rounded-md bg-gray-200
+                            object-cover object-center group-hover:opacity-75" %>
+            <% else %>
+              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200
+                          lg:aspect-none group-hover:opacity-75 lg:h-80">
+                <img src="https://via.placeholder.com/300" alt="<%= @jam.name %>"
+                     class="object-cover object-center ">
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="mt-8 lg:col-span-5">
+
+          <div class="mt-10">
+            <h2 class="text-sm font-medium text-gray-900">Описание:</h2>
+
+            <div class="prose prose-sm mt-4 text-gray-500">
+              <p class="break-all">
+                <%= @jam.description %>
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-10">
+            <h2 class="text-sm font-medium text-gray-900">Автор:</h2>
+            <div class="prose prose-sm mt-4 text-gray-500">
+              <% if @jam.author.present? %>
+                <a class="break-all" href="<%= user_profile_path(@jam.author) %>">
+                  <%= @jam.author.name %>
+                </a>
+              <% else %>
+                <p>Автор не найден</p>
+              <% end %>
+            </div>
+          </div>
+          <% if @jam.author.present? && session[:current_user] == @jam.author.id %>
+            <div>
+              <%= button_to "Редактировать джем", jam_edit_path(@jam), method: :get,
+                            class: "mt-4 flex w-50 justify-center rounded-md border
+                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                              shadow-sm hover:bg-indigo-700 focus:outline-none
+                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+              <%= button_to "Удалить джем", jam_destroy_path(@jam), method: :delete,
+                            class: "mt-4 flex w-50 justify-center rounded-md border
+                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                              shadow-sm hover:bg-indigo-700 focus:outline-none
+                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+          <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
