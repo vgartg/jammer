@@ -56,10 +56,14 @@
             <div class="relative">
               <div class="border-dashed border-2 border-gray-300 p-6 text-center rounded-md relative">
                 <% if @user.background_image.attached? %>
-                  <img id="current-background-img" src="<%= url_for(@user.background_image) %>" alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md" />
+                  <img id="current-background-img" src="<%= url_for(@user.background_image) %>"
+                       alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md" />
                 <% end %>
-                <img id="preview-img" src="#" alt="Предварительный просмотр изображения" class="mt-4 hidden w-full h-auto object-cover rounded-md">
-                <input type="file" name="user[background_image]" id="background_image" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" onchange="updateBackgroundImage(event)">
+                <img id="preview-img" src="#" alt="Предварительный просмотр изображения"
+                     class="mt-4 hidden w-full h-auto object-cover rounded-md">
+                <input type="file" name="user[background_image]" id="background_image"
+                       class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*"
+                       onchange="updateBackgroundImage(event)">
                 <p class="text-white mt-4">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
                 <p class="text-white text-xs">Рекомендуемый размер: 1920x1080 пикселей</p>
               </div>
@@ -404,7 +408,6 @@
     <%= render partial: 'helpers/bad_notice' %>
   </div>
 </div>
-
 
 <script>
     function updateBackgroundImage(event) {
