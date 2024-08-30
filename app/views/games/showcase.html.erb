@@ -5,7 +5,8 @@
     <%= button_to "Вернуться на главный экран", dashboard_path, method: :get,
                   class: "mt-4 flex w-50 justify-center rounded-md border
                       border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                      shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+                      shadow-sm hover:bg-indigo-700 focus:outline-none
+                      focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
 
     <%= form_with url: games_showcase_path, method: :get,
                   data: { action: "input->games#search" },
@@ -39,8 +40,10 @@
       <%= hidden_field_tag :tag_mode, params[:tag_mode] || 'all', data: { games_target: "tagMode" } %>
 
       <div class="mt-4 flex flex-wrap gap-2">
-        <%= check_box_tag :toggle_tag_mode, 'any', params[:tag_mode] == 'any', data: { action: "change->games#toggleTagMode", games_target: "toggleTagMode" } %>
-        <%= label_tag :toggle_tag_mode, " Искать хотя бы с одним из выбранных тегов", class: "text-sm font-medium text-gray-700" %>
+        <%= check_box_tag :toggle_tag_mode, 'any', params[:tag_mode] == 'any',
+                          data: { action: "change->games#toggleTagMode", games_target: "toggleTagMode" } %>
+        <%= label_tag :toggle_tag_mode, " Искать хотя бы с одним из выбранных тегов",
+                      class: "text-sm font-medium text-gray-700" %>
       </div>
     <% end %>
 

@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  constraints(Subdomain) do
+    get '/', to: 'users#frontpage', as: 'frontpage'
+  end
+
   root "home#index"
 
   # Registration and Auth
@@ -35,6 +39,11 @@ Rails.application.routes.draw do
     end
   end
 
+  # Sessions
+  resources :sessions do
+    post 'logout_other_sessions', on: :collection
+  end
+
   # Games
   get '/games/new', to: 'games#new'
   post '/games', to: 'games#create'
@@ -44,13 +53,12 @@ Rails.application.routes.draw do
   get '/games/:id', to: "games#show", as: 'game_profile'
   get '/games_showcase', to: 'games#showcase'
 
-
-  # Debug
-  if Rails.env.development?
-    redirector = ->(params, _) { ApplicationController.helpers.asset_path("#{params[:name].split('-').first}.map") }
-    constraint = ->(request) { request.path.ends_with?(".map") }
-    get "assets/*name", to: redirect(redirector), constraints: constraint
-  end
-
+  # Jams
+  get '/jams/new', to: 'jams#new'
+  post '/jams', to: 'jams#create'
+  get '/jams/:id/edit', to: 'jams#edit', as: 'jam_edit'
+  patch '/jams/:id', to: 'jams#update', as: 'jam_update'
+  delete '/jams/:id', to: 'jams#destroy', as: 'jam_destroy'
+  get '/jams/:id', to: "jams#show", as: 'jam_profile'
+  get '/jams_showcase', to: 'jams#showcase'
 end
-
