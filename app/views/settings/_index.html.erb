@@ -393,11 +393,10 @@
         </p>
       </div>
 
-      <div class="flex items-start md:col-span-2">
-        <%= button_to "Yes, delete my account", user_destroy_path, method: :delete,
-                      class: "rounded-md bg-red-500 px-3 py-2 text-sm font-semibold
-         text-white shadow-sm hover:bg-red-400" %>
-      </div>
+      <%= form_for @user, url: user_path(@user), method: :delete, html: { class: 'delete-account-form', onsubmit: 'return confirmDelete();' } do |f| %>
+        <%= f.submit 'Удалить аккаунт', class: 'rounded-md bg-red-500 px-4 py-2 text-white font-semibold hover:bg-red-600' %>
+      <% end %>
+
     </div>
 
     <%= render partial: 'helpers/good_notice' %>
@@ -435,5 +434,9 @@
 
             previewImg.classList.add('hidden');
         }
+    }
+
+    function confirmDelete() {
+        return confirm("Вы уверены, что хотите удалить аккаунт? Это действие не может быть отменено.");
     }
 </script>
