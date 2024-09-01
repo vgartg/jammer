@@ -38,13 +38,19 @@ class User < ActiveRecord::Base
   def accept_friend_request(user)
     friendship = friendships.find_by(friend: user)
     inverse_friendship = inverse_friendships.find_by(user: user)
-    if friendship && friendship.update(status: 'accepted')
-      create_notification(friendship, friendship.user, 'accepted_friendship', friendship)
-    elsif inverse_friendship && friendship.update(status: 'accepted')
-      create_notification(friendship, friendship.friend, 'accepted_friendship', friendship)
+
+    if friendship
+      friendship.update(status: 'accepted')
+      create_notification(friendship.user, user, 'accepted_friend_request', friendship)
+    elsif inverse_friendship
+      inverse_friendship.update(status: 'accepted')
+      create_notification(inverse_friendship.friend, user, 'accepted_friend_request', inverse_friendship)
     end
   end
 
+  def create_notification(recipient, actor, action, notifiable)
+    Notification.create(recipient: recipient, actor: actor, action: action, notifiable: notifiable)
+  end
 
   def remove_friend(user)
     friendship = friendships.find_by(friend: user)
