@@ -31,3 +31,6 @@ application.register("settings", SettingsController)
 // @ts-ignore
 import CropperController from "./cropper_controller"
 application.register("cropper", CropperController)
+// @ts-ignore
+import NotificationsController from "./notifications_controller"
+application.register("notifications", NotificationsController)
