@@ -1,0 +1,13 @@
+<% if @notifications.any? %>
+  <% @notifications.each do |notification| %>
+    <div class="bg-white shadow-md rounded-lg p-4">
+      <p class="text-sm text-gray-600">
+        <%= notification.actor.name %> <%= notification.action %>
+        <%= notification.notifiable_type.downcase %>:
+        <%= link_to "View", notification_path(notification) %>
+      </p>
+    </div>
+  <% end %>
+<% else %>
+  <p>No notifications to display.</p>
+<% end %>

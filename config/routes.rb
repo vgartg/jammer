@@ -61,4 +61,9 @@ Rails.application.routes.draw do
   delete '/jams/:id', to: 'jams#destroy', as: 'jam_destroy'
   get '/jams/:id', to: "jams#show", as: 'jam_profile'
   get '/jams_showcase', to: 'jams#showcase'
+
+  resources :notifications, only: [:index, :show] do
+    delete 'destroy_all_notifications', on: :collection
+  end
+  patch '/notifications/mark_as_read', to: 'notifications#mark_as_read'
 end

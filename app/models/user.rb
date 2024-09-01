@@ -36,8 +36,13 @@ class User < ActiveRecord::Base
   end
 
   def accept_friend_request(user)
-    friendship = friendships.find_by(friend: user) || inverse_friendships.find_by(user: user)
-    friendship.update(status: 'accepted') if friendship
+    friendship = friendships.find_by(friend: user)
+    inverse_friendship = inverse_friendships.find_by(user: user)
+    if friendship && friendship.update(status: 'accepted')
+      create_notification(friendship, friendship.user, 'accepted_friendship', friendship)
+    elsif inverse_friendship && friendship.update(status: 'accepted')
+      create_notification(friendship, friendship.friend, 'accepted_friendship', friendship)
+    end
   end
 
 
@@ -97,5 +102,9 @@ class User < ActiveRecord::Base
     when VISIBILITY_NONE
       return false
     end
+  end
+
+  def notifications
+    Notification.where(recipient_id: id)
   end
 end
