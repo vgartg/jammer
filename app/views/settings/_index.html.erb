@@ -342,7 +342,8 @@
 
         <div class="mt-8 flex">
           <% if @user.id == session[:current_user] %>
-            <%= f.submit "Save", id: "new-password-button-save", class: "mt-4 flex w-50 justify-center rounded-md border
+            <%= f.submit "Save", id: "new-password-button-save",
+                         class: "mt-4 flex w-50 justify-center rounded-md border
                          border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                          shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
                           focus:ring-offset-2 cursor-pointer" %>
@@ -397,10 +398,29 @@
         </p>
       </div>
 
-      <%= form_for @user, url: user_path(@user), method: :delete, html: { class: 'delete-account-form', onsubmit: 'return confirmDelete();' } do |f| %>
-        <%= f.submit 'Удалить аккаунт', class: 'rounded-md bg-red-500 px-4 py-2 text-white font-semibold hover:bg-red-600' %>
-      <% end %>
+      <div>
+      <%= button_tag 'Удалить аккаунт', class: 'rounded-md bg-red-500 px-4 py-2 text-white
+       font-semibold hover:bg-red-600',
+                     onclick: 'return confirmDelete();' %>
+      </div>
 
+      <div id="modal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75
+       flex items-center justify-center z-50">
+        <div class="modal-content bg-gray-800 p-4 rounded shadow-md w-full sm:w-96">
+          <p class="text-lg text-gray-200">Вы уверены, что хотите удалить аккаунт?</p>
+          <div class="mt-4 flex justify-end">
+            <%= form_for @user, url: user_path(@user), method: :delete,
+                         html: { class: 'delete-account-form',
+                                 onsubmit: 'return confirmDelete();' } do |f| %>
+              <%= f.submit 'Удалить аккаунт', id: 'confirmDelete',
+                           class: 'rounded-md bg-red-600 px-4 py-2
+                            text-white font-semibold hover:bg-red-700 mr-4 cursor-pointer' %>
+            <% end %>
+            <button id="cancelDelete" class="border border-gray-700 px-4
+            py-2 rounded-md text-gray-200 hover:bg-gray-700">Отмена</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <%= render partial: 'helpers/good_notice' %>
@@ -440,6 +460,12 @@
     }
 
     function confirmDelete() {
-        return confirm("Вы уверены, что хотите удалить аккаунт? Это действие не может быть отменено.");
+        document.getElementById('modal').classList.remove('hidden');
+
+        document.getElementById('cancelDelete').addEventListener('click', function(event) {
+            document.getElementById('modal').classList.add('hidden');
+        });
+
+        return false;
     }
 </script>
