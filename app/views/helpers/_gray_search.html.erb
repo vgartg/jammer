@@ -55,7 +55,7 @@
              data-target="notifications.notificationsMenu"
              style="max-height: 60vh;">
           <% if @notifications.any? %>
-            <% @notifications.each do |notification| %>
+            <% @notifications.reverse_each do |notification| %>
               <div class="flex items-start px-4 py-3 border-b border-gray-200">
                 <div class="mr-3">
                   <% if notification.actor.avatar.attached? %>
