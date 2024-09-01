@@ -55,23 +55,25 @@
              data-target="notifications.notificationsMenu"
              style="max-height: 60vh;">
           <% if @notifications.any? %>
-            <% @notifications.reverse_each do |notification| %>
-              <div class="flex items-start px-4 py-3 border-b border-gray-200">
-                <div class="mr-3">
-                  <% if notification.actor.avatar.attached? %>
-                    <%= image_tag url_for(notification.actor.avatar), alt: "Profile Picture",
-                                  class: "h-8 w-8 text-gray-400" %>
-                  <% else %>
-                    <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                         class="h-8 w-8 text-gray-400">
-                  <% end %>
+            <% @notifications.order(created_at: :desc).each do |notification| %>
+              <% if notification.actor %>
+                <div class="flex items-start px-4 py-3 border-b border-gray-200">
+                  <div class="mr-3">
+                    <% if notification.actor.avatar.attached? %>
+                      <%= image_tag url_for(notification.actor.avatar), alt: "Profile Picture",
+                                    class: "h-8 w-8 text-gray-400" %>
+                    <% else %>
+                      <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                           class="h-8 w-8 text-gray-400">
+                    <% end %>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium text-gray-900">
+                      <%= notification.actor.name %> <%= notification.action %>
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p class="text-sm font-medium text-gray-900">
-                    <%= notification.actor.name %> <%= notification.action %>
-                  </p>
-                </div>
-              </div>
+              <% end %>
             <% end %>
           <% else %>
             <p class="px-4 py-2 text-sm text-gray-600">No notifications to display.</p>
