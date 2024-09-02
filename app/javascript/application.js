@@ -10,3 +10,4 @@ import "./controllers"
 import "./update_activity"
 // @ts-ignore
 import "./cropper"
+
