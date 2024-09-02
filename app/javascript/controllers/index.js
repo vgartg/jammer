@@ -34,3 +34,5 @@ application.register("cropper", CropperController)
 // @ts-ignore
 import NotificationsController from "./notifications_controller"
 application.register("notifications", NotificationsController)
+import BackgroundImageController from "./background_image_controller";
+application.register("background-image", BackgroundImageController)

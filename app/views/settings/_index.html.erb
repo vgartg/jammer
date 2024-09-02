@@ -53,19 +53,20 @@
 
           <div class="field col-span-full">
             <label for="background_image" class="block text-sm font-medium text-white">Заставка</label>
-            <div class="relative">
-              <div class="border-dashed border-2 border-gray-300 p-6 text-center rounded-md relative">
-                <% if @user.background_image.attached? %>
-                  <img id="current-background-img" src="<%= url_for(@user.background_image) %>"
-                       alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md" />
-                <% end %>
-                <img id="preview-img" src="#" alt="Предварительный просмотр изображения"
-                     class="mt-4 hidden w-full h-auto object-cover rounded-md">
-                <input type="file" name="user[background_image]" id="background_image"
-                       class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*"
-                       onchange="updateBackgroundImage(event)">
-                <p class="text-white mt-4">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
-                <p class="text-white text-xs">Рекомендуемый размер: 1920x1080 пикселей</p>
+            <div data-controller="background-image">
+              <div class="relative">
+                <div class="border-dashed border-2 border-gray-300 p-6 text-center rounded-md relative">
+                  <% if @user.background_image.attached? %>
+                    <img data-background-image-target="currentBackgroundImg" id="current-background-img" src="<%= url_for(@user.background_image) %>"
+                         alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md" />
+                  <% end %>
+                  <img data-background-image-target="previewImg" id="preview-img" src="#" alt="Предварительный просмотр изображения"
+                       class="mt-4 hidden w-full h-auto object-cover rounded-md">
+                  <input data-background-image-target="input" type="file" name="user[background_image]" id="background_image"
+                         class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
+                  <p class="text-white mt-4">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
+                  <p class="text-white text-xs">Рекомендуемый размер: 1920x1080 пикселей</p>
+                </div>
               </div>
             </div>
           </div>
@@ -429,36 +430,6 @@
 </div>
 
 <script>
-    function updateBackgroundImage(event) {
-        const input = event.target;
-        const previewImg = document.getElementById('preview-img');
-        const currentBackgroundImg = document.getElementById('current-background-img');
-
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                // Скрыть текущее изображение
-                if (currentBackgroundImg) {
-                    currentBackgroundImg.style.display = 'none';
-                }
-
-                // Показать превью нового изображения
-                previewImg.src = e.target.result;
-                previewImg.classList.remove('hidden');
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            // Показать текущее изображение, если файл не выбран
-            if (currentBackgroundImg) {
-                currentBackgroundImg.style.display = 'block';
-            }
-
-            previewImg.classList.add('hidden');
-        }
-    }
-
     function confirmDelete() {
         document.getElementById('modal').classList.remove('hidden');
 
