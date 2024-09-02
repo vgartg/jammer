@@ -390,35 +390,29 @@
       <% end %>
     </div>
 
-    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-      <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Delete account</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">
-          No longer want to use our service? You can delete your account here. This action is not reversible.
-          All information related to this account will be deleted permanently.
-        </p>
-      </div>
+    <div data-controller="modal">
+      <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+        <div>
+          <h2 class="text-base font-semibold leading-7 text-white">Delete account</h2>
+          <p class="mt-1 text-sm leading-6 text-gray-400">
+            No longer want to use our service? You can delete your account here. This action is not reversible.
+            All information related to this account will be deleted permanently.
+          </p>
+        </div>
 
-      <div>
-      <%= button_tag 'Удалить аккаунт', class: 'rounded-md bg-red-500 px-4 py-2 text-white
-       font-semibold hover:bg-red-600',
-                     onclick: 'return confirmDelete();' %>
-      </div>
+        <div>
+          <%= button_tag 'Удалить аккаунт', class: 'rounded-md bg-red-500 px-4 py-2 text-white font-semibold hover:bg-red-600', data: { action: 'click->modal#open' } %>
+        </div>
 
-      <div id="modal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75
-       flex items-center justify-center z-50">
-        <div class="modal-content bg-gray-800 p-4 rounded shadow-md w-full sm:w-96">
-          <p class="text-lg text-gray-200">Вы уверены, что хотите удалить аккаунт?</p>
-          <div class="mt-4 flex justify-end">
-            <%= form_for @user, url: user_path(@user), method: :delete,
-                         html: { class: 'delete-account-form',
-                                 onsubmit: 'return confirmDelete();' } do |f| %>
-              <%= f.submit 'Удалить аккаунт', id: 'confirmDelete',
-                           class: 'rounded-md bg-red-600 px-4 py-2
-                            text-white font-semibold hover:bg-red-700 mr-4 cursor-pointer' %>
-            <% end %>
-            <button id="cancelDelete" class="border border-gray-700 px-4
-            py-2 rounded-md text-gray-200 hover:bg-gray-700">Отмена</button>
+        <div id="modal" data-target="modal.modal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+          <div class="modal-content bg-gray-800 p-4 rounded shadow-md w-full sm:w-96">
+            <p class="text-lg text-gray-200">Вы уверены, что хотите удалить аккаунт?</p>
+            <div class="mt-4 flex justify-end">
+              <%= form_for @user, url: user_path(@user), method: :delete, html: { class: 'delete-account-form' } do |f| %>
+                <%= f.submit 'Удалить аккаунт', id: 'confirmDelete', class: 'rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-700 mr-4 cursor-pointer' %>
+              <% end %>
+              <button id="cancelDelete" data-target="modal.cancelButton" data-action="click->modal#close" class="border border-gray-700 px-4 py-2 rounded-md text-gray-200 hover:bg-gray-700">Отмена</button>
+            </div>
           </div>
         </div>
       </div>
@@ -428,15 +422,3 @@
     <%= render partial: 'helpers/bad_notice' %>
   </div>
 </div>
-
-<script>
-    function confirmDelete() {
-        document.getElementById('modal').classList.remove('hidden');
-
-        document.getElementById('cancelDelete').addEventListener('click', function(event) {
-            document.getElementById('modal').classList.add('hidden');
-        });
-
-        return false;
-    }
-</script>
