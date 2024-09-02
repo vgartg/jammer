@@ -408,6 +408,7 @@
           <div class="modal-content bg-gray-800 p-4 rounded shadow-md w-full sm:w-96">
             <p class="text-lg text-gray-200">Введите ваш пароль для подтверждения удаления аккаунта:</p>
             <div class="mt-4">
+              <div data-target="modal.errorMessage" class="text-red-500 mb-4"></div>
               <%= form_for @user, url: user_path(@user), method: :delete, html: { class: 'delete-account-form', data: { action: 'submit->modal#submitForm' } } do |f| %>
                 <div class="mb-4">
                   <%= f.label :password, 'Пароль', class: 'block text-gray-300' %>

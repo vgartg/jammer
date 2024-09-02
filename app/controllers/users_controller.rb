@@ -37,12 +37,13 @@ class UsersController < ApplicationController
     if @user.authenticate(params[:user][:password])
       @user.destroy
       flash[:success] = 'Аккаунт успешно удален.'
-      redirect_to register_path
+      render json: { success: true }, status: :ok
     else
       flash[:error] = 'Неверный пароль.'
-      redirect_to dashboard_path
+      render json: { success: false, error: 'Неверный пароль.' }, status: :unprocessable_entity
     end
   end
+
 
   def edit_user
     @user = current_user
