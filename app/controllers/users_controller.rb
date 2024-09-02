@@ -34,8 +34,14 @@ class UsersController < ApplicationController
 
   def destroy
     @user = current_user
-    @user.destroy
-    redirect_to register_path
+    if @user.authenticate(params[:user][:password])
+      @user.destroy
+      flash[:success] = 'Аккаунт успешно удален.'
+      redirect_to register_path
+    else
+      flash[:error] = 'Неверный пароль.'
+      redirect_to dashboard_path
+    end
   end
 
   def edit_user
