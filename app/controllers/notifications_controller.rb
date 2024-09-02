@@ -10,7 +10,8 @@ class NotificationsController < ApplicationController
   end
 
   def mark_as_read
-    current_user.notifications.where(read: false).update_all(read: true)
-    head :no_content
+    @notifications = current_user.notifications.where(read: false)
+    @notifications.update_all(read: true)
+    render json: @notifications
   end
 end
