@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
     user = User.find_by_email(auth_params[:email])
     if user.present? && user.authenticate(auth_params[:password])
       session[:current_user] = user.id
+      Session.create_session(user.id, session[:session_id], request.remote_ip)
       if params[:remember_me] == "1"
         remember(user)
       end
@@ -21,6 +22,8 @@ class SessionsController < ApplicationController
 
   def destroy
     forget(current_user)
+    current_session = Session.find_by(session_id: session[:session_id])
+    current_session.destroy if current_session
     session[:current_user] = nil
     redirect_to root_path
   end
@@ -35,6 +38,18 @@ class SessionsController < ApplicationController
     user.forget_me
     cookies.delete :remember_token
     cookies.delete :current_user
+  end
+
+  def logout_other_sessions
+    if current_user && current_user.authenticate(params[:password])
+      current_user.invalidate_other_sessions(session[:session_id])
+      current_user.forget_me
+      flash[:success] = "Successfully logged out of other sessions"
+      redirect_to dashboard_path
+    else
+      flash[:failure] = "Invalid password"
+      redirect_to dashboard_path
+    end
   end
 
   private

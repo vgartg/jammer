@@ -1,3 +1,7 @@
+@import "cropperjs/dist/cropper.css";
+@import 'flatpickr/dist/flatpickr.min.css';
+@import 'flatpickr/dist/themes/dark.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

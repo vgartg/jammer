@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user
+  helper_method :require_subdomain
   before_action :update_last_active_at
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from ActionController::RoutingError, with: :render_404
@@ -22,7 +23,12 @@ class ApplicationController < ActionController::Base
         @current_user = user
       end
     end
-    @current_user
+
+    if @current_user && session[:session_id].present? && @current_user.sessions.where(session_id: session[:session_id]).exists?
+      return @current_user
+    end
+
+    @current_user = nil
   end
 
   def sign_in(user)
@@ -42,5 +48,20 @@ class ApplicationController < ActionController::Base
       logger.info "Rendering 404 with exception: #{exception.message}"
     end
     render template: 'errors/not_found', status: 404
+  end
+
+  def require_subdomain
+    subdomain = Subdomain.extract_subdomain(request)
+    if subdomain == "localhost" || subdomain == "127" # Пока такой костыль, на продакшене нужно поменять
+      render 'home/index'
+    else
+      @subdomain_owner = User.find_by_link_username(subdomain)
+      render_404 unless @subdomain_owner
+    end
+  end
+
+  # Сброс поддомена
+  def redirect_without_subdomain
+    redirect_to(request.path, subdomain: nil)
   end
 end

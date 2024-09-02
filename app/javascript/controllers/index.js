@@ -19,3 +19,15 @@ application.register("header", HeaderController)
 // @ts-ignore
 import FriendsController from "./friends_controller"
 application.register("friends", FriendsController)
+// @ts-ignore
+import UserController from "./user_controller"
+application.register("user", UserController)
+// @ts-ignore
+import OnlineController from "./online_controller"
+application.register("online", OnlineController)
+// @ts-ignore
+import SettingsController from "./settings_controller"
+application.register("settings", SettingsController)
+// @ts-ignore
+import CropperController from "./cropper_controller"
+application.register("cropper", CropperController)
