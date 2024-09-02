@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-    static targets = ['modal', 'cancelButton', 'errorMessage']
+    static targets = ['modal', 'cancelButton', 'errorMessage', 'password']
 
     connect() {
         this.modalTarget.classList.add('hidden')
@@ -14,6 +14,7 @@ export default class extends Controller {
 
     close() {
         this.modalTarget.classList.add('hidden')
+        this.passwordTarget.value = ''
     }
 
     async submitForm(event) {

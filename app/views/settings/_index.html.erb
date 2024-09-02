@@ -408,12 +408,12 @@
           <div class="modal-content bg-gray-800 p-4 rounded shadow-md w-full sm:w-96">
             <p class="text-lg text-gray-200">Введите ваш пароль для подтверждения удаления аккаунта:</p>
             <div class="mt-4">
-              <div data-target="modal.errorMessage" class="text-red-500 mb-4"></div>
               <%= form_for @user, url: user_path(@user), method: :delete, html: { class: 'delete-account-form', data: { action: 'submit->modal#submitForm' } } do |f| %>
                 <div class="mb-4">
                   <%= f.label :password, 'Пароль', class: 'block text-gray-300' %>
-                  <%= f.password_field :password, class: 'mt-1 block w-full rounded-md border-gray-700 bg-gray-900 text-gray-300 focus:border-indigo-500 focus:ring-indigo-500' %>
+                  <%= f.password_field :password, class: 'mt-1 block w-full rounded-md border-gray-700 bg-gray-900 text-gray-300 focus:border-indigo-500 focus:ring-indigo-500', data: { target: 'modal.password' } %>
                 </div>
+                <div data-target="modal.errorMessage" class="text-red-500 mb-4"></div>
                 <div class="flex justify-end">
                   <%= f.submit 'Удалить аккаунт', class: 'rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-700 mr-4 cursor-pointer' %>
                   <button id="cancelDelete" data-target="modal.cancelButton" data-action="click->modal#close" class="border border-gray-700 px-4 py-2 rounded-md text-gray-200 hover:bg-gray-700">Отмена</button>
