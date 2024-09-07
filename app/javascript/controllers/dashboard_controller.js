@@ -6,10 +6,12 @@ export default class extends Controller {
     connect() {
         const url = new URL(window.location.href);
         const hash = url.hash.substring(1); // Удаляем '#'
-        const menuItemTarget = this.menuItemTarget(); // Предполагаем, что у вас есть метод, который возвращает элемент меню с соответствующим data-content-id
+        const menuItemTarget = this.menuItemTarget(); // Предполагаем, что у вас есть метод,
+        // который возвращает элемент меню с соответствующим data-content-id
 
         // Определяем активный сегмент хеша
-        const activeContentId = hash || 'dashboard'; // Если хеш отсутствует, используем 'dashboard' по умолчанию
+        const activeContentId = hash || 'dashboard'; // Если хеш отсутствует, используем 'dashboard'
+        // по умолчанию
 
         // Скрыть все контенты
         const allContents = document.querySelectorAll('.content');
@@ -22,6 +24,11 @@ export default class extends Controller {
         if (selectedContent) {
             selectedContent.classList.remove('hidden');
             this.highlightMenuItem(menuItemTarget); // Метод для подсвечивания выбранного элемента меню
+        }
+
+        if (hash) {
+            this.dashboardChanger({ target: menuItemTarget }); // Вызываем событие,
+            // передавая menuItemTarget в качестве аргумента
         }
     }
 

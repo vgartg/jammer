@@ -6,26 +6,26 @@
       <ul role="list" class="flex min-w-full flex-none gap-x-6 px-4 text-sm
        font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8">
         <li>
-          <a href="#" class="text-indigo-400">Account</a>
+          <a href="#" data-action="click->settings#toggleSection" data-target="account-section" class="text-indigo-400">Account</a>
         </li>
         <li>
-          <a href="#" class="">Notifications</a>
+          <a href="#" data-action="click->settings#toggleSection" data-target="notifications-section" class="">Notifications</a>
         </li>
         <li>
-          <a href="#" class="">Billing</a>
+          <a href="#" data-action="click->settings#toggleSection" data-target="billing-section" class="">Billing</a>
         </li>
         <li>
-          <a href="#" class="">Teams</a>
+          <a href="#" data-action="click->settings#toggleSection" data-target="teams-section" class="">Teams</a>
         </li>
         <li>
-          <a href="#" class="">Integrations</a>
+          <a href="#" data-action="click->settings#toggleSection" data-target="integrations-section" class="">Integrations</a>
         </li>
       </ul>
     </nav>
   </header>
 
 
-  <div class="divide-y divide-white/5">
+  <div id="account-section" class="section divide-y set-menuitem divide-white/5">
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
         <h2 class="text-base font-semibold leading-7 text-white">Personal Information</h2>
@@ -425,8 +425,87 @@
       </div>
     </div>
 
-
     <%= render partial: 'helpers/good_notice' %>
     <%= render partial: 'helpers/bad_notice' %>
+  </div>
+
+  <div id="notifications-section" class="section divide-y set-menuitem h-full hidden">
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white">Какое-то поле (notifications)</h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400">Какое-то поле</p>
+      </div>
+
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
+        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+
+          <% 16.times do %>
+            <div class="field col-span-full">
+              <label class="block text-sm font-medium text-white">Какое-то поле (notifications)</label>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div id="billing-section" class="section divide-y set-menuitem hidden">
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white">Какое-то поле (billing)</h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400">Какое-то поле</p>
+      </div>
+
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
+        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+
+          <% 16.times do %>
+            <div class="field col-span-full">
+              <label class="block text-sm font-medium text-white">Какое-то поле (billing)</label>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div id="teams-section" class="section divide-y set-menuitem hidden">
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white">Какое-то поле (teams)</h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400">Какое-то поле</p>
+      </div>
+
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
+        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+
+          <% 16.times do %>
+            <div class="field col-span-full">
+              <label class="block text-sm font-medium text-white">Какое-то поле (teams)</label>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div id="integrations-section" class="section divide-y set-menuitem hidden">
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white">Какое-то поле (integrations)</h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400">Какое-то поле</p>
+      </div>
+
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
+        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+
+          <% 16.times do %>
+            <div class="field col-span-full">
+              <label class="block text-sm font-medium text-white">Какое-то поле (integrations)</label>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
