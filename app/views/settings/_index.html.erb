@@ -6,19 +6,24 @@
       <ul role="list" class="flex min-w-full flex-none gap-x-6 px-4 text-sm
        font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8">
         <li>
-          <a href="#" data-action="click->settings#toggleSection" data-target="account-section" class="text-indigo-400">Account</a>
+          <a href="#" data-action="click->settings#toggleSection" data-target="account-section"
+             class="change-set-button text-indigo-400">Account</a>
         </li>
         <li>
-          <a href="#" data-action="click->settings#toggleSection" data-target="notifications-section" class="">Notifications</a>
+          <a href="#" data-action="click->settings#toggleSection" data-target="notifications-section"
+             class="change-set-button">Notifications</a>
         </li>
         <li>
-          <a href="#" data-action="click->settings#toggleSection" data-target="billing-section" class="">Billing</a>
+          <a href="#" data-action="click->settings#toggleSection" data-target="billing-section"
+             class="change-set-button">Billing</a>
         </li>
         <li>
-          <a href="#" data-action="click->settings#toggleSection" data-target="teams-section" class="">Teams</a>
+          <a href="#" data-action="click->settings#toggleSection" data-target="teams-section"
+             class="change-set-button">Teams</a>
         </li>
         <li>
-          <a href="#" data-action="click->settings#toggleSection" data-target="integrations-section" class="">Integrations</a>
+          <a href="#" data-action="click->settings#toggleSection" data-target="integrations-section"
+             class="change-set-button">Integrations</a>
         </li>
       </ul>
     </nav>
@@ -43,12 +48,12 @@
                w-24 border-2 border-gray-300 object-cover" data-target="user.avatarImage">
             <% end %>
             <div>
-              <%= f.label :avatar, "Change avatar", class: "rounded-md bg-white/10 px-3 py-2 text-sm font-semibold
-              text-white shadow-sm hover:bg-white/20" %>
+              <%= render partial: 'helpers/cropper_modal' %>
               <%= f.file_field :avatar, class: "hidden", accept: "image/jpeg,image/png",
                                data: { max_size: 1.megabytes.to_i } %>
               <p class="mt-2 text-xs leading-5 text-gray-400">JPG or PNG. 1MB max.</p>
             </div>
+
           </div>
 
           <div class="field col-span-full">
@@ -57,12 +62,15 @@
               <div class="relative">
                 <div class="border-dashed border-2 border-gray-300 p-6 text-center rounded-md relative">
                   <% if @user.background_image.attached? %>
-                    <img data-background-image-target="currentBackgroundImg" id="current-background-img" src="<%= url_for(@user.background_image) %>"
+                    <img data-background-image-target="currentBackgroundImg"
+                         id="current-background-img" src="<%= url_for(@user.background_image) %>"
                          alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md" />
                   <% end %>
-                  <img data-background-image-target="previewImg" id="preview-img" src="#" alt="Предварительный просмотр изображения"
+                  <img data-background-image-target="previewImg" id="preview-img" src="#"
+                       alt="Предварительный просмотр изображения"
                        class="mt-4 hidden w-full h-auto object-cover rounded-md">
-                  <input data-background-image-target="input" type="file" name="user[background_image]" id="background_image"
+                  <input data-background-image-target="input" type="file" name="user[background_image]"
+                         id="background_image"
                          class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
                   <p class="text-white mt-4">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
                   <p class="text-white text-xs">Рекомендуемый размер: 1920x1080 пикселей</p>
@@ -70,9 +78,6 @@
               </div>
             </div>
           </div>
-
-
-          <%= render partial: 'helpers/cropper_modal' %>
 
           <div class="sm:col-span-3">
             <label for="name" class="block text-sm font-medium leading-6 text-white">Отображаемое имя</label>
@@ -401,22 +406,31 @@
         </div>
 
         <div>
-          <%= button_tag 'Удалить аккаунт', class: 'rounded-md bg-red-500 px-4 py-2 text-white font-semibold hover:bg-red-600', data: { action: 'click->modal#open' } %>
+          <%= button_tag 'Удалить аккаунт',
+                         class: 'rounded-md bg-red-500 px-4 py-2 text-white font-semibold hover:bg-red-600',
+                         data: { action: 'click->modal#open' } %>
         </div>
 
-        <div id="modal" data-target="modal.modal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+        <div id="modal" data-target="modal.modal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75
+         flex items-center justify-center z-50">
           <div class="modal-content bg-gray-800 p-4 rounded shadow-md w-full sm:w-96">
             <p class="text-lg text-gray-200">Введите ваш пароль для подтверждения удаления аккаунта:</p>
             <div class="mt-4">
-              <%= form_for @user, url: user_path(@user), method: :delete, html: { class: 'delete-account-form', data: { action: 'submit->modal#submitForm' } } do |f| %>
+              <%= form_for @user, url: user_path(@user), method: :delete, html: { class: 'delete-account-form',
+                  data: { action: 'submit->modal#submitForm' } } do |f| %>
                 <div class="mb-4">
                   <%= f.label :password, 'Пароль', class: 'block text-gray-300' %>
-                  <%= f.password_field :password, class: 'mt-1 block w-full rounded-md border-gray-700 bg-gray-900 text-gray-300 focus:border-indigo-500 focus:ring-indigo-500', data: { target: 'modal.password' } %>
+                  <%= f.password_field :password, class: 'mt-1 block w-full rounded-md
+                  border-gray-700 bg-gray-900 text-gray-300 focus:border-indigo-500
+                  focus:ring-indigo-500', data: { target: 'modal.password' } %>
                 </div>
                 <div data-target="modal.errorMessage" class="text-red-500 mb-4"></div>
                 <div class="flex justify-end">
-                  <%= f.submit 'Удалить аккаунт', class: 'rounded-md bg-red-600 px-4 py-2 text-white font-semibold hover:bg-red-700 mr-4 cursor-pointer' %>
-                  <button id="cancelDelete" data-target="modal.cancelButton" data-action="click->modal#close" class="border border-gray-700 px-4 py-2 rounded-md text-gray-200 hover:bg-gray-700">Отмена</button>
+                  <%= f.submit 'Удалить аккаунт', class: 'rounded-md bg-red-600 px-4 py-2 text-white
+                   font-semibold hover:bg-red-700 mr-4 cursor-pointer' %>
+                  <button id="cancelDelete" data-target="modal.cancelButton"
+                          data-action="click->modal#close" class="border border-gray-700 px-4
+                          py-2 rounded-md text-gray-200 hover:bg-gray-700">Отмена</button>
                 </div>
               <% end %>
             </div>
