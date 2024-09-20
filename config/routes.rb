@@ -25,7 +25,6 @@ Rails.application.routes.draw do
   get '/users', to: "users#index"
 
   # Edit/Update user
-  get '/edit_user', to: "users#edit_user"
   put '/users/:id', to: 'users#update_user'
   post 'update_activity', to: 'users#update_activity'
 
