@@ -111,7 +111,7 @@
               <% if @user.birthday.blank? %>
                 <span>Информации нет</span>
               <% else %>
-                <span><%= @user.birthday %></span>
+                <span><%= Date.parse(@user.birthday).strftime("%d.%m.%Y") %></span>
               <% end %>
             </dd>
           </div>
