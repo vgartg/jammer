@@ -23,6 +23,9 @@ class User < ActiveRecord::Base
 
   has_many :sessions, dependent: :destroy
 
+  has_many :notifications, ->(user) { unscope(where: :user_id).where("actor_id = ? OR recipient_id = ?", user.id, user.id) },
+           class_name: 'Notification', dependent: :destroy
+
   attr_accessor :current_password
 
   def password_length

@@ -55,21 +55,25 @@
              data-target="notifications.notificationsMenu"
              style="max-height: 60vh;">
           <% if @notifications.any? %>
-            <% @notifications.order(created_at: :desc).each do |notification| %>
+            <% @notifications.order(created_at: :desc).first(8).each do |notification| %>
               <% if notification.actor %>
                 <div class="flex items-start px-4 py-3 border-b border-gray-200">
                   <div class="mr-3">
+                    <a href='<%= '/users/' + notification.actor.id.to_s %>'>
                     <% if notification.actor.avatar.attached? %>
                       <%= image_tag url_for(notification.actor.avatar), alt: "Profile Picture",
-                                    class: "h-8 w-8 text-gray-400" %>
+                                    class: "w-16 text-gray-400" %>
                     <% else %>
                       <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                           class="h-8 w-8 text-gray-400">
+                           class="w-16 text-gray-400">
                     <% end %>
+                    </a>
                   </div>
                   <div>
                     <p class="text-sm font-medium text-gray-900">
-                      <%= notification.actor.name %>
+                      <a href='<%= '/users/' + notification.actor.id.to_s %>'>
+                        <%= notification.actor.name %>
+                      </a>
                       <% if notification.action == 'accepted_friendship' %>
                         принял заявку в друзья
                       <% elsif notification.action == 'sent_friend_request' %>
