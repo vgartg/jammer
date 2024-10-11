@@ -65,4 +65,6 @@ Rails.application.routes.draw do
     delete 'destroy_all_notifications', on: :collection
   end
   patch '/notifications/mark_as_read', to: 'notifications#mark_as_read'
+
+  get '/notifications', to: 'notifications#index'
 end

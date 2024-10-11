@@ -90,6 +90,9 @@
           <% else %>
             <p class="px-4 py-2 text-sm text-gray-600">No notifications to display.</p>
           <% end %>
+          <% if @notifications.count > 8 %>
+            <a href="/notifications" class="flex justify-center p-1">Показать все</a>
+          <% end %>
           <!--
           <button data-action="click->notifications#toggleNotificationsMenu"
                   class="ml-4 text-sm font-semibold leading-6 text-black">
