@@ -5,10 +5,14 @@ class User < ActiveRecord::Base
   VISIBILITY_FRIENDS = 'Friends'
   VISIBILITY_NONE = 'None'
 
+  THEME_LIGHT = 'Light'
+  THEME_DARK = 'Dark'
+
   validates :name, :email, presence: true, uniqueness: true
   validates :password, :password_confirmation, presence: true, on: :create
 
   validates :visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
+  validates :theme, inclusion: { in: [THEME_LIGHT, THEME_DARK] }
 
   validate :password_length, on: :create
   has_secure_password
