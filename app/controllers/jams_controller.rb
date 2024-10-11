@@ -12,7 +12,7 @@ class JamsController < ApplicationController
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
       @jams = Jam.where("LOWER(jams.name) LIKE ? OR LOWER(jams.description) LIKE ?",
-                          lower_case_search, lower_case_search)
+                        lower_case_search, lower_case_search)
     else
       @jams = Jam.all
     end
@@ -68,7 +68,7 @@ class JamsController < ApplicationController
   def destroy
     @jam = current_user.jams.find_by_id(params[:id])
     @jam.destroy
-    redirect_to jams_showcase_path
+    redirect_to :dashboard
   end
 
   private

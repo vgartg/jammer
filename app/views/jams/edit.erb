@@ -1,0 +1,84 @@
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+
+    <%= render partial: 'helpers/errors' %>
+
+    <%= form_with(model: @jam, url: jam_update_path(@jam), method: :patch, local: true) do |f| %>
+      <div class="mt-4">
+        <%= f.label :name, "Название джема", class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= f.text_field :name, required: true,
+                           class: "block w-full appearance-none rounded-md border border-gray-300
+                                  px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
+                                  focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <%= f.label :description, "Описание", class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= f.text_area :description, required: true,
+                          class: "block w-full appearance-none rounded-md border border-gray-300
+                                 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
+                                 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <%= f.label :start_date, "Дата начала", class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= f.date_field :start_date, required: true,
+                           class: "block w-full appearance-none rounded-md border border-gray-300
+                                  px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
+                                  focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <%= f.label :deadline, "Дедлайн сдачи работ", class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= f.date_field :deadline, required: true,
+                           class: "block w-full appearance-none rounded-md border border-gray-300
+                                  px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
+                                  focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <%= f.label :end_date, "Дата окончания джема", class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= f.date_field :end_date, required: true,
+                           class: "block w-full appearance-none rounded-md border border-gray-300
+                                  px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
+                                  focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <%= f.label :cover, "Обложка", class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= f.file_field :cover, required: true,
+                           class: "block w-full appearance-none rounded-md border border-gray-300
+                                  px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
+                                  focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <%= f.label :logo, "Логотип", class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= f.file_field :logo, required: true,
+                           class: "block w-full appearance-none rounded-md border border-gray-300
+                                  px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
+                                  focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+      </div>
+
+
+      <%= submit_tag 'Изменить джем', class: "mt-4 flex w-full justify-center rounded-md border
+                     border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
+                     hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+
+    <% end %>
+  </div>
+</div>
