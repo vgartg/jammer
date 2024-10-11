@@ -7,6 +7,15 @@ class FriendshipsController < ApplicationController
     @sent_requests = current_user.friendships.where(status: 'pending')
     @received_requests = current_user.inverse_friendships.where(status: 'pending')
     @current_user = current_user
+    @notifications = current_user.notifications
+  end
+
+  def requests
+    @friendships = current_user.friendships.where(status: 'accepted') + current_user.inverse_friendships.where(status: 'accepted')
+    @sent_requests = current_user.friendships.where(status: 'pending')
+    @received_requests = current_user.inverse_friendships.where(status: 'pending')
+    @current_user = current_user
+    @notifications = current_user.notifications
   end
 
   def create

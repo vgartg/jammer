@@ -4,32 +4,32 @@ export default class extends Controller {
     static targets = ["profileMenu", "grayBlock", "leftBlock", "menuItem", "content"];
 
     connect() {
-        const url = new URL(window.location.href);
-        const hash = url.hash.substring(1); // Удаляем '#'
-        const menuItemTarget = this.menuItemTarget(); // Предполагаем, что у вас есть метод,
-        // который возвращает элемент меню с соответствующим data-content-id
-
-        // Определяем активный сегмент хеша
-        const activeContentId = hash || 'dashboard'; // Если хеш отсутствует, используем 'dashboard'
-        // по умолчанию
-
-        // Скрыть все контенты
-        const allContents = document.querySelectorAll('.content');
-        allContents.forEach(content => {
-            content.classList.add('hidden');
-        });
-
-        // Показать и подсвечить выбранный контент
-        const selectedContent = document.getElementById(activeContentId);
-        if (selectedContent) {
-            selectedContent.classList.remove('hidden');
-            this.highlightMenuItem(menuItemTarget); // Метод для подсвечивания выбранного элемента меню
-        }
-
-        if (hash) {
-            this.dashboardChanger({ target: menuItemTarget }); // Вызываем событие,
-            // передавая menuItemTarget в качестве аргумента
-        }
+        // const url = new URL(window.location.href);
+        // const hash = url.hash.substring(1); // Удаляем '#'
+        // const menuItemTarget = this.menuItemTarget(); // Предполагаем, что у вас есть метод,
+        // // который возвращает элемент меню с соответствующим data-content-id
+        //
+        // // Определяем активный сегмент хеша
+        // const activeContentId = hash || 'dashboard'; // Если хеш отсутствует, используем 'dashboard'
+        // // по умолчанию
+        //
+        // // Скрыть все контенты
+        // const allContents = document.querySelectorAll('.content');
+        // allContents.forEach(content => {
+        //     content.classList.add('hidden');
+        // });
+        //
+        // // Показать и подсвечить выбранный контент
+        // const selectedContent = document.getElementById(activeContentId);
+        // if (selectedContent) {
+        //     selectedContent.classList.remove('hidden');
+        //     this.highlightMenuItem(menuItemTarget); // Метод для подсвечивания выбранного элемента меню
+        // }
+        //
+        // if (hash) {
+        //     this.dashboardChanger({ target: menuItemTarget }); // Вызываем событие,
+        //     // передавая menuItemTarget в качестве аргумента
+        // }
     }
 
     menuItemTarget() {
@@ -84,9 +84,13 @@ export default class extends Controller {
         const menuItem = event.target.closest('li');
 
         const selectedContentId = menuItem.getAttribute('data-content-id');
-        const url = new URL(window.location.href);
-        url.hash = selectedContentId;
-        window.history.pushState({}, '', url.href);
+        //const url = new URL(window.location.href);
+        // url.hash = selectedContentId;
+        // window.history.pushState({}, '', url.href);
+
+        if (selectedContentId !== 'zaglushka') {
+            window.location = '/' + selectedContentId;
+        }
 
         if (!menuItem) return;
 
@@ -107,7 +111,7 @@ export default class extends Controller {
             content.classList.add('hidden');
         });
 
-        const selectedContent = document.getElementById(selectedContentId);
+        const selectedContent= document.getElementById(selectedContentId);
         if (selectedContent) {
             selectedContent.classList.remove('hidden');
         }

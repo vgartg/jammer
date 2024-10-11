@@ -2,12 +2,15 @@ class JamsController < ApplicationController
   before_action :authenticate_user, only: [:new, :create, :edit, :update]
 
   def new
-
+    @notifications = current_user.notifications
   end
 
   def showcase
     @search_results = nil
     @tags = Tag.all
+    if current_user
+      @notifications = current_user.notifications
+    end
 
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
@@ -34,6 +37,9 @@ class JamsController < ApplicationController
 
   def show
     @jam = Jam.find(params[:id])
+    if current_user
+      @notifications = current_user.notifications
+    end
   end
 
   def create

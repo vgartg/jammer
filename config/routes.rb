@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     get '/', to: 'users#frontpage', as: 'frontpage'
   end
 
-  root "home#index"
+  root "home#index", to: 'home#index'
 
   # Registration and Auth
   get "/register", to: "users#new"
@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       end
     end
   end
+  get '/requests', to: 'friendships#requests'
 
   # Sessions
   resources :sessions do
@@ -67,4 +68,6 @@ Rails.application.routes.draw do
   patch '/notifications/mark_as_read', to: 'notifications#mark_as_read'
 
   get '/notifications', to: 'notifications#index'
+
+  get '/settings', to: 'settings#index'
 end

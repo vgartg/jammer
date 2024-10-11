@@ -11,12 +11,16 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @current_user = User.find_by_id(session[:current_user])
     if @current_user
+      @notifications = current_user.notifications
       @friendship = @current_user.friendship_with(@user)
     end
   end
 
   def index
     @users = User.all
+    if current_user
+      @notifications = current_user.notifications
+    end
   end
 
   def create

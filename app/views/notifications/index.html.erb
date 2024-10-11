@@ -1,36 +1,43 @@
-<% if @notifications.any? %>
-  <% @notifications.order(created_at: :desc).each do |notification| %>
-    <% if notification.actor %>
-      <div class="flex items-start px-4 py-3 border-b border-gray-200">
-        <div class="mr-3">
-          <a href='<%= '/users/' + notification.actor.id.to_s %>'>
-            <% if notification.actor.avatar.attached? %>
-              <%= image_tag url_for(notification.actor.avatar), alt: "Profile Picture",
-                            class: "w-16 text-gray-400" %>
-            <% else %>
-              <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                   class="w-16 text-gray-400">
-            <% end %>
-          </a>
-        </div>
-        <div>
-          <p class="text-sm font-medium text-gray-900">
-            <a href='<%= '/users/' + notification.actor.id.to_s %>'>
-              <%= notification.actor.name %>
-            </a>
-            <% if notification.action == 'accepted_friendship' %>
-              принял заявку в друзья
-            <% elsif notification.action == 'sent_friend_request' %>
-              отправил запрос в друзья
-            <% else %>
-              <%= notification.action %>
-            <% end %>
-          </p>
-          <p class="text-xs text-gray-500"><%= notification.created_at.strftime("%d.%m.%Y, %H:%M")%></p>
-        </div>
-      </div>
+<div class="bg-white">
+  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="flex justify-between items-center px-4">
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900">Уведомления</h2>
+    </div>
+    <% if @notifications.any? %>
+      <% @notifications.order(created_at: :desc).each do |notification| %>
+        <% if notification.actor %>
+          <div class="flex items-start px-4 py-3 border-b border-gray-200">
+            <div class="mr-3">
+              <a href='<%= '/users/' + notification.actor.id.to_s %>'>
+                <% if notification.actor.avatar.attached? %>
+                  <%= image_tag url_for(notification.actor.avatar), alt: "Profile Picture",
+                                class: "w-16 text-gray-400" %>
+                <% else %>
+                  <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                       class="w-16 text-gray-400">
+                <% end %>
+              </a>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">
+                <a href='<%= '/users/' + notification.actor.id.to_s %>'>
+                  <%= notification.actor.name %>
+                </a>
+                <% if notification.action == 'accepted_friendship' %>
+                  принял заявку в друзья
+                <% elsif notification.action == 'sent_friend_request' %>
+                  отправил запрос в друзья
+                <% else %>
+                  <%= notification.action %>
+                <% end %>
+              </p>
+              <p class="text-xs text-gray-500"><%= notification.created_at.strftime("%d.%m.%Y, %H:%M")%></p>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% else %>
+      <p>No notifications to display.</p>
     <% end %>
-  <% end %>
-<% else %>
-  <p>No notifications to display.</p>
-<% end %>
+  </div>
+</div>
