@@ -74,7 +74,7 @@ class GamesController < ApplicationController
   def destroy
     @game = current_user.games.find_by_id(params[:id])
     @game.destroy
-    redirect_to games_showcase_path
+    redirect_to dashboard_path
   end
 
   private

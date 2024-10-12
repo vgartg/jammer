@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user
   helper_method :require_subdomain
+  before_action :require_subdomain
   before_action :update_last_active_at
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from ActionController::RoutingError, with: :render_404
@@ -54,14 +55,12 @@ class ApplicationController < ActionController::Base
     subdomain = Subdomain.extract_subdomain(request)
     if subdomain == "localhost" || subdomain == "127" # Пока такой костыль, на продакшене нужно поменять
       render 'home/index'
-    else
+    elsif request.path == "/"
       @subdomain_owner = User.find_by_link_username(subdomain)
       render_404 unless @subdomain_owner
+    else
+      path = Subdomain.delete_subdomain(request)
+      render js: %(window.location.href='#{path}')
     end
-  end
-
-  # Сброс поддомена
-  def redirect_without_subdomain
-    redirect_to(request.path, subdomain: nil)
   end
 end
