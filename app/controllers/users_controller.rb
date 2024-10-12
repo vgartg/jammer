@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user, only: [:edit_user, :update_user, :destroy]
   before_action :require_subdomain, only: :frontpage
+
   def new
     if current_user
       redirect_to user_path(current_user.id)
@@ -99,10 +100,11 @@ class UsersController < ApplicationController
   end
 
   private
+
   def user_params
     params.require(:user)
           .permit(:name, :email, :password, :password_confirmation, :avatar, :background_image,
                   :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
-                  :visibility)
+                  :visibility, :jams_visibility)
   end
 end

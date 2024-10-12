@@ -1,5 +1,5 @@
 <div class="bg-gray-900" data-controller="settings">
-<h1 class="sr-only">Account Settings</h1>
+  <h1 class="sr-only">Account Settings</h1>
 
   <header class="border-b border-white/5">
     <nav class="flex overflow-x-auto py-4">
@@ -32,7 +32,7 @@
         <p class="mt-1 text-sm leading-6 text-gray-400">Use a permanent address where you can receive mail.</p>
       </div>
 
-        <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
           <div class="col-span-full flex items-center gap-x-8">
             <% if @user && @user.avatar.attached? %>
@@ -56,7 +56,7 @@
             <div class="relative">
               <div class="border-dashed border-2 border-gray-300 p-6 text-center rounded-md relative">
                 <% if @user.background_image.attached? %>
-                  <img id="current-background-img" src="<%= url_for(@user.background_image) %>" alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md" />
+                  <img id="current-background-img" src="<%= url_for(@user.background_image) %>" alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md"/>
                 <% end %>
                 <img id="preview-img" src="#" alt="Предварительный просмотр изображения" class="mt-4 hidden w-full h-auto object-cover rounded-md">
                 <input type="file" name="user[background_image]" id="background_image" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" onchange="updateBackgroundImage(event)">
@@ -95,9 +95,9 @@
             <label for="email" class="block text-sm font-medium leading-6 text-white">Email</label>
             <div class="mt-2">
               <%= f.email_field :email, id: 'email',
-                               value: @user.email,
-                               autocomplete: 'email',
-                               class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
+                                value: @user.email,
+                                autocomplete: 'email',
+                                class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
                       shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                       focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
             </div>
@@ -133,7 +133,7 @@
             <label for="timezone" class="block text-sm font-medium leading-6 text-white">Часовой пояс</label>
             <div class="mt-2 relative">
               <%= f.select :timezone,
-                           options_for_select([ # Уберем (если что) один из вариантов: либо с UTC, либо без
+                           options_for_select([# Уберем (если что) один из вариантов: либо с UTC, либо без
                                                 ['America/Anchorage', 'America/Anchorage (UTC-09:00)'],
                                                 ['America/Caracas', 'America/Caracas (UTC-04:00)'],
                                                 ['America/Chicago', 'America/Chicago (UTC-06:00)'],
@@ -248,7 +248,7 @@
                           focus:ring-offset-2 cursor-pointer" %>
           <% end %>
         </div>
-        <% end %>
+      <% end %>
     </div>
 
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
@@ -292,6 +292,46 @@
       <% end %>
     </div>
 
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white">Set Jams Visibility</h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400">
+          Select who can see jams you are administrating.
+        </p>
+      </div>
+
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
+        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+
+          <div class="col-span-full">
+            <label for="timezone" class="block text-sm font-medium leading-6 text-white">Who can see my jams?</label>
+            <div class="mt-2 relative">
+              <%= f.select :jams_visibility,
+                           options_for_select([
+                                                ['All'],
+                                                ['Friends'],
+                                                ['None']
+                                              ], selected: @user.jams_visibility),
+                           {},
+                           class: 'block w-full appearance-none rounded-md bg-gray-800 text-white py-2
+                           px-3 leading-tight focus:outline-none focus:ring-2
+                           focus:ring-indigo-500 max-h-48 overflow-y-auto',
+                           id: 'jams_visibility' %>
+            </div>
+          </div>
+
+          <% if @user.id == session[:current_user] %>
+            <div class="mt-4">
+              <%= f.submit "Save", id: "account-jam-info-button-save", class: "mt-4 flex w-50 justify-center
+               rounded-md border
+                         border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                         shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                          focus:ring-offset-2 cursor-pointer" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
 
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
@@ -307,7 +347,7 @@
             </label>
             <div class="mt-2">
               <%= f.password_field :current_password, id: 'current-password',
-                               class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1
+                                   class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1
                      ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500
                      sm:text-sm sm:leading-6' %>
             </div>
@@ -356,7 +396,7 @@
           sessions across all of your devices.
         </p>
         <p class="mt-1 text-sm leading-6 text-red-400">Attention!
-        <span class="mt-1 text-sm leading-6 text-gray-400">After logging out of other sessions, your account
+          <span class="mt-1 text-sm leading-6 text-gray-400">After logging out of other sessions, your account
           will be forgotten on our platform, i.e. the "Remember me" button will be reset
           if you pressed it during authorization</span>
         </p>
@@ -414,7 +454,7 @@
         if (input.files && input.files[0]) {
             const reader = new FileReader();
 
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 // Скрыть текущее изображение
                 if (currentBackgroundImg) {
                     currentBackgroundImg.style.display = 'none';

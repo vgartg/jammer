@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   validates :password, :password_confirmation, presence: true, on: :create
 
   validates :visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
+  validates :jams_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
 
   validate :password_length, on: :create
   has_secure_password
@@ -40,7 +41,6 @@ class User < ActiveRecord::Base
     friendship = friendships.find_by(friend: user) || inverse_friendships.find_by(user: user)
     friendship.update(status: 'accepted') if friendship
   end
-
 
   def remove_friend(user)
     friendship = friendships.find_by(friend: user)
@@ -89,6 +89,19 @@ class User < ActiveRecord::Base
 
   def can_see_online?(other_user)
     case self.visibility
+    when VISIBILITY_ALL
+      return true
+    when VISIBILITY_FRIENDS
+      active_friendships = self.friendships.where(status: 'accepted').pluck(:friend_id) +
+        self.inverse_friendships.where(status: 'accepted').pluck(:user_id)
+      return active_friendships.include?(other_user.id) if other_user
+    when VISIBILITY_NONE
+      return false
+    end
+  end
+
+  def can_see_jams?(other_user)
+    case self.jams_visibility
     when VISIBILITY_ALL
       return true
     when VISIBILITY_FRIENDS

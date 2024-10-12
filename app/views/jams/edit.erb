@@ -57,7 +57,7 @@
       <div class="mt-4">
         <%= f.label :cover, "Обложка", class: "block text-sm font-medium text-gray-700" %>
         <div class="mt-1">
-          <%= f.file_field :cover, required: true,
+          <%= f.file_field :cover, required: false,
                            class: "block w-full appearance-none rounded-md border border-gray-300
                                   px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
                                   focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
@@ -67,7 +67,7 @@
       <div class="mt-4">
         <%= f.label :logo, "Логотип", class: "block text-sm font-medium text-gray-700" %>
         <div class="mt-1">
-          <%= f.file_field :logo, required: true,
+          <%= f.file_field :logo, required: false,
                            class: "block w-full appearance-none rounded-md border border-gray-300
                                   px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
                                   focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
