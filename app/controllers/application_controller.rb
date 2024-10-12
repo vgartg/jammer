@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    if @current_user && session[:session_id].present? && @current_user.sessions.where(session_id: session[:session_id]).exists?
+    if @current_user && session[:session_id].present? && @current_user.sessions.where(user_id: @current_user.id).exists?
       return @current_user
     end
 
