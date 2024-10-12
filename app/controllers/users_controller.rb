@@ -11,12 +11,16 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @current_user = User.find_by_id(session[:current_user])
     if @current_user
+      @notifications = current_user.notifications
       @friendship = @current_user.friendship_with(@user)
     end
   end
 
   def index
     @users = User.all
+    if current_user
+      @notifications = current_user.notifications
+    end
   end
 
   def create
@@ -34,9 +38,16 @@ class UsersController < ApplicationController
 
   def destroy
     @user = current_user
-    @user.destroy
-    redirect_to register_path
+    if @user.authenticate(params[:user][:password])
+      @user.destroy
+      flash[:success] = 'Аккаунт успешно удален.'
+      render json: { success: true }, status: :ok
+    else
+      flash[:error] = 'Неверный пароль.'
+      render json: { success: false, error: 'Неверный пароль.' }, status: :unprocessable_entity
+    end
   end
+
 
   def edit_user
     @user = current_user
@@ -103,6 +114,6 @@ class UsersController < ApplicationController
     params.require(:user)
           .permit(:name, :email, :password, :password_confirmation, :avatar, :background_image,
                   :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
-                  :visibility)
+                  :visibility, :theme)
   end
 end

@@ -65,13 +65,10 @@
                         hover:bg-red-600 transition-colors duration-200" %>
             <% end %>
           <% else %>
-            <%= button_to "Edit profile", edit_user_path, method: :get,
-                          class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
-                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
-
-            <%= button_to "Delete profile", user_destroy_path, method: :delete,
-                          class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
-                          text-red-900 shadow-sm ring-1 ring-inset ring-red-300 hover:bg-gray-50" %>
+            <a href="/dashboard#settings" class="inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
+                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+              Edit profile
+            </a>
           <% end %>
         </div>
       </div>
@@ -114,7 +111,7 @@
               <% if @user.birthday.blank? %>
                 <span>Информации нет</span>
               <% else %>
-                <span><%= @user.birthday %></span>
+                <span><%= Date.parse(@user.birthday).strftime("%d.%m.%Y") %></span>
               <% end %>
             </dd>
           </div>

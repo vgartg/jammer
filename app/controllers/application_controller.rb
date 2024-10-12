@@ -59,9 +59,4 @@ class ApplicationController < ActionController::Base
       render_404 unless @subdomain_owner
     end
   end
-
-  # Сброс поддомена
-  def redirect_without_subdomain
-    redirect_to(request.path, subdomain: nil)
-  end
 end

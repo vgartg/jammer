@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     get '/', to: 'users#frontpage', as: 'frontpage'
   end
 
-  root "home#index"
+  root "home#index", to: 'home#index'
 
   # Registration and Auth
   get "/register", to: "users#new"
@@ -25,7 +25,6 @@ Rails.application.routes.draw do
   get '/users', to: "users#index"
 
   # Edit/Update user
-  get '/edit_user', to: "users#edit_user"
   put '/users/:id', to: 'users#update_user'
   post 'update_activity', to: 'users#update_activity'
 
@@ -38,6 +37,7 @@ Rails.application.routes.draw do
       end
     end
   end
+  get '/requests', to: 'friendships#requests'
 
   # Sessions
   resources :sessions do
@@ -61,4 +61,13 @@ Rails.application.routes.draw do
   delete '/jams/:id', to: 'jams#destroy', as: 'jam_destroy'
   get '/jams/:id', to: "jams#show", as: 'jam_profile'
   get '/jams_showcase', to: 'jams#showcase'
+
+  resources :notifications, only: [:index, :show] do
+    delete 'destroy_all_notifications', on: :collection
+  end
+  patch '/notifications/mark_as_read', to: 'notifications#mark_as_read'
+
+  get '/notifications', to: 'notifications#index'
+
+  get '/settings', to: 'settings#index'
 end
