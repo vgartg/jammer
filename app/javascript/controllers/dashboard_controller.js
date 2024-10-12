@@ -83,37 +83,55 @@ export default class extends Controller {
     dashboardChanger(event) {
         const menuItem = event.target.closest('li');
 
+        if (!menuItem) return;
+
         const selectedContentId = menuItem.getAttribute('data-content-id');
-        //const url = new URL(window.location.href);
+
+        // OLD TRY TO EDIT ROUTES ->
+        // const url = new URL(window.location.href);
         // url.hash = selectedContentId;
         // window.history.pushState({}, '', url.href);
+
+        // NEW TRY TO EDIT ROUTES ->
+        // const selectedContentId = menuItem.getAttribute('data-content-id');
+        // const url = new URL(window.location.host + '/' + selectedContentId);
+        // window.history.pushState({}, '', url.href);
+        //
+        // console.log(window.location);
+        // console.log(window.location.host + '/' + selectedContentId);
+        // console.log(url);
+        // console.log(url.hash);
+        // console.log(url.href);
 
         if (selectedContentId !== 'zaglushka') {
             window.location = '/' + selectedContentId;
         }
 
-        if (!menuItem) return;
+        console.log(menuItem);
+        console.log(selectedContentId);
 
-        const menuItems = document.querySelectorAll('.group.flex.gap-x-3.rounded-md.p-2.text-sm.font-semibold.leading-6.text-gray-400');
-        menuItems.forEach(item => {
-            item.classList.remove('selected', 'bg-gray-800');
-            const link = item.querySelector('a');
-            if (link) {
-                link.classList.remove('text-white');
-            }
-        });
+        // Will hide while not fix
 
-        menuItem.classList.add('selected', 'bg-gray-800');
-        menuItem.querySelector('a').classList.add('text-white');
+        // const menuItems = document.querySelectorAll('.group.flex.gap-x-3.rounded-md.p-2.text-sm.font-semibold.leading-6.text-gray-400');
+        // menuItems.forEach(item => {
+        //     item.classList.remove('selected', 'bg-gray-800');
+        //     const link = item.querySelector('a');
+        //     if (link) {
+        //         link.classList.remove('text-white');
+        //     }
+        // });
+        //
+        // menuItem.classList.add('selected', 'bg-gray-800');
+        // menuItem.querySelector('a').classList.add('text-white');
+        //
+        // const allContents = document.querySelectorAll('.content');
+        // allContents.forEach(content => {
+        //     content.classList.add('hidden');
+        // });
 
-        const allContents = document.querySelectorAll('.content');
-        allContents.forEach(content => {
-            content.classList.add('hidden');
-        });
-
-        const selectedContent= document.getElementById(selectedContentId);
-        if (selectedContent) {
-            selectedContent.classList.remove('hidden');
-        }
+        // const selectedContent= document.getElementById(selectedContentId);
+        // if (selectedContent) {
+        //     selectedContent.classList.remove('hidden');
+        // }
     }
 }
