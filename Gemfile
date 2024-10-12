@@ -1,10 +1,9 @@
 source "https://rubygems.org"
 
-ruby "3.3.4"
+ruby "3.3.5"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.1.3", ">= 7.1.3.4"
-
+gem "rails", "~> 8.0.0.beta1"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
@@ -52,6 +51,8 @@ gem 'rexml', '>= 3.3.6'
 gem 'browser'
 
 gem 'flatpickr'
+
+gem 'psych', "5.1.2"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
