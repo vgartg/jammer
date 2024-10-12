@@ -107,6 +107,8 @@ class UsersController < ApplicationController
   def frontpage
     subdomain = Subdomain.extract_subdomain(request)
     @user = User.find_by_link_username(subdomain)
+    @current_user = current_user
+    @notifications = current_user.notifications
   end
 
   private
