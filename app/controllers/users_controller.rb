@@ -27,7 +27,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       session[:current_user] = @user.id
-      Session.create_session(@user.id, session[:session_id], request.remote_ip)
+      browser_string = request.user_agent
+      browser = UserAgent.parse(browser_string).browser
+      Session.create_session(@user.id, session[:session_id], request.remote_ip, browser: browser)
       @user.update(last_seen_at: Time.zone.now)
       redirect_to dashboard_path
     else
