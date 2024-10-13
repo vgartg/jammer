@@ -4,32 +4,13 @@ export default class extends Controller {
     static targets = ["profileMenu", "grayBlock", "leftBlock", "menuItem", "content"];
 
     connect() {
-        // const url = new URL(window.location.href);
-        // const hash = url.hash.substring(1); // Удаляем '#'
-        // const menuItemTarget = this.menuItemTarget(); // Предполагаем, что у вас есть метод,
-        // // который возвращает элемент меню с соответствующим data-content-id
-        //
-        // // Определяем активный сегмент хеша
-        // const activeContentId = hash || 'dashboard'; // Если хеш отсутствует, используем 'dashboard'
-        // // по умолчанию
-        //
-        // // Скрыть все контенты
-        // const allContents = document.querySelectorAll('.content');
-        // allContents.forEach(content => {
-        //     content.classList.add('hidden');
-        // });
-        //
-        // // Показать и подсвечить выбранный контент
-        // const selectedContent = document.getElementById(activeContentId);
-        // if (selectedContent) {
-        //     selectedContent.classList.remove('hidden');
-        //     this.highlightMenuItem(menuItemTarget); // Метод для подсвечивания выбранного элемента меню
-        // }
-        //
-        // if (hash) {
-        //     this.dashboardChanger({ target: menuItemTarget }); // Вызываем событие,
-        //     // передавая menuItemTarget в качестве аргумента
-        // }
+        let selectedContentId = window.location.pathname.split('/')[1];
+        let cur_items = document.querySelectorAll('#' + selectedContentId);
+
+        cur_items.forEach(content => {
+                 content.classList.add('bg-gray-800');
+                 content.querySelector('a').classList.add('text-white');
+        });
     }
 
     menuItemTarget() {
@@ -87,51 +68,8 @@ export default class extends Controller {
 
         const selectedContentId = menuItem.getAttribute('data-content-id');
 
-        // OLD TRY TO EDIT ROUTES ->
-        // const url = new URL(window.location.href);
-        // url.hash = selectedContentId;
-        // window.history.pushState({}, '', url.href);
-
-        // NEW TRY TO EDIT ROUTES ->
-        // const selectedContentId = menuItem.getAttribute('data-content-id');
-        // const url = new URL(window.location.host + '/' + selectedContentId);
-        // window.history.pushState({}, '', url.href);
-        //
-        // console.log(window.location);
-        // console.log(window.location.host + '/' + selectedContentId);
-        // console.log(url);
-        // console.log(url.hash);
-        // console.log(url.href);
-
         if (selectedContentId !== 'zaglushka') {
             window.location = '/' + selectedContentId;
         }
-
-        console.log(menuItem);
-        console.log(selectedContentId);
-
-        // Will hide while not fix
-
-        // const menuItems = document.querySelectorAll('.group.flex.gap-x-3.rounded-md.p-2.text-sm.font-semibold.leading-6.text-gray-400');
-        // menuItems.forEach(item => {
-        //     item.classList.remove('selected', 'bg-gray-800');
-        //     const link = item.querySelector('a');
-        //     if (link) {
-        //         link.classList.remove('text-white');
-        //     }
-        // });
-        //
-        // menuItem.classList.add('selected', 'bg-gray-800');
-        // menuItem.querySelector('a').classList.add('text-white');
-        //
-        // const allContents = document.querySelectorAll('.content');
-        // allContents.forEach(content => {
-        //     content.classList.add('hidden');
-        // });
-
-        // const selectedContent= document.getElementById(selectedContentId);
-        // if (selectedContent) {
-        //     selectedContent.classList.remove('hidden');
-        // }
     }
 }
