@@ -25,6 +25,16 @@
       </div>
 
       <div class="mb-4">
+        <%= form.label :game_file, "Файл игры (.zip) до 100 MB", class: "block text-sm font-medium text-gray-700" %>
+        <%= form.file_field :game_file, accept: ".zip", class: "block w-full appearance-none rounded-md border
+         border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
+          focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+        <% if @game.game_file.attached? %>
+          <p class="mt-2 text-sm text-gray-500">Текущий файл: <%= link_to "Скачать архив", url_for(@game.game_file), download: true, class: "text-indigo-600 hover:text-indigo-900" %></p>
+        <% end %>
+      </div>
+
+      <div class="mb-4">
         <%= form.label :tags, "Теги", class: "block text-sm font-medium text-gray-700" %>
         <div class="mt-1">
           <%= form.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>
