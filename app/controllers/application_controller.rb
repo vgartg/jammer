@@ -14,7 +14,9 @@ class ApplicationController < ActionController::Base
   def current_user
     return @current_user if @current_user
 
-    if session[:current_user]
+    browser_string = request.user_agent
+    browser = UserAgent.parse(browser_string).browser
+    if session[:current_user] && Session.all.where(ip_address: request.remote_ip, browser: browser).exists?
       @current_user = User.find_by_id(session[:current_user])
     elsif cookies.encrypted[:current_user].present?
       user = User.find_by_id(cookies.encrypted[:current_user])
