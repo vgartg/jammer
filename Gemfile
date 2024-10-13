@@ -79,3 +79,9 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+group :production do
+  gem 'aws-sdk-s3', '~> 1'
+end
+
+gem "thruster", require: false

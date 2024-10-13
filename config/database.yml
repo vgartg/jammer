@@ -19,5 +19,5 @@ production:
   <<: *default
   host: <%= ENV["DB_HOST"] %>
   database: jammer_production
-  username: <%= ENV["DB_USER"] %>
-  password: <%= ENV["JAMMER_DATABASE_PASSWORD"] %>
+  username: <%= ENV["PRODUCTION_DATABASE_USER"] %>
+  password: <%= ENV["JAMMER_DATABASE_PROD_PASSWORD"] %>
