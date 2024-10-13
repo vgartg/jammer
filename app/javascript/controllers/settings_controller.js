@@ -52,9 +52,9 @@ export default class extends Controller {
         this.usernameTarget.value = username;
 
         if (validUsername && username !== '') {
-            this.fullLinkTarget.textContent = `https://${username}.jammer.ru/`;
+            this.fullLinkTarget.textContent = `https://${username}.jammer.website/`;
         } else {
-            this.fullLinkTarget.textContent = `https://username.jammer.ru/`;
+            this.fullLinkTarget.textContent = `https://username.jammer.website/`;
         }
     }
 
