@@ -245,6 +245,7 @@ GEM
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2024.1)
       tzinfo (>= 1.0.0)
+    useragent (0.16.10)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -286,6 +287,7 @@ DEPENDENCIES
   stimulus-rails
   turbo-rails
   tzinfo-data
+  useragent
   web-console
   webrick (>= 1.8.2)
 

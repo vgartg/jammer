@@ -11,6 +11,11 @@
               <div>
                 <p class="text-sm font-medium text-gray-900">Session ID: <%= session.session_id %></p>
                 <p class="text-sm text-gray-500">IP Address: <%= session.ip_address %></p>
+                <% if session.browser %>
+                  <p class="text-sm text-gray-500">Browser: <%= session.browser %></p>
+                <% else %>
+                  <p class="text-sm text-gray-500">Browser: Unknown </p>
+                <% end %>
                 <p class="text-sm text-gray-500">Created At: <%= session.created_at %></p>
               </div>
             </li>
