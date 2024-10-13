@@ -73,7 +73,7 @@
               <% if @game.game_file.attached? %>
                 <p class="text-red-600">Внимание: мы не несем ответственности за содержимое архива.</p>
                 <a href="<%= url_for(@game.game_file) %>" download class="text-indigo-600 hover:text-indigo-900">
-                  Скачать архив (.zip)
+                  Скачать архив (.zip, .rar, .7z)
                 </a>
               <% else %>
                 <p class="text-gray-500">Файл игры не прикреплён.</p>

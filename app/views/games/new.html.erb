@@ -35,9 +35,9 @@
       </div>
 
       <div class="mt-4">
-        <%= f.label :game_file, "Файл игры (.zip) до 100 MB", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.label :game_file, "Файл игры (.zip, .rar, .7z) до 100 MB", class: "block text-sm font-medium text-gray-700" %>
         <div class="mt-1">
-          <%= f.file_field :game_file, required: true, accept: ".zip", class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+          <%= f.file_field :game_file, required: true, accept: ".zip,.rar,.7z", class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
         </div>
       </div>
 

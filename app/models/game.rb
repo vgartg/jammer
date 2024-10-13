@@ -14,10 +14,14 @@ class Game < ActiveRecord::Base
 
   private
   def game_file_format
-    if game_file.attached? && game_file.content_type != 'application/zip'
-      errors.add(:game_file, "Файл должен быть в формате .zip")
+    if game_file.attached?
+      acceptable_types = %w[application/zip application/x-rar-compressed application/x-7z-compressed]
+      unless acceptable_types.include?(game_file.content_type)
+        errors.add(:game_file, "Файл должен быть в формате .zip, .rar или .7z")
+      end
     end
   end
+
 
   def game_file_size
     if game_file.attached? && game_file.byte_size > 100.megabytes
