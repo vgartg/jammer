@@ -75,7 +75,7 @@ class GamesController < ApplicationController
 
   def game_params
     params.require(:game)
-          .permit(:name, :description, :cover, tag_ids: [])
+          .permit(:name, :description, :cover, :game_file, tag_ids: [])
   end
 
   def should_search?
