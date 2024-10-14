@@ -1,13 +1,10 @@
 <div class="bg-white" data-controller="games">
-  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-    <h2 class="text-2xl font-bold tracking-tight text-gray-900">Каталог игр</h2>
-
-    <%= button_to "Вернуться на главный экран", dashboard_path, method: :get,
-                  class: "mt-4 flex w-50 justify-center rounded-md border
-                      border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                      shadow-sm hover:bg-indigo-700 focus:outline-none
-                      focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-
+  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="flex justify-between items-center">
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900">Каталог игр</h2>
+      <%= button_to "Создать игру", games_new_path, method: :get,
+                    class: "rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+    </div>
     <%= form_with url: games_showcase_path, method: :get,
                   data: { action: "input->games#search" },
                   class: "mt-6 mb-4" do |f| %>

@@ -1,11 +1,9 @@
 <div class="bg-white">
   <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
-    <h2 class="text-2xl font-bold tracking-tight text-gray-900">Каталог джемов</h2>
-    <div class="mt-1">
-      <a href="/jams/new" class="inline-flex items-center justify-center px-4 py-2
-      border border-transparent rounded-md shadow-sm text-sm
-      font-medium text-white bg-indigo-600 hover:bg-indigo-700
-      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Создать джем</a>
+    <div class="flex justify-between items-center">
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900">Каталог джемов</h2>
+      <%= button_to "Создать джем", jams_new_path, method: :get,
+                    class: "rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
     </div>
     <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
       <% @jams.each do |jam| %>

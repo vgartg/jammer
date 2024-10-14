@@ -7,26 +7,35 @@ class FriendshipsController < ApplicationController
     @sent_requests = current_user.friendships.where(status: 'pending')
     @received_requests = current_user.inverse_friendships.where(status: 'pending')
     @current_user = current_user
+    @notifications = current_user.notifications
+  end
+
+  def requests
+    @friendships = current_user.friendships.where(status: 'accepted') + current_user.inverse_friendships.where(status: 'accepted')
+    @sent_requests = current_user.friendships.where(status: 'pending')
+    @received_requests = current_user.inverse_friendships.where(status: 'pending')
+    @current_user = current_user
+    @notifications = current_user.notifications
   end
 
   def create
-    # Проверяем, существует ли уже запрос дружбы между текущим пользователем и выбранным пользователем
-    existing_friendship = current_user.friendships.find_by(friend: @user) ||
-      current_user.inverse_friendships.find_by(user: @user)
+    @user = User.find(params[:user_id])
+    existing_friendship = current_user.friendships.find_by(friend: @user) || current_user.inverse_friendships.find_by(user: @user)
 
     unless existing_friendship
-      @user = User.find(params[:user_id])
       @friendship = current_user.friendships.build(friend: @user, status: 'pending')
-      @friendship.save
-      redirect_to user_profile_path(@user)
+      if @friendship.save
+        create_notification(@user, current_user, 'sent_friend_request', @friendship)
+      end
     end
-
+    redirect_to user_profile_path(@user)
   end
 
   def update
     @friendship = Friendship.find(params[:id])
 
     if @friendship.update(status: 'accepted')
+      create_notification(@friendship.user, current_user, 'accepted_friendship', @friendship)
       flash[:notice] = "Запрос дружбы принят."
     else
       flash[:alert] = "Не удалось принять запрос дружбы."
@@ -55,5 +64,16 @@ class FriendshipsController < ApplicationController
     if friendship.friend
       friendship.friend.id != current_user.id ? friendship.friend : friendship.user
     end
+  end
+
+  def create_notification(recipient, actor, action, notifiable)
+    existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action)
+
+    if existing_notifications
+      # Удаляем старые уведомления из БД
+      existing_notifications.destroy_all
+    end
+
+    Notification.create(recipient: recipient, actor: actor, action: action, notifiable: notifiable)
   end
 end

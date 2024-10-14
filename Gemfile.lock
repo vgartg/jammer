@@ -163,7 +163,7 @@ GEM
     mini_mime (1.1.5)
     minitest (5.25.1)
     msgpack (1.7.3)
-    net-imap (0.4.16)
+    net-imap (0.4.17)
       date
       net-protocol
     net-pop (0.1.2)
@@ -185,7 +185,7 @@ GEM
     puma (6.4.3)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (3.1.7)
+    rack (3.1.8)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -297,8 +297,7 @@ DEPENDENCIES
   jbuilder
   jsbundling-rails
   pg (~> 1.1)
-  psych (= 5.1.2)
-  puma (>= 5.0)
+  puma (>= 6.4.3)
   rails (~> 8.0.0.beta1)
   rexml (>= 3.3.6)
   selenium-webdriver
@@ -307,6 +306,7 @@ DEPENDENCIES
   thruster
   turbo-rails
   tzinfo-data
+  useragent
   web-console
 
 RUBY VERSION
