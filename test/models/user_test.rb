@@ -40,8 +40,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 'accepted', @user.friendship_with(@another_user).status
   end
 
-
-
   def test_remove_friend
     @user.friend_request(@another_user)
     @another_user.accept_friend_request(@user)

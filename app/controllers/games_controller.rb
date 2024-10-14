@@ -2,12 +2,15 @@ class GamesController < ApplicationController
   before_action :authenticate_user, only: [:new, :create, :edit, :update]
 
   def new
-
+    @notifications = current_user.notifications
   end
 
   def showcase
     @search_results = nil
     @tags = Tag.all
+    if current_user
+      @notifications = current_user.notifications
+    end
 
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
@@ -34,6 +37,9 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    if current_user
+      @notifications = current_user.notifications
+    end
   end
 
   def create
@@ -68,14 +74,14 @@ class GamesController < ApplicationController
   def destroy
     @game = current_user.games.find_by_id(params[:id])
     @game.destroy
-    redirect_to :dashboard
+    redirect_to dashboard_path
   end
 
   private
 
   def game_params
     params.require(:game)
-          .permit(:name, :description, :cover, tag_ids: [])
+          .permit(:name, :description, :cover, :game_file, tag_ids: [])
   end
 
   def should_search?

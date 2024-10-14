@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_12_214552) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_13_185805) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -92,12 +92,24 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_12_214552) do
     t.index ["tag_id"], name: "index_jams_tags_on_tag_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.integer "recipient_id"
+    t.integer "actor_id"
+    t.string "action"
+    t.integer "notifiable_id"
+    t.string "notifiable_type"
+    t.boolean "read", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "session_id"
     t.string "ip_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "browser"
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
@@ -125,6 +137,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_12_214552) do
     t.string "timezone"
     t.string "visibility", default: "All"
     t.string "background_image"
+    t.string "theme", default: "Light"
     t.string "jams_visibility", default: "All"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true

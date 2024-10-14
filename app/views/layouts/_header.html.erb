@@ -4,7 +4,7 @@
     <div class="flex lg:flex-1">
       <a href="/" class="-m-1.5 p-1.5">
         <span class="sr-only">Jammer</span>
-        <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="">
+        <%= image_tag 'whitewithoutwall.png', class: "relative z-[52] h-8 w-auto scale-150"%>
       </a>
     </div>
 
@@ -20,6 +20,7 @@
       <a href="/" class="text-sm font-semibold leading-6 text-white">Home</a>
       <a href="/users" class="text-sm font-semibold leading-6 text-white">Users</a>
       <a href="/games_showcase" class="text-sm font-semibold leading-6 text-white">Games</a>
+      <a href="/jams_showcase" class="text-sm font-semibold leading-6 text-white">Jams</a>
     </div>
 
     <% if current_user %>
@@ -45,7 +46,6 @@
       <div class="flex items-center justify-between">
         <a href="/" class="-m-1.5 p-1.5">
           <span class="sr-only">Jammer</span>
-          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="">
         </a>
         <button data-action="click->header#CloseHeaderMenu" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-400">
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -63,6 +63,8 @@
             text-white hover:bg-gray-800">Users</a>
             <a href="/games_showcase" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
             text-white hover:bg-gray-800">Games</a>
+            <a href="/jams_showcase" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
+            text-white hover:bg-gray-800">Jams</a>
           </div>
 
           <% if current_user %>

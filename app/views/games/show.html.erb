@@ -66,6 +66,22 @@
               <% end %>
             </div>
           </div>
+
+          <div class="mt-10">
+            <h2 class="text-sm font-medium text-gray-900">Файл игры:</h2>
+            <div class="mt-4">
+              <% if @game.game_file.attached? %>
+                <p class="text-red-600">Внимание: мы не несем ответственности за содержимое архива.</p>
+                <a href="<%= url_for(@game.game_file) %>" download class="text-indigo-600 hover:text-indigo-900">
+                  Скачать архив (.zip, .rar, .7z)
+                </a>
+              <% else %>
+                <p class="text-gray-500">Файл игры не прикреплён.</p>
+              <% end %>
+            </div>
+          </div>
+
+
           <% if @game.author.present? && session[:current_user] == @game.author.id %>
             <div>
               <%= button_to "Редактировать игру", game_edit_path(@game), method: :get,

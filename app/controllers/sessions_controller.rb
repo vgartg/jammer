@@ -7,9 +7,13 @@ class SessionsController < ApplicationController
 
   def create
     user = User.find_by_email(auth_params[:email])
+    browser_string = request.user_agent
+    browser = UserAgent.parse(browser_string).browser
     if user.present? && user.authenticate(auth_params[:password])
       session[:current_user] = user.id
-      Session.create_session(user.id, session[:session_id], request.remote_ip)
+      unless Session.all.where(ip_address: request.remote_ip, browser: browser).exists?
+        Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
+      end
       if params[:remember_me] == "1"
         remember(user)
       end
