@@ -308,6 +308,7 @@ DEPENDENCIES
   tzinfo-data
   useragent
   web-console
+  webrick (>= 1.8.2)
 
 RUBY VERSION
    ruby 3.3.5p100
