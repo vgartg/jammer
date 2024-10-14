@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_30_101010) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_13_185805) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -83,12 +83,33 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_30_101010) do
     t.index ["name"], name: "index_jams_on_name"
   end
 
+  create_table "jams_tags", force: :cascade do |t|
+    t.bigint "jam_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["jam_id"], name: "index_jams_tags_on_jam_id"
+    t.index ["tag_id"], name: "index_jams_tags_on_tag_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer "recipient_id"
+    t.integer "actor_id"
+    t.string "action"
+    t.integer "notifiable_id"
+    t.string "notifiable_type"
+    t.boolean "read", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "session_id"
     t.string "ip_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "browser"
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
@@ -116,6 +137,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_30_101010) do
     t.string "timezone"
     t.string "visibility", default: "All"
     t.string "background_image"
+    t.string "theme", default: "Light"
+    t.string "jams_visibility", default: "All"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
   end
@@ -125,5 +148,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_30_101010) do
   add_foreign_key "games", "users", column: "author_id"
   add_foreign_key "games_tags", "games"
   add_foreign_key "games_tags", "tags"
+  add_foreign_key "jams_tags", "jams"
+  add_foreign_key "jams_tags", "tags"
   add_foreign_key "sessions", "users"
 end

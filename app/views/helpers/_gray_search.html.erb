@@ -1,9 +1,14 @@
 <div class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-6 border-b border-white/5 bg-gray-900
  px-4 shadow-sm sm:px-6 lg:px-8">
-  <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" data-action="click->dashboard#openMobileMenu">
-    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+  <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+          data-action="click->dashboard#openMobileMenu">
+    <svg class="h-6 w-6" fill="none"
+         viewBox="0 0 24 24"
+         stroke-width="1.5"
+         stroke="currentColor"
          aria-hidden="true">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
     </svg>
   </button>
 
@@ -23,44 +28,112 @@
              type="search" name="search">
     </form>
     <div class="flex items-center gap-x-4 lg:gap-x-6">
-      <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-             stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-        </svg>
-      </button>
+      <div class="relative" data-controller="notifications">
+        <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 relative"
+                data-action="click->notifications#toggleNotificationsMenu">
+          <svg class="h-6 w-6" fill="none"
+               viewBox="0 0 24 24"
+               stroke-width="1.5"
+               stroke="currentColor"
+               aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+          </svg>
+          <% if @notifications && @notifications.where(read: false).count > 0 %>
+      <span class="absolute top-0 right-0 inline-block h-3 w-3 rounded-full bg-red-500
+       text-white text-xs flex items-center justify-center">
+        <%= @notifications.where(read: false).count %>
+      </span>
+          <% end %>
+        </button>
+        <div class="hidden absolute right-0 z-10 mt-2.5 w-60 origin-top-left
+        rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5
+         focus:outline-none max-h-80vh overflow-y-auto"
+             role="menu" aria-labelledby="notifications-menu-button"
+             tabindex="-1"
+             id="dashboard_notifications_menu"
+             data-target="notifications.notificationsMenu"
+             style="max-height: 60vh;">
+          <% if @notifications && @notifications.any? %>
+            <% @notifications.order(created_at: :desc).first(8).each do |notification| %>
+              <% if notification.actor %>
+                <div class="flex items-start px-4 py-3 border-b border-gray-200">
+                  <div class="mr-3">
+                    <a href='<%= '/users/' + notification.actor.id.to_s %>'>
+                    <% if notification.actor.avatar.attached? %>
+                      <%= image_tag url_for(notification.actor.avatar), alt: "Profile Picture",
+                                    class: "w-16 text-gray-400" %>
+                    <% else %>
+                      <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                           class="w-16 text-gray-400">
+                    <% end %>
+                    </a>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium text-gray-900">
+                      <a href='<%= '/users/' + notification.actor.id.to_s %>'>
+                        <%= notification.actor.name %>
+                      </a>
+                      <% if notification.action == 'accepted_friendship' %>
+                        принял заявку в друзья
+                      <% elsif notification.action == 'sent_friend_request' %>
+                        отправил запрос в друзья
+                      <% else %>
+                        <%= notification.action %>
+                      <% end %>
+                    </p>
+                    <p class="text-xs text-gray-500"><%= notification.created_at.strftime("%d.%m.%Y, %H:%M")%></p>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          <% else %>
+            <p class="px-4 py-2 text-sm text-gray-600">No notifications to display.</p>
+          <% end %>
+          <% if @notifications && @notifications.count > 8 %>
+            <a href="/notifications" class="flex justify-center p-1">Показать все</a>
+          <% end %>
+        </div>
+      </div>
+
 
       <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10" aria-hidden="true"></div>
 
       <div class="relative">
-        <button type="button" class="-m-1.5 flex items-center p-1.5" data-action="click->dashboard#toggleProfileMenu"
-                aria-expanded="false" aria-haspopup="true">
-          <% if @user && @user.avatar.attached? %>
-            <%= image_tag url_for(@user.avatar), alt: "Profile Picture",
-                          class: "h-8 w-8 rounded-full bg-gray-50" %>
-          <% else %>
-            <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                 class="h-8 w-8 rounded-full bg-gray-50">
-          <% end %>
-          <span class="hidden lg:flex lg:items-center">
-                <span class="ml-4 text-sm font-semibold leading-6 text-white" aria-hidden="true"><%= @user.name %></span>
-                <svg class="ml-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                        clip-rule="evenodd" />
-                </svg>
-              </span>
-        </button>
-        <div class="hidden absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2
-            shadow-lg ring-1 ring-gray-900/5 focus:outline-none" role="menu" aria-orientation="vertical"
-             aria-labelledby="user-menu-button" tabindex="-1" id="dashboard_profile_menu">
-          <!-- Active: "bg-gray-50", Not Active: "" -->
-          <%= button_to "Your profile", user_profile_path(id: session[:current_user]), method: :get,
-                        class: "block px-3 py-1 text-sm leading-6 text-gray-900" %>
-          <%= button_to "Sign out", logout_path, method: :delete,
-                        class: "block px-3 py-1 text-sm leading-6 text-gray-900" %>
-        </div>
+        <% if @current_user %>
+          <button type="button" class="-m-1.5 flex items-center p-1.5"
+                  data-action="click->dashboard#toggleProfileMenu"
+                  aria-expanded="false" aria-haspopup="true">
+            <% if @current_user && @current_user.avatar.attached? %>
+              <%= image_tag url_for(@current_user.avatar), alt: "Profile Picture",
+                            class: "h-8 w-8 rounded-full bg-gray-50" %>
+            <% else %>
+              <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                   class="h-8 w-8 rounded-full bg-gray-50">
+            <% end %>
+            <span class="hidden lg:flex lg:items-center">
+                  <span class="ml-4 text-sm font-semibold leading-6 text-white" aria-hidden="true">
+                    <%= @current_user.name %>
+                  </span>
+                  <svg class="ml-2 h-5 w-5 text-gray-400"
+                       viewBox="0 0 20 20"
+                       fill="currentColor"
+                       aria-hidden="true">
+                    <path fill-rule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                          clip-rule="evenodd" />
+                  </svg>
+                </span>
+          </button>
+          <div class="hidden absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2
+              shadow-lg ring-1 ring-gray-900/5 focus:outline-none" role="menu" aria-orientation="vertical"
+               aria-labelledby="user-menu-button" tabindex="-1" id="dashboard_profile_menu">
+            <%= button_to "Your profile", user_profile_path(id: session[:current_user]), method: :get,
+                          class: "block px-3 py-1 text-sm leading-6 text-gray-900" %>
+            <%= button_to "Sign out", logout_path, method: :delete,
+                          class: "block px-3 py-1 text-sm leading-6 text-gray-900" %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
