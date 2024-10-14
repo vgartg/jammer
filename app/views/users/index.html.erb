@@ -1,5 +1,5 @@
 <div class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
+  <div class="grid sm:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
       <% @users.each do |user| %>
         <% unless user.id == session[:current_user] %>
         <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
