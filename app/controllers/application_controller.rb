@@ -14,7 +14,9 @@ class ApplicationController < ActionController::Base
   def current_user
     return @current_user if @current_user
 
-    if session[:current_user]
+    browser_string = request.user_agent
+    browser = UserAgent.parse(browser_string).browser
+    if session[:current_user] && Session.all.where(ip_address: request.remote_ip, browser: browser).exists?
       @current_user = User.find_by_id(session[:current_user])
     elsif cookies.encrypted[:current_user].present?
       user = User.find_by_id(cookies.encrypted[:current_user])
@@ -24,7 +26,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    if @current_user && session[:session_id].present? && @current_user.sessions.where(session_id: session[:session_id]).exists?
+    if @current_user && session[:session_id].present? && @current_user.sessions.where(user_id: @current_user.id).exists?
       return @current_user
     end
 
@@ -58,10 +60,5 @@ class ApplicationController < ActionController::Base
       @subdomain_owner = User.find_by_link_username(subdomain)
       render_404 unless @subdomain_owner
     end
-  end
-
-  # Сброс поддомена
-  def redirect_without_subdomain
-    redirect_to(request.path, subdomain: nil)
   end
 end

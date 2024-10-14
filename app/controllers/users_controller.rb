@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user, only: [:edit_user, :update_user, :destroy]
   before_action :require_subdomain, only: :frontpage
+
   def new
     if current_user
       redirect_to user_path(current_user.id)
@@ -11,19 +12,25 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @current_user = User.find_by_id(session[:current_user])
     if @current_user
+      @notifications = current_user.notifications
       @friendship = @current_user.friendship_with(@user)
     end
   end
 
   def index
     @users = User.all
+    if current_user
+      @notifications = current_user.notifications
+    end
   end
 
   def create
     @user = User.new(user_params)
     if @user.save
       session[:current_user] = @user.id
-      Session.create_session(@user.id, session[:session_id], request.remote_ip)
+      browser_string = request.user_agent
+      browser = UserAgent.parse(browser_string).browser
+      Session.create_session(@user.id, session[:session_id], request.remote_ip, browser: browser)
       @user.update(last_seen_at: Time.zone.now)
       redirect_to dashboard_path
     else
@@ -34,8 +41,14 @@ class UsersController < ApplicationController
 
   def destroy
     @user = current_user
-    @user.destroy
-    redirect_to register_path
+    if @user.authenticate(params[:user][:password])
+      @user.destroy
+      flash[:success] = 'Аккаунт успешно удален.'
+      render json: { success: true }, status: :ok
+    else
+      flash[:error] = 'Неверный пароль.'
+      render json: { success: false, error: 'Неверный пароль.' }, status: :unprocessable_entity
+    end
   end
 
   def edit_user
@@ -96,13 +109,16 @@ class UsersController < ApplicationController
   def frontpage
     subdomain = Subdomain.extract_subdomain(request)
     @user = User.find_by_link_username(subdomain)
+    @current_user = current_user
+    @notifications = current_user.notifications
   end
 
   private
+
   def user_params
     params.require(:user)
           .permit(:name, :email, :password, :password_confirmation, :avatar, :background_image,
                   :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
-                  :visibility)
+                  :visibility, :jams_visibility, :theme)
   end
 end

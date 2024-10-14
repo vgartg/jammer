@@ -5,16 +5,22 @@ class User < ActiveRecord::Base
   VISIBILITY_FRIENDS = 'Friends'
   VISIBILITY_NONE = 'None'
 
+  THEME_LIGHT = 'Light'
+  THEME_DARK = 'Dark'
+
   validates :name, :email, presence: true, uniqueness: true
   validates :password, :password_confirmation, presence: true, on: :create
 
   validates :visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
+  validates :jams_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
+  validates :theme, inclusion: { in: [THEME_LIGHT, THEME_DARK] }
 
   validate :password_length, on: :create
   has_secure_password
   has_one_attached :avatar
   has_one_attached :background_image
   has_many :games, foreign_key: "author_id", dependent: :destroy
+  has_many :jams, foreign_key: "author_id", dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships, dependent: :destroy
 
@@ -22,6 +28,9 @@ class User < ActiveRecord::Base
   has_many :inverse_friends, through: :inverse_friendships, source: :user, dependent: :destroy
 
   has_many :sessions, dependent: :destroy
+
+  has_many :notifications, ->(user) { unscope(where: :user_id).where("actor_id = ? OR recipient_id = ?", user.id, user.id) },
+           class_name: 'Notification', dependent: :destroy
 
   attr_accessor :current_password
 
@@ -36,10 +45,28 @@ class User < ActiveRecord::Base
   end
 
   def accept_friend_request(user)
-    friendship = friendships.find_by(friend: user) || inverse_friendships.find_by(user: user)
-    friendship.update(status: 'accepted') if friendship
+    friendship = friendships.find_by(friend: user)
+    inverse_friendship = inverse_friendships.find_by(user: user)
+
+    if friendship
+      friendship.update(status: 'accepted')
+      create_notification(friendship.user, user, 'accepted_friend_request', friendship)
+    elsif inverse_friendship
+      inverse_friendship.update(status: 'accepted')
+      create_notification(inverse_friendship.friend, user, 'accepted_friend_request', inverse_friendship)
+    end
   end
 
+  def create_notification(recipient, actor, action, notifiable)
+    existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action)
+
+    if existing_notifications
+      # Удаляем старые уведомления из БД
+      existing_notifications.destroy_all
+    end
+
+    Notification.create(recipient: recipient, actor: actor, action: action, notifiable: notifiable)
+  end
 
   def remove_friend(user)
     friendship = friendships.find_by(friend: user)
@@ -88,6 +115,23 @@ class User < ActiveRecord::Base
 
   def can_see_online?(other_user)
     case self.visibility
+    when VISIBILITY_ALL
+      return true
+    when VISIBILITY_FRIENDS
+      active_friendships = self.friendships.where(status: 'accepted').pluck(:friend_id) +
+        self.inverse_friendships.where(status: 'accepted').pluck(:user_id)
+      return active_friendships.include?(other_user.id) if other_user
+    when VISIBILITY_NONE
+      return false
+    end
+  end
+
+  def notifications
+    Notification.where(recipient_id: id)
+  end
+
+  def can_see_jams?(other_user)
+    case self.jams_visibility
     when VISIBILITY_ALL
       return true
     when VISIBILITY_FRIENDS
