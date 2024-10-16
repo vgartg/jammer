@@ -34,7 +34,7 @@ class UsersController < ApplicationController
       @user.update(last_seen_at: Time.zone.now)
       redirect_to dashboard_path
     else
-      flash[:errors] = @user.errors.full_messages
+      flash[:failure] = @user.errors.full_messages
       render :new, status: :see_other
     end
   end
@@ -62,38 +62,39 @@ class UsersController < ApplicationController
       unless @user.authenticate(params[:user][:current_password])
         flash[:failure] = "Current password is incorrect."
         # render :edit_user, status: :see_other
-        redirect_to dashboard_path
+        redirect_to settings_path
         return
       end
 
       if user_params[:password].blank? || user_params[:password_confirmation].blank? || params[:user][:current_password].blank?
         flash[:failure] = "All fields must be filled in"
         # render :edit_user, status: :see_other
-        redirect_to dashboard_path
+        redirect_to settings_path
         return
       elsif user_params[:password].length < 5
         flash[:failure] = "New password is too short (minimum is 5 characters)."
         # render :edit_user, status: :see_other
-        redirect_to dashboard_path
+        redirect_to settings_path
         return
       elsif user_params[:password] != user_params[:password_confirmation]
         flash[:failure] = "New passwords do not match."
         # render :edit_user, status: :see_other
-        redirect_to dashboard_path
+        redirect_to settings_path
         return
       elsif user_params[:password] == params[:user][:current_password]
         flash[:failure] = "New password must be different from the old one."
         # render :edit_user, status: :see_other
-        redirect_to dashboard_path
+        redirect_to settings_path
         return
       end
     end
 
     if @user.update(user_params)
       flash[:success] = "Successfully saved!"
-      redirect_to dashboard_path
+      redirect_to settings_path
     else
-      render :edit_user
+      flash[:failure] = "Something went wrong!"
+      redirect_to settings_path
     end
   end
 

@@ -48,11 +48,11 @@ class JamsController < ApplicationController
     if @jam.save
       redirect_to dashboard_path
     else
-      flash[:errors] = @jam.errors.full_messages
+      flash[:failure] = @jam.errors.full_messages
       render :new, status: :see_other
     end
   rescue ActiveRecord::RecordNotUnique => e
-    flash[:errors] = ["Джем с таким названием уже существует"]
+    flash[:failure] = ["Джем с таким названием уже существует"]
     render :new, status: :see_other
   end
 
@@ -66,7 +66,7 @@ class JamsController < ApplicationController
     if @jam.update(jam_params)
       redirect_to jam_profile_path, notice: 'Джем успешно обновлен'
     else
-      flash[:errors] = @jam.errors.full_messages
+      flash[:failure] = @jam.errors.full_messages
       render :edit, status: :unprocessable_entity
     end
   end
