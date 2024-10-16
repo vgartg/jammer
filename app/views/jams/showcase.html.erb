@@ -6,6 +6,7 @@
                     class: "rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
     </div>
     <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+      <% if @jams.count > 0 %>
       <% @jams.each do |jam| %>
         <div class="group relative">
           <% if jam && jam.cover.attached? %>
@@ -36,6 +37,11 @@
               <p>Автор не найден</p>
             <% end %>
           </div>
+        </div>
+      <% end %>
+      <% else %>
+        <div class="flex justify-between items-center">
+          <h2 class="text-1xl font-bold tracking-tight text-gray-600">Джемов пока нет</h2>
         </div>
       <% end %>
     </div>

@@ -1,4 +1,8 @@
-<div class="bg-gray-100 flex items-center justify-center min-h-screen">
+<div class="bg-white">
+  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="flex justify-between items-center">
+      <h2 class="px-4 text-2xl font-bold tracking-tight text-gray-900">Все пользователи</h2>
+    </div>
   <div class="grid sm:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
       <% @users.each do |user| %>
         <% unless user.id == session[:current_user] %>
@@ -42,4 +46,5 @@
         <% end %>
       <% end %>
   </div>
+</div>
 </div>
