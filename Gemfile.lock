@@ -304,7 +304,6 @@ DEPENDENCIES
   capybara
   cssbundling-rails
   debug
-  dotenv
   dotenv-rails
   flatpickr
   image_processing (~> 1.2)
