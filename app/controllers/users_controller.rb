@@ -6,6 +6,9 @@ class UsersController < ApplicationController
     if current_user
       redirect_to user_path(current_user.id)
     end
+
+    @client_id = ENV['GITHUB_CLIENT_ID']
+    render :new, locals: { client_id: @client_id }
   end
 
   def show
@@ -112,6 +115,25 @@ class UsersController < ApplicationController
     @user = User.find_by_link_username(subdomain)
     @current_user = current_user
     @notifications = current_user.notifications
+  end
+
+  def oauth_callback
+    session_code = params[:code]
+    result = RestClient.post('https://github.com/login/oauth/access_token',
+                             { client_id: ENV['GITHUB_CLIENT_ID'],
+                               client_secret: ENV['GITHUB_CLIENT_SECRET'],
+                               code: session_code },
+                             accept: :json)
+    access_token = JSON.parse(result)['access_token']
+    user_response = RestClient.get('https://api.github.com/user',
+                                   { authorization: "token #{access_token}" })
+    user_data = JSON.parse(user_response)
+    @user = User.find_or_create_by(github_id: user_data['id']) do |user|
+      user.email = user_data['email']
+      user.name = user_data['login']
+    end
+    session[:current_user] = @user.id
+    redirect_to dashboard_path
   end
 
   private
