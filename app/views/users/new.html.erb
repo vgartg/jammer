@@ -6,10 +6,6 @@
     </div>
   </div>
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-
-    <a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=<%= client_id %>">Click here</a> <br/>
-    <a href="/apps/building-oauth-apps/authorizing-oauth-apps/">Client ID</a>
-
     <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
       <%= render partial: 'helpers/errors' %>
       <%= form_for :user do |f| %>
@@ -84,7 +80,7 @@
             <span class="text-sm font-semibold leading-6">Google</span>
           </a>
 
-          <a id="github-auth-button" href="#" class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2
+          <a href="#" class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2
            text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50
             focus-visible:ring-transparent">
             <svg class="h-5 w-5 fill-[#24292F]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -105,21 +101,3 @@
     </p>
   </div>
 </div>
-
-<script type="text/javascript">
-    // Функция для генерации URL авторизации GitHub
-    function getGitHubAuthUrl() {
-        const params = new URLSearchParams({
-            client_id: 'Ov23ctIAVDP1boS05wvi',
-            redirect_uri: 'https://jammer.website/oauth-githud.php',
-            scope: 'user',
-            response_type: 'code',
-            state: ''
-        });
-
-        return 'https://github.com/login/oauth/authorize?' + params.toString();
-    }
-
-    // Задаем ссылку для кнопки
-    document.getElementById('github-auth-button').href = getGitHubAuthUrl();
-</script>

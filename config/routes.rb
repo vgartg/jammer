@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   # Registration and Auth
   get "/register", to: "users#new"
   post "/register", to: "users#create"
-  get "/oauth/callback", to: "users#oauth_callback"
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
