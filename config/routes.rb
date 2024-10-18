@@ -15,8 +15,11 @@ Rails.application.routes.draw do
   get "/register", to: "users#new"
   post "/register", to: "users#create"
   get "/oauth/callback", to: "users#oauth_callback"
+  get 'auth/:provider/callback', to: 'users#create'
+
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"
+
   delete "/logout", to: "sessions#destroy"
   delete '/destroy', to: "users#destroy", as: 'user_destroy'
 

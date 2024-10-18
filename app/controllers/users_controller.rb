@@ -28,17 +28,47 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    if @user.save
-      session[:current_user] = @user.id
-      browser_string = request.user_agent
-      browser = UserAgent.parse(browser_string).browser
-      Session.create_session(@user.id, session[:session_id], request.remote_ip, browser: browser)
-      @user.update(last_seen_at: Time.zone.now)
-      redirect_to dashboard_path
+    if request.query_parameters.present?
+      auth_data = request.env['omniauth.auth']
+      name_ = auth_data['info']['name'] || auth_data['info']['nickname']
+      email_ = auth_data['info']['email']
+      provider_ = auth_data['provider']
+
+      if name_.present? && email_.present? && provider_.present?
+        @user = User.new(
+          name: name_,
+          email: email_,
+          auth_via: provider_
+        )
+        @user.validate_password = false
+
+        if @user.save
+          session[:current_user] = @user.id
+          browser_string = request.user_agent
+          browser = UserAgent.parse(browser_string).browser
+          Session.create_session(@user.id, session[:session_id], request.remote_ip, browser: browser)
+          @user.update(last_seen_at: Time.zone.now)
+          redirect_to dashboard_path
+        else
+          puts @user.errors.full_messages
+          flash[:failure] = @user.errors.full_messages
+          redirect_to register_path
+        end
+      end
     else
-      flash[:failure] = @user.errors.full_messages
-      render :new, status: :see_other
+      @user = User.new(user_params)
+      @user.validate_password = true
+      if @user.save
+        session[:current_user] = @user.id
+        browser_string = request.user_agent
+        browser = UserAgent.parse(browser_string).browser
+        Session.create_session(@user.id, session[:session_id], request.remote_ip, browser: browser)
+        @user.update(last_seen_at: Time.zone.now)
+        redirect_to dashboard_path
+      else
+        flash[:failure] = @user.errors.full_messages
+        render :new, status: :see_other
+      end
     end
   end
 
@@ -117,24 +147,15 @@ class UsersController < ApplicationController
     @notifications = current_user.notifications
   end
 
-  def oauth_callback
-    session_code = params[:code]
-    result = RestClient.post('https://github.com/login/oauth/access_token',
-                             { client_id: ENV['GITHUB_CLIENT_ID'],
-                               client_secret: ENV['GITHUB_CLIENT_SECRET'],
-                               code: session_code },
-                             accept: :json)
-    access_token = JSON.parse(result)['access_token']
-    user_response = RestClient.get('https://api.github.com/user',
-                                   { authorization: "token #{access_token}" })
-    user_data = JSON.parse(user_response)
-    @user = User.find_or_create_by(github_id: user_data['id']) do |user|
-      user.email = user_data['email']
-      user.name = user_data['login']
-    end
-    session[:current_user] = @user.id
-    redirect_to dashboard_path
-  end
+  # def oauth_callback
+  #   auth_hash = request.env['omniauth.auth']
+  #   @user = User.find_or_create_by(github_id: auth_hash['uid']) do |user|
+  #     user.email = auth_hash['info']['email'] || "default-email@example.com"
+  #     user.name = auth_hash['info']['name']
+  #   end
+  #   session[:current_user] = @user.id
+  #   redirect_to dashboard_path
+  # end
 
   private
 
@@ -142,6 +163,6 @@ class UsersController < ApplicationController
     params.require(:user)
           .permit(:name, :email, :password, :password_confirmation, :avatar, :background_image,
                   :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
-                  :visibility, :jams_visibility, :theme)
+                  :visibility, :jams_visibility, :theme, :auth_via, :social_id)
   end
 end

@@ -8,14 +8,16 @@ class User < ActiveRecord::Base
   THEME_LIGHT = 'Light'
   THEME_DARK = 'Dark'
 
+  attr_accessor :validate_password
+
   validates :name, :email, presence: true, uniqueness: true
-  validates :password, :password_confirmation, presence: true, on: :create
+  validates :password, :password_confirmation, presence: true, on: :create, if: :validate_password_required?
 
   validates :visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
   validates :jams_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
   validates :theme, inclusion: { in: [THEME_LIGHT, THEME_DARK] }
 
-  validate :password_length, on: :create
+  validate :password_length, on: :create, if: :validate_password_required?
   has_secure_password
   has_one_attached :avatar
   has_one_attached :background_image
@@ -141,5 +143,9 @@ class User < ActiveRecord::Base
     when VISIBILITY_NONE
       return false
     end
+  end
+
+  def validate_password_required?
+    validate_password
   end
 end
