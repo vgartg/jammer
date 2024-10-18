@@ -61,6 +61,9 @@ Rails.application.routes.draw do
   delete '/jams/:id', to: 'jams#destroy', as: 'jam_destroy'
   get '/jams/:id', to: "jams#show", as: 'jam_profile'
   get '/jams_showcase', to: 'jams#showcase'
+  get '/jams/show_projects', to: 'jams#show_projects'
+  get '/jams/show_participants', to: 'jams#show_participants'
+
 
   resources :notifications, only: [:index, :show] do
     delete 'destroy_all_notifications', on: :collection

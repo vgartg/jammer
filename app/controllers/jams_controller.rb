@@ -5,6 +5,14 @@ class JamsController < ApplicationController
     @notifications = current_user.notifications
   end
 
+  def show_projects
+    @games = Game.all
+  end
+
+  def show_participants
+    @users = User.all
+  end
+
   def showcase
     @search_results = nil
     @tags = Tag.all
