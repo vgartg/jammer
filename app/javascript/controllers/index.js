@@ -40,3 +40,6 @@ application.register("background-image", BackgroundImageController)
 // @ts-ignore
 import ModalController from "./modal_controller";
 application.register("modal", ModalController)
+// @ts-ignore
+import StarRatingController from "./star_rating_controller";
+application.register("star-rating", StarRatingController);
