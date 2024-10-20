@@ -16,6 +16,7 @@
 
       <div id="sent_requests" class="tab_content">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
+          <% if @sent_requests.count > 0 %>
           <% @sent_requests.each do |request| %>
             <% if request.friend %>
               <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
@@ -62,11 +63,17 @@
               </div>
             <% end %>
           <% end %>
+          <% else %>
+            <div class="flex justify-between items-center">
+              <h2 class="text-1xl font-bold tracking-tight text-gray-600">Исходящие запросы пока пусты</h2>
+            </div>
+          <% end %>
         </div>
       </div>
 
       <div id="received_requests" class="tab_content hidden">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
+          <% if @received_requests.count > 0 %>
           <% @received_requests.each do |request| %>
             <% if request.user %>
               <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
@@ -116,6 +123,11 @@
                 </div>
               </div>
             <% end %>
+          <% end %>
+          <% else %>
+            <div class="flex justify-between items-center">
+              <h2 class="text-1xl font-bold tracking-tight text-gray-600">Входящие запросы пока пусты</h2>
+            </div>
           <% end %>
         </div>
       </div>

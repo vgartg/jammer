@@ -62,13 +62,14 @@ class GamesController < ApplicationController
         submission_params = {game_id: @game.id, jam_id: @id, user_id: current_user.id}
         JamSubmission.create(submission_params)
       end
+      flash[:success] = "Игра успешно создана!"
       redirect_to jam_profile_path(@id)
     else
-      flash[:errors] = @game.errors.full_messages
+      flash[:failure] = @game.errors.full_messages
       render :new, status: :see_other
     end
   rescue ActiveRecord::RecordNotUnique => e
-    flash[:errors] = ["Игра с таким названием уже существует"]
+    flash[:failure] = "Игра с таким названием уже существует."
     render :new, status: :see_other
   end
 
@@ -80,16 +81,21 @@ class GamesController < ApplicationController
   def update
     @game = current_user.games.find_by_id(params[:id])
     if @game.update(game_params)
-      redirect_to game_profile_path, notice: 'Игра успешно обновлена'
+      flash[:success] = "Игра успешно обновлена."
+      redirect_to game_profile_path
     else
-      flash[:errors] = @game.errors.full_messages
+      flash[:failure] = @game.errors.full_messages
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @game = current_user.games.find_by_id(params[:id])
-    @game.destroy
+    if @game.destroy
+      flash[:success] = 'Игра успешно удалена.'
+    else
+      flash[:failure] = "Something went wrong!"
+    end
     redirect_to dashboard_path
   end
 

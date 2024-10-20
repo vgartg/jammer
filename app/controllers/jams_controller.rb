@@ -46,13 +46,14 @@ class JamsController < ApplicationController
     @jam = Jam.new(jam_params.merge(author: current_user))
     @tags = Tag.all
     if @jam.save
+      flash[:success] = 'Джем успешно создан!'
       redirect_to dashboard_path
     else
-      flash[:errors] = @jam.errors.full_messages
+      flash[:failure] = @jam.errors.full_messages
       render :new, status: :see_other
     end
   rescue ActiveRecord::RecordNotUnique => e
-    flash[:errors] = ["Джем с таким названием уже существует"]
+    flash[:failure] = "Джем с таким названием уже существует."
     render :new, status: :see_other
   end
 
@@ -68,16 +69,20 @@ class JamsController < ApplicationController
   def update
     @jam = current_user.jams.find_by_id(params[:id])
     if @jam.update(jam_params)
-      redirect_to jam_profile_path, notice: 'Джем успешно обновлен'
+      redirect_to jam_profile_path, notice: 'Джем успешно обновлен.'
     else
-      flash[:errors] = @jam.errors.full_messages
+      flash[:failure] = @jam.errors.full_messages
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @jam = current_user.jams.find_by_id(params[:id])
-    @jam.destroy
+    if @jam.destroy
+      flash[:success] = 'Джем успешно удален.'
+    else
+      flash[:failure] = "Something went wrong!"
+    end
     redirect_to :dashboard
   end
 
