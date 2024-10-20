@@ -45,7 +45,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_18_203606) do
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "friend_id", null: false
-    t.string "status", null: false
+    t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -139,10 +139,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_18_203606) do
     t.string "background_image"
     t.string "theme", default: "Light"
     t.string "jams_visibility", default: "All"
-    t.string "auth_via"
-    t.string "social_id"
-    t.string "password_reset_token"
-    t.datetime "password_reset_token_sent_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
   end
