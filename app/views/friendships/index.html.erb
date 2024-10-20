@@ -4,6 +4,7 @@
       <h2 class="text-2xl font-bold tracking-tight text-gray-900">Друзья</h2>
     </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
+  <% if @friendships.count > 0 %>
   <% @friendships.each do |friendship| %>
     <% if find_friend(friendship) %>
       <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
@@ -48,6 +49,11 @@
         </div>
       </div>
     <% end %>
+  <% end %>
+  <% else %>
+    <div class="flex justify-between items-center">
+      <h2 class="text-1xl font-bold tracking-tight text-gray-600">Друзей пока нет</h2>
+    </div>
   <% end %>
 </div>
 </div>

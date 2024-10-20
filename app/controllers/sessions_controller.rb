@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
       end
       redirect_to dashboard_path
     else
-      flash[:errors] = ["Invalid email or password"]
+      flash[:failure] = ["Invalid email or password"]
       render :new, status: :see_other
     end
   end
@@ -49,10 +49,10 @@ class SessionsController < ApplicationController
       current_user.invalidate_other_sessions(session[:session_id])
       current_user.forget_me
       flash[:success] = "Successfully logged out of other sessions"
-      redirect_to dashboard_path
+      redirect_to settings_path
     else
       flash[:failure] = "Invalid password"
-      redirect_to dashboard_path
+      redirect_to settings_path
     end
   end
 
