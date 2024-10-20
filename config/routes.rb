@@ -52,6 +52,7 @@ Rails.application.routes.draw do
   delete '/games/:id', to: 'games#destroy', as: 'game_destroy'
   get '/games/:id', to: "games#show", as: 'game_profile'
   get '/games_showcase', to: 'games#showcase'
+  post '/games/:id/submit', to: 'games#submit', as: 'submit'
 
   # Jams
   get '/jams/new', to: 'jams#new'
@@ -61,6 +62,7 @@ Rails.application.routes.draw do
   delete '/jams/:id', to: 'jams#destroy', as: 'jam_destroy'
   get '/jams/:id', to: "jams#show", as: 'jam_profile'
   get '/jams_showcase', to: 'jams#showcase'
+  get '/jams/:id/submit_game', to: 'jams#submit_game', as: 'jam_submit_game'
 
   resources :notifications, only: [:index, :show] do
     delete 'destroy_all_notifications', on: :collection

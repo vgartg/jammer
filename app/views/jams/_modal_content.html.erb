@@ -1,0 +1,60 @@
+<div tabindex="-1" autofocus class="fixed inset-0 flex items-center justify-center bg-gray-950 bg-opacity-60">
+  <div id="modalContent" class="bg-white rounded-lg shadow-lg p-6 w-1/2">
+    <h2 class="text-lg font-medium text-gray-900">Modal Title</h2>
+    <p class="mt-2 text-sm text-gray-600">This is a modal dialog. You can put any content here.</p>
+    <script>
+        function alternateShown(id1, id2) {
+            document.getElementById(id1).style.display = "none";
+
+            document.getElementById(id2).style.display = "";
+        }
+    </script>
+    <div id='buttons' style="display: ;" class="mt-4 flex justify-center space-x-3">
+      <%= button_to "Добавить новую игру", jam_submit_game_path(@jam), method: :get,
+                    class: "min-w-max rounded-md border border-transparent bg-indigo-600 py-2 px-6 text-sm font-medium
+                        text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"  %>
+      <button id="button2" onclick="alternateShown('buttons', 'games')"
+              class="min-w-max rounded-md border border-transparent bg-gray-300 py-2 px-6 text-sm font-medium
+                        text-black shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">Добавить существующую</button>
+    </div>
+    <div id='games' style="display: none;" class="mt-6 overflow-y-auto sm:h-80 md:h-96 lg:h-120 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+      <% @current_user.games.each do |game| %>
+        <div class="group relative">
+          <% if game && game.cover.attached? %>
+            <%= image_tag url_for(game.cover), alt: game.name, class: "rounded-md bg-gray-200 w-full h-full
+                                  lg:h-80 lg:w-full object-cover object-center group-hover:opacity-75" %>
+          <% else %>
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none
+                                   group-hover:opacity-75 lg:h-80">
+              <img src="https://via.placeholder.com/300" alt="<%= game.name %>" class="h-full w-full
+                                    object-cover object-center lg:h-full lg:w-full">
+            </div>
+          <% end %>
+          <div class="mt-4 justify-between line-clamp-2">
+            <div class="flex-1">
+              <h3 class="text-sm text-gray-700 truncate">
+                <%= form_with url: submit_path(game), method: :post, local: true do |form| %>
+                  <%= form.hidden_field :game_id, value: game.id %>
+                  <%= form.hidden_field :jam_id, value: @jam.id %>
+                  <%= form.hidden_field :user_id, value: @current_user.id %>
+                  <button type="submit">
+                    <span aria-hidden="true" class="absolute inset-0"></span>
+                    <%= game.name %>
+                  </button>
+                <% end %>
+              </h3>
+              <p class="mt-1 text-sm text-gray-500 line-clamp-2"><%= game.description %></p>
+            </div>
+            <% if game.author.present? %>
+              <a class="break-all" href="<%= user_profile_path(game.author) %>">
+                <%= game.author.name %>
+              </a>
+            <% else %>
+              <p>Автор не найден</p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

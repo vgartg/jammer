@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_13_185805) do
+ActiveRecord::Schema[8.0].define(version: 2024_10_20_092925) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -66,6 +66,14 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_13_185805) do
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_games_tags_on_game_id"
     t.index ["tag_id"], name: "index_games_tags_on_tag_id"
+  end
+
+  create_table "jam_submissions", force: :cascade do |t|
+    t.integer "jam_id"
+    t.integer "game_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
   end
 
   create_table "jams", force: :cascade do |t|

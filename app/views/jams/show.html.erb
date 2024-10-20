@@ -49,8 +49,23 @@
               <% end %>
             </div>
           </div>
+          <div>
+
+            <% unless session[:current_user].nil? %>
+              <script>
+                  function showWindow(doc, part_id) {
+                      doc.getElementById(part_id).showModal();
+                  }
+              </script>
+              <dialog id="favDialog">
+                  <%= render partial: 'jams/modal_content' %>
+              </dialog>
+              <button type="button" id="addGame" class="mt-4 flex w-50 justify-center rounded-md border
+              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+              shadow-sm hover:bg-indigo-700 focus:outline-none
+              focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" onclick="showWindow(document, 'favDialog')">Добавить игру</button>
+            <%  end %>
           <% if @jam.author.present? && session[:current_user] == @jam.author.id %>
-            <div>
               <%= button_to "Редактировать джем", jam_edit_path(@jam), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md border
                               border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
@@ -58,9 +73,9 @@
                                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
               <%= button_to "Удалить джем", jam_destroy_path(@jam), method: :delete,
                             class: "mt-4 flex w-50 justify-center rounded-md border
-                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                              shadow-sm hover:bg-indigo-700 focus:outline-none
-                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+                              border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white
+                              shadow-sm hover:bg-red-700 focus:outline-none
+                               focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
           <% end %>
           </div>
         </div>

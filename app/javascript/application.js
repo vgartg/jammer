@@ -8,4 +8,3 @@ import "@hotwired/turbo-rails"
 import "./controllers"
 // @ts-ignore
 import "./update_activity"
-

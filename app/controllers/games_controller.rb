@@ -42,11 +42,27 @@ class GamesController < ApplicationController
     end
   end
 
+  def submit
+    # Check if the submission already exists
+    existing_submission = JamSubmission.find_by(game_id: params[:game_id], jam_id: params[:jam_id])
+
+    unless existing_submission
+      @submission = JamSubmission.create(submission_params)
+    end
+    redirect_to
+  end
+
   def create
     @game = Game.new(game_params.merge(author: current_user))
     @tags = Tag.all
     if @game.save
-      redirect_to dashboard_path
+      if request.referer.match?(%r{/jams/\d+/submit_game})
+        splited = request.referer.split('/')
+        @id = (splited[splited.size - 2]).to_i
+        submission_params = {game_id: @game.id, jam_id: @id, user_id: current_user.id}
+        JamSubmission.create(submission_params)
+      end
+      redirect_to jam_profile_path(@id)
     else
       flash[:errors] = @game.errors.full_messages
       render :new, status: :see_other
@@ -82,6 +98,11 @@ class GamesController < ApplicationController
   def game_params
     params.require(:game)
           .permit(:name, :description, :cover, :game_file, tag_ids: [])
+  end
+
+  def submission_params
+    params
+          .permit(:game_id, :jam_id, :user_id)
   end
 
   def should_search?

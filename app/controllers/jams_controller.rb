@@ -1,5 +1,5 @@
 class JamsController < ApplicationController
-  before_action :authenticate_user, only: [:new, :create, :edit, :update]
+  before_action :authenticate_user, only: [:new, :create, :edit, :update, :submit_game]
 
   def new
     @notifications = current_user.notifications
@@ -59,6 +59,10 @@ class JamsController < ApplicationController
   def edit
     @jam = current_user.jams.find_by_id(params[:id])
     @tags = Tag.all
+  end
+
+  def submit_game
+    # @jam = Jam.find(params[:id])
   end
 
   def update
