@@ -24,6 +24,7 @@
           </div>
 
           <%# if @game.in_jam? %>
+          <% unless @game.author == current_user %>
            <!-- Star Rating -->
           <div class="mt-4 text-center">
             <h2 class="text-lg font-semibold">Оцените игру:</h2>
@@ -55,6 +56,7 @@
 <!--              <h2 class="text-lg font-semibold">Эта игра не участвует в геймджеме, поэтому рейтинг недоступен.</h2>-->
 <!--            </div>-->
           <%# end %>
+          <% end %>
         </div>
 
 
