@@ -21,23 +21,31 @@ class PasswordResetsController < ApplicationController
   end
 
   def update
-    if @user.update(user_params) && user_params[:password].present? && user_params[:password_confirmation].present?
-      flash[:success] = "Пароль успешно обновлен!"
-      redirect_to login_path
-    else
      if user_params[:password].blank? || user_params[:password_confirmation].blank?
        flash[:failure] = "All fields must be filled in"
+       redirect_to request.fullpath # Пока такой костыль
+       return
      elsif user_params[:password].length < 5
        flash[:failure] = "New password is too short (minimum is 5 characters)."
+       redirect_to request.fullpath # Пока такой костыль
+       return
      elsif user_params[:password] != user_params[:password_confirmation]
        flash[:failure] = "New passwords do not match."
+       redirect_to request.fullpath # Пока такой костыль
+       return
      elsif user_params[:password] == params[:user][:current_password]
        flash[:failure] = "New password must be different from the old one."
+       redirect_to request.fullpath # Пока такой костыль
+       return
      end
 
-      # Пока такой костыль
-      redirect_to request.fullpath
-    end
+     if @user.update(user_params)
+       flash[:success] = "Пароль успешно обновлен!"
+       redirect_to login_path
+     else
+       flash[:failure] = "Что-то пошло не так!"
+       redirect_to login_path
+     end
   end
 
   private
