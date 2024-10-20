@@ -1,0 +1,28 @@
+<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+    <%= form_with model: @user, url: password_reset_path, method: :patch, class: 'max-w-md mx-auto p-8 bg-white rounded-lg shadow-lg' do |f| %>
+  <h2 class="text-2xl font-bold text-center mb-6">Сброс пароля</h2>
+
+  <%= f.hidden_field :password_reset_token, value: @user.password_reset_token %>
+  <%= f.hidden_field :email, value: @user.email %>
+
+  <div class="mb-4">
+    <%= f.label :password, class: 'block text-gray-700 text-sm font-semibold mb-1' %>
+    <%= f.password_field :password, class: 'shadow appearance-none border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-300 focus:border-blue-500' %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :password_confirmation, class: 'block text-gray-700 text-sm font-semibold mb-1' %>
+    <%= f.password_field :password_confirmation, class: 'shadow appearance-none border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-300 focus:border-blue-500' %>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <%= f.submit 'Сохранить', class: 'w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 rounded focus:outline-none focus:shadow-outline' %>
+  </div>
+
+  <div class="mt-4 text-center">
+    <p class="text-sm text-gray-600">Вернуться к <%= link_to 'входу', login_path, class: 'text-blue-500 hover:underline' %></p>
+  </div>
+<% end %>
+  </div>
+</div>

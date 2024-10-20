@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  include Recoverable
+
+  has_secure_token :password_reset_token
   attr_accessor :remember_token
 
   VISIBILITY_ALL = 'All'
@@ -141,5 +144,9 @@ class User < ActiveRecord::Base
     when VISIBILITY_NONE
       return false
     end
+  end
+
+  def authenticate_password_reset_token(token)
+    digest(self.password_reset_token) == token
   end
 end

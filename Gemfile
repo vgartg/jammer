@@ -48,16 +48,13 @@ gem "bootsnap", require: false
 gem "image_processing", "~> 1.2"
 
 gem 'rexml', '>= 3.3.6'
-
 gem 'browser'
-
 gem 'flatpickr'
-
 gem 'useragent'
-
 gem 'sinatra'
-
 gem 'rest-client'
+
+gem 'letter_opener', group: :development
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
