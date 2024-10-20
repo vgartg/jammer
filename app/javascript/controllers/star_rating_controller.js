@@ -1,36 +1,39 @@
-// star_rating_controller.js
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-    static targets = ["star"];
+  static targets = ["star"];
+// Метод вызывается при подключении контроллера
+  connect() {
+    this.currentRating = 0;
+    this.updateStars(0);
+  }
 
-    connect() {
-        this.currentRating = 0; // Initialize the current rating
-    }
+  // Обновление рейгинга
+  updateStars(rating) {
+    this.starTargets.forEach((star) => {
+      const starRating = parseInt(star.dataset.rating);
+      if (starRating <= rating) {
+        star.style.fill = "#FFD700"; // Золотой цвет
+      } else {
+        star.style.fill = "gray";
+      }
+    });
+  }
 
-    // Handle mouse hover to preview rating
-    hover(event) {
-        const rating = parseInt(event.currentTarget.dataset.rating);
-        this.updateStars(rating);
-    }
+  // Обработка наведения мыши для предварительного просмотра рейтинга
+  hover(event) {
+    const rating = parseInt(event.currentTarget.dataset.rating);
+    this.updateStars(rating);
+  }
 
-    // Reset to current rating when mouse leaves
-    leave() {
-        this.updateStars(this.currentRating);
-    }
+  // Сброс звезд на текущий рейтинг при уводе курсора
+  leave() {
+    this.updateStars(this.currentRating);
+  }
 
-    // Set rating on click
-    setRating(event) {
-        this.currentRating = parseInt(event.currentTarget.dataset.rating);
-        console.log(`Selected rating: ${this.currentRating}`);
-        this.updateStars(this.currentRating);
-    }
-
-    // Update the star colors based on rating
-    updateStars(rating) {
-        this.starTargets.forEach((star) => {
-            const starRating = parseInt(star.dataset.rating);
-            star.style.fill = starRating <= rating ? "#FFD700" : "gray"; // Gold for selected, gray otherwise
-        });
-    }
+  // Установка нового рейтинга при клике на звезду
+  setRating(event) {
+    this.currentRating = parseInt(event.currentTarget.dataset.rating);
+    this.updateStars(this.currentRating);
+  }
 }

@@ -14,7 +14,7 @@
           <div class="flex justify-center mb-7">
             <% if @game && @game.cover.attached? %>
               <%= image_tag url_for(@game.cover), alt: @game.name,
-                            class: "rounded-md bg-gray-200 object-cover object-center group-hover:opacity-75 lg:h-80 lg:w-80" %>
+                            class: "rounded-md bg-gray-200 object-cover object-center group-hover:opacity-75 lg:h-80 lg:w-130" %>
             <% else %>
               <div class="w-full max-w-lg aspect-w-1 aspect-h-1 overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-80">
                 <img src="https://via.placeholder.com/300" alt="<%= @game.name %>"
@@ -23,22 +23,23 @@
             <% end %>
           </div>
 
-
-          <!-- Game Rating -->
+          <%# if @game.in_jam? %>
+           <!-- Star Rating -->
           <div class="mt-4 text-center">
             <h2 class="text-lg font-semibold">Оцените игру:</h2>
           </div>
-          <!-- Star Rating -->
-          <div class="mt-2 flex justify-center">
-            <div class="flex items-center space-x-1" id="star-rating">
+
+          <div class="mt-2 flex justify-center" data-controller="star-rating">
+            <div class="flex items-center space-x-2" id="star-rating">
               <% 10.times do |i| %>
                 <svg
-                  class="w-8 h-8 text-gray-300 cursor-pointer transition-all fill-current star-full"
+                  class="w-8 h-8 text-gray-300 cursor-pointer transition-all"
                   data-rating="<%= i + 1 %>"
                   data-star-rating-target="star"
                   data-action="mouseenter->star-rating#hover mouseleave->star-rating#leave click->star-rating#setRating"
                   xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24">
+                  viewBox="0 0 24 24"
+                  fill="gray">
                   <polygon
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -49,67 +50,13 @@
               <% end %>
             </div>
           </div>
-
-          <!-- Star Rating -->
-          <div class="mt-2 flex justify-center">
-            <div class="flex items-center space-x-1" id="star-rating">
-              <% 10.times do |i| %>
-                <svg
-                  class="w-10 h-10 text-gray-300 cursor-pointer transition-all fill-current star-full"
-                  data-rating="<%= i + 1 %>"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24">
-
-                </svg>
-              <% end %>
-            </div>
-          </div>
-
-          <!-- JavaScript for Interactive Star Rating -->
-          <script>
-              document.addEventListener('DOMContentLoaded', function () {
-                  const stars = document.querySelectorAll('.star-full');
-                  let currentRating = 0;
-
-                  // Update star colors based on selected rating
-                  function updateStars(rating) {
-                      stars.forEach(star => {
-                          const starRating = parseInt(star.dataset.rating);
-                          if (starRating <= rating) {
-                              star.style.fill = "#FFD700"; // Set fill color to yellow
-                          } else {
-                              star.style.fill = "gray"; // Set fill color to gray
-                          }
-                      });
-                  }
-
-                  // Handle mouse enter and leave for hover effect
-                  stars.forEach(star => {
-                      star.addEventListener('mouseenter', function () {
-                          const rating = parseInt(this.dataset.rating);
-                          updateStars(rating); // Show yellow stars on hover
-                      });
-
-                      star.addEventListener('mouseleave', function () {
-                          updateStars(currentRating); // Reset to current rating on mouse leave
-                      });
-
-                      star.addEventListener('click', function () {
-                          const rating = parseInt(this.dataset.rating);
-                          currentRating = rating; // Update current rating
-                          console.log(`Selected rating: ${rating}`);
-                          updateStars(rating); // Update stars to reflect selected rating
-                      });
-                  });
-              });
-          </script>
-
-
-
-
-
-
+          <%# else %>
+<!--            <div class="mt-4 text-center">-->
+<!--              <h2 class="text-lg font-semibold">Эта игра не участвует в геймджеме, поэтому рейтинг недоступен.</h2>-->
+<!--            </div>-->
+          <%# end %>
         </div>
+
 
 
 
