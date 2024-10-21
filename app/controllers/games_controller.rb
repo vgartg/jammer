@@ -56,14 +56,8 @@ class GamesController < ApplicationController
     @game = Game.new(game_params.merge(author: current_user))
     @tags = Tag.all
     if @game.save
-      if request.referer.match?(%r{/jams/\d+/submit_game})
-        splited = request.referer.split('/')
-        @id = (splited[splited.size - 2]).to_i
-        submission_params = {game_id: @game.id, jam_id: @id, user_id: current_user.id}
-        JamSubmission.create(submission_params)
-      end
       flash[:success] = "Игра успешно создана!"
-      redirect_to jam_profile_path(@id)
+      redirect_to games_showcase_path
     else
       flash[:failure] = @game.errors.full_messages
       render :new, status: :see_other
@@ -108,7 +102,7 @@ class GamesController < ApplicationController
 
   def submission_params
     params
-          .permit(:game_id, :jam_id, :user_id)
+      .permit(:game_id, :jam_id, :user_id)
   end
 
   def should_search?

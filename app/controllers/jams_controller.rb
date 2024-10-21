@@ -63,7 +63,17 @@ class JamsController < ApplicationController
   end
 
   def submit_game
-    # @jam = Jam.find(params[:id])
+
+  end
+
+  def create_submission
+    game = Game.new(game_params.merge(author: current_user))
+    if game.save
+      JamSubmission.new(game: game, jam_id: params[:id], user: current_user).save
+      redirect_to jam_profile_path(params[:id])
+    else
+      redirect_to dashboard_path
+    end
   end
 
   def update
@@ -95,5 +105,15 @@ class JamsController < ApplicationController
 
   def should_search?
     params[:search].present? && !params[:search].empty?
+  end
+
+  def submission_params
+    params
+      .permit(:game_id, :jam_id, :user_id)
+  end
+
+  def game_params
+    params.require(:game)
+          .permit(:name, :description, :cover, :game_file, tag_ids: [])
   end
 end

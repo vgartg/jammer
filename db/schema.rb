@@ -145,8 +145,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_20_092925) do
     t.string "timezone"
     t.string "visibility", default: "All"
     t.string "background_image"
-    t.string "jams_visibility", default: "All"
     t.string "theme", default: "Light"
+    t.string "jams_visibility", default: "All"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
   end

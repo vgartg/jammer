@@ -10,7 +10,7 @@
         }
     </script>
     <div id='buttons' style="display: flex;" class="mt-4 flex justify-center space-x-3">
-      <%= button_to "Добавить новую игру", jam_submit_game_path(@jam), method: :get,
+      <%= button_to "Добавить новую игру", game_submission_path(@jam), method: :get,
                     class: "min-w-max rounded-md border border-transparent bg-indigo-600 py-2 px-6 text-sm font-medium
                         text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"  %>
       <button id="button2" onclick="alternateShown('buttons', 'games')"

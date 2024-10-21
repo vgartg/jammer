@@ -62,7 +62,8 @@ Rails.application.routes.draw do
   delete '/jams/:id', to: 'jams#destroy', as: 'jam_destroy'
   get '/jams/:id', to: "jams#show", as: 'jam_profile'
   get '/jams_showcase', to: 'jams#showcase'
-  get '/jams/:id/submit_game', to: 'jams#submit_game', as: 'jam_submit_game'
+  get '/jams/:id/submit_game', to: 'jams#submit_game', as: 'game_submission'
+  post '/jams/:id/submit_game', to: 'jams#create_submission'
 
   resources :notifications, only: [:index, :show] do
     delete 'destroy_all_notifications', on: :collection

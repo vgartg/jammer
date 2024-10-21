@@ -56,6 +56,10 @@
                   function showWindow(doc, part_id) {
                       doc.getElementById(part_id).showModal();
                   }
+
+                  // document.getElementById('favDialog').addEventListener('close', function() {
+                  //     console.log('Dialog has been closed');
+                  // })
               </script>
               <dialog id="favDialog">
                   <%= render partial: 'jams/modal_content' %>
