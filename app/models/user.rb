@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
   include Recoverable
   include Rememberable
+  include Confirmable
 
   has_secure_token :password_reset_token
+  has_secure_token :email_confirm_token
 
   VISIBILITY_ALL = 'All'
   VISIBILITY_FRIENDS = 'Friends'
@@ -128,5 +130,10 @@ class User < ActiveRecord::Base
 
   def authenticate_password_reset_token(token)
     digest(self.password_reset_token) == token
+  end
+
+  def authenticate_email_confirm_token(token)
+    return false unless email_confirm_token.present?
+    BCrypt::Password.new(email_confirm_token).is_password?(token)
   end
 end

@@ -3,8 +3,8 @@ module Recoverable
   included do
     before_update :clear_reset_password_token, if: :password_digest_changed?
     def set_password_reset_token
-      update_column(:password_reset_token, digest(SecureRandom.urlsafe_base64)) unless puts self.errors.full_messages
-      update_column(:password_reset_token_sent_at, Time.current) unless puts self.errors.full_messages
+      update_column(:password_reset_token, digest(SecureRandom.urlsafe_base64))
+      update_column(:password_reset_token_sent_at, Time.current)
     end
 
     def clear_reset_password_token

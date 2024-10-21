@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    return @current_user if @current_user
+    return @current_user if @current_user && @current_user.email_confirmed
 
     browser_string = request.user_agent
     browser = UserAgent.parse(browser_string).browser

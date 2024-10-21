@@ -10,14 +10,22 @@ class SessionsController < ApplicationController
     browser_string = request.user_agent
     browser = UserAgent.parse(browser_string).browser
     if user.present? && user.authenticate(auth_params[:password])
-      session[:current_user] = user.id
-      unless Session.all.where(ip_address: request.remote_ip, browser: browser).exists?
-        Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
+      if user.email_confirmed
+        session[:current_user] = user.id
+        unless Session.all.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).exists?
+          Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
+        end
+        if params[:remember_me] == "1"
+          remember(user)
+        end
+        redirect_to dashboard_path
+      else
+        @token = user.set_email_confirm_token
+        EmailConfirmMailer.with(user: user, token: @token).email_confirm.deliver_later
+        flash[:success] = 'Инструкции были отправлены на ваш адрес'
+        redirect_to edit_email_confirm_url(user: { email_confirm_token: user.email_confirm_token,
+                                                   email: user.email }).gsub('&amp;', '&')
       end
-      if params[:remember_me] == "1"
-        remember(user)
-      end
-      redirect_to dashboard_path
     else
       flash[:failure] = ["Invalid email or password"]
       render :new, status: :see_other

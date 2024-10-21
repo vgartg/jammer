@@ -7,7 +7,7 @@ class PasswordResetsController < ApplicationController
     @user = User.find_by_email(params[:email])
     if @user.present?
       @user.set_password_reset_token
-      PasswordResetMailer.with(user: @user).reset_email.deliver_now
+      PasswordResetMailer.with(user: @user).reset_email.deliver_later
       flash[:success] = 'Инструкции были отправлены на ваш адрес'
       redirect_to login_path
     else

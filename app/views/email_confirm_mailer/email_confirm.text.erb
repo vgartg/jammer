@@ -1,0 +1,4 @@
+You need to confirm email for register on Jammer. Please copy this code for confirm:
+<% if @user && @token && @user.email_confirm_token %>
+  <%= @token %>
+<% end %>
