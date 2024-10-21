@@ -3,10 +3,6 @@ class EmailConfirmsController < ApplicationController
   before_action :set_user_by_email, only: [:edit]
   before_action :set_user, only: [:update]
 
-  def new
-
-  end
-
   def edit
 
   end
