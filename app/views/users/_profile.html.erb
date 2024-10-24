@@ -15,9 +15,8 @@
                             class: "h-24 w-24 rounded-full ring-4
       ring-white sm:h-32 sm:w-32" %>
             <% else %>
-              <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                   class="h-24 w-24 rounded-full ring-4
-      ring-white sm:h-32 sm:w-32">
+          <%= image_tag 'empty-avatar.jpg', class: "h-24 w-24 rounded-full ring-4
+      ring-white sm:h-32 sm:w-32"%>
             <% end %>
         <% if @user.can_see_online?(current_user) %>
           <% if @user.online? %>

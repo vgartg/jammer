@@ -13,8 +13,7 @@
                   <%= image_tag url_for(notification.actor.avatar), alt: "Profile Picture",
                                 class: "w-16 text-gray-400" %>
                 <% else %>
-                  <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                       class="w-16 text-gray-400">
+                  <%= image_tag 'empty-avatar.jpg', class: "w-16 text-gray-400"%>
                 <% end %>
               </a>
             </div>

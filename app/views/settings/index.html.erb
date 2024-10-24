@@ -44,8 +44,8 @@
               <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24
                w-24 border-2 border-gray-300 object-cover", data: { target: 'user.avatarImage' } %>
             <% else %>
-              <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-image rounded-full h-24
-               w-24 border-2 border-gray-300 object-cover" data-target="user.avatarImage">
+              <%= image_tag 'empty-avatar.jpg', class: "avatar-image rounded-full h-24
+               w-24 border-2 border-gray-300 object-cover", data: { target: "user.avatarImage" } %>
             <% end %>
             <div>
               <%= render partial: 'helpers/cropper_modal' %>
