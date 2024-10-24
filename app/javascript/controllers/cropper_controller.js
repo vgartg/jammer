@@ -58,6 +58,7 @@ export default class extends Controller {
 
     close() {
         this.modalTarget.classList.add('hidden');
+        this.inputTarget.value = '';
         if (this.cropper) {
             this.cropper.destroy();
             this.cropper = null;
