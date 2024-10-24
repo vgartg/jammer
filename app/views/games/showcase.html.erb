@@ -41,7 +41,21 @@
                           data: { action: "change->games#toggleTagMode", games_target: "toggleTagMode" } %>
         <%= label_tag :toggle_tag_mode, " Искать хотя бы с одним из выбранных тегов",
                       class: "text-sm font-medium text-gray-700" %>
+
+        <div id="reset-button" class="ml-4 flex items-center space-x-1 text-indigo-600 cursor-pointer hidden"
+             data-games-target="resetButton" data-action="click->games#resetTags">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+          <span class="text-sm font-medium">Сбросить фильтры</span>
+        </div>
       </div>
+
+      <%= button_tag "Сбросить теги", type: "button",
+                     data: { action: "games#resetTags", games_target: "resetButton" },
+                     class: "rounded-md border border-transparent bg-gray-300 py-2 px-4 text-sm
+                     font-medium text-gray-700 shadow-sm hover:bg-gray-400 focus:outline-none
+                     focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 hidden" %>
     <% end %>
 
     <div id="autocomplete-results" class="autocomplete-results-popup">
