@@ -3,38 +3,59 @@
 
     <div class="flex lg:flex-1 p-4">
       <% unless @current_user %>
-      <a href="/" class="-m-1.5 p-1.5">
-        <span class="sr-only">Jammer</span>
-        <%= image_tag 'whitewithoutwall.png', class: "relative h-8 w-auto scale-150"%>
-      </a>
-        <% end%>
+        <%#= link_to url_for(:root), class: "-m-1.5 p-1.5" %>
+        <a href="/" class="-m-1.5 p-1.5">
+          <span class="sr-only">Jammer</span>
+          <%= image_tag 'whitewithoutwall.png', class: "relative h-8 w-auto scale-150" %>
+        </a>
+      <% end %>
     </div>
 
     <div data-action="click->header#OpenHeaderMenu" class="flex lg:hidden">
       <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400">
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
         </svg>
       </button>
     </div>
 
     <div class="hidden lg:flex lg:gap-x-12">
-      <a href="/" class="text-sm font-semibold leading-6 text-white">Home</a>
-      <a href="/users" class="text-sm font-semibold leading-6 text-white">Users</a>
-      <a href="/games_showcase" class="text-sm font-semibold leading-6 text-white">Games</a>
-      <a href="/jams_showcase" class="text-sm font-semibold leading-6 text-white">Jams</a>
+      <%#= link_to t(''), url_for(:users) %>
+      <%= link_to t('.home'), url_for(:root), class: "text-sm font-semibold leading-6 text-white" %>
+      <%= link_to t('.users'), url_for(:users), class: "text-sm font-semibold leading-6 text-white" %>
+      <%= link_to t('.games'), url_for(:games_showcase), class: "text-sm font-semibold leading-6 text-white" %>
+      <%= link_to t('.jams'), url_for(:jams_showcase), class: "text-sm font-semibold leading-6 text-white" %>
     </div>
 
     <% if current_user %>
       <div class="hidden lg:flex lg:flex-1 lg:gap-x-12 lg:justify-end">
-        <a href="/dashboard" class="text-sm font-semibold leading-6 text-white">Dashboard</a>
-        <%= button_to "Sign out", logout_path, method: :delete,
-                      class:"text-sm font-semibold leading-6 text-white" %>
+        <%= link_to t('.dashboard'), url_for(:dashboard), class: "text-sm font-semibold leading-6 text-white" %>
+        <%= button_to t(".sign_out"), logout_path, method: :delete,
+                      class: "text-sm font-semibold leading-6 text-white" %>
+        <ul class="nav col-12 col-lg-auto mb-2 mb-md-0">
+          <li class="dropdown">
+            <%= link_to '', class: 'nav-link px-2 dropdown-toggle text-white', data: { "bs-toggle": 'dropdown' } do %>
+              <%= tag.div '', class: "flag #{I18n.locale}-flag mt-1" %>
+              <%= t I18n.locale %>
+            <% end %>
+            <ul class="dropdown-menu">
+              <% I18n.available_locales.each do |locale| %>
+                <li>
+                  <% if I18n.locale == locale %>
+                    <%= tag.span t(locale), class: 'dropdown-item' %>
+                  <% else %>
+                    <%= link_to t(locale), root_path(locale: locale), class: 'dropdown-item' %>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+        </ul>
       </div>
     <% else %>
       <div class="hidden lg:flex lg:flex-1 lg:gap-x-12 lg:justify-end">
-        <a href="/register" class="text-sm font-semibold leading-6 text-white">Sign up</a>
-        <a href="/login" class="text-sm font-semibold leading-6 text-white">Log in
+        <%= link_to t('.sign_up'), url_for(:register), class: "text-sm font-semibold leading-6 text-white" %>
+        <a href="/login" class="text-sm font-semibold leading-6 text-white"><%= t 'layouts.header.log_in' %>
           <span aria-hidden="true">&rarr;</span>
         </a>
       </div>
@@ -51,7 +72,7 @@
         </a>
         <button data-action="click->header#CloseHeaderMenu" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-400">
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
       </div>
@@ -74,7 +95,7 @@
               <a href="/dashboard" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
             text-white hover:bg-gray-800">Dashboard</a>
               <a class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
-              text-white hover:bg-gray-800 cursor-pointer" >
+              text-white hover:bg-gray-800 cursor-pointer">
                 <%= button_to "Sign out", logout_path, method: :delete, class: "w-full flex justify-start" %>
               </a>
             </div>

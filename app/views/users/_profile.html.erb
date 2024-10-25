@@ -16,7 +16,7 @@
       ring-white sm:h-32 sm:w-32" %>
             <% else %>
           <%= image_tag 'empty-avatar.jpg', class: "h-24 w-24 rounded-full ring-4
-      ring-white sm:h-32 sm:w-32"%>
+      ring-white sm:h-32 sm:w-32" %>
             <% end %>
         <% if @user.can_see_online?(current_user) %>
           <% if @user.online? %>
@@ -64,10 +64,8 @@
                         hover:bg-red-600 transition-colors duration-200" %>
             <% end %>
           <% else %>
-            <a href="/settings" class="inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
-                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-              Edit profile
-            </a>
+            <%= link_to t('.edit'), settings_path, class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
+                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
           <% end %>
         </div>
       </div>
@@ -89,46 +87,64 @@
       <div class="mt-6 border-t border-gray-100">
         <ul class="divide-y divide-gray-100">
           <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Full name</dt>
+            <dt class="text-sm font-medium leading-6 text-gray-900">
+              <%= t 'users.profile.full_name' %>
+            </dt>
             <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               <% if @user.real_name.blank? %>
-                <span>Информации нет</span>
+                <span>
+                  <%= t '.no_info' %>
+                </span>
               <% else %>
                 <span><%= @user.real_name %></span>
               <% end %>
             </dd>
           </div>
           <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">E-mail</dt>
+            <dt class="text-sm font-medium leading-6 text-gray-900">
+              <%= t '.email' %>
+            </dt>
             <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               <%= @user.email %>
             </dd>
           </div>
           <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Birthday</dt>
+            <dt class="text-sm font-medium leading-6 text-gray-900">
+              <%= t '.birthday' %>
+            </dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               <% if @user.birthday.blank? %>
-                <span>Информации нет</span>
+                <span>
+                  <%= t '.no_info' %>
+                </span>
               <% else %>
                 <span><%= Date.parse(@user.birthday).strftime("%d.%m.%Y") %></span>
               <% end %>
             </dd>
           </div>
           <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Location</dt>
+            <dt class="text-sm font-medium leading-6 text-gray-900">
+              <%= t '.location' %>
+            </dt>
             <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               <% if @user.location.blank? %>
-                <span>Информации нет</span>
+                <span>
+                  <%= t '.no_info' %>
+                </span>
               <% else %>
                 <span><%= @user.location %></span>
               <% end %>
             </dd>
           </div>
           <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Phone number</dt>
+            <dt class="text-sm font-medium leading-6 text-gray-900">
+              <%= t '.phone' %>
+            </dt>
             <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               <% if @user.phone_number.blank? %>
-                <span>Информации нет</span>
+                <span>
+                  <%= t '.no_info' %>
+                </span>
               <% else %>
                 <span><%= @user.phone_number %></span>
               <% end %>
@@ -136,7 +152,9 @@
           </div>
 
           <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Games</dt>
+            <dt class="text-sm font-medium leading-6 text-gray-900">
+              <%= t '.games' %>
+            </dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               <% if @user.games.any? %>
                 <ul role="list" id="game-list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
@@ -168,7 +186,9 @@
                   Показать все игры
                 </button>
               <% else %>
-                <span class="text-gray-900">Информации нет</span>
+                <span class="text-gray-900">
+                  <%= t '.no_info' %>
+                </span>
               <% end %>
             </dd>
           </div>
@@ -176,7 +196,7 @@
           <script>
               tb = document.getElementById('toggle-button');
               if (tb) {
-                  tb.addEventListener('click', function() {
+                  tb.addEventListener('click', function () {
                       const games = document.querySelectorAll('.game-item.hidden');
                       const allGames = document.querySelectorAll('.game-item');
                       const isHidden = games.length > 0;
@@ -198,7 +218,9 @@
           </script>
 
           <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Administrating jams</dt>
+            <dt class="text-sm font-medium leading-6 text-gray-900">
+              <%= t '.adm_jams' %>
+            </dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               <% if @user.can_see_jams?(current_user) || current_user == @user %>
                 <% if @user.jams.any? %>
@@ -229,10 +251,14 @@
                     <% end %>
                   </ul>
                 <% else %>
-                  <span class="text-gray-900">Информации нет</span>
+                  <span class="text-gray-900">
+                    <%= t '.no_info' %>
+                  </span>
                 <% end %>
               <% else %>
-                <span class="text-gray-900">Информации нет</span>
+                <span class="text-gray-900">
+                  <%= t '.no_info' %>
+                </span>
               <% end %>
             </dd>
           </div>

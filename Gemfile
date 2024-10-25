@@ -90,3 +90,5 @@ group :production do
 end
 
 gem "thruster", require: false
+
+gem "rails-i18n"

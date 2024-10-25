@@ -25,47 +25,49 @@
 
           <%# if @game.in_jam? %>
           <% unless @game.author == current_user %>
-           <!-- Star Rating -->
-          <div class="mt-4 text-center">
-            <h2 class="text-lg font-semibold">Оцените игру:</h2>
-          </div>
-
-          <div class="mt-2 flex justify-center" data-controller="star-rating">
-            <div class="flex items-center space-x-2" id="star-rating">
-              <% 10.times do |i| %>
-                <svg
-                  class="w-8 h-8 text-gray-300 cursor-pointer transition-all"
-                  data-rating="<%= i + 1 %>"
-                  data-star-rating-target="star"
-                  data-action="mouseenter->star-rating#hover mouseleave->star-rating#leave click->star-rating#setRating"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="gray">
-                  <polygon
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    points="12 17.27 18.18 21 15.64 13.97 21 9.24 13.81 8.64 12 2 10.19 8.64 3 9.24 8.36 13.97 5.82 21 12 17.27"
-                    />
-                </svg>
-              <% end %>
+            <!-- Star Rating -->
+            <div class="mt-4 text-center">
+              <h2 class="text-lg font-semibold">
+                <%= t '.rate' %>
+              </h2>
             </div>
-          </div>
-          <%# else %>
-<!--            <div class="mt-4 text-center">-->
-<!--              <h2 class="text-lg font-semibold">Эта игра не участвует в геймджеме, поэтому рейтинг недоступен.</h2>-->
-<!--            </div>-->
-          <%# end %>
+
+            <div class="mt-2 flex justify-center" data-controller="star-rating">
+              <div class="flex items-center space-x-2" id="star-rating">
+                <% 10.times do |i| %>
+                  <svg
+                    class="w-8 h-8 text-gray-300 cursor-pointer transition-all"
+                    data-rating="<%= i + 1 %>"
+                    data-star-rating-target="star"
+                    data-action="mouseenter->star-rating#hover mouseleave->star-rating#leave click->star-rating#setRating"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="gray">
+                    <polygon
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      points="12 17.27 18.18 21 15.64 13.97 21 9.24 13.81 8.64 12 2 10.19 8.64 3 9.24 8.36 13.97 5.82 21 12 17.27"
+                      />
+                  </svg>
+                <% end %>
+              </div>
+            </div>
+            <%# else %>
+            <!--            <div class="mt-4 text-center">-->
+            <!--              <h2 class="text-lg font-semibold">Эта игра не участвует в геймджеме, поэтому рейтинг недоступен.</h2>-->
+            <!--            </div>-->
+            <%# end %>
           <% end %>
         </div>
-
-
 
 
         <div class="mt-8 lg:col-span-5">
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Описание:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t 'activerecord.attributes.game.description' %>
+            </h2>
 
             <div class="prose prose-sm mt-4 text-gray-500">
               <p class="break-all">
@@ -75,7 +77,9 @@
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Теги:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t '.tags' %>
+            </h2>
             <div class="mt-4 text-gray-500">
               <% if @game.tags.any? %>
                 <ul class="flex flex-wrap gap-2">
@@ -86,13 +90,17 @@
                   <% end %>
                 </ul>
               <% else %>
-                <p>Теги не найдены</p>
+                <p>
+                  <%= t '.tags_not_found' %>
+                </p>
               <% end %>
             </div>
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Автор:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t '.author' %>
+            </h2>
             <div class="prose prose-sm mt-4 text-gray-500">
               <% if @game.author.present? %>
                 <a class="break-all" href="<%= user_profile_path(@game.author) %>">
@@ -105,10 +113,14 @@
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Файл игры:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t '.game_file' %>
+            </h2>
             <div class="mt-4">
               <% if @game.game_file.attached? %>
-                <p class="text-red-600">Внимание: мы не несем ответственности за содержимое архива.</p>
+                <p class="text-red-600">
+                  <%= t '.warning' %>
+                </p>
                 <a href="<%= url_for(@game.game_file) %>" download class="text-indigo-600 hover:text-indigo-900">
                   Скачать архив (.zip, .rar, .7z)
                 </a>
@@ -132,7 +144,7 @@
                               shadow-sm hover:bg-indigo-700 focus:outline-none
                                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
           <% end %>
-            </div>
+          </div>
         </div>
       </div>
     </div>

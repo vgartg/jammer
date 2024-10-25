@@ -6,7 +6,7 @@
     <%= form_for :game, url: games_url do |f| %>
 
       <div class="mt-4">
-        <%= f.label :name, "Название игры", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.label :name, class: "block text-sm font-medium text-gray-700" %>
         <div class="mt-1">
           <%= f.text_field :name, required: true,
                            class: "block w-full appearance-none rounded-md border border-gray-300
@@ -16,7 +16,7 @@
       </div>
 
       <div class="mt-4">
-        <%= f.label :description, "Описание",
+        <%= f.label :description,
                     class: "block text-sm font-medium text-gray-700" %>
         <div class="mt-1">
           <%= f.text_field :description, required: true, class: "block w-full appearance-none

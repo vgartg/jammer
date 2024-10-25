@@ -1,0 +1,67 @@
+ru:
+  ru: "Русский"
+  en: "English"
+  activerecord:
+    models:
+      tag: "Тег"
+      game: "Игра"
+    attributes:
+      game:
+        name: "Название"
+        description: "Описание"
+  home:
+    title: "Прототип сервиса Jammer"
+    description: "Онлайн-сервис для размещения, продажи и загрузки инди-игр"
+  layouts:
+    header:
+      home: "Главная"
+      users: "Пользователи"
+      games: "Игры"
+      jams: "Джемы"
+      sign_up: "Регистрация"
+      log_in: "Авторизация"
+      sign_out: "Выход"
+      dashboard: "Панель управления"
+    footer:
+      copyright: "Все права защищены."
+    left-menu:
+      requests: "Запросы"
+      settings: "Настройки"
+  games:
+    showcase:
+      title: "Каталог игр"
+      create: "Создать игру"
+      search_placeholder: "Поиск по названию или описанию игры"
+      search: "Искать"
+      reset_filters: "Сбросить фильтры"
+      checkbox: "Искать хотя бы с одним из выбранных тегов"
+      not_found: "По текущему запросу ничего не найдено"
+    show:
+      tags: "Теги"
+      tags_not_found: "Теги не найдены"
+      author: "Автор"
+      game_file: "Файл игры:"
+      warning: "Внимание: мы не несем ответственности за содержимое архива."
+      rate: "Оцените игру:"
+  friendships:
+    index:
+      title: "Друзья"
+      empty: "Друзей пока нет"
+  jams:
+    showcase:
+      title: "Каталог джемов"
+      btn: "Создать джем"
+      empty: "Джемов пока нет"
+  users:
+    index:
+      title: "Все пользователи"
+    profile:
+      full_name: "Полное имя"
+      email: "Электронная почта"
+      birthday: "День рождения"
+      location: "Место жительства"
+      phone: "Номер телефона"
+      games: "Игры"
+      adm_jams: "Администрируемые джемы"
+      no_info: "Информации нет"
+      edit: "Редактировать профиль"

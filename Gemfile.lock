@@ -230,6 +230,9 @@ GEM
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
       nokogiri (~> 1.14)
+    rails-i18n (7.0.9)
+      i18n (>= 0.7, < 2)
+      railties (>= 6.0.0, < 8)
     railties (8.0.0.beta1)
       actionpack (= 8.0.0.beta1)
       activesupport (= 8.0.0.beta1)
@@ -332,6 +335,7 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (>= 6.4.3)
   rails (~> 8.0.0.beta1)
+  rails-i18n
   rest-client
   rexml (>= 3.3.6)
   selenium-webdriver
