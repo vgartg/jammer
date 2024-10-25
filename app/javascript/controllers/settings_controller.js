@@ -5,8 +5,12 @@ export default class extends Controller {
     static targets = ["username", "fullLink", "section"];
 
     connect() {
-        this.updateLink();
-        this.usernameTarget.addEventListener('input', () => this.updateLink());
+        if (this.hasUsernameTarget) {
+            this.updateLink();
+            this.usernameTarget.addEventListener('input', () => this.updateLink());
+        }
+        // this.updateLink();
+        // this.usernameTarget.addEventListener('input', () => this.updateLink());
 
         this.sectionTargets.forEach((section, index) => {
             if (index !== 0) {

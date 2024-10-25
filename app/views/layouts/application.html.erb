@@ -13,6 +13,7 @@
   <body class="h-full">
   <%= render partial: 'layouts/header' %>
   <% if @current_user %>
+    <meta id="current-user" data-current-user="true" />
     <div data-controller="dashboard" class="min-h-full">
       <div class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
         <div class="hidden opacity-0 fixed inset-0 bg-gray-900/80"
@@ -30,7 +31,9 @@
             <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
               <div class="flex h-4 shrink-0 items-center"></div>
               <div class="logo">
-                <%= image_tag 'whitewithoutwall.png', alt: 'Логотип',width: '100', height: 'auto' %>
+                <a href='/'>
+                  <%= image_tag 'whitewithoutwall.png', alt: 'Логотип',width: '100', height: 'auto' %>
+                </a>
               </div>
               <nav class="flex flex-1 flex-col">
                 <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -209,7 +212,9 @@
         <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
           <div class="flex h-4 shrink-0 items-center"></div>
           <div class="logo">
-            <%= image_tag 'whitewithoutwall.png', alt: 'Логотип',width: '100', height: 'auto' %>
+            <a href='/'>
+              <%= image_tag 'whitewithoutwall.png', alt: 'Логотип',width: '100', height: 'auto' %>
+            </a>
           </div>
           <nav class="flex flex-1 flex-col">
             <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -395,6 +400,7 @@
       </div>
     </div>
   <% else %>
+    <meta id="current-user" data-current-user="false" />
     <main role="main" class="min-h-full">
       <%= yield %>
     </main>

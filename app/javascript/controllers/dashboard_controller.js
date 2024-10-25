@@ -5,12 +5,14 @@ export default class extends Controller {
 
     connect() {
         let selectedContentId = window.location.pathname.split('/')[1];
-        let cur_items = document.querySelectorAll('#' + selectedContentId);
+        if (selectedContentId) {
+            let cur_items = document.querySelectorAll('#' + selectedContentId);
 
-        cur_items.forEach(content => {
-                 content.classList.add('bg-gray-800');
-                 content.querySelector('a').classList.add('text-white');
-        });
+            cur_items.forEach(content => {
+                content.classList.add('bg-gray-800');
+                content.querySelector('a').classList.add('text-white');
+            });
+        }
     }
 
     menuItemTarget() {
