@@ -392,9 +392,6 @@
           <%= render partial: 'helpers/gray_search' %>
           <div>
             <%= yield %>
-
-            <%= render partial: 'helpers/good_notice' %>
-            <%= render partial: 'helpers/bad_notice' %>
           </div>
         </main>
       </div>
@@ -405,6 +402,8 @@
       <%= yield %>
     </main>
   <% end %>
+  <%= render partial: 'helpers/good_notice' %>
+  <%= render partial: 'helpers/bad_notice' %>
   <%= render partial: 'layouts/footer' %>
   </body>
 </html>
