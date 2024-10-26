@@ -49,18 +49,26 @@
               <% end %>
             </div>
           </div>
+          <% unless @jam.participants.include?(current_user.id) %>
+            <%= button_to "Участвовать", participate_jam_path(@jam), method: :post,
+                          class: "mt-4 flex w-50 justify-center rounded-md border
+                                border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                                shadow-sm hover:bg-indigo-700 focus:outline-none
+                                 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+          <% else %>
+            <%= button_to "Список проектов", jam_show_projects_path(@jam), method: :get,
+                          class: "mt-4 flex w-50 justify-center rounded-md border
+                                border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                                shadow-sm hover:bg-indigo-700 focus:outline-none
+                                 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+            <%= button_to "Список участников", jam_show_participants_path(@jam), method: :get,
+                          class: "mt-4 flex w-50 justify-center rounded-md borders
+                                border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                                shadow-sm hover:bg-indigo-700 focus:outline-none
+                                 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+          <% end %>
           <% if @jam.author.present? && session[:current_user] == @jam.author.id %>
             <div>
-              <%= button_to "Список проектов", jam_show_projects_path(@jam), method: :get,
-                            class: "mt-4 flex w-50 justify-center rounded-md border
-                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                              shadow-sm hover:bg-indigo-700 focus:outline-none
-                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-              <%= button_to "Список участников", jam_show_participants_path(@jam), method: :get,
-                            class: "mt-4 flex w-50 justify-center rounded-md borders
-                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                              shadow-sm hover:bg-indigo-700 focus:outline-none
-                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
               <%= button_to "Редактировать джем", jam_edit_path(@jam), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md border
                               border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white

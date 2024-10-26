@@ -5,12 +5,49 @@ class JamsController < ApplicationController
     @notifications = current_user.notifications
   end
 
+  def participate
+    @jam = Jam.find(params[:id])
+    unless @jam.participants.include?(current_user.id)
+      @jam.participants << current_user.id
+      if @jam.save
+        flash[:notice] = "Вы успешно присоединились к джему!"
+      else
+        flash[:alert] = "Произошла ошибка. Попробуйте еще раз."
+      end
+    end
+    redirect_to @jam
+  end
+
   def show_projects
-    @games = Game.all
+    @jam = Jam.find(params[:id])
+    @tags = Tag.all
+    jams_games = @jam.games.map{|id| Game.find(id)}
+    if should_search?
+      lower_case_search = "%#{params[:search].downcase}%"
+      @games = Jam.where("LOWER(jams_games.name) LIKE ? OR LOWER(jams_games.description) LIKE ?",
+                        lower_case_search, lower_case_search)
+    else
+      @games = jams_games
+    end
+
+    if params[:tag_ids].present?
+      tag_ids = params[:tag_ids].map(&:to_i)
+      if params[:tag_mode] == 'any'
+        @games = @games.joins(:tags).where(tags: { id: tag_ids }).distinct
+      else
+        @games = @games.joins(:tags).group('jams.id').having('array_agg(tags.id) @> ARRAY[?]::bigint[]', tag_ids)
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream { @search_results = should_search? ? @games : nil }
+    end
   end
 
   def show_participants
-    @users = User.all
+    @jam = Jam.find(params[:id])
+    @users = @jam.participants.map{|id| User.find(id)}
   end
 
   def showcase

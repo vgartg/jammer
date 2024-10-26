@@ -64,6 +64,11 @@ Rails.application.routes.draw do
   get '/jams/:id/show_projects', to: 'jams#show_projects', as: 'jam_show_projects'
   get '/jams/:id/show_participants', to: 'jams#show_participants', as: 'jam_show_participants'
 
+  resources :jams do
+    member do
+      post 'participate'
+    end
+  end
 
   resources :notifications, only: [:index, :show] do
     delete 'destroy_all_notifications', on: :collection
