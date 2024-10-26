@@ -68,6 +68,14 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_21_055106) do
     t.index ["tag_id"], name: "index_games_tags_on_tag_id"
   end
 
+  create_table "jam_submissions", force: :cascade do |t|
+    t.integer "jam_id"
+    t.integer "game_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+  end
+
   create_table "jams", force: :cascade do |t|
     t.string "name"
     t.integer "author_id"

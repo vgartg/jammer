@@ -1,4 +1,8 @@
-Someone has requested password reset for your account. Please visit this url for reset:
+Сброс пароля
+Кто-то запросил сброс пароля для вашей учетной записи.
+Если это были вы, нажмите на кнопку ниже, чтобы установить новый пароль:
 
 <%= url_for edit_password_reset_url(user: { password_reset_token: @user.password_reset_token,
-                                    email: @user.email }).gsub('&amp;', '&') %>
+                                            email: @user.email }).gsub('&amp;', '&') %>
+
+Если вы не запрашивали сброс пароля, просто проигнорируйте это сообщение.

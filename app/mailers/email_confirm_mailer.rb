@@ -1,4 +1,5 @@
 class EmailConfirmMailer < ActionMailer::Base
+  default from: "jammer.website@internet.ru"
   def email_confirm
     @user = params[:user]
     @token = params[:token]
