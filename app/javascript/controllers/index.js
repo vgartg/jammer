@@ -11,6 +11,9 @@ application.register("hello", HelloController)
 import GamesController from "./games_controller"
 application.register("games", GamesController)
 // @ts-ignore
+import JamsController from "./jams_controller"
+application.register("jams", JamsController)
+// @ts-ignore
 import DashboardController from "./dashboard_controller"
 application.register("dashboard", DashboardController)
 // @ts-ignore
