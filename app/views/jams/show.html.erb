@@ -7,8 +7,6 @@
             <h1 class="text-xl font-medium text-gray-900 break-all"><%= @jam.name %></h1>
           </div>
         </div>
-
-        <!-- Image gallery -->
         <div class="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
           <div class="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
             <% if @jam && @jam.cover.attached? %>
@@ -55,6 +53,7 @@
               <script>
                   function showWindow(doc, part_id) {
                       doc.getElementById(part_id).showModal();
+                      doc.getElementById('modalContent').focus();
                   }
 
                   // document.getElementById('favDialog').addEventListener('close', function() {
