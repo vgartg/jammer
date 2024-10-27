@@ -1,9 +1,9 @@
 <div class="bg-white" data-controller="games">
   <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div class="flex justify-between items-center">
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900">Список проектов</h2>
+    </div>
     <% unless @games.empty? %>
-      <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold tracking-tight text-gray-900">Список проектов</h2>
-      </div>
       <%= form_with url: games_showcase_path, method: :get,
                     data: { action: "input->games#search" },
                     class: "mt-6 mb-4" do |f| %>
