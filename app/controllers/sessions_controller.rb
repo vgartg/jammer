@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
       redirect_to dashboard_path
     else
       flash[:failure] = ["Invalid email or password"]
-      render :new, status: :see_other
+      redirect_to login_path
     end
   end
 

@@ -14,8 +14,7 @@
               <%= image_tag url_for(user.avatar), alt: "Profile Picture",
                             class: "h-16 w-16 rounded-full" %>
             <% else %>
-              <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                   class="h-16 w-16 rounded-full">
+              <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full"%>
             <% end %>
             <% if user.can_see_online?(current_user) %>
             <% if user.online? %>

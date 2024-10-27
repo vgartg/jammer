@@ -2,44 +2,49 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-// @ts-ignore
 import { application } from "./application"
-// @ts-ignore
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
-// @ts-ignore
-import GamesController from "./games_controller"
-application.register("games", GamesController)
-// @ts-ignore
-import JamsController from "./jams_controller"
-application.register("jams", JamsController)
-// @ts-ignore
-import DashboardController from "./dashboard_controller"
-application.register("dashboard", DashboardController)
-// @ts-ignore
-import HeaderController from "./header_controller"
-application.register("header", HeaderController)
-// @ts-ignore
-import FriendsController from "./friends_controller"
-application.register("friends", FriendsController)
-// @ts-ignore
-import UserController from "./user_controller"
-application.register("user", UserController)
-// @ts-ignore
-import OnlineController from "./online_controller"
-application.register("online", OnlineController)
-// @ts-ignore
-import SettingsController from "./settings_controller"
-application.register("settings", SettingsController)
-// @ts-ignore
+
+import BackgroundImageController from "./background_image_controller"
+application.register("background-image", BackgroundImageController)
+
 import CropperController from "./cropper_controller"
 application.register("cropper", CropperController)
-// @ts-ignore
+
+import DashboardController from "./dashboard_controller"
+application.register("dashboard", DashboardController)
+
+import FriendsController from "./friends_controller"
+application.register("friends", FriendsController)
+
+import GamesController from "./games_controller"
+application.register("games", GamesController)
+
+import HeaderController from "./header_controller"
+application.register("header", HeaderController)
+
+import HelloController from "./hello_controller"
+application.register("hello", HelloController)
+
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
+
 import NotificationsController from "./notifications_controller"
 application.register("notifications", NotificationsController)
-// @ts-ignore
-import BackgroundImageController from "./background_image_controller";
-application.register("background-image", BackgroundImageController)
-// @ts-ignore
-import ModalController from "./modal_controller";
-application.register("modal", ModalController)
+
+import OnlineController from "./online_controller"
+application.register("online", OnlineController)
+
+import SettingsController from "./settings_controller"
+application.register("settings", SettingsController)
+
+import StarRatingController from "./star_rating_controller"
+application.register("star-rating", StarRatingController)
+
+import ThemeController from "./theme_controller"
+application.register("theme", ThemeController)
+
+import UserController from "./user_controller"
+application.register("user", UserController)
+
+import JamsController from "./jams_controller"
+application.register("jams", JamsController)
