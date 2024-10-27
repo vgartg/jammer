@@ -52,7 +52,7 @@
              role="menu" aria-labelledby="notifications-menu-button"
              tabindex="-1"
              id="dashboard_notifications_menu"
-             data-target="notifications.notificationsMenu"
+             data-notifications-target="notificationsMenu"
              style="max-height: 60vh;">
           <% if @notifications && @notifications.any? %>
             <% @notifications.order(created_at: :desc).first(8).each do |notification| %>
@@ -64,8 +64,7 @@
                       <%= image_tag url_for(notification.actor.avatar), alt: "Profile Picture",
                                     class: "w-16 text-gray-400" %>
                     <% else %>
-                      <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                           class="w-16 text-gray-400">
+                        <%= image_tag 'empty-avatar.jpg', class: "w-16 text-gray-400"%>
                     <% end %>
                     </a>
                   </div>
@@ -108,8 +107,7 @@
               <%= image_tag url_for(@current_user.avatar), alt: "Profile Picture",
                             class: "h-8 w-8 rounded-full bg-gray-50" %>
             <% else %>
-              <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                   class="h-8 w-8 rounded-full bg-gray-50">
+              <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full bg-gray-50"%>
             <% end %>
             <span class="hidden lg:flex lg:items-center">
                   <span class="ml-4 text-sm font-semibold leading-6 text-white" aria-hidden="true">

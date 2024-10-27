@@ -2,11 +2,15 @@ import { Controller } from "stimulus";
 import flatpickr from 'flatpickr';
 
 export default class extends Controller {
-    static targets = ["username", "fullLink", "section"];
+    static targets = ["username", "fullLink", "section", "notice"];
 
     connect() {
-        this.updateLink();
-        this.usernameTarget.addEventListener('input', () => this.updateLink());
+        if (this.hasUsernameTarget) {
+            this.updateLink();
+            this.usernameTarget.addEventListener('input', () => this.updateLink());
+        }
+        // this.updateLink();
+        // this.usernameTarget.addEventListener('input', () => this.updateLink());
 
         this.sectionTargets.forEach((section, index) => {
             if (index !== 0) {
@@ -19,7 +23,10 @@ export default class extends Controller {
     }
 
     close_notice() {
-        this.element.remove();
+        const notice = event.currentTarget.closest('.problem-block');
+        if (notice) {
+            notice.remove();
+        }
     }
 
     formatPhoneNumber() {

@@ -44,8 +44,8 @@
               <%= image_tag url_for(@user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24
                w-24 border-2 border-gray-300 object-cover", data: { target: 'user.avatarImage' } %>
             <% else %>
-              <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-image rounded-full h-24
-               w-24 border-2 border-gray-300 object-cover" data-target="user.avatarImage">
+              <%= image_tag 'empty-avatar.jpg', class: "avatar-image rounded-full h-24
+               w-24 border-2 border-gray-300 object-cover", data: { target: "user.avatarImage" } %>
             <% end %>
             <div>
               <%= render partial: 'helpers/cropper_modal' %>
@@ -109,6 +109,9 @@
                       shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                       focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
             </div>
+            <p class="mt-2 text-gray-400 sm:text-sm">
+              Для смены почты потребуется подтвердить её, получив письмо с кодом
+            </p>
           </div>
 
           <div class="col-span-full">
@@ -123,15 +126,15 @@
                       shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                       focus:ring-indigo-500 sm:text-sm sm:leading-6', placeholder: 'Username',
                                  data: { settings_target: 'username' },
-                                 pattern: '[a-zA-Z0-9-]+' %>
+                                 pattern: "[a-zA-Z0-9]+" %>
               </div>
             </div>
             <% if @user.link_username.present? %>
-              <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
+              <p class="mt-2 text-gray-400 sm:text-sm" data-settings-target="fullLink">
                 https://<%= @user.link_username %>.jammer.ru/
               </p>
             <% else %>
-              <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
+              <p class="mt-2 text-gray-400 sm:text-sm" data-settings-target="fullLink">
                 https://username.jammer.ru/
               </p>
             <% end %>
@@ -186,7 +189,7 @@
                                                 ['Pacific/Chatham', 'Pacific/Chatham (UTC+12:45)'],
                                                 ['Pacific/Honolulu', 'Pacific/Honolulu (UTC-10:00)'],
                                                 ['Pacific/Tongatapu', 'Pacific/Tongatapu (UTC+13:00)'],
-                                              ], selected: @user.timezone),
+                                              ], selected: @user.timezone || 'Europe/Moscow'),
                            {},
                            class: 'block w-full appearance-none rounded-md bg-gray-800 text-white py-2
                            px-3 leading-tight focus:outline-none focus:ring-2
@@ -405,7 +408,7 @@
                 Current password
               </label>
               <div class="mt-2">
-                <%= f.password_field :current_password, id: 'current-password',
+                <%= f.password_field :current_password, id: 'current-password', autocomplete: 'current-password',
                                      class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1
                      ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500
                      sm:text-sm sm:leading-6' %>
@@ -415,7 +418,7 @@
             <div class="col-span-full">
               <label for="new-password" class="block text-sm font-medium leading-6 text-white">New password</label>
               <div class="mt-2">
-                <%= f.password_field :password, id: 'new-password',
+                <%= f.password_field :password, id: 'new-password', autocomplete: 'new-password',
                                      class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm
                      ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                      focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
@@ -427,7 +430,7 @@
                 Confirm password
               </label>
               <div class="mt-2">
-                <%= f.password_field :password_confirmation, id: 'confirm-password',
+                <%= f.password_field :password_confirmation, id: 'confirm-password', autocomplete: 'confirm-password',
                                      class: 'block w-full rounded-md border-0 bg-white/5 py-1.5
                      text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2
                       focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
@@ -467,7 +470,7 @@
             <div class="col-span-full">
               <label for="logout-password" class="block text-sm font-medium leading-6 text-white">Your password</label>
               <div class="mt-2">
-                <%= password_field_tag :password, nil, id: 'logout-password',
+                <%= password_field_tag :password, nil, id: 'logout-password', autocomplete: 'logout-password',
                                        class: 'block w-full rounded-md border-0
                                       bg-white/5 py-1.5 text-white shadow-sm ring-1
                                   ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500
@@ -483,6 +486,71 @@
           </div>
         <% end %>
       </div>
+
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white">Active Sessions</h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400">Here are your current active sessions:</p>
+      </div>
+
+      <div class="md:col-span-2">
+        <% if @sessions.any? %>
+          <ul class="divide-y divide-gray-200">
+            <% @sessions.first(3).each do |session| %>
+              <li class="py-4 flex">
+                <div>
+                  <p class="text-sm font-medium text-gray-500">Session ID: <%= session.session_id %></p>
+                  <p class="text-sm text-gray-500">IP Address: <%= session.ip_address %></p>
+                  <% if session.browser.present? %>
+                    <p class="text-sm text-gray-500">Browser: <%= session.browser %></p>
+                  <% else %>
+                    <p class="text-sm text-gray-500">Browser: Unknown</p>
+                  <% end %>
+                  <p class="text-sm text-gray-500">Created At: <%= session.created_at %></p>
+                </div>
+              </li>
+            <% end %>
+
+            <% if @sessions.count > 3 %>
+              <div id="more-sessions" class="hidden">
+                <% @sessions.drop(3).each do |session| %>
+                  <li class="py-4 flex">
+                    <div>
+                      <p class="text-sm font-medium text-gray-500">Session ID: <%= session.session_id %></p>
+                      <p class="text-sm text-gray-500">IP Address: <%= session.ip_address %></p>
+                      <% if session.browser.present? %>
+                        <p class="text-sm text-gray-500">Browser: <%= session.browser %></p>
+                      <% else %>
+                        <p class="text-sm text-gray-500">Browser: Unknown</p>
+                      <% end %>
+                      <p class="text-sm text-gray-500">Created At: <%= session.created_at %></p>
+                    </div>
+                  </li>
+                <% end %>
+              </div>
+              <li class="py-4">
+                <button id="toggle-more-sessions" class="text-indigo-600 hover:underline">View all sessions</button>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-sm text-gray-500">No active sessions found.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <script>
+        document.getElementById('toggle-more-sessions')?.addEventListener('click', function() {
+            const moreSessions = document.getElementById('more-sessions');
+            if (moreSessions.classList.contains('hidden')) {
+                moreSessions.classList.remove('hidden');
+                this.textContent = 'Hide all sessions';
+            } else {
+                moreSessions.classList.add('hidden');
+                this.textContent = 'View all sessions';
+            }
+        });
+    </script>
 
       <div data-controller="modal">
         <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
@@ -500,7 +568,7 @@
                            data: { action: 'click->modal#open' } %>
           </div>
 
-          <div id="modal" data-target="modal.modal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75
+          <div id="modal" data-modal-target="modal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75
          flex items-center justify-center z-50">
             <div class="modal-content bg-gray-800 p-4 rounded shadow-md w-full sm:w-96">
               <p class="text-lg text-gray-200">Введите ваш пароль для подтверждения удаления аккаунта:</p>
@@ -509,16 +577,16 @@
                                                                                     data: { action: 'submit->modal#submitForm' } } do |f| %>
                   <div class="mb-4">
                     <%= f.label :password, 'Пароль', class: 'block text-gray-300' %>
-                    <%= f.password_field :password, class: 'mt-1 block w-full rounded-md
+                    <%= f.password_field :password, autocomplete: 'password', class: 'mt-1 block w-full rounded-md
                   border-gray-700 bg-gray-900 text-gray-300 focus:border-indigo-500
-                  focus:ring-indigo-500', data: { target: 'modal.password' } %>
+                  focus:ring-indigo-500', data: { modal_target: 'password' } %>
                   </div>
-                  <div data-target="modal.errorMessage" class="text-red-500 mb-4"></div>
+                  <div data-modal-target="errorMessage" class="text-red-500 mb-4"></div>
                   <div class="flex justify-end">
                     <%= f.submit 'Удалить аккаунт', class: 'rounded-md bg-red-600 px-4 py-2 text-white
                    font-semibold hover:bg-red-700 mr-4 cursor-pointer' %>
-                    <button id="cancelDelete" data-target="modal.cancelButton"
-                            data-action="click->modal#close" class="border border-gray-700 px-4
+                    <button id="cancelDelete" data-modal-target="cancelButton"
+                            data-action="click->modal#close" type="button" class="border border-gray-700 px-4
                           py-2 rounded-md text-gray-200 hover:bg-gray-700">Отмена</button>
                   </div>
                 <% end %>
