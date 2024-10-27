@@ -1,5 +1,5 @@
 <div>
-  <%= form_for :game, url: path, method: request_method do |f| %>
+  <%= form_for @game, url: path do |f| %>
     <div class="mt-4">
       <%= f.label :name, "Название игры", class: "block text-sm font-medium text-white" %>
       <div class="mt-2">
@@ -88,7 +88,7 @@
                    class="mt-4 hidden w-full h-auto object-cover rounded-md">
             <% end %>
             <%= f.file_field :cover, id: "cover-input",
-                             required: request_method == :post ? true : false,
+                             required: !@game.persisted? ? true : false,
                              accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
                              class: "absolute inset-0 opacity-0 cursor-pointer" %>
             <p id="cover-text" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
@@ -109,7 +109,7 @@
               <p data-background-image-target="filePreview" id="file-preview" class="text-white"><span id="file-name"></span></p>
             <% end %>
             <%= f.file_field :game_file, id: "game-file-input",
-                             required: request_method == :post ? true : false,
+                             required: !@game.persisted? ? true : false,
                              accept: ".zip,.rar,.7z",
                              class: "absolute inset-0 opacity-0 cursor-pointer" %>
             <p id="file-text" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда файл или нажмите, чтобы выбрать файл</p>
@@ -131,7 +131,7 @@
       </div>
     </div>
 
-    <%= f.submit (request_method == :patch ? 'Редактировать игру' : 'Создать игру'), class: "mt-4 flex w-full justify-center rounded-md border
+    <%= f.submit (@game.persisted? ? 'Редактировать игру' : 'Создать игру'), class: "mt-4 flex w-full justify-center rounded-md border
        border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
         hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2", data: { turbo_submits_with: "Создаем...", turbo_track: "dynamic" } %>
 

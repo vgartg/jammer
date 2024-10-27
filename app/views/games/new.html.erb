@@ -3,7 +3,6 @@
 
     <%= render partial: 'helpers/errors' %>
 
-    <%= render partial: 'games/form', locals: {path: games_url, request_method: :post} %>
-
+    <%= render partial: 'games/form', locals: {path: games_url(@game)} %>
   </div>
 </div>

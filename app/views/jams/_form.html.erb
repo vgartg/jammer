@@ -1,5 +1,5 @@
 <div>
-  <%= form_with(model: @jam, url: path, method: request_method, local: true) do |f| %>
+  <%= form_with(model: @jam, url: path, local: true) do |f| %>
     <div class="mt-4">
       <%= f.label :name, "Название джема", class: "block text-sm font-medium text-white" %>
       <div class="mt-2">
@@ -148,7 +148,7 @@
                  class="mt-4 hidden w-full h-auto object-cover rounded-md">
           <% end %>
           <%= f.file_field :cover, id: "cover-input",
-                           required: request_method == :post ? true : false,
+                           required: !@jam.persisted? ? true : false,
                            accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
                            class: "absolute inset-0 opacity-0 cursor-pointer" %>
           <p id="cover-text" class="<%= @jam.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
@@ -173,7 +173,7 @@
                  class="mt-4 hidden w-full h-auto object-cover rounded-md">
           <% end %>
           <%= f.file_field :logo, id: "logo-input",
-                           required: request_method == :post ? true : false,
+                           required: !@jam.persisted? ? true : false,
                            accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
                            class: "absolute inset-0 opacity-0 cursor-pointer" %>
           <p id="logo-text" class="<%= @jam.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
@@ -184,7 +184,7 @@
     </div>
 
 
-    <%= submit_tag (request_method == :patch ? 'Изменить джем' : 'Создать джем'), class: "mt-4 flex w-full justify-center rounded-md border
+    <%= submit_tag (@jam.persisted? ? 'Изменить джем' : 'Создать джем'), class: "mt-4 flex w-full justify-center rounded-md border
                      border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
                      hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
 

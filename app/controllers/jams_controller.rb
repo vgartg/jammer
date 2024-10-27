@@ -3,6 +3,7 @@ class JamsController < ApplicationController
 
   def new
     @notifications = current_user.notifications
+    @jam = Jam.new
   end
 
   def showcase
@@ -63,13 +64,13 @@ class JamsController < ApplicationController
   end
 
   def submit_game
-
+    @game = Game.new
   end
 
   def create_submission
-    game = Game.new(game_params.merge(author: current_user))
-    if game.save
-      JamSubmission.new(game: game, jam_id: params[:id], user: current_user).save
+    @game = Game.new(game_params.merge(author: current_user))
+    if @game.save
+      JamSubmission.new(game: @game, jam_id: params[:id], user: current_user).save
       redirect_to jam_profile_path(params[:id])
     else
       redirect_to dashboard_path

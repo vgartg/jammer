@@ -3,6 +3,7 @@ class GamesController < ApplicationController
 
   def new
     @notifications = current_user.notifications
+    @game = Game.new
   end
 
   def showcase
@@ -68,8 +69,8 @@ class GamesController < ApplicationController
   end
 
   def edit
-    @game = current_user.games.find_by_id(params[:id])
     @tags = Tag.all
+    @game = Game.find(params[:id])
   end
 
   def update

@@ -1,5 +1,5 @@
 <div class="flex bg-gray-900 w-full flex-col justify-center px-6 py-12 lg:px-8 flex-grow">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <%= render partial: 'games/form', locals: {path: game_update_path, request_method: :patch} %>
+    <%= render partial: 'games/form', locals: {path: game_update_path(@game)} %>
   </div>
 </div>
