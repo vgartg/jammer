@@ -1,8 +1,9 @@
 class JamsController < ApplicationController
-  before_action :authenticate_user, only: [:new, :create, :edit, :update]
+  before_action :authenticate_user, only: [:new, :create, :edit, :update, :submit_game]
 
   def new
     @notifications = current_user.notifications
+    @jam = Jam.new
   end
 
   def participate
@@ -107,6 +108,20 @@ class JamsController < ApplicationController
     @tags = Tag.all
   end
 
+  def submit_game
+    @game = Game.new
+  end
+
+  def create_submission
+    @game = Game.new(game_params.merge(author: current_user))
+    if @game.save
+      JamSubmission.new(game: @game, jam_id: params[:id], user: current_user).save
+      redirect_to jam_profile_path(params[:id])
+    else
+      redirect_to dashboard_path
+    end
+  end
+
   def update
     @jam = current_user.jams.find_by_id(params[:id])
     if @jam.update(jam_params)
@@ -131,10 +146,20 @@ class JamsController < ApplicationController
 
   def jam_params
     params.require(:jam)
-          .permit(:name, :description, :start_date, :deadline, :end_date, :cover, :logo, tag_ids: [])
+          .permit(:name, :description, :start_date, :deadline, :end_date, :cover, :logo, :users_can_votes, tag_ids: [])
   end
 
   def should_search?
     params[:search].present? && !params[:search].empty?
+  end
+
+  def submission_params
+    params
+      .permit(:game_id, :jam_id, :user_id)
+  end
+
+  def game_params
+    params.require(:game)
+          .permit(:name, :description, :cover, :game_file, tag_ids: [])
   end
 end

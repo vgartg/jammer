@@ -6,9 +6,13 @@ addEventListener("turbo:submit-start", ({target}) => {
 
 addEventListener("turbo:submit-start", ({target}) => {
     const loading = document.getElementById('blur')
-    loading.classList.remove('hidden')
+    if (loading) {
+        loading.classList.remove('hidden')
+    }
 })
 addEventListener("turbo:submit-start", ({target}) => {
     const loading = document.getElementById('loading')
-    loading.classList.remove('hidden')
+    if (loading) {
+        loading.classList.remove('hidden')
+    }
 })

@@ -45,7 +45,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_27_131605) do
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "friend_id", null: false
-    t.string "status", null: false
+    t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -87,6 +87,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_27_131605) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
+    t.boolean "users_can_votes", default: false
     t.integer "games", default: [], array: true
     t.integer "participants", default: [], array: true
     t.boolean "users_can_votes", default: false

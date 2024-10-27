@@ -35,7 +35,7 @@ class UsersController < ApplicationController
       redirect_to dashboard_path
     else
       flash[:failure] = @user.errors.full_messages
-      render :new, status: :see_other
+      redirect_to register_path
     end
   end
 

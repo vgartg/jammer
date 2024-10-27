@@ -46,3 +46,5 @@ application.register("theme", ThemeController)
 import UserController from "./user_controller"
 application.register("user", UserController)
 
+import JamsController from "./jams_controller"
+application.register("jams", JamsController)

@@ -27,8 +27,7 @@
                       <%= image_tag url_for(request.friend.avatar), alt: "Profile Picture",
                                     class: "h-16 w-16 rounded-full" %>
                     <% else %>
-                      <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                           class="h-16 w-16 rounded-full">
+                      <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full"%>
                     <% end %>
                     <% if request.friend.can_see_online?(current_user) %>
                     <% if request.friend.online? %>
@@ -83,8 +82,7 @@
                       <%= image_tag url_for(request.user.avatar), alt: "Profile Picture",
                                     class: "h-16 w-16 rounded-full" %>
                     <% else %>
-                      <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                           class="h-16 w-16 rounded-full">
+                      <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full"%>
                     <% end %>
                     <% if request.user.can_see_online?(current_user) %>
                     <% if request.user.online? %>
