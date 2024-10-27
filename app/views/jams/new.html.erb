@@ -75,6 +75,11 @@
       </div>
 
       <div class="mt-4">
+          <%= f.label :users_can_votes, "Пользователи могут голосовать"%>
+          <%= f.check_box :users_can_votes %>
+      </div>
+
+      <div class="mt-4">
         <%= f.label :tags, "Теги", class: "block text-sm font-medium text-gray-700" %>
         <div class="mt-1">
           <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name do |b| %>
