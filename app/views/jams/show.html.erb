@@ -59,6 +59,15 @@
                   // document.getElementById('favDialog').addEventListener('close', function() {
                   //     console.log('Dialog has been closed');
                   // })
+
+
+                  // Close Modal on Page Unload
+                  document.addEventListener('turbo:visit', function() {
+                      document.getElementById('favDialog').close();
+                      // Optionally, you can also add a confirmation dialog if needed
+                      // event.preventDefault();
+                      // event.returnValue = '';  // Required for Chrome to show the confirmation dialog
+                  });
               </script>
               <dialog id="favDialog">
                   <%= render partial: 'jams/modal_content' %>
