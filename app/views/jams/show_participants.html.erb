@@ -1,11 +1,14 @@
 <div class="bg-white">
   <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
     <div class="flex justify-between items-center">
-      <h2 class="px-4 text-2xl font-bold tracking-tight text-gray-900">Все участники</h2>
+      <% if @users.empty? %>
+        <h2 class="px-4 text-2xl font-bold tracking-tight text-gray-900">Пока в данном джеме никто не участвует</h2>
+      <%else %>
+        <h2 class="px-4 text-2xl font-bold tracking-tight text-gray-900">Все участники</h2>
+      <% end %>
     </div>
     <div class="grid sm:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
       <% @users.each do |user| %>
-        <% unless user.id == session[:current_user] %>
           <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
       duration-200 flex items-center space-x-4">
             <a href='<%= '/users/' + user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
@@ -43,7 +46,6 @@
               </div>
             </a>
           </div>
-        <% end %>
       <% end %>
     </div>
   </div>
