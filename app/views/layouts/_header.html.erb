@@ -3,11 +3,11 @@
 
     <div class="flex lg:flex-1 p-4">
       <% unless @current_user %>
-      <a href="/" class="-m-1.5 p-1.5">
-        <span class="sr-only">Jammer</span>
-        <%= image_tag 'whitewithoutwall.png', class: "relative h-8 w-auto scale-150"%>
-      </a>
-        <% end%>
+        <a href="/" class="-m-1.5 p-1.5">
+          <span class="sr-only">Jammer</span>
+          <%= image_tag 'whitewithoutwall.png', class: "relative h-8 w-auto scale-150"%>
+        </a>
+      <% end%>
     </div>
 
     <div data-action="click->header#OpenHeaderMenu" class="flex lg:hidden">
