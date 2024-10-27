@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_20_092925) do
+ActiveRecord::Schema[8.0].define(version: 2024_10_13_185805) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -87,6 +87,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_20_092925) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
+    t.boolean "users_can_votes", default: false
     t.index ["author_id"], name: "index_jams_on_author_id"
     t.index ["name"], name: "index_jams_on_name"
   end

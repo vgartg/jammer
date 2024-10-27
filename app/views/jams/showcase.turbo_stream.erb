@@ -1,0 +1,3 @@
+<%= turbo_stream.update "autocomplete-results" do %>
+  <%= render partial: 'autocomplete_results', locals: { results: @search_results } %>
+<% end %>

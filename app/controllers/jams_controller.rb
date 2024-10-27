@@ -101,7 +101,7 @@ class JamsController < ApplicationController
 
   def jam_params
     params.require(:jam)
-          .permit(:name, :description, :start_date, :deadline, :end_date, :cover, :logo, tag_ids: [])
+          .permit(:name, :description, :start_date, :deadline, :end_date, :cover, :logo, :users_can_votes, tag_ids: [])
   end
 
   def should_search?
