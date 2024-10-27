@@ -1,0 +1,192 @@
+<div>
+  <%= form_with(model: @jam, url: path, method: request_method, local: true) do |f| %>
+    <div class="mt-4">
+      <%= f.label :name, "Название джема", class: "block text-sm font-medium text-white" %>
+      <div class="mt-2">
+        <%= f.text_field :name,
+                         required: true,
+                         class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
+                     shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                     focus:ring-indigo-500 sm:text-sm sm:leading-6" %>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <%= f.label :description, "Описание", class: "block text-sm font-medium text-white" %>
+      <div class="mt-2">
+        <%= f.text_area :description,
+                        required: true,
+                        class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
+                     shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                     focus:ring-indigo-500 sm:text-sm sm:leading-6" %>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <%= f.label :start_date, "Дата начала", class: "block text-sm font-medium text-white" %>
+      <div class="mt-2">
+        <%= f.date_field :start_date, id: 'start_date',
+                         autocomplete: 'start_date',
+                         required: true,
+                         type: 'date',
+                         class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
+                     shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                     focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <%= f.label :deadline, "Дедлайн сдачи работ", class: "block text-sm font-medium text-white" %>
+      <div class="mt-2">
+        <%= f.date_field :deadline, id: 'deadline',
+                         autocomplete: 'deadline',
+                         required: true,
+                         type: 'date',
+                         class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
+                     shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                     focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
+      </div>
+    </div>
+
+    <script>
+    </script>
+
+    <div class="mt-4">
+      <%= f.label :end_date, "Дата окончания джема", class: "block text-sm font-medium text-white" %>
+      <div class="mt-2">
+        <%= f.date_field :end_date, id: 'end_date',
+                         autocomplete: 'end_date',
+                         required: true,
+                         type: 'date',
+                         class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
+                    shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                    focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
+      </div>
+    </div>
+
+    <script>
+        document.addEventListener('turbo:load', function() {
+
+            // Change Cover Field
+            const coverInput = document.getElementById('cover-input');
+            const coverPreviewImg = document.getElementById('cover-preview-img');
+            const coverText = document.getElementById('cover-text');
+
+            coverInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        coverPreviewImg.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(file);
+
+                    coverPreviewImg.classList.remove('hidden');
+
+                    if (coverText.classList.contains('mt-0')) {
+                        coverText.classList.remove('mt-0')
+                        coverText.classList.add('mt-4')
+                    }
+                }
+            });
+
+            // Change Logo Field
+            const logoInput = document.getElementById('logo-input');
+            const logoPreviewImg = document.getElementById('logo-preview-img');
+            const logoText = document.getElementById('logo-text');
+
+            logoInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        logoPreviewImg.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(file);
+
+                    logoPreviewImg.classList.remove('hidden');
+
+                    if (logoText.classList.contains('mt-0')) {
+                        logoText.classList.remove('mt-0')
+                        logoText.classList.add('mt-4')
+                    }
+                }
+            });
+
+
+            // Load Flatpickr
+            flatpickr("#start_date", {
+                dateFormat: "Y-m-d",
+            });
+            flatpickr("#deadline", {
+                dateFormat: "Y-m-d",
+            });
+            flatpickr("#end_date", {
+                dateFormat: "Y-m-d",
+            });
+        });
+    </script>
+
+    <div class="mt-4">
+      <%= f.label :cover, "Обложка", class: "block text-sm font-medium text-white" %>
+      <!--        <div data-controller="background-image">-->
+      <div class="relative mt-2">
+        <div class="text-gray-500 border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
+          <% if @jam && @jam.cover.attached? %>
+          <img data-background-image-target="coverPreviewImg" id="cover-preview-img" src="<%= url_for(@jam.cover) %>"
+               alt="Предварительный просмотр обложки"
+               class="mt-4 w-full h-auto object-cover rounded-md">
+          <% else %>
+            <img data-background-image-target="coverPreviewImg" id="cover-preview-img" src="#"
+                 alt="Предварительный просмотр обложки"
+                 class="mt-4 hidden w-full h-auto object-cover rounded-md">
+          <% end %>
+          <%= f.file_field :cover, id: "cover-input",
+                           required: request_method == :post ? true : false,
+                           accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
+                           class: "absolute inset-0 opacity-0 cursor-pointer" %>
+          <p id="cover-text" class="<%= @jam.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
+          <p class="text-xs">(рекомендуем 1920x1080px)</p>
+        </div>
+      </div>
+      <!--        </div>-->
+    </div>
+
+    <div class="mt-4">
+      <%= f.label :logo, "Логотип", class: "block text-sm font-medium text-white" %>
+      <!--        <div data-controller="background-image">-->
+      <div class="relative mt-2">
+        <div class="text-gray-500 border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
+          <% if @jam && @jam.cover.attached? %>
+            <img data-background-image-target="logoPreviewImg" id="logo-preview-img" src="<%= url_for(@jam.logo) %>"
+                 alt="Предварительный просмотр обложки"
+                 class="mt-4 w-full h-auto object-cover rounded-md">
+          <% else %>
+            <img data-background-image-target="logoPreviewImg" id="logo-preview-img" src="#"
+                 alt="Предварительный просмотр обложки"
+                 class="mt-4 hidden w-full h-auto object-cover rounded-md">
+          <% end %>
+          <%= f.file_field :logo, id: "logo-input",
+                           required: request_method == :post ? true : false,
+                           accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
+                           class: "absolute inset-0 opacity-0 cursor-pointer" %>
+          <p id="logo-text" class="<%= @jam.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
+          <p class="text-xs">(рекомендуем 1920x1080px)</p>
+        </div>
+      </div>
+      <!--        </div>-->
+    </div>
+
+
+    <%= submit_tag (request_method == :patch ? 'Изменить джем' : 'Создать джем'), class: "mt-4 flex w-full justify-center rounded-md border
+                     border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
+                     hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+
+  <% end %>
+</div>

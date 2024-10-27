@@ -1,65 +1,146 @@
-<%= form_for :game, url: path do |f| %>
-  <div class="mt-4">
-    <%= f.label :name, "Название игры", class: "block text-sm font-medium text-gray-700" %>
-    <div class="mt-1">
-      <%= f.text_field :name, required: true,
-                       class: "block w-full appearance-none rounded-md border border-gray-300
-                            px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
-                             focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+<div>
+  <%= form_for :game, url: path, method: request_method do |f| %>
+    <div class="mt-4">
+      <%= f.label :name, "Название игры", class: "block text-sm font-medium text-white" %>
+      <div class="mt-2">
+        <%= f.text_field :name, required: true,
+                         class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
+                     shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                     focus:ring-indigo-500 sm:text-sm sm:leading-6" %>
+      </div>
     </div>
-  </div>
 
-  <div class="mt-4">
-    <%= f.label :description, "Описание",
-                class: "block text-sm font-medium text-gray-700" %>
-    <div class="mt-1">
-      <%= f.text_field :description, required: true, class: "block w-full appearance-none
-          rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm
-           focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+    <div class="mt-4">
+      <%= f.label :description, "Описание", class: "block text-sm font-medium text-white" %>
+      <div class="mt-2">
+        <%= f.text_field :description, required: true, class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
+                     shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                     focus:ring-indigo-500 sm:text-sm sm:leading-6" %>
+      </div>
     </div>
-  </div>
 
-  <div class="mt-4">
-    <%= f.label :avatar, "Обложка", class: "block text-sm font-medium text-gray-700" %>
-    <div class="mt-1">
-      <%= f.file_field :cover, required: true,
-                       class: "block w-full appearance-none rounded-md border border-gray-300
-                            px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
-                             focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
-    </div>
-  </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Change Cover Input
+            const coverInput = document.getElementById('cover-input');
+            const coverPreviewImg = document.getElementById('cover-preview-img');
+            const coverText = document.getElementById('cover-text');
 
-  <div class="mt-4">
-    <%= f.label :game_file, "Файл игры (.zip, .rar, .7z) до 100 MB", class: "block text-sm font-medium text-gray-700" %>
-    <div class="mt-1">
-      <%= f.file_field :game_file, required: true, accept: ".zip,.rar,.7z", class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
-    </div>
-  </div>
+            coverInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
 
-  <div class="mt-4">
-    <%= f.label :tags, "Теги", class: "block text-sm font-medium text-gray-700" %>
-    <div class="mt-1">
-      <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>
-        <div class="flex items-center">
-          <%= b.check_box(class: "mr-2") %>
-          <%= b.label(class: "text-sm font-medium text-gray-700") %>
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        coverPreviewImg.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(file);
+
+                    coverPreviewImg.classList.remove('hidden')
+
+                    if (coverText.classList.contains('mt-0')) {
+                        coverText.classList.remove('mt-0')
+                        coverText.classList.add('mt-4')
+                    }
+                }
+            });
+
+            // Change File Input
+            const gameFileInput = document.getElementById('game-file-input');
+            const fileNameDisplay = document.getElementById('file-name');
+            const fileText = document.getElementById('file-text');
+
+            gameFileInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+
+                if (file) {
+                    fileNameDisplay.textContent = file.name;
+
+                    fileNameDisplay.classList.remove('hidden')
+
+                    if (fileText.classList.contains('mt-0')) {
+                        fileText.classList.remove('mt-0')
+                        fileText.classList.add('mt-4')
+                    }
+                }
+            });
+        });
+    </script>
+
+
+    <div class="mt-4">
+      <%= f.label :avatar, "Обложка", class: "block text-sm font-medium text-white" %>
+<!--      <div data-controller="background-image">-->
+        <div class="relative mt-2">
+          <div class="text-gray-500  border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
+            <% if @game && @game.cover.attached? %>
+              <img data-background-image-target="coverPreviewImg" id="cover-preview-img" src="<%= url_for(@game.cover) %>"
+                   alt="Предварительный просмотр обложки"
+                   class="mt-4 w-full h-auto object-cover rounded-md">
+            <% else %>
+              <img data-background-image-target="coverPreviewImg" id="cover-preview-img" src="#"
+                   alt="Предварительный просмотр обложки"
+                   class="mt-4 hidden w-full h-auto object-cover rounded-md">
+            <% end %>
+            <%= f.file_field :cover, id: "cover-input",
+                             required: request_method == :post ? true : false,
+                             accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
+                             class: "absolute inset-0 opacity-0 cursor-pointer" %>
+            <p id="cover-text" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
+            <p class="text-xs">(рекомендуем 1920x1080px)</p>
+          </div>
         </div>
-      <% end %>
+<!--      </div>-->
     </div>
-  </div>
 
-  <%= f.submit 'Создать игру', class: "mt-4 flex w-full justify-center rounded-md border
+    <div class="mt-4">
+      <%= f.label :game_file, "Файл игры", class: "block text-sm font-medium text-white" %>
+<!--      <div data-controller="background-image">-->
+        <div class="relative mt-2 text-gray-500">
+          <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
+            <% if @game && @game.game_file.attached? %>
+              <p data-background-image-target="filePreview" id="file-preview" class="text-white"><span id="file-name"><%= @game.game_file.filename %></span></p>
+            <% else %>
+              <p data-background-image-target="filePreview" id="file-preview" class="text-white"><span id="file-name"></span></p>
+            <% end %>
+            <%= f.file_field :game_file, id: "game-file-input",
+                             required: request_method == :post ? true : false,
+                             accept: ".zip,.rar,.7z",
+                             class: "absolute inset-0 opacity-0 cursor-pointer" %>
+            <p id="file-text" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда файл или нажмите, чтобы выбрать файл</p>
+            <p class="text-xs ">(.zip, .rar, .7z, размер до 100 MB)</p>
+          </div>
+        </div>
+<!--      </div>-->
+    </div>
+
+    <div class="mt-4">
+      <%= f.label :tags, "Теги", class: "block text-sm font-medium text-gray-700" %>
+      <div class="mt-1">
+        <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>
+          <div class="flex items-center">
+            <%= b.check_box(class: "mr-2") %>
+            <%= b.label(class: "text-sm font-medium text-gray-700") %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <%= f.submit (request_method == :patch ? 'Редактировать игру' : 'Создать игру'), class: "mt-4 flex w-full justify-center rounded-md border
        border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
         hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2", data: { turbo_submits_with: "Создаем...", turbo_track: "dynamic" } %>
 
-  <div class='blur-background hidden' id='blur'>
-    <div class="loading-spinner hidden" id="loading">
-      <div id="square1"></div>
-      <div id="square2"></div>
-      <div id="square3"></div>
-      <div id="square4"></div>
-      <div id="square5"></div>
+    <div class='blur-background hidden' id='blur'>
+      <div class="loading-spinner hidden" id="loading">
+        <div id="square1"></div>
+        <div id="square2"></div>
+        <div id="square3"></div>
+        <div id="square4"></div>
+        <div id="square5"></div>
+      </div>
     </div>
-  </div>
 
-<% end %>
+  <% end %>
+</div>

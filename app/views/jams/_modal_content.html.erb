@@ -1,7 +1,7 @@
 <div class="fixed inset-0 flex items-center justify-center bg-gray-950 bg-opacity-60">
   <div id="modalContent" class="bg-white relative rounded-lg shadow-lg p-6 w-full h-max sm:w-1/2">
-    <h2 id="modalTitle" style="display: block" class="text-lg font-medium text-gray-900">Выберите</h2>
-    <p id="modalDescription" style="display: none" class="mt-2 text-sm text-gray-600">This is a modal dialog. You can put any content here.</p>
+    <h2 id="modalTitle" class="text-lg font-medium text-gray-900">Выберите</h2>
+    <p id="modalDescription" hidden class="mt-2 text-sm text-gray-600">This is a modal dialog. You can put any content here.</p>
     <script>
         function alternateShown(id1, id2) {
             document.getElementById(id1).style.display = "none";
@@ -38,6 +38,7 @@
                 title.innerText = "Выберите";
                 description.innerText = "This is a modal dialog. You can put any content here.";
             }
+            description.toggleAttribute('hidden')
         }
     </script>
     <div id='buttons' class="mt-4 flex flex-col items-center lg:flex-row lg:justify-center space-x-0 lg:space-x-3 lg:space-y-0 space-y-3">
