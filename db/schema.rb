@@ -45,7 +45,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_27_131605) do
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "friend_id", null: false
-    t.string "status", null: false
+    t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -87,8 +87,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_27_131605) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
-    t.integer "games", default: [], array: true
-    t.integer "participants", default: [], array: true
     t.boolean "users_can_votes", default: false
     t.index ["author_id"], name: "index_jams_on_author_id"
     t.index ["name"], name: "index_jams_on_name"
@@ -150,13 +148,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_27_131605) do
     t.string "background_image"
     t.string "theme", default: "Light"
     t.string "jams_visibility", default: "All"
-    t.string "auth_via"
-    t.string "social_id"
-    t.string "password_reset_token"
-    t.datetime "password_reset_token_sent_at"
-    t.string "email_confirm_token"
-    t.datetime "email_confirm_token_sent_at"
-    t.boolean "email_confirmed", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
   end
