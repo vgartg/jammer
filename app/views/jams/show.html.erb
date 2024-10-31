@@ -36,6 +36,23 @@
           </div>
 
           <div class="mt-10">
+            <h2 class="text-sm font-medium text-gray-900">Теги:</h2>
+            <div class="mt-4 text-gray-500">
+              <% if @jam.tags.any? %>
+                <ul class="flex flex-wrap gap-2">
+                  <% @jam.tags.each do |tag| %>
+                    <li class="bg-gray-200 px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+                      <%= tag.name %>
+                    </li>
+                  <% end %>
+                </ul>
+              <% else %>
+                <p>Теги не найдены</p>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="mt-10">
             <h2 class="text-sm font-medium text-gray-900">Автор:</h2>
             <div class="prose prose-sm mt-4 text-gray-500">
               <% if @jam.author.present? %>
