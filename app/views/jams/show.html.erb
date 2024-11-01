@@ -28,7 +28,9 @@
         <div class="mt-8 lg:col-span-5">
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Описание:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t '.description' %>
+            </h2>
 
             <div class="prose prose-sm mt-4 text-gray-500">
               <p class="break-all">
@@ -38,7 +40,9 @@
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Автор:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t '.author' %>
+            </h2>
             <div class="prose prose-sm mt-4 text-gray-500">
               <% if @jam.author.present? %>
                 <a class="break-all" href="<%= user_profile_path(@jam.author) %>">

@@ -44,7 +44,7 @@
         <div class="flex justify-between items-center py-2 mt-6 gap-5">
           <% if @user.id != session[:current_user] %>
             <% if @friendship.nil? %>
-              <%= button_to "Add friend", user_friendships_path(@user), method: :post,
+              <%= button_to t('buttons.add_friend'), user_friendships_path(@user), method: :post,
                             class: "bg-green-500 text-white px-3 py-1 rounded-full
                         hover:bg-green-600 transition-colors duration-200" %>
             <% elsif @friendship.status == 'pending' && @friendship.user == @current_user %>
@@ -52,7 +52,7 @@
                             method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full
                         hover:bg-red-600 transition-colors duration-200" %>
             <% elsif @friendship.status == 'accepted' %>
-              <%= button_to "Remove friend", user_friendship_path(@user, @friendship), method: :delete,
+              <%= button_to t("buttons.remove_friend"), user_friendship_path(@user, @friendship), method: :delete,
                             class: "bg-red-500 text-white px-3 py-1 rounded-full
                         hover:bg-red-600 transition-colors duration-200" %>
             <% elsif @friendship.status == 'pending' && @friendship.user != @current_user %>
@@ -182,9 +182,11 @@
                     </li>
                   <% end %>
                 </ul>
-                <button id="toggle-button" class="mt-4 text-gray-400 hover:underline">
-                  Показать все игры
-                </button>
+                <% if @user.games.count >= 8 %>
+                  <button id="toggle-button" class="mt-4 text-gray-400 hover:underline">
+                    Показать все игры
+                  </button>
+                <% end %>
               <% else %>
                 <span class="text-gray-900">
                   <%= t '.no_info' %>

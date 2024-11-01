@@ -1,9 +1,9 @@
 <footer class="bg-gray-900">
   <nav class="mx-auto flex max-w-7xl items-center justify-center p-6 lg:px-8" aria-label="Global">
     <div class="lg:flex lg:gap-x-12">
-      <a href="/" class="text-sm font-semibold leading-6 text-white"><%= t 'layouts.header.home' %></a>
-      <a href="/users" class="text-sm font-semibold leading-6 text-white"><%= t 'layouts.header.users' %></a>
-      <a href="/games_showcase" class="text-sm font-semibold leading-6 text-white"><%= t 'layouts.header.games' %></a>
+      <%= link_to t('layouts.header.home'), root_path, class: "text-sm font-semibold leading-6 text-white" %>
+      <%= link_to t('layouts.header.users'), users_path, class: "text-sm font-semibold leading-6 text-white" %>
+      <%= link_to t('layouts.header.games'), games_path, class: "text-sm font-semibold leading-6 text-white" %>
     </div>
   </nav>
   <div class="mx-auto flex max-w-7xl items-center justify-center flex-col p-6 lg:px-8">

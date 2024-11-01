@@ -22,10 +22,10 @@
             <div class="mt-4 justify-between line-clamp-2">
               <div class="flex-1">
                 <h3 class="text-sm text-gray-700 truncate">
-                  <a href="/jams/<%= jam.id %>">
+                  <%= link_to jam_profile_path(jam.id) do %>
                     <span aria-hidden="true" class="absolute inset-0"></span>
                     <%= jam.name %>
-                  </a>
+                  <% end %>
                 </h3>
                 <p class="mt-1 text-sm text-gray-500 line-clamp-2"><%= jam.description %></p>
               </div>

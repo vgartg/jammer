@@ -10,15 +10,16 @@
         <% unless user.id == session[:current_user] %>
           <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
       duration-200 flex items-center space-x-4">
-            <a href='<%= '/users/' + user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
-          <span class="relative">
+            <%= link_to users_path + '/' + user.id.to_s, class: "flex items-center space-x-4 flex-grow" do %>
+              <!--            <a href='<%#= '/users/' + user.id.to_s %>' class="">-->
+              <span class="relative">
             <% if user && user.avatar.attached? %>
               <%= image_tag url_for(user.avatar), alt: "Profile Picture",
                             class: "h-16 w-16 rounded-full" %>
             <% else %>
               <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full" %>
             <% end %>
-            <% if user.can_see_online?(current_user) %>
+                <% if user.can_see_online?(current_user) %>
             <% if user.online? %>
               <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
             <% elsif user.last_active_at %>
@@ -42,7 +43,8 @@
                   </p>
                 <% end %>
               </div>
-            </a>
+            <% end %>
+            <!--            </a>-->
           </div>
         <% end %>
       <% end %>

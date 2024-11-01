@@ -1,5 +1,5 @@
 <div class="bg-gray-900" data-controller="settings">
-<h1 class="sr-only">Account Settings</h1>
+  <h1 class="sr-only">Account Settings</h1>
 
   <header class="border-b border-white/5">
     <nav class="flex overflow-x-auto py-4">
@@ -7,23 +7,27 @@
        font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8">
         <li>
           <a href="#" data-action="click->settings#toggleSection" data-target="account-section"
-             class="change-set-button text-indigo-400">Account</a>
+             class="change-set-button text-indigo-400"><%= t '.header.account' %></a>
         </li>
         <li>
           <a href="#" data-action="click->settings#toggleSection" data-target="security-section"
-             class="change-set-button">Security and privacy</a>
+             class="change-set-button"><%= t '.header.security' %>
+          </a>
         </li>
         <li>
           <a href="#" data-action="click->settings#toggleSection" data-target="billing-section"
-             class="change-set-button">Billing</a>
+             class="change-set-button"><%= t '.header.billing' %>
+          </a>
         </li>
         <li>
           <a href="#" data-action="click->settings#toggleSection" data-target="teams-section"
-             class="change-set-button">Teams</a>
+             class="change-set-button"><%= t '.header.teams' %>
+          </a>
         </li>
         <li>
           <a href="#" data-action="click->settings#toggleSection" data-target="integrations-section"
-             class="change-set-button">Integrations</a>
+             class="change-set-button"><%= t '.header.integrations' %>
+          </a>
         </li>
       </ul>
     </nav>
@@ -33,11 +37,11 @@
   <div id="account-section" class="section divide-y set-menuitem divide-white/5">
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Personal Information</h2>
+        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.account.title' %></h2>
         <p class="mt-1 text-sm leading-6 text-gray-400"></p>
       </div>
 
-        <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
           <div class="col-span-full flex items-center gap-x-8">
             <% if @user && @user.avatar.attached? %>
@@ -57,14 +61,14 @@
           </div>
 
           <div class="field col-span-full">
-            <label for="background_image" class="block text-sm font-medium text-white">Заставка</label>
+            <label for="background_image" class="block text-sm font-medium text-white"><%= t '.account.image.background_image' %></label>
             <div data-controller="background-image">
               <div class="relative">
                 <div class="border-dashed border-2 border-gray-300 p-6 text-center rounded-md relative">
                   <% if @user.background_image.attached? %>
                     <img data-background-image-target="currentBackgroundImg"
                          id="current-background-img" src="<%= url_for(@user.background_image) %>"
-                         alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md" />
+                         alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md"/>
                   <% end %>
                   <img data-background-image-target="previewImg" id="preview-img" src="#"
                        alt="Предварительный просмотр изображения"
@@ -80,7 +84,7 @@
           </div>
 
           <div class="sm:col-span-3">
-            <label for="name" class="block text-sm font-medium leading-6 text-white">Отображаемое имя</label>
+            <label for="name" class="block text-sm font-medium leading-6 text-white"><%= t '.account.nickname' %></label>
             <div class="mt-2">
               <%= f.text_field :name, id: 'name', value: @user.name, autocomplete: 'given-name',
                                class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
@@ -90,7 +94,7 @@
           </div>
 
           <div class="sm:col-span-3">
-            <label for="real_name" class="block text-sm font-medium leading-6 text-white">Настоящее имя</label>
+            <label for="real_name" class="block text-sm font-medium leading-6 text-white"><%= t '.account.real_name' %></label>
             <div class="mt-2">
               <%= f.text_field :real_name, id: 'real_name',
                                value: @user.real_name,
@@ -102,23 +106,23 @@
           </div>
 
           <div class="col-span-full">
-            <label for="email" class="block text-sm font-medium leading-6 text-white">Email</label>
+            <label for="email" class="block text-sm font-medium leading-6 text-white"><%= t '.account.email.title' %></label>
             <div class="mt-2">
               <%= f.email_field :email, id: 'email',
-                               value: @user.email,
-                               autocomplete: 'email',
-                               class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
+                                value: @user.email,
+                                autocomplete: 'email',
+                                class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
                       shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                       focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
             </div>
             <p class="mt-2 text-gray-400 sm:text-sm">
-              Для смены почты потребуется подтвердить её, получив письмо с кодом
+              <%= t '.account.email.hint' %>
             </p>
           </div>
 
           <div class="col-span-full">
             <label for="link_username" class="block text-sm font-medium leading-6 text-white">
-              Персональная ссылка
+              <%= t '.account.link' %>
             </label>
             <div class="mt-2">
               <div class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2
@@ -143,10 +147,10 @@
           </div>
 
           <div class="col-span-full">
-            <label for="timezone" class="block text-sm font-medium leading-6 text-white">Часовой пояс</label>
+            <label for="timezone" class="block text-sm font-medium leading-6 text-white"><%= t '.account.time' %></label>
             <div class="mt-2 relative">
               <%= f.select :timezone,
-                           options_for_select([ # Уберем (если что) один из вариантов: либо с UTC, либо без
+                           options_for_select([# Уберем (если что) один из вариантов: либо с UTC, либо без
                                                 ['America/Anchorage', 'America/Anchorage (UTC-09:00)'],
                                                 ['America/Caracas', 'America/Caracas (UTC-04:00)'],
                                                 ['America/Chicago', 'America/Chicago (UTC-06:00)'],
@@ -201,7 +205,7 @@
           </div>
 
           <div class="col-span-full">
-            <label for="status" class="block text-sm font-medium leading-6 text-white">Статус</label>
+            <label for="status" class="block text-sm font-medium leading-6 text-white"><%= t '.account.status' %></label>
             <div class="mt-2">
               <%= f.text_field :status, id: 'status',
                                value: @user.status,
@@ -213,7 +217,7 @@
           </div>
 
           <div class="col-span-full">
-            <label for="birthday" class="block text-sm font-medium leading-6 text-white">День рождения</label>
+            <label for="birthday" class="block text-sm font-medium leading-6 text-white"><%= t '.account.birthdate' %></label>
             <div class="mt-2">
               <%= f.text_field :birthday, id: 'birthday',
                                value: @user.birthday,
@@ -226,7 +230,7 @@
           </div>
 
           <div class="col-span-full">
-            <label for="location" class="block text-sm font-medium leading-6 text-white">Населенный пункт</label>
+            <label for="location" class="block text-sm font-medium leading-6 text-white"><%= t '.account.location' %></label>
             <div class="mt-2">
               <%= f.text_field :location, id: 'location',
                                value: @user.location,
@@ -238,7 +242,7 @@
           </div>
 
           <div class="col-span-full">
-            <label for="phone_number" class="block text-sm font-medium leading-6 text-white">Номер телефона</label>
+            <label for="phone_number" class="block text-sm font-medium leading-6 text-white"><%= t '.account.phone' %></label>
             <div class="mt-2">
               <%= f.text_field :phone_number, id: 'phone_number',
                                value: @user.phone_number,
@@ -254,14 +258,14 @@
 
         <div class="mt-8 flex">
           <% if @user.id == session[:current_user] %>
-            <%= f.submit "Save", id: "account-info-button-save", class: "mt-4 flex w-50
+            <%= f.submit t("buttons.save"), id: "account-info-button-save", class: "mt-4 flex w-50
              justify-center rounded-md border
                          border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                          shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
                           focus:ring-offset-2 cursor-pointer" %>
           <% end %>
         </div>
-        <% end %>
+      <% end %>
     </div>
 
     <!-- Will hide while not released -->
@@ -295,7 +299,7 @@
 
           <% if @user.id == session[:current_user] %>
             <div class="mt-4">
-              <%= f.submit "Save", id: "account-online-info-button-save", class: "mt-4 flex w-50 justify-center
+              <%= f.submit t("buttons.save"), id: "account-online-info-button-save", class: "mt-4 flex w-50 justify-center
                rounded-md border
                          border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                          shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
@@ -318,58 +322,58 @@
       </div>
     </div>
     -->
-      <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-        <div>
-          <h2 class="text-base font-semibold leading-7 text-white">Set Online Visibility</h2>
-          <p class="mt-1 text-sm leading-6 text-gray-400">
-            Select who can see your online status.
-          </p>
-        </div>
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.online_visibility.title' %></h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400">
+          <%= t '.security.online_visibility.title' %>
+        </p>
+      </div>
 
-        <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
-          <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
+        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
 
-            <div class="col-span-full">
-              <label for="timezone" class="block text-sm font-medium leading-6 text-white">Who can see my online?</label>
-              <div class="mt-2 relative">
-                <%= f.select :visibility,
-                             options_for_select([
-                                                  ['All'],
-                                                  ['Friends'],
-                                                  ['None']
-                                                ], selected: @user.visibility),
-                             {},
-                             class: 'block w-full appearance-none rounded-md bg-gray-800 text-white py-2
+          <div class="col-span-full">
+            <label for="timezone" class="block text-sm font-medium leading-6 text-white"><%= t '.security.online_visibility.label' %></label>
+            <div class="mt-2 relative">
+              <%= f.select :visibility,
+                           options_for_select([
+                                                ['All'],
+                                                ['Friends'],
+                                                ['None']
+                                              ], selected: @user.visibility),
+                           {},
+                           class: 'block w-full appearance-none rounded-md bg-gray-800 text-white py-2
                            px-3 leading-tight focus:outline-none focus:ring-2
                            focus:ring-indigo-500 max-h-48 overflow-y-auto',
-                             id: 'visibility' %>
-              </div>
+                           id: 'visibility' %>
             </div>
+          </div>
 
-            <% if @user.id == session[:current_user] %>
-              <div class="mt-4">
-                <%= f.submit "Save", id: "account-online-info-button-save", class: "mt-4 flex w-50 justify-center
+          <% if @user.id == session[:current_user] %>
+            <div class="mt-4">
+              <%= f.submit t("buttons.save"), id: "account-online-info-button-save", class: "mt-4 flex w-50 justify-center
                rounded-md border
                          border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                          shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
                           focus:ring-offset-2 cursor-pointer" %>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
 
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Set Jams Visibility</h2>
+        <h2 class="text-base font-semibold leading-7 text-white"><%= t 'settings.index.security.jams_visibility.title' %></h2>
         <p class="mt-1 text-sm leading-6 text-gray-400">
-          Select who can see jams you are administrating.
+          <%= t '.security.online_visibility.hint' %>
         </p>
       </div>
       <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
           <div class="col-span-full">
-            <label for="timezone" class="block text-sm font-medium leading-6 text-white">Who can see my jams?</label>
+            <label for="timezone" class="block text-sm font-medium leading-6 text-white"><%= t '.security.online_visibility.label' %></label>
             <div class="mt-2 relative">
               <%= f.select :jams_visibility,
                            options_for_select([
@@ -386,7 +390,7 @@
           </div>
           <% if @user.id == session[:current_user] %>
             <div class="mt-4">
-              <%= f.submit "Save", id: "account-jam-info-button-save", class: "mt-4 flex w-50 justify-center
+              <%= f.submit t("buttons.save"), id: "account-jam-info-button-save", class: "mt-4 flex w-50 justify-center
                rounded-md border
                          border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                          shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
@@ -397,102 +401,100 @@
       <% end %>
     </div>
 
-      <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-        <div>
-          <h2 class="text-base font-semibold leading-7 text-white">Change password</h2>
-          <p class="mt-1 text-sm leading-6 text-gray-400">Update your password associated with your account.</p>
-        </div>
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.password.title' %></h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.password.hint' %></p>
+      </div>
 
-        <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
-          <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-            <div class="col-span-full">
-              <label for="current-password" class="block text-sm font-medium leading-6 text-white">
-                Current password
-              </label>
-              <div class="mt-2">
-                <%= f.password_field :current_password, id: 'current-password', autocomplete: 'current-password',
-                                     class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
+        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+          <div class="col-span-full">
+            <label for="current-password" class="block text-sm font-medium leading-6 text-white">
+              <%= t '.security.password.current' %>
+            </label>
+            <div class="mt-2">
+              <%= f.password_field :current_password, id: 'current-password', autocomplete: 'current-password',
+                                   class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1
                      ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500
                      sm:text-sm sm:leading-6' %>
-              </div>
-            </div>
-
-            <div class="col-span-full">
-              <label for="new-password" class="block text-sm font-medium leading-6 text-white">New password</label>
-              <div class="mt-2">
-                <%= f.password_field :password, id: 'new-password', autocomplete: 'new-password',
-                                     class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm
-                     ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
-                     focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
-              </div>
-            </div>
-
-            <div class="col-span-full">
-              <label for="confirm-password" class="block text-sm font-medium leading-6 text-white">
-                Confirm password
-              </label>
-              <div class="mt-2">
-                <%= f.password_field :password_confirmation, id: 'confirm-password', autocomplete: 'confirm-password',
-                                     class: 'block w-full rounded-md border-0 bg-white/5 py-1.5
-                     text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2
-                      focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
-              </div>
             </div>
           </div>
 
-          <div class="mt-8 flex">
-            <% if @user.id == session[:current_user] %>
-              <%= f.submit "Save", id: "new-password-button-save",
-                           class: "mt-4 flex w-50 justify-center rounded-md border
+          <div class="col-span-full">
+            <label for="new-password" class="block text-sm font-medium leading-6 text-white"><%= t '.security.password.new' %></label>
+            <div class="mt-2">
+              <%= f.password_field :password, id: 'new-password', autocomplete: 'new-password',
+                                   class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm
+                     ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                     focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
+            </div>
+          </div>
+
+          <div class="col-span-full">
+            <label for="confirm-password" class="block text-sm font-medium leading-6 text-white">
+              <%= t '.security.password.confirm' %>
+            </label>
+            <div class="mt-2">
+              <%= f.password_field :password_confirmation, id: 'confirm-password', autocomplete: 'confirm-password',
+                                   class: 'block w-full rounded-md border-0 bg-white/5 py-1.5
+                     text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2
+                      focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 flex">
+          <% if @user.id == session[:current_user] %>
+            <%= f.submit t("buttons.save"), id: "new-password-button-save",
+                         class: "mt-4 flex w-50 justify-center rounded-md border
                          border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                          shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
                           focus:ring-offset-2 cursor-pointer" %>
-            <% end %>
-          </div>
-
-        <% end %>
-      </div>
-
-      <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-        <div>
-          <h2 class="text-base font-semibold leading-7 text-white">Log out other sessions</h2>
-          <p class="mt-1 text-sm leading-6 text-gray-400">
-            Please enter your password to confirm you would like to log out of your other
-            sessions across all of your devices.
-          </p>
-          <p class="mt-1 text-sm leading-6 text-red-400">Attention!
-            <span class="mt-1 text-sm leading-6 text-gray-400">After logging out of other sessions, your account
-          will be forgotten on our platform, i.e. the "Remember me" button will be reset
-          if you pressed it during authorization</span>
-          </p>
+          <% end %>
         </div>
 
-        <%= form_tag logout_other_sessions_sessions_path, method: :post, class: 'md:col-span-2' do %>
-          <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-            <div class="col-span-full">
-              <label for="logout-password" class="block text-sm font-medium leading-6 text-white">Your password</label>
-              <div class="mt-2">
-                <%= password_field_tag :password, nil, id: 'logout-password', autocomplete: 'logout-password',
-                                       class: 'block w-full rounded-md border-0
-                                      bg-white/5 py-1.5 text-white shadow-sm ring-1
-                                  ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500
-                                  sm:text-sm sm:leading-6' %>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-8 flex">
-            <%= submit_tag 'Log out other sessions', class: 'rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold
-                    text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2
-                    focus-visible:outline-offset-2 focus-visible:outline-indigo-500' %>
-          </div>
-        <% end %>
-      </div>
+      <% end %>
+    </div>
 
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Active Sessions</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">Here are your current active sessions:</p>
+        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.log_out_sessions.title' %></h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400">
+          <%= t '.security.log_out_sessions.hint1' %>
+        </p>
+        <p class="mt-1 text-sm leading-6 text-red-400">
+          <% t '.security.log_out_sessions.attention' %>
+            <span class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.log_out_sessions.hint2' %></span>
+        </p>
+      </div>
+
+      <%= form_tag logout_other_sessions_sessions_path, method: :post, class: 'md:col-span-2' do %>
+        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+          <div class="col-span-full">
+            <label for="logout-password" class="block text-sm font-medium leading-6 text-white"><%= t '.security.log_out_sessions.pswd' %></label>
+            <div class="mt-2">
+              <%= password_field_tag :password, nil, id: 'logout-password', autocomplete: 'logout-password',
+                                     class: 'block w-full rounded-md border-0
+                                      bg-white/5 py-1.5 text-white shadow-sm ring-1
+                                  ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500
+                                  sm:text-sm sm:leading-6' %>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 flex">
+          <%= submit_tag t('buttons.log_out_sessions'), class: 'rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold
+                    text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2
+                    focus-visible:outline-offset-2 focus-visible:outline-indigo-500' %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.active_sessions.title' %></h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.active_sessions.hint' %>:</p>
       </div>
 
       <div class="md:col-span-2">
@@ -501,14 +503,14 @@
             <% @sessions.first(3).each do |session| %>
               <li class="py-4 flex">
                 <div>
-                  <p class="text-sm font-medium text-gray-500">Session ID: <%= session.session_id %></p>
-                  <p class="text-sm text-gray-500">IP Address: <%= session.ip_address %></p>
+                  <p class="text-sm font-medium text-gray-500"><%= t 'settings.index.security.active_sessions.id' %> <%= session.session_id %></p>
+                  <p class="text-sm text-gray-500"><%= t 'settings.index.security.active_sessions.ip' %> <%= session.ip_address %></p>
                   <% if session.browser.present? %>
-                    <p class="text-sm text-gray-500">Browser: <%= session.browser %></p>
+                    <p class="text-sm text-gray-500"><%= t 'settings.index.security.active_sessions.browser' %> <%= session.browser %></p>
                   <% else %>
-                    <p class="text-sm text-gray-500">Browser: Unknown</p>
+                    <p class="text-sm text-gray-500"><%= t 'settings.index.security.active_sessions.id' %> Unknown</p>
                   <% end %>
-                  <p class="text-sm text-gray-500">Created At: <%= session.created_at %></p>
+                  <p class="text-sm text-gray-500"><%= t 'settings.index.security.active_sessions.created' %> <%= session.created_at %></p>
                 </div>
               </li>
             <% end %>
@@ -518,14 +520,15 @@
                 <% @sessions.drop(3).each do |session| %>
                   <li class="py-4 flex">
                     <div>
-                      <p class="text-sm font-medium text-gray-500">Session ID: <%= session.session_id %></p>
-                      <p class="text-sm text-gray-500">IP Address: <%= session.ip_address %></p>
+                      <p class="text-sm font-medium text-gray-500"><%= t 'settings.index.security.active_sessions.id' %> <%= session.session_id %></p>
+                      <p class="text-sm text-gray-500"><%= t 'settings.index.security.active_sessions.ip' %> <%= session.ip_address %></p>
                       <% if session.browser.present? %>
-                        <p class="text-sm text-gray-500">Browser: <%= session.browser %></p>
+                        <p class="text-sm text-gray-500"><%= t 'settings.index.security.active_sessions.browser' %> <%= session.browser %></p>
                       <% else %>
-                        <p class="text-sm text-gray-500">Browser: Unknown</p>
+                        <p class="text-sm text-gray-500"><%= t 'settings.index.security.active_sessions.browser' %>
+                          Unknown</p>
                       <% end %>
-                      <p class="text-sm text-gray-500">Created At: <%= session.created_at %></p>
+                      <p class="text-sm text-gray-500"><%= t 'settings.index.security.active_sessions.browserid' %> <%= session.created_at %></p>
                     </div>
                   </li>
                 <% end %>
@@ -542,7 +545,7 @@
     </div>
 
     <script>
-        document.getElementById('toggle-more-sessions')?.addEventListener('click', function() {
+        document.getElementById('toggle-more-sessions')?.addEventListener('click', function () {
             const moreSessions = document.getElementById('more-sessions');
             if (moreSessions.classList.contains('hidden')) {
                 moreSessions.classList.remove('hidden');
@@ -554,49 +557,49 @@
         });
     </script>
 
-      <div data-controller="modal">
-        <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-          <div>
-            <h2 class="text-base font-semibold leading-7 text-white">Delete account</h2>
-            <p class="mt-1 text-sm leading-6 text-gray-400">
-              No longer want to use our service? You can delete your account here. This action is not reversible.
-              All information related to this account will be deleted permanently.
-            </p>
-          </div>
+    <div data-controller="modal">
+      <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+        <div>
+          <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.delete.title' %></h2>
+          <p class="mt-1 text-sm leading-6 text-gray-400">
+            <%= t '.security.delete.hint' %>
+          </p>
+        </div>
 
-          <div>
-            <%= button_tag 'Удалить аккаунт',
-                           class: 'rounded-md bg-red-500 px-4 py-2 text-white font-semibold hover:bg-red-600',
-                           data: { action: 'click->modal#open' } %>
-          </div>
+        <div>
+          <%= button_tag t('.security.delete.btn'),
+                         class: 'rounded-md bg-red-500 px-4 py-2 text-white font-semibold hover:bg-red-600',
+                         data: { action: 'click->modal#open' } %>
+        </div>
 
-          <div id="modal" data-modal-target="modal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75
+        <div id="modal" data-modal-target="modal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75
          flex items-center justify-center z-50">
-            <div class="modal-content bg-gray-800 p-4 rounded shadow-md w-full sm:w-96">
-              <p class="text-lg text-gray-200">Введите ваш пароль для подтверждения удаления аккаунта:</p>
-              <div class="mt-4">
-                <%= form_for @user, url: user_path(@user), method: :delete, html: { class: 'delete-account-form',
-                                                                                    data: { action: 'submit->modal#submitForm' } } do |f| %>
-                  <div class="mb-4">
-                    <%= f.label :password, 'Пароль', class: 'block text-gray-300' %>
-                    <%= f.password_field :password, autocomplete: 'password', class: 'mt-1 block w-full rounded-md
+          <div class="modal-content bg-gray-800 p-4 rounded shadow-md w-full sm:w-96">
+            <p class="text-lg text-gray-200">Введите ваш пароль для подтверждения удаления аккаунта:</p>
+            <div class="mt-4">
+              <%= form_for @user, url: user_path(@user), method: :delete, html: { class: 'delete-account-form',
+                                                                                  data: { action: 'submit->modal#submitForm' } } do |f| %>
+                <div class="mb-4">
+                  <%= f.label :password, 'Пароль', class: 'block text-gray-300' %>
+                  <%= f.password_field :password, autocomplete: 'password', class: 'mt-1 block w-full rounded-md
                   border-gray-700 bg-gray-900 text-gray-300 focus:border-indigo-500
                   focus:ring-indigo-500', data: { modal_target: 'password' } %>
-                  </div>
-                  <div data-modal-target="errorMessage" class="text-red-500 mb-4"></div>
-                  <div class="flex justify-end">
-                    <%= f.submit 'Удалить аккаунт', class: 'rounded-md bg-red-600 px-4 py-2 text-white
+                </div>
+                <div data-modal-target="errorMessage" class="text-red-500 mb-4"></div>
+                <div class="flex justify-end">
+                  <%= f.submit 'Удалить аккаунт', class: 'rounded-md bg-red-600 px-4 py-2 text-white
                    font-semibold hover:bg-red-700 mr-4 cursor-pointer' %>
-                    <button id="cancelDelete" data-modal-target="cancelButton"
-                            data-action="click->modal#close" type="button" class="border border-gray-700 px-4
-                          py-2 rounded-md text-gray-200 hover:bg-gray-700">Отмена</button>
-                  </div>
-                <% end %>
-              </div>
+                  <button id="cancelDelete" data-modal-target="cancelButton"
+                          data-action="click->modal#close" type="button" class="border border-gray-700 px-4
+                          py-2 rounded-md text-gray-200 hover:bg-gray-700">Отмена
+                  </button>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
 
   <div id="billing-section" class="section divide-y set-menuitem hidden">

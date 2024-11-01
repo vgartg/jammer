@@ -9,6 +9,15 @@ en:
       game:
         name: "Name"
         description: "Description"
+  buttons:
+    save: "Save"
+    change_avatar: "Change avatar"
+    log_out_sessions: "Log out other sessions"
+    remove_friend: "Remove friend"
+    profile: "Profile"
+    sign_out: "Sign out"
+    add_friend: "Add friend"
+  search: "Search..."
   home:
     title: "Jammer service prototype"
     description: "Online service for hosting, selling and downloading indie games"
@@ -43,6 +52,19 @@ en:
       game_file: "Game file:"
       warning: "Attention: we are not responsible for the contents of the archive."
       rate: "Rate the game:"
+      download: "Download archive (.zip, .rar, .7z)"
+      edit: "Edit game"
+      delete: "Delete game"
+    new:
+      name: "Name"
+      desc: "Description"
+      image: "Image"
+      file: "Game file (.zip, .rar, .7z). Max 100MB"
+      tags: "Tags"
+      btn: "Create game"
+    edit:
+      current_file: "Current file: "
+      download: "Download archive"
   friendships:
     index:
       title: "Friends"
@@ -52,6 +74,19 @@ en:
       title: "Jams catalogue"
       btn: "Create jam"
       empty: "There are not jams yet"
+    show:
+      description: "Description"
+      author: "Author"
+    new:
+      name: "Jam name"
+      desc: "Description"
+      start_date: "Start date"
+      deadline: "Deadline for submission"
+      end_date: "End date"
+      image: "Image"
+      logo: "Logo"
+      tags: "Tags"
+      btn: "Create jam"
   users:
     index:
       title: "All users"
@@ -65,3 +100,79 @@ en:
       adm_jams: "Administating jams"
       no_info: "None"
       edit: "Edit profile"
+    new:
+      title: "Sign up your account"
+      email: "Email address"
+      nickname: "Username"
+      password: "Password"
+      confirm: "Confirm your password"
+      btn: "Sign up"
+      alternative: "Or continue with"
+      hint: "Have a member?"
+      sign_in: "Sign in"
+  settings:
+    index:
+      header:
+        account: "Account"
+        security: "Security and privacy"
+        billing: "Billing"
+        teams: "Teams"
+        integrations: "Integrations"
+      account:
+        title: "Personal information"
+        image:
+          background_image: "Background image"
+        nickname: "Nickname"
+        real_name: "Full name"
+        email:
+          title: "Email"
+          hint: "To change your email, you will need to confirm it by receiving a letter with a code"
+        link: "Personal link"
+        time: "Time zone"
+        status: "Bio"
+        birthdate: "Date of birth"
+        location: "Location"
+        phone: "Phone number"
+      security:
+        online_visibility:
+          title: "Set online visibility"
+          label: "Who can see my online?"
+          hint: "Select who can see your online status."
+        jams_visibility:
+          title: "Set Jams Visibility"
+          label: "Who can see my jams?"
+          hint: "Select who can see jams you are administrating."
+        password:
+          title: "Change password"
+          hint: "Update your password associated with your account."
+          current: "Current password"
+          new: "New password"
+          confirm: "Confirm password"
+        log_out_sessions:
+          title: "Log out other sessions"
+          pswd: "Your password"
+          hint1: "Please enter your password to confirm you would like to log out of your other sessions across all of your devices."
+          attention: "Attention!"
+          hint2: "After logging out of other sessions, your account will be forgotten on our platform, i.e. the \"Remember me\" button will be reset if you pressed it during authorization"
+        active_sessions:
+          title: "Active Sessions"
+          hint: "Here are your current active sessions:"
+          id: "Session ID: "
+          ip: "IP Address: "
+          browser: "Browser: "
+          created: "Created at: "
+        delete:
+          title: "Delete account"
+          hint: "No longer want to use our service? You can delete your account here. This action is not reversible. All information related to this account will be deleted permanently."
+          btn: "Delete account"
+  sessions:
+    new:
+      title: "Sign in to your account"
+      email: "Email address"
+      password: "Password"
+      remember: "Remember me"
+      recover: "Forgot password?"
+      btn: "Sign in"
+      alternative: "Or continue with"
+      hint: "Not a member?"
+      sign_up: "Sign up"
