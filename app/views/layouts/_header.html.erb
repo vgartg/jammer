@@ -30,11 +30,55 @@
     <% if current_user %>
       <div class="hidden lg:flex lg:flex-1 lg:gap-x-12 lg:justify-end">
         <%= link_to t('.dashboard'), url_for(:dashboard), class: "text-sm font-semibold leading-6 text-white" %>
+        <div class="relative">
+          <button type="button" class="-m-1.5 flex items-center p-1.5" data-action="click->header#toggleLanguageMenu"
+                  aria-expanded="false" aria-haspopup="true">
+            <p class="text-sm font-semibold leading-6 text-white">
+              <%= t I18n.locale %>
+            </p>
+          </button>
+          <div class="hidden absolute right-0 z-50 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2
+            shadow-lg ring-1 ring-gray-900/5 focus:outline-none" role="menu" aria-orientation="vertical"
+               aria-labelledby="user-menu-button" tabindex="-1" id="language_menu">
+            <% I18n.available_locales.each do |locale| %>
+              <p class="text-sm font-semibold leading-6 text-black text-center">
+                <% if I18n.locale == locale %>
+                  <%#= tag.span t(locale) %>
+                <% else %>
+                  <%= link_to t(locale), root_path(locale: locale) %>
+                <% end %>
+              </p>
+            <% end %>
+
+          </div>
+        </div>
         <%= button_to t(".sign_out"), logout_path, method: :delete,
                       class: "text-sm font-semibold leading-6 text-white" %>
       </div>
     <% else %>
       <div class="hidden lg:flex lg:flex-1 lg:gap-x-12 lg:justify-end">
+        <div class="relative">
+          <button type="button" class="-m-1.5 flex items-center p-1.5" data-action="click->header#toggleLanguageMenu"
+                  aria-expanded="false" aria-haspopup="true">
+            <p class="text-sm font-semibold leading-6 text-white">
+              <%= t I18n.locale %>
+            </p>
+          </button>
+          <div class="hidden absolute right-0 z-50 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2
+            shadow-lg ring-1 ring-gray-900/5 focus:outline-none" role="menu" aria-orientation="vertical"
+               aria-labelledby="user-menu-button" tabindex="-1" id="language_menu">
+            <% I18n.available_locales.each do |locale| %>
+              <p class="text-sm font-semibold leading-6 text-black text-center">
+                <% if I18n.locale == locale %>
+                  <%#= tag.span t(locale) %>
+                <% else %>
+                  <%= link_to t(locale), root_path(locale: locale) %>
+                <% end %>
+              </p>
+            <% end %>
+
+          </div>
+        </div>
         <%= link_to t('.sign_up'), url_for(:register), class: "text-sm font-semibold leading-6 text-white" %>
         <%= link_to login_path, class: "text-sm font-semibold leading-6 text-white" do %>
           <%= t '.log_in' %>
@@ -62,31 +106,34 @@
       <div class="mt-6 flow-root">
         <div class="-my-6 divide-y divide-gray-500/25">
           <div class="space-y-2 py-6">
-            <a href="/" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
-            text-white hover:bg-gray-800">Home</a>
-            <a href="/users" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
-            text-white hover:bg-gray-800">Users</a>
-            <a href="/games_showcase" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
-            text-white hover:bg-gray-800">Games</a>
-            <a href="/jams_showcase" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
-            text-white hover:bg-gray-800">Jams</a>
+            <%= link_to t('.home'), root_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
+            text-white hover:bg-gray-800" %>
+            <%= link_to t('.users'), users_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
+            text-white hover:bg-gray-800" %>
+            <%= link_to t('.games'), games_showcase_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
+            text-white hover:bg-gray-800" %>
+            <%= link_to t('.jams'), jams_showcase_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
+            text-white hover:bg-gray-800" %>
           </div>
 
           <% if current_user %>
             <div class="py-6">
-              <a href="/dashboard" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
-            text-white hover:bg-gray-800">Dashboard</a>
+              <%= link_to t('.dashboard'), dashboard_path, class: "-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
+            text-white hover:bg-gray-800" %>
               <a class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
               text-white hover:bg-gray-800 cursor-pointer">
-                <%= button_to "Sign out", logout_path, method: :delete, class: "w-full flex justify-start" %>
+                <%= button_to t('.sign_out'), logout_path, method: :delete, class: "w-full flex justify-start" %>
               </a>
             </div>
           <% else %>
             <div class="py-6">
-              <a href="/register" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
-            text-white hover:bg-gray-800">Sign up</a>
-              <a href="/login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
-            text-white hover:bg-gray-800">Log in <span aria-hidden="true">&rarr;</span></a>
+              <%= link_to t('.sign_up'), register_path, class: "-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
+            text-white hover:bg-gray-800" %>
+              <%= link_to login_path, class: "-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
+            text-white hover:bg-gray-800" do %>
+                <%= t('.log_in') %>
+                <span aria-hidden="true">&rarr;</span>
+              <% end %>
             </div>
           <% end %>
         </div>

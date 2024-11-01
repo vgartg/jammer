@@ -88,10 +88,14 @@
               <% end %>
             <% end %>
           <% else %>
-            <p class="px-4 py-2 text-sm text-gray-600">No notifications to display.</p>
+            <p class="px-4 py-2 text-sm text-gray-600">
+              <%= t 'helpers.no_notif' %>
+            </p>
           <% end %>
           <% if @notifications && @notifications.count > 8 %>
-            <a href="/notifications" class="flex justify-center p-1">Показать все</a>
+            <a href="/notifications" class="flex justify-center p-1">
+              <%= t 'helpers.show_all' %>
+            </a>
           <% end %>
         </div>
       </div>

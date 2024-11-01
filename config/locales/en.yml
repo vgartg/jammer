@@ -77,6 +77,8 @@ en:
     show:
       description: "Description"
       author: "Author"
+      edit: "Edit jam"
+      delete: "Delete jam"
     new:
       name: "Jam name"
       desc: "Description"
@@ -87,6 +89,16 @@ en:
       logo: "Logo"
       tags: "Tags"
       btn: "Create jam"
+    edit:
+      name: "Jam name"
+      desc: "Description"
+      start_date: "Start date"
+      deadline: "Deadline for submission"
+      end_date: "End date"
+      image: "Image"
+      logo: "Logo"
+      tags: "Tags"
+      btn: "Save changes"
   users:
     index:
       title: "All users"
@@ -176,3 +188,6 @@ en:
       alternative: "Or continue with"
       hint: "Not a member?"
       sign_up: "Sign up"
+  helpers:
+    no_notif: "No notifications to display."
+    show_all: "Show all"
