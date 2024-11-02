@@ -21,6 +21,7 @@ en:
   home:
     title: "Jammer service prototype"
     description: "Online service for hosting, selling and downloading indie games"
+    read_mode: "Read more"
   layouts:
     header:
       home: "Home"
@@ -37,6 +38,14 @@ en:
       requests: "Requests"
       settings: "Settings"
   games:
+    create:
+      success: "Game has been created successfully!"
+      failure: "A game with the same name already exists."
+    destroy:
+      success: "Game has been deleted successfully."
+      failure: "Something went wrong!"
+    update:
+      success: "The game has been updated successfully."
     showcase:
       title: "Games catalogue"
       create: "Create game"
@@ -45,6 +54,7 @@ en:
       reset_filters: "Reset filters"
       checkbox: "Search with at least one of the selected tags"
       not_found: "Nothing found for the current request"
+      no_author: "Author not found"
     show:
       tags: "Tags"
       tags_not_found: "Tags not found"
@@ -66,10 +76,29 @@ en:
       current_file: "Current file: "
       download: "Download archive"
   friendships:
+    update:
+      notice: "Friend request accepted."
+      alert: "Failed to accept friend request."
+    cancel:
+      notice: "Friend request cancelled."
+    destroy:
+      notice: "Friendship is cancelled."
     index:
       title: "Friends"
       empty: "No friends yet"
+      btn: "Remove friend"
+    requests:
+      sent: "Sent applications"
+      income: "Incoming applications"
+      sent_empt: "No outgoing requests yet"
+      inc_empt: "No incoming requests yet"
   jams:
+    create:
+      failure: "Jam with that name already exists."
+      success: "Jam has been created successfully!"
+    destroy:
+      success: "Jam has been deleted successfully."
+      failure: "Something went wrong!"
     showcase:
       title: "Jams catalogue"
       btn: "Create jam"
@@ -100,6 +129,17 @@ en:
       tags: "Tags"
       btn: "Save changes"
   users:
+    destroy:
+      success: "The account has been successfully deleted."
+      error: "Invalid password"
+    update_user:
+      failure1: "Entered password is incorrect."
+      failure2: "All fields must be filled in"
+      failure3: "New password is too short (minimum is 5 characters)."
+      failure4: "New passwords do not match."
+      failure5: "New password must be different from the old one."
+      failure6: "Something went wrong!"
+      success: "Successfully saved!"
     index:
       title: "All users"
     profile:
@@ -124,6 +164,10 @@ en:
       sign_in: "Sign in"
   settings:
     index:
+      options:
+        visibility_all: "All"
+        visibility_none: "None"
+        visibility_friends: "Friends"
       header:
         account: "Account"
         security: "Security and privacy"
@@ -134,6 +178,9 @@ en:
         title: "Personal information"
         image:
           background_image: "Background image"
+          or: "or"
+          drag: "Drag an image here or click to select a file"
+          recommendation: "Recommended size: 1920x1080 pixels"
         nickname: "Nickname"
         real_name: "Full name"
         email:
@@ -178,6 +225,11 @@ en:
           hint: "No longer want to use our service? You can delete your account here. This action is not reversible. All information related to this account will be deleted permanently."
           btn: "Delete account"
   sessions:
+    create:
+      failure: "Invalid email or password"
+    logout_other_sessions:
+      success: "Successfully logged out of other sessions"
+      failure: "Invalid password"
     new:
       title: "Sign in to your account"
       email: "Email address"
@@ -191,3 +243,8 @@ en:
   helpers:
     no_notif: "No notifications to display."
     show_all: "Show all"
+  notifications:
+    index:
+      title: "Notifications"
+      accept: "accepted your friend request"
+      sent: "sent a friend request"

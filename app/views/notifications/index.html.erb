@@ -1,7 +1,9 @@
 <div class="bg-white">
   <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
     <div class="flex justify-between items-center px-4">
-      <h2 class="text-2xl font-bold tracking-tight text-gray-900">Уведомления</h2>
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900">
+        <%= t '.title' %>
+      </h2>
     </div>
     <% if @notifications.any? %>
       <% @notifications.order(created_at: :desc).each do |notification| %>
@@ -13,7 +15,7 @@
                   <%= image_tag url_for(notification.actor.avatar), alt: "Profile Picture",
                                 class: "w-16 text-gray-400" %>
                 <% else %>
-                  <%= image_tag 'empty-avatar.jpg', class: "w-16 text-gray-400"%>
+                  <%= image_tag 'empty-avatar.jpg', class: "w-16 text-gray-400" %>
                 <% end %>
               </a>
             </div>
@@ -23,20 +25,22 @@
                   <%= notification.actor.name %>
                 </a>
                 <% if notification.action == 'accepted_friendship' %>
-                  принял заявку в друзья
+                  <%= t '.accept' %>
                 <% elsif notification.action == 'sent_friend_request' %>
-                  отправил запрос в друзья
+                  <%= t '.sent' %>
                 <% else %>
                   <%= notification.action %>
                 <% end %>
               </p>
-              <p class="text-xs text-gray-500"><%= notification.created_at.strftime("%d.%m.%Y, %H:%M")%></p>
+              <p class="text-xs text-gray-500"><%= notification.created_at.strftime("%d.%m.%Y, %H:%M") %></p>
             </div>
           </div>
         <% end %>
       <% end %>
     <% else %>
-      <p>No notifications to display.</p>
+      <p>
+        <%= t 'helpers.no_notif' %>
+      </p>
     <% end %>
   </div>
 </div>

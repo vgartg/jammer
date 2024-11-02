@@ -32,7 +32,9 @@
                 <%= game.author.name %>
               </a>
             <% else %>
-              <p>Автор не найден</p>
+              <p>
+                <%= t '.no_author' %>
+              </p>
             <% end %>
           </div>
         </div>

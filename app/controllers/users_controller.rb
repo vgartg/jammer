@@ -43,10 +43,10 @@ class UsersController < ApplicationController
     @user = current_user
     if @user.authenticate(params[:user][:password])
       @user.destroy
-      flash[:success] = 'Аккаунт успешно удален.'
+      flash[:success] = t 'users.destroy.success'
       render json: { success: true }, status: :ok
     else
-      flash[:error] = 'Неверный пароль.'
+      flash[:error] = t 'users.destroy.error'
       render json: { success: false, error: 'Неверный пароль.' }, status: :unprocessable_entity
     end
   end
@@ -60,29 +60,29 @@ class UsersController < ApplicationController
 
     if user_params[:password].present? || user_params[:password_confirmation].present? || params[:user][:current_password].present?
       unless @user.authenticate(params[:user][:current_password])
-        flash[:failure] = "Current password is incorrect."
+        flash[:failure] = t 'users.update_user.failure1'
         # render :edit_user, status: :see_other
         redirect_to settings_path
         return
       end
 
       if user_params[:password].blank? || user_params[:password_confirmation].blank? || params[:user][:current_password].blank?
-        flash[:failure] = "All fields must be filled in"
+        flash[:failure] = t 'users.update_user.failure2'
         # render :edit_user, status: :see_other
         redirect_to settings_path
         return
       elsif user_params[:password].length < 5
-        flash[:failure] = "New password is too short (minimum is 5 characters)."
+        flash[:failure] = t 'users.update_user.failure3'
         # render :edit_user, status: :see_other
         redirect_to settings_path
         return
       elsif user_params[:password] != user_params[:password_confirmation]
-        flash[:failure] = "New passwords do not match."
+        flash[:failure] = t 'users.update_user.failure4'
         # render :edit_user, status: :see_other
         redirect_to settings_path
         return
       elsif user_params[:password] == params[:user][:current_password]
-        flash[:failure] = "New password must be different from the old one."
+        flash[:failure] = t 'users.update_user.failure5'
         # render :edit_user, status: :see_other
         redirect_to settings_path
         return
@@ -90,10 +90,10 @@ class UsersController < ApplicationController
     end
 
     if @user.update(user_params)
-      flash[:success] = "Successfully saved!"
+      flash[:success] = t 'users.update_user.success'
       redirect_to settings_path
     else
-      flash[:failure] = "Something went wrong!"
+      flash[:failure] = t 'users.update_user.failure6'
       redirect_to settings_path
     end
   end

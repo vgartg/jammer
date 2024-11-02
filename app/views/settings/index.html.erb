@@ -55,7 +55,7 @@
               <%= render partial: 'helpers/cropper_modal' %>
               <%= f.file_field :avatar, class: "hidden", accept: "image/jpeg,image/png",
                                data: { max_size: 1.megabytes.to_i } %>
-              <p class="mt-2 text-xs leading-5 text-gray-400">JPG or PNG. 1MB max.</p>
+              <p class="mt-2 text-xs leading-5 text-gray-400">JPG <%= t '.account.image.or' %> PNG. 1MB max.</p>
             </div>
 
           </div>
@@ -76,8 +76,12 @@
                   <input data-background-image-target="input" type="file" name="user[background_image]"
                          id="background_image"
                          class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
-                  <p class="text-white mt-4">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
-                  <p class="text-white text-xs">Рекомендуемый размер: 1920x1080 пикселей</p>
+                  <p class="text-white mt-4">
+                    <%= t '.account.image.drag' %>
+                  </p>
+                  <p class="text-white text-xs">
+                    <%= t '.account.image.recommendation' %>
+                  </p>
                 </div>
               </div>
             </div>
@@ -338,9 +342,9 @@
             <div class="mt-2 relative">
               <%= f.select :visibility,
                            options_for_select([
-                                                ['All'],
-                                                ['Friends'],
-                                                ['None']
+                                                [I18n.t('settings.index.options.visibility_all'), 'All'],
+                                                [I18n.t('settings.index.options.visibility_friends'), 'Friends'],
+                                                [I18n.t('settings.index.options.visibility_none'), 'None']
                                               ], selected: @user.visibility),
                            {},
                            class: 'block w-full appearance-none rounded-md bg-gray-800 text-white py-2
@@ -377,9 +381,9 @@
             <div class="mt-2 relative">
               <%= f.select :jams_visibility,
                            options_for_select([
-                                                ['All'],
-                                                ['Friends'],
-                                                ['None']
+                                                [I18n.t('settings.index.options.visibility_all'), 'All'],
+                                                [I18n.t('settings.index.options.visibility_friends'), 'Friends'],
+                                                [I18n.t('settings.index.options.visibility_none'), 'None']
                                               ], selected: @user.jams_visibility),
                            {},
                            class: 'block w-full appearance-none rounded-md bg-gray-800 text-white py-2
@@ -465,7 +469,7 @@
         </p>
         <p class="mt-1 text-sm leading-6 text-red-400">
           <% t '.security.log_out_sessions.attention' %>
-            <span class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.log_out_sessions.hint2' %></span>
+          <span class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.log_out_sessions.hint2' %></span>
         </p>
       </div>
 

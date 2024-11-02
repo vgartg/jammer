@@ -46,14 +46,14 @@ class GamesController < ApplicationController
     @game = Game.new(game_params.merge(author: current_user))
     @tags = Tag.all
     if @game.save
-      flash[:success] = "Игра успешно создана!"
+      flash[:success] = t 'games.create.success'
       redirect_to dashboard_path
     else
       flash[:failure] = @game.errors.full_messages
       render :new, status: :see_other
     end
   rescue ActiveRecord::RecordNotUnique => e
-    flash[:failure] = "Игра с таким названием уже существует."
+    flash[:failure] = t 'games.create.failure'
     render :new, status: :see_other
   end
 
@@ -65,7 +65,7 @@ class GamesController < ApplicationController
   def update
     @game = current_user.games.find_by_id(params[:id])
     if @game.update(game_params)
-      flash[:success] = "Игра успешно обновлена."
+      flash[:success] = t 'games.update.success'
       redirect_to game_profile_path
     else
       flash[:failure] = @game.errors.full_messages
@@ -76,9 +76,9 @@ class GamesController < ApplicationController
   def destroy
     @game = current_user.games.find_by_id(params[:id])
     if @game.destroy
-      flash[:success] = 'Игра успешно удалена.'
+      flash[:success] = t 'games.destroy.success'
     else
-      flash[:failure] = "Something went wrong!"
+      flash[:failure] = t 'games.destroy.failure'
     end
     redirect_to dashboard_path
   end

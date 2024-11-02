@@ -42,7 +42,7 @@
                 </div>
               </a>
               <div>
-                <%= button_to "Remove", user_friendship_path(@current_user, friendship), method: :delete,
+                <%= button_to t('.btn'), user_friendship_path(@current_user, friendship), method: :delete,
                               class: "bg-red-500 text-white px-3 py-1 rounded-full
                         hover:bg-red-600 transition-colors duration-200" %>
               </div>

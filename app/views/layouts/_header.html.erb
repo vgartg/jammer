@@ -45,7 +45,7 @@
                 <% if I18n.locale == locale %>
                   <%#= tag.span t(locale) %>
                 <% else %>
-                  <%= link_to t(locale), root_path(locale: locale) %>
+                  <%= link_to t(locale), url_for(only_path: false, locale: locale) %>
                 <% end %>
               </p>
             <% end %>
@@ -72,11 +72,10 @@
                 <% if I18n.locale == locale %>
                   <%#= tag.span t(locale) %>
                 <% else %>
-                  <%= link_to t(locale), root_path(locale: locale) %>
+                  <%= link_to t(locale), url_for(only_path: false, locale: locale) %>
                 <% end %>
               </p>
             <% end %>
-
           </div>
         </div>
         <%= link_to t('.sign_up'), url_for(:register), class: "text-sm font-semibold leading-6 text-white" %>
