@@ -7,37 +7,28 @@ class JamsController < ApplicationController
   end
 
   def participate
-    @jam = Jam.find(params[:id])
-    unless @jam.participants.include?(current_user.id)
-      @jam.participants << current_user.id
-      if @jam.save
+    unless JamSubmission.where(jam_id: params[:id]).find_by(user_id: current_user.id).present?
+      jsb = JamSubmission.new(game_id: nil, jam_id: params[:id], user: current_user)
+      if jsb.save
         flash[:notice] = "Вы успешно присоединились к джему!"
       else
         flash[:alert] = "Произошла ошибка. Попробуйте еще раз."
       end
     end
-    redirect_to @jam
+    redirect_to jam_profile_path(params[:id])
   end
 
   def show_projects
     @jam = Jam.find(params[:id])
     @tags = Tag.all
-    jams_games = @jam.games.map{|id| Game.find(id)}
+    jams_games = JamSubmission.where(jam_id: params[:id]).and(JamSubmission.where.not(game_id: nil))
+                              .map{|jsb| Game.find_by_id(jsb.game_id)}
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
-      @games = Jam.where("LOWER(jams_games.name) LIKE ? OR LOWER(jams_games.description) LIKE ?",
+      @games = Game.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
                         lower_case_search, lower_case_search)
     else
       @games = jams_games
-    end
-
-    if params[:tag_ids].present?
-      tag_ids = params[:tag_ids].map(&:to_i)
-      if params[:tag_mode] == 'any'
-        @games = @games.joins(:tags).where(tags: { id: tag_ids }).distinct
-      else
-        @games = @games.joins(:tags).group('jams.id').having('array_agg(tags.id) @> ARRAY[?]::bigint[]', tag_ids)
-      end
     end
 
     respond_to do |format|
@@ -48,7 +39,7 @@ class JamsController < ApplicationController
 
   def show_participants
     @jam = Jam.find(params[:id])
-    @users = @jam.participants.map{|id| User.find(id)}
+    @users = JamSubmission.where(jam_id: params[:id]).map{|jsb| User.find_by_id(jsb.user_id)}
   end
 
   def showcase
@@ -83,6 +74,7 @@ class JamsController < ApplicationController
 
   def show
     @jam = Jam.find(params[:id])
+    @jsb = JamSubmission.where(jam_id: params[:id]).find_by(user_id: current_user.id)
     if current_user
       @notifications = current_user.notifications
     end
@@ -115,7 +107,9 @@ class JamsController < ApplicationController
   def create_submission
     @game = Game.new(game_params.merge(author: current_user))
     if @game.save
-      JamSubmission.new(game: @game, jam_id: params[:id], user: current_user).save
+      #JamSubmission.new(game: @game, jam_id: params[:id], user: current_user).save
+      submission = JamSubmission.where(jam_id: params[:id]).find_by(user_id: current_user.id)
+      submission.update(game_id: @game.id)
       redirect_to jam_profile_path(params[:id])
     else
       redirect_to dashboard_path
