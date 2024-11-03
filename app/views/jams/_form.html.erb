@@ -46,6 +46,7 @@
                      shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                      focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
       </div>
+      <span id="deadline-tooltip" class="hidden text-red-500">Дата сдачи работ не может быть раньше даты начала.</span>
     </div>
 
     <script>
@@ -62,6 +63,7 @@
                     shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                     focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
       </div>
+     <span id="end-date-tooltip" class="hidden text-red-500">Дата окончания джема не может быть раньше даты сдачи работ.</span>
     </div>
 
     <script>
@@ -119,6 +121,29 @@
                 }
             });
 
+            const startDateInput = document.getElementById('start_date');
+            const deadlineInput = document.getElementById('deadline');
+            const endDateInput = document.getElementById('end_date');
+            const endDateTooltip = document.getElementById('end-date-tooltip');
+            const deadlineTooltip = document.getElementById('deadline-tooltip');
+
+            function validateDates() {
+                const startDateValue = new Date(startDateInput.value);
+                const deadlineValue = new Date(deadlineInput.value);
+                const endDateValue = new Date(endDateInput.value);
+
+                if (deadlineValue < startDateValue){
+                    deadlineTooltip.classList.remove('hidden')
+                } else deadlineTooltip.classList.add('hidden')
+
+                if (endDateValue < deadlineValue) {
+                    endDateTooltip.classList.remove('hidden');
+                } else endDateTooltip.classList.add('hidden');
+            }
+
+            startDateInput.addEventListener('change', validateDates);
+            deadlineInput.addEventListener('change', validateDates);
+            endDateInput.addEventListener('change', validateDates);
 
             // Load Flatpickr
             flatpickr("#start_date", {
@@ -139,7 +164,7 @@
       <div class="relative mt-2">
         <div class="text-gray-500 border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
           <% if @jam && @jam.cover.attached? %>
-          <img data-background-image-target="coverPreviewImg" id="cover-preview-img" src="<%= url_for(@jam.cover) %>"
+          <img data-background-image-target="coverPreviewImg" id="cover-preview-img" src="<%#= url_for(@jam.cover) %>"
                alt="Предварительный просмотр обложки"
                class="mt-4 w-full h-auto object-cover rounded-md">
           <% else %>
@@ -164,7 +189,7 @@
       <div class="relative mt-2">
         <div class="text-gray-500 border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
           <% if @jam && @jam.cover.attached? %>
-            <img data-background-image-target="logoPreviewImg" id="logo-preview-img" src="<%= url_for(@jam.logo) %>"
+            <img data-background-image-target="logoPreviewImg" id="logo-preview-img" src="<%#= url_for(@jam.logo) %>"
                  alt="Предварительный просмотр обложки"
                  class="mt-4 w-full h-auto object-cover rounded-md">
           <% else %>

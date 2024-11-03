@@ -46,7 +46,10 @@ class JamsController < ApplicationController
   def create
     @jam = Jam.new(jam_params.merge(author: current_user))
     @tags = Tag.all
-    if @jam.save
+    if @jam.deadline < @jam.start_date || @jam.end_date < @jam.deadline
+      return
+    end
+    if  @jam.save
       flash[:success] = 'Джем успешно создан!'
       redirect_to dashboard_path
     else
@@ -79,6 +82,9 @@ class JamsController < ApplicationController
 
   def update
     @jam = current_user.jams.find_by_id(params[:id])
+    if @jam.deadline < @jam.start_date || @jam.end_date < @jam.deadline
+      return
+    end
     if @jam.update(jam_params)
       redirect_to jam_profile_path, notice: 'Джем успешно обновлен.'
     else
@@ -117,4 +123,5 @@ class JamsController < ApplicationController
     params.require(:game)
           .permit(:name, :description, :cover, :game_file, tag_ids: [])
   end
+
 end
