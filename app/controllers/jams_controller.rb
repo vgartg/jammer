@@ -18,10 +18,16 @@ class JamsController < ApplicationController
     redirect_to jam_profile_path(params[:id])
   end
 
+  def delete_project
+    submission = JamSubmission.where(jam_id: params[:id]).find_by(user_id: current_user.id)
+    submission.update(game_id: nil)
+    redirect_to jam_profile_path(params[:id])
+  end
+
   def show_projects
     @jam = Jam.find(params[:id])
     @tags = Tag.all
-    jams_games = JamSubmission.where(jam_id: params[:id]).and(JamSubmission.where.not(game_id: nil))
+    jams_games = @jam.jam_submissions.and(JamSubmission.where.not(game_id: nil))
                               .map{|jsb| Game.find_by_id(jsb.game_id)}
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
@@ -39,7 +45,7 @@ class JamsController < ApplicationController
 
   def show_participants
     @jam = Jam.find(params[:id])
-    @users = JamSubmission.where(jam_id: params[:id]).map{|jsb| User.find_by_id(jsb.user_id)}
+    @users = @jam.jam_submissions.map{|jsb| User.find_by_id(jsb.user_id)}
   end
 
   def showcase
@@ -74,7 +80,8 @@ class JamsController < ApplicationController
 
   def show
     @jam = Jam.find(params[:id])
-    @jsb = JamSubmission.where(jam_id: params[:id]).find_by(user_id: current_user.id)
+    @jsb = @jam.jam_submissions.find_by(user_id: current_user.id)
+    @game = Game.find_by_id(@jsb.game_id)
     if current_user
       @notifications = current_user.notifications
     end
@@ -82,6 +89,7 @@ class JamsController < ApplicationController
 
   def create
     @jam = Jam.new(jam_params.merge(author: current_user))
+
     @tags = Tag.all
     if @jam.save
       flash[:success] = 'Джем успешно создан!'
@@ -108,6 +116,7 @@ class JamsController < ApplicationController
     @game = Game.new(game_params.merge(author: current_user))
     if @game.save
       #JamSubmission.new(game: @game, jam_id: params[:id], user: current_user).save
+
       submission = JamSubmission.where(jam_id: params[:id]).find_by(user_id: current_user.id)
       submission.update(game_id: @game.id)
       redirect_to jam_profile_path(params[:id])

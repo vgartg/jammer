@@ -70,6 +70,7 @@ Rails.application.routes.draw do
   resources :jams do
     member do
       post 'participate'
+      patch 'delete_project'
     end
   end
 
