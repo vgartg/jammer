@@ -57,7 +57,7 @@ gem 'letter_opener_web', group: :development
 gem 'mail'
 
 gem 'nokogiri', '~> 1.16.7'
-# gem 'pagy'
+gem 'pagy'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

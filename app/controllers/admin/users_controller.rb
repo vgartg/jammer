@@ -4,10 +4,7 @@ module Admin
     before_action :set_user!, only: %i[edit update destroy]
 
     def index
-      @users = User.all
-
-      # pagination. will be later...
-      # @pagy, @users = pagy((User.all), items: 20)
+      @pagy, @users = pagy((User.all), limit: 15)
     end
 
     def create
