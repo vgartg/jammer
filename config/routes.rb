@@ -82,4 +82,7 @@ Rails.application.routes.draw do
   get '/notifications', to: 'notifications#index'
 
   get '/settings', to: 'settings#index'
+
+  resource :password_reset, only: [:new, :create, :edit, :update]
+  resource :email_confirm, only: [:new, :create, :edit, :update]
 end
