@@ -164,9 +164,11 @@
                     </li>
                   <% end %>
                 </ul>
-                <button id="toggle-button" class="mt-4 text-gray-400 hover:underline">
-                  Показать все игры
-                </button>
+                <% if @user.games.count >= 8 %>
+                  <button id="toggle-button" class="mt-4 text-gray-400 hover:underline">
+                    Показать все игры
+                  </button>
+                <% end %>
               <% else %>
                 <span class="text-gray-900">Информации нет</span>
               <% end %>
