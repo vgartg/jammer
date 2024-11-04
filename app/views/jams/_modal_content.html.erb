@@ -62,8 +62,8 @@
     </div>
     <div id='games' style="display: none;" class="overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 pr-4 sm:pb-8 my-4 gap-y-12 sm:gap-x-4 max-h-[75vh]">
       <% @current_user.games.each do |game| %>
-        <div class="group relative">
-          <%if @game.present? ? !game.id.equal?(@game.id): true %>
+        <% if @game.present? ? !game.id.equal?(@game.id): true %>
+          <div class="group relative">
             <% if game && game.cover.attached? %>
               <%= image_tag url_for(game.cover), alt: game.name, class: "rounded-md bg-gray-200 w-full h-full object-cover object-center group-hover:opacity-75" %>
             <% else %>
@@ -82,8 +82,8 @@
                 <% end %>
               </h3>
             </div>
-           <% end %>
-        </div>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>
