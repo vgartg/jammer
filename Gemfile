@@ -50,7 +50,6 @@ gem 'rexml', '>= 3.3.6'
 gem 'browser'
 gem 'flatpickr'
 gem 'useragent'
-gem 'sinatra'
 gem 'rest-client'
 
 gem 'letter_opener', group: :development

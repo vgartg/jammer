@@ -277,12 +277,6 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       tilt (~> 2.0)
       websocket (~> 1.0)
-    sinatra (4.0.0)
-      mustermann (~> 3.0)
-      rack (>= 3.0.0, < 4)
-      rack-protection (= 4.0.0)
-      rack-session (>= 2.0.0, < 3)
-      tilt (~> 2.0)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -350,7 +344,6 @@ DEPENDENCIES
   rest-client
   rexml (>= 3.3.6)
   selenium-webdriver
-  sinatra
   sprockets-rails
   stimulus-rails
   thruster
