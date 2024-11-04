@@ -45,11 +45,13 @@ class GamesController < ApplicationController
 
   def submit
     # Check if the submission already exists
-    existing_submission = JamSubmission.find_by(game_id: params[:game_id], jam_id: params[:jam_id])
+    #existing_submission = JamSubmission.find_by(game_id: params[:game_id], jam_id: params[:jam_id])
 
-    unless existing_submission
-      @submission = JamSubmission.create(submission_params)
-    end
+    #unless existing_submission
+    #  @submission = JamSubmission.create(submission_params)
+    #end
+    submission = JamSubmission.where(jam_id: params[:jam_id]).find_by(user_id: current_user.id)
+    submission.update(game_id: params[:game_id])
     redirect_to
   end
 
