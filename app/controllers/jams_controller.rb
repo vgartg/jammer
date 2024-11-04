@@ -80,8 +80,8 @@ class JamsController < ApplicationController
 
   def show
     @jam = Jam.find(params[:id])
-    @jsb = @jam.jam_submissions.find_by(user_id: current_user.id)
-    @game = Game.find_by_id(@jsb.game_id)
+    @jsb = @jam ? @jam.jam_submissions.find_by(user_id: current_user.id) : nil
+    @game = @jsb && @jsb.game_id ? Game.find_by_id(@jsb.game_id) : nil
     if current_user
       @notifications = current_user.notifications
     end
