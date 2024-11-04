@@ -89,4 +89,4 @@ group :production do
   gem 'aws-sdk-s3', '~> 1'
 end
 
-gem "thruster", require: false
+gem "thruster"
