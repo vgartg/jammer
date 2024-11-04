@@ -71,6 +71,13 @@ Rails.application.routes.draw do
 
   get '/settings', to: 'settings#index'
 
+  # Admin
+  get '/admin', to: 'admins#index'
+  namespace :admin do
+    resources :users, only: [:index, :create, :edit, :update, :destroy]
+  end
+
+  # Email (mailer)
   resource :password_reset, only: [:new, :create, :edit, :update]
   resource :email_confirm, only: [:new, :create, :edit, :update]
 end

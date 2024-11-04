@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_27_131605) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_01_210455) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -157,8 +157,10 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_27_131605) do
     t.string "email_confirm_token"
     t.datetime "email_confirm_token_sent_at"
     t.boolean "email_confirmed", default: false
+    t.integer "role", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
+    t.index ["role"], name: "index_users_on_role"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

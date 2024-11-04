@@ -6,12 +6,16 @@ class User < ActiveRecord::Base
   has_secure_token :password_reset_token
   has_secure_token :email_confirm_token
 
+  enum :role, basic: 0, moderator: 1, admin: 2
+
   VISIBILITY_ALL = 'All'
   VISIBILITY_FRIENDS = 'Friends'
   VISIBILITY_NONE = 'None'
 
   THEME_LIGHT = 'Light'
   THEME_DARK = 'Dark'
+
+  attr_accessor :admin_edit
 
   validates :name, :email, presence: true, uniqueness: true
   validates :password, :password_confirmation, presence: true, on: :create
