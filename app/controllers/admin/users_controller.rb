@@ -18,11 +18,10 @@ module Admin
     def update
       if @user.update(user_params)
         flash[:success] = 'Готово'
-        redirect_to admin_users_path
       else
         flash[:failure] = @user.errors.full_messages
-        redirect_to request.fullpath
       end
+      redirect_to request.fullpath
     end
 
     def destroy
@@ -39,7 +38,9 @@ module Admin
 
     def user_params
       params.require(:user).permit(
-        :email, :name, :email_confirmed, :password, :password_confirmation, :role
+        :email, :name, :email_confirmed, :password, :password_confirmation, :role, :avatar, :background_image,
+        :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
+        :visibility, :jams_visibility, :theme
       ).merge(admin_edit: true)
     end
   end

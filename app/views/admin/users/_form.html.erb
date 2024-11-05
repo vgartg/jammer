@@ -1,5 +1,5 @@
 <%= form_with model: [:admin, user] do |f| %>
-  <div class="space-y-4 p-16">
+  <div class="space-y-4 p-16" data-controller="settings">
     <div class="flex items-center">
       <div class="w-1/4">
         <%= f.label :email, class: 'block text-sm font-medium text-gray-700' %>
@@ -55,7 +55,242 @@
       </div>
     </div>
 
-    <div class="flex items-center">
+    <div class="w-1/4"></div>
+    <div class="w-3/4">
+      <button type="button" onclick="toggleHiddenSection()" class="text-gray-400 hover:underline">
+        Show More Details
+      </button>
+    </div>
+
+    <div id="hidden-section" class="space-y-4 mt-4 hidden">
+      <div class="col-span-full flex items-center gap-x-8">
+        <% if user && user.avatar.attached? %>
+          <%= image_tag url_for(user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24
+               w-24 border-2 border-gray-300 object-cover", data: { target: 'user.avatarImage' } %>
+        <% else %>
+          <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-image rounded-full h-24
+               w-24 border-2 border-gray-300 object-cover" data-target="user.avatarImage">
+        <% end %>
+        <div class="border border-gray-300 rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-gray-400 shadow-sm hover:bg-white/20">
+          <div class="flex justify-center select-none">
+            Change avatar
+          </div>
+          <%= render partial: 'helpers/cropper_modal' %>
+          <%= f.file_field :avatar, class: "hidden", accept: "image/jpeg,image/png",
+                           data: { max_size: 1.megabytes.to_i } %>
+        </div>
+      </div>
+
+      <div class="field col-span-full">
+        <label for="background_image" class="block text-sm font-medium text-white">Заставка</label>
+        <div data-controller="background-image">
+          <div class="relative">
+            <div class="border-dashed border-2 border-gray-300 p-6 text-center rounded-md relative">
+              <% if user.background_image.attached? %>
+                <img data-background-image-target="currentBackgroundImg"
+                     id="current-background-img" src="<%= url_for(user.background_image) %>"
+                     alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md" />
+              <% end %>
+              <img data-background-image-target="previewImg" id="preview-img" src="#"
+                   alt="Предварительный просмотр изображения"
+                   class="mt-4 hidden w-full h-auto object-cover rounded-md">
+              <input data-background-image-target="input" type="file" name="user[background_image]"
+                     id="background_image"
+                     class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center">
+        <div class="w-1/4">
+          <%= f.label :real_name, class: 'block text-sm font-medium text-gray-700' %>
+        </div>
+        <div class="w-3/4">
+          <%= f.text_field :real_name, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <div class="w-1/4">
+          <%= f.label :location, class: 'block text-sm font-medium text-gray-700' %>
+        </div>
+        <div class="w-3/4">
+          <%= f.text_field :location, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <div class="w-1/4">
+          <%= f.label :status, class: 'block text-sm font-medium text-gray-700' %>
+        </div>
+        <div class="w-3/4">
+          <%= f.text_field :status, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <div class="w-1/4">
+          <label for="link_username" class="block text-sm font-medium text-gray-700">
+            Персональная ссылка
+          </label>
+        </div>
+          <div class="w-3/4">
+            <%= f.text_field :link_username, id: 'link_username',
+                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50', placeholder: 'Username',
+                             data: { settings_target: 'username' },
+                             pattern: '[a-zA-Z0-9-]+' %>
+          </div>
+      </div>
+      <div class="flex items-center">
+        <div class="w-1/4"></div>
+        <div class="w-3/4">
+          <% if user.link_username.present? %>
+            <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
+              https://<%= user.link_username %>.jammer.ru/
+            </p>
+          <% else %>
+            <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
+              https://username.jammer.ru/
+            </p>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <div class="w-1/4">
+          <label for="phone_number" class="block text-sm font-medium text-gray-700">Номер телефона</label>
+        </div>
+        <div class="w-3/4">
+          <%= f.text_field :phone_number, id: 'phone_number',
+                           value: user.phone_number,
+                           autocomplete: 'tel',
+                           type: 'tel',
+                           placeholder: '+7 (___) ___-__-__',
+                           class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <div class="w-1/4">
+          <label for="birthday" class="block text-sm font-medium text-gray-700">День рождения</label>
+        </div>
+        <div class="w-3/4">
+          <%= f.text_field :birthday, id: 'birthday',
+                           value: user.birthday,
+                           autocomplete: 'birthday',
+                           type: 'date',
+                           class: 'block w-full rounded-md border-gray-300 bg-white/5 py-1.5 text-sm
+                            shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                            focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr' %>
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <div class="w-1/4">
+          <%= f.label :timezone, class: 'block text-sm font-medium text-gray-700' %>
+        </div>
+        <div class="w-3/4">
+          <%= f.select :timezone,
+                       options_for_select([ # Уберем (если что) один из вариантов: либо с UTC, либо без
+                                            ['America/Anchorage', 'America/Anchorage (UTC-09:00)'],
+                                            ['America/Caracas', 'America/Caracas (UTC-04:00)'],
+                                            ['America/Chicago', 'America/Chicago (UTC-06:00)'],
+                                            ['America/Denver', 'America/Denver (UTC-07:00)'],
+                                            ['America/Los_Angeles', 'America/Los_Angeles (UTC-08:00)'],
+                                            ['America/New_York', 'America/New_York (UTC-05:00)'],
+                                            ['America/Santiago', 'America/Santiago (UTC-04:00)'],
+                                            ['America/Sao_Paulo', 'America/Sao_Paulo (UTC-03:00)'],
+                                            ['America/St_Johns', 'America/St_Johns (UTC-03:30)'],
+                                            ['Asia/Bangkok', 'Asia/Bangkok (UTC+07:00)'],
+                                            ['Asia/Chita', 'Asia/Chita (UTC+09:00)'],
+                                            ['Asia/Dhaka', 'Asia/Dhaka (UTC+06:00)'],
+                                            ['Asia/Hong_Kong', 'Asia/Hong_Kong (UTC+08:00)'],
+                                            ['Asia/Irkutsk', 'Asia/Irkutsk (UTC+08:00)'],
+                                            ['Asia/Kabul', 'Asia/Kabul (UTC+04:30)'],
+                                            ['Asia/Kamchatka', 'Asia/Kamchatka (UTC+12:00)'],
+                                            ['Asia/Karachi', 'Asia/Karachi (UTC+05:00)'],
+                                            ['Asia/Kathmandu', 'Asia/Kathmandu (UTC+05:45)'],
+                                            ['Asia/Kolkata', 'Asia/Kolkata (UTC+05:30)'],
+                                            ['Asia/Krasnoyarsk', 'Asia/Krasnoyarsk (UTC+07:00)'],
+                                            ['Asia/Magadan', 'Asia/Magadan (UTC+11:00)'],
+                                            ['Asia/Omsk', 'Asia/Omsk (UTC+06:00)'],
+                                            ['Asia/Tbilisi', 'Asia/Tbilisi (UTC+04:00)'],
+                                            ['Asia/Tokyo', 'Asia/Tokyo (UTC+09:00)'],
+                                            ['Asia/Vladivostok', 'Asia/Vladivostok (UTC+10:00)'],
+                                            ['Asia/Yangon', 'Asia/Yangon (UTC+06:30)'],
+                                            ['Asia/Yekaterinburg', 'Asia/Yekaterinburg (UTC+05:00)'],
+                                            ['Atlantic/Azores', 'Atlantic/Azores (UTC-01:00)'],
+                                            ['Atlantic/South_Georgia', 'Atlantic/South_Georgia (UTC-02:00)'],
+                                            ['Australia/Darwin', 'Australia/Darwin (UTC+09:30)'],
+                                            ['Australia/Sydney', 'Australia/Sydney (UTC+10:00)'],
+                                            ['Europe/Berlin', 'Europe/Berlin (UTC+01:00)'],
+                                            ['Europe/Helsinki', 'Europe/Helsinki (UTC+02:00)'],
+                                            ['Europe/Kaliningrad', 'Europe/Kaliningrad (UTC+02:00)'],
+                                            ['Europe/Kiev', 'Europe/Kiev (UTC+02:00)'],
+                                            ['Europe/Minsk', 'Europe/Minsk (UTC+03:00)'],
+                                            ['Europe/Moscow', 'Europe/Moscow (UTC+03:00)'],
+                                            ['Europe/Prague', 'Europe/Prague (UTC+01:00)'],
+                                            ['Europe/Samara', 'Europe/Samara (UTC+04:00)'],
+                                            ['Europe/Ulyanovsk', 'Europe/Ulyanovsk (UTC+04:00)'],
+                                            ['Pacific/Auckland', 'Pacific/Auckland (UTC+12:00)'],
+                                            ['Pacific/Chatham', 'Pacific/Chatham (UTC+12:45)'],
+                                            ['Pacific/Honolulu', 'Pacific/Honolulu (UTC-10:00)'],
+                                            ['Pacific/Tongatapu', 'Pacific/Tongatapu (UTC+13:00)'],
+                                          ], selected: user.timezone),
+                       {},
+                       class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <div class="w-1/4">
+          <%= f.label :visibility, class: 'block text-sm font-medium text-gray-700' %>
+        </div>
+        <div class="w-3/4">
+          <%= f.select :visibility,
+                       options_for_select([
+                                            ['All'],
+                                            ['Friends'],
+                                            ['None']
+                                          ], selected: user.visibility),
+                       {},
+                       class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <div class="w-1/4">
+          <%= f.label :jams_visibility, class: 'block text-sm font-medium text-gray-700' %>
+        </div>
+        <div class="w-3/4">
+          <%= f.select :jams_visibility,
+                       options_for_select([
+                                            ['All'],
+                                            ['Friends'],
+                                            ['None']
+                                          ], selected: user.jams_visibility),
+                       {},
+                       class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <div class="w-1/4">
+          <%= f.label :theme, class: 'block text-sm font-medium text-gray-700' %>
+        </div>
+        <div class="w-3/4">
+          <%= f.select :theme,
+                       options_for_select([
+                                            ['Light'],
+                                            ['Dark']
+                                          ], selected: user.theme),
+                       {},
+                       class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center pb-16">
       <div class="w-1/4"></div>
       <div class="w-3/4">
         <%= f.submit 'Save', class: 'mt-4 bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50' %>
@@ -63,3 +298,10 @@
     </div>
   </div>
 <% end %>
+
+<script>
+    function toggleHiddenSection() {
+        var section = document.getElementById("hidden-section");
+        section.classList.toggle("hidden");
+    }
+</script>
