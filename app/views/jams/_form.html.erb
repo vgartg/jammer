@@ -33,6 +33,7 @@
                      shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                      focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
       </div>
+      <span id="start-date-valid" class="hidden text-red-500">Некорректная дата.</span>
     </div>
 
     <div class="mt-4">
@@ -46,6 +47,7 @@
                      shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                      focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
       </div>
+      <span id="deadline-valid" class="hidden text-red-500">Некорректная дата.</span>
       <span id="deadline-tooltip" class="hidden text-red-500">Дата сдачи работ не может быть раньше даты начала.</span>
     </div>
 
@@ -63,11 +65,12 @@
                     shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                     focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
       </div>
-     <span id="end-date-tooltip" class="hidden text-red-500">Дата окончания джема не может быть раньше даты сдачи работ.</span>
+      <span id="end-date-valid" class="hidden text-red-500">Некорректная дата.</span>
+      <span id="end-date-tooltip" class="hidden text-red-500">Дата окончания джема не может быть раньше даты сдачи работ.</span>
     </div>
 
     <script>
-        document.addEventListener('turbo:load', function() {
+        document.addEventListener('turbo:render', function() {
 
             // Change Cover Field
             const coverInput = document.getElementById('cover-input');
@@ -124,8 +127,11 @@
             const startDateInput = document.getElementById('start_date');
             const deadlineInput = document.getElementById('deadline');
             const endDateInput = document.getElementById('end_date');
-            const endDateTooltip = document.getElementById('end-date-tooltip');
+            const startDateValid = document.getElementById('start-date-valid');
+            const deadlineValid = document.getElementById('deadline-valid');
             const deadlineTooltip = document.getElementById('deadline-tooltip');
+            const endDateValid = document.getElementById('end-date-valid');
+            const endDateTooltip = document.getElementById('end-date-tooltip');
 
             function validateDates() {
                 const startDateValue = new Date(startDateInput.value);
@@ -139,11 +145,24 @@
                 if (endDateValue < deadlineValue) {
                     endDateTooltip.classList.remove('hidden');
                 } else endDateTooltip.classList.add('hidden');
+
+                if (startDateValue.getFullYear() < 2000){
+                    startDateValid.classList.remove('hidden')
+                } else startDateValid.classList.add('hidden')
+
+                if (deadlineValue.getFullYear() < 2000){
+                    deadlineValid.classList.remove('hidden')
+                } else deadlineValid.classList.add('hidden')
+
+                if (endDateValue.getFullYear() < 2000){
+                    endDateValid.classList.remove('hidden')
+                } else endDateValid.classList.add('hidden')
             }
 
             startDateInput.addEventListener('change', validateDates);
             deadlineInput.addEventListener('change', validateDates);
             endDateInput.addEventListener('change', validateDates);
+            validateDates();
 
             // Load Flatpickr
             flatpickr("#start_date", {
