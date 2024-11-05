@@ -2,7 +2,9 @@
 <% @users.each do |user| %>
   <tr class="border-b hover:bg-gray-100">
     <th scope="row" class="py-3 px-6"><%= user.id %></th>
-    <td class="py-3 px-6"><%= user.name %></td>
+    <td class="py-3 px-6 hover:underline">
+      <%= link_to user.name, user_profile_path(user), class: 'break-all' %>
+    </td>
     <td class="py-3 px-6"><%= user.email %></td>
     <td class="py-3 px-6"><%= user.role %></td>
     <td class="py-3 px-6"><%= user.created_at %></td>
