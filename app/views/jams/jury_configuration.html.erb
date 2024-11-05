@@ -1,0 +1,83 @@
+<div class="bg-white">
+  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+    <h1 class="text-2xl font-bold text-center mb-8">Настройка Жюри</h1>
+    <%= form_for @jam, url: host_list_update_path(@jam), method: :patch, html: {class: 'md:col-span-2' } do |f| %>
+    <table class="w-full text-left text-sm text-gray-700 dark:text-gray-400">
+      <thead class="text-xs text-gray-50 uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th scope="col" class="px-6 py-3 text-sm font-medium text-center">
+          Пользователь
+        </th>
+        <th scope="col" class="px-6 py-3 text-sm font-medium text-center">
+          Статус
+        </th>
+        <th scope="col" class="px-6 py-3 text-sm font-medium text-center">
+          Хост
+        </th>
+        <th scope="col" class="px-6 py-3 text-sm font-medium text-center">
+          Админ
+        </th>
+        <th scope="col" class="px-15 py-3 text-sm font-medium text-center">
+          Член Жюри
+        </th>
+        <th scope="col" class="px-6 py-3 text-sm font-medium text-center">
+          Добавлен
+        </th>
+        <th scope="col" class="px-6 py-3">
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @users.each do |user| %>
+        <tr class="bg-white border-b border-b-2 border-b-gray-500 dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex flex-col items-center">
+              <% if user && user.avatar.attached? %>
+                <%= image_tag url_for(user.avatar), alt: "Profile Picture",
+                              class: "h-16 w-16 rounded-full" %>
+              <% else %>
+                <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full"%>
+              <% end %>
+              <h2 class="text-lg font-semibold text-gray-800"><%= user.name %></h2>
+            </th>
+          <td class="px-6 py-2">
+            <%if user.online? %>
+              <h1 class=" font-bold text-center mb-8 bg-green-custom rounded text-white">Принято</h1>
+            <%else %>
+              <h1 class=" font-bold text-center mb-8 bg-yellow-custom rounded text-gray-700">В ожидании</h1>
+            <%end %>
+          </td>
+
+            <td class="px-8 py-4 justify-center">
+              <%= f.check_box :host_update, {}, '1', nil %>
+            </td>
+            <%= f.hidden_field :user_id, value: current_user.id %>
+          <td class="px-10 py-4 justify-center">
+            <input type="checkbox" class="w-6 h-6 text-blue-800 text-center bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+          </td>
+          <td class="px-8 py-4">
+            <input type="checkbox" class="w-6 h-6 text-blue-800 text-center bg-gray-100 flex items-center rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+          </td>
+          <td class="px-6 py-4 text-center">
+            280 days ago
+          </td>
+          <td
+          <%= button_to "Удалить", delete_user_path(@jam), method: :delete,
+                        data: { confirm: "Вы уверены, что хотите удалить?" },
+                        class: "mt-4 flex w-50 justify-center rounded-md border
+                              border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white
+                              shadow-sm hover:bg-red-700 focus:outline-none
+                               focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+      <%= f.hidden_field :host_ids, multiple: true, value: @jam.hosts.map(&:id) %>
+      <%= f.submit "Сохранить", id: "table-info-button-save", class: "mt-4 flex w-50 justify-center
+     rounded-md border
+                       border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                       shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                        focus:ring-offset-2 cursor-pointer" %>
+    <% end %>
+  </div>
+</div>

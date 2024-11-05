@@ -83,6 +83,11 @@
                               border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                               shadow-sm hover:bg-indigo-700 focus:outline-none
                                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+              <%= button_to "Настройка жюри", jury_configuration_path(@jam), method: :get,
+                            class: "mt-4 flex w-50 justify-center rounded-md border
+                              border-transparent bg-gray-700 py-2 px-4 text-sm font-medium text-white
+                              shadow-sm hover:bg-gray-900 focus:outline-none
+                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
               <%= button_to "Удалить джем", jam_destroy_path(@jam), method: :delete,
                             class: "mt-4 flex w-50 justify-center rounded-md border
                               border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white

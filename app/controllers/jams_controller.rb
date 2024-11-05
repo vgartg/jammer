@@ -41,6 +41,9 @@ class JamsController < ApplicationController
     if current_user
       @notifications = current_user.notifications
     end
+    @hosts = @jam.hosts
+    @admins = @jam.admins
+    @jury = @jam.juries
   end
 
   def create
@@ -87,6 +90,14 @@ class JamsController < ApplicationController
     end
   end
 
+  def host_list_update
+    @jam = current_user.jams.find_by_id(params[:id])
+    user_id = params[:user_id]
+    if params[:host_update] && params[:host_update][user_id] == '1'
+      @jam.host_update
+    end
+  end
+
   def destroy
     @jam = current_user.jams.find_by_id(params[:id])
     if @jam.destroy
@@ -95,6 +106,34 @@ class JamsController < ApplicationController
       flash[:failure] = "Something went wrong!"
     end
     redirect_to :dashboard
+  end
+
+  def jury_configuration
+    @jam = current_user.jams.find_by_id(params[:id])
+    @users = User.all
+    @hosts = @jam.hosts
+    @admins = @jam.admins
+    @jury = @jam.juries
+  end
+
+  # def update
+  #   @jam = Jam.find(params[:id])
+  #
+  #   # Передаем current_user в host_update
+  #   @jam.host_update(current_user)
+  #
+  #   if @jam.save
+  #     redirect_to @jam, notice: 'Джем успешно обновлен.'
+  #   else
+  #     render :edit
+  #   end
+  # end
+
+  def delete_user
+    @jam = current_user.jams.find_by_id(params[:id])
+    @user = User.find(params[:id])
+    @user.destroy
+    redirect_to :dashboard, notice: 'User was successfully destroyed.'
   end
 
   private
