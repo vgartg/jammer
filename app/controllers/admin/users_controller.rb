@@ -4,7 +4,9 @@ module Admin
     before_action :set_user!, only: %i[edit update destroy]
 
     def index
-      @pagy, @users = pagy(sort_users(User.all), limit: 15)
+      users = search_users(User.all)
+      users = sort_users(users)
+      @pagy, @users = pagy(users, limit: 15)
     end
 
     def create
@@ -41,6 +43,22 @@ module Admin
       sort_by = sortable_columns.include?(params[:sort_by]) ? params[:sort_by] : 'id'
       direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
       users.order("#{sort_by} #{direction}")
+    end
+
+    def search_users(users)
+      if params[:query].present?
+        query = params[:query].strip.downcase
+
+        if query.to_i.to_s == query
+          users = users.where(id: query.to_i)
+        else
+          role_query = User.roles[query]
+          users = users.where("name ILIKE :query OR email ILIKE :query OR created_at::TEXT ILIKE :query OR role = :role_query",
+                              query: "%#{query}%", role_query: role_query)
+        end
+      else
+        users
+      end
     end
 
     def user_params
