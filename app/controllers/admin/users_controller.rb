@@ -4,7 +4,7 @@ module Admin
     before_action :set_user!, only: %i[edit update destroy]
 
     def index
-      @pagy, @users = pagy((User.all), limit: 15)
+      @pagy, @users = pagy(sort_users(User.all), limit: 15)
     end
 
     def create
@@ -34,6 +34,13 @@ module Admin
 
     def set_user!
       @user = User.find params[:id]
+    end
+
+    def sort_users(users)
+      sortable_columns = %w[id name email role created_at]
+      sort_by = sortable_columns.include?(params[:sort_by]) ? params[:sort_by] : 'id'
+      direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
+      users.order("#{sort_by} #{direction}")
     end
 
     def user_params

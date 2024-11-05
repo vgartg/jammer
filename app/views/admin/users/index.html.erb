@@ -2,11 +2,26 @@
   <table class="min-w-full bg-white border border-gray-200">
     <thead>
     <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-      <th scope="col" class="flex justify-center py-3 px-6 text-left">#</th>
-      <th scope="col" class="py-3 px-6 text-left">name</th>
-      <th scope="col" class="py-3 px-6 text-left">email</th>
-      <th scope="col" class="py-3 px-6 text-left">role</th>
-      <th scope="col" class="py-3 px-6 text-left">created_at</th>
+      <th scope="col" class="flex justify-center py-3 px-6 text-left">
+        <%= link_to '#', admin_users_path(sort_by: 'id', direction: toggle_direction('id')) %>
+        <%= sort_arrow('id') %>
+      </th>
+      <th scope="col" class="py-3 px-6 text-left">
+        <%= link_to 'Name', admin_users_path(sort_by: 'name', direction: toggle_direction('name')) %>
+        <%= sort_arrow('name') %>
+      </th>
+      <th scope="col" class="py-3 px-6 text-left">
+        <%= link_to 'Email', admin_users_path(sort_by: 'email', direction: toggle_direction('email')) %>
+        <%= sort_arrow('email') %>
+      </th>
+      <th scope="col" class="py-3 px-6 text-left">
+        <%= link_to 'Role', admin_users_path(sort_by: 'role', direction: toggle_direction('role')) %>
+        <%= sort_arrow('role') %>
+      </th>
+      <th scope="col" class="py-3 px-6 text-left">
+        <%= link_to 'Created At', admin_users_path(sort_by: 'created_at', direction: toggle_direction('created_at')) %>
+        <%= sort_arrow('created_at') %>
+      </th>
       <th scope="col" class="py-3 px-6 text-left"></th>
     </tr>
     </thead>
