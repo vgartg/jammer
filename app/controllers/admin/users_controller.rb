@@ -7,14 +7,34 @@ module Admin
       users = search_users(User.all)
       users = sort_users(users)
       @pagy, @users = pagy(users, limit: 15)
+      if current_user
+        @notifications = current_user.notifications
+      end
     end
 
     def create
-      # will release later...
-      redirect_to admin_users_path
+      @user = User.new(user_params)
+
+      if @user.save
+        flash[:success] = 'Пользователь успешно создан'
+        redirect_to admin_users_path
+      else
+        flash[:failure] = @user.errors.full_messages
+        redirect_to new_admin_user_path
+      end
+    end
+
+    def new
+      @user = User.new
+      if current_user
+        @notifications = current_user.notifications
+      end
     end
 
     def edit
+      if current_user
+        @notifications = current_user.notifications
+      end
     end
 
     def update

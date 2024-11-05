@@ -1,0 +1,25 @@
+<div class="p-16">
+  <h1 class="text-xl font-bold mb-4">Создание нового пользователя</h1>
+
+  <%= form_with model: @user, url: admin_users_path, method: :post, local: true, class: 'mb-4' do |form| %>
+    <%= form.label :name, 'Имя', class: 'block mb-1' %>
+    <%= form.text_field :name, class: 'border p-2 mb-4 w-full' %>
+
+    <%= form.label :email, 'Email', class: 'block mb-1' %>
+    <%= form.email_field :email, class: 'border p-2 mb-4 w-full' %>
+
+    <%= form.label :password, 'Пароль', class: 'block mb-1' %>
+    <%= form.password_field :password, class: 'border p-2 mb-4 w-full' %>
+
+    <%= form.label :password_confirmation, 'Подтверждение пароля', class: 'block mb-1' %>
+    <%= form.password_field :password_confirmation, class: 'border p-2 mb-4 w-full' %>
+
+    <%= form.label :role, 'Роль', class: 'block mb-1' %>
+    <%= form.select :role, User.roles.keys.map { |role| [role.humanize, role] }, class: 'border p-2 mb-4 w-full' %>
+
+    <div class="mt-6 flex items-center space-x-2">
+      <%= form.submit 'Создать пользователя', class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
+      <%= link_to 'Назад', admin_users_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
+    </div>
+  <% end %>
+</div>
