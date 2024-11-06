@@ -64,6 +64,20 @@ class SessionsController < ApplicationController
     end
   end
 
+  def logout_all_sessions
+    user = User.find(params[:user])
+    user.sessions.destroy_all ? flash[:success] = 'Все сессии успешно удалены' : flash[:failure] = 'Не удалось удалить сессии'
+    redirect_to edit_admin_user_path(user)
+  end
+
+  def logout_one_session
+    user = User.find(params[:user])
+    session = Session.find(params[:session_id])
+    user_session = user.sessions.find_by(id: session.id)
+    user_session&.destroy ? flash[:success] = 'Сессия успешно удалена' : flash[:failure] = 'Не удалось удалить сессию'
+    redirect_to edit_admin_user_path(user)
+  end
+
   private
 
   def auth_params

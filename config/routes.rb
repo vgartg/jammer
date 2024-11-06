@@ -42,6 +42,8 @@ Rails.application.routes.draw do
   # Sessions
   resources :sessions do
     post 'logout_other_sessions', on: :collection
+    post 'logout_all_sessions', on: :collection
+    post 'logout_one_session', on: :collection
   end
 
   # Games

@@ -300,6 +300,38 @@
   </div>
 <% end %>
 
+<div class="space-y-4 p-16">
+  <div class="flex items-center">
+    <div class="w-1/4">
+      <p class="block text-sm font-medium text-gray-700">Активные сессии пользователя</p>
+    </div>
+    <div class="w-3/4">
+      <% if @sessions.any? %>
+        <ul class="divide-y divide-gray-200">
+          <% @sessions.each do |session| %>
+            <li class="py-4 flex justify-between items-center">
+              <div>
+                <p class="text-sm font-medium text-gray-900">Session ID: <%= session.session_id %></p>
+                <p class="text-sm text-gray-500">IP Address: <%= session.ip_address %></p>
+                <p class="text-sm text-gray-500">Browser: <%= session.browser || 'Unknown' %></p>
+                <p class="text-sm text-gray-500">Created At: <%= session.created_at %></p>
+              </div>
+              <%= form_tag logout_one_session_sessions_path(user: user, session_id: session.id), method: :post do %>
+                <%= submit_tag 'Log out', class: 'mt-4 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600' %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+        <%= form_tag logout_all_sessions_sessions_path(user: user), method: :post do %>
+          <%= submit_tag 'Log out all', class: 'mt-4 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600' %>
+        <% end %>
+      <% else %>
+        <p class="text-sm text-gray-500">No active sessions found.</p>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 <script>
     function toggleHiddenSection() {
         var section = document.getElementById("hidden-section");
