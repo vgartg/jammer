@@ -105,7 +105,7 @@
                       </li>
                       <% if @current_user.role == 'admin' %>
                         <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
-                  hover:bg-gray-800 text-gray-400 cursor-pointer" id="adminPanel"
+                  hover:bg-gray-800 text-gray-400 cursor-pointer" id="admin"
                             data-content-id="admin" data-action="click->dashboard#dashboardChanger">
                           <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
                     text-gray-400">
@@ -296,7 +296,7 @@
                   </li>
                   <% if @current_user.role == 'admin' %>
                     <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 cursor-pointer
-               hover:bg-gray-800" id="adminPanel"
+               hover:bg-gray-800" id="admin"
                         data-content-id="admin" data-action="click->dashboard#dashboardChanger">
                       <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
                 text-gray-400">
