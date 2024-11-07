@@ -54,7 +54,6 @@ export default class extends Controller {
         this.search()
     }
 
-    // Handle cover input change
     updateCoverPreview(event) {
         const file = event.target.files[0]
         if (file) {
@@ -68,7 +67,6 @@ export default class extends Controller {
         }
     }
 
-    // Handle logo input change
     updateLogoPreview(event) {
         const file = event.target.files[0]
         if (file) {
@@ -82,7 +80,6 @@ export default class extends Controller {
         }
     }
 
-    // Utility to adjust the text margin
     updateTextMargin(textTarget) {
         if (textTarget.classList.contains('mt-0')) {
             textTarget.classList.remove('mt-0')

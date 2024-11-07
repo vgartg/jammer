@@ -143,6 +143,7 @@ class JamsController < ApplicationController
     startDate.year < 2000 ? failures.push("Некорректная дата начала джема") : failures
     deadline.year < 2000 ? failures.push("Некорректная дата сдачи работ") : failures
     endDate.year < 2000 ? failures.push("Некорректная дата окончания джема") : failures
+
     failures
   end
 end
