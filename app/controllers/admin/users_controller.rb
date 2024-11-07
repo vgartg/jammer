@@ -33,7 +33,8 @@ module Admin
 
     def edit
       @user = User.find(params[:id])
-      @sessions = @user.sessions.order(created_at: :desc)
+      @user_sessions = @user.sessions.order(created_at: :desc)
+      @user_notifications = @user.notifications
       if current_user
         @notifications = current_user.notifications
       end

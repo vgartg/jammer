@@ -1,333 +1,420 @@
-<%= form_with model: [:admin, user] do |f| %>
-  <div class="space-y-4 p-16" data-controller="settings">
-    <div class="flex items-center">
-      <div class="w-1/4">
-        <%= f.label :email, class: 'block text-sm font-medium text-gray-700' %>
-      </div>
-      <div class="w-3/4">
-        <%= f.email_field :email, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
-      </div>
-    </div>
+<div class="p-6" data-controller="settings">
+  <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mb-4">
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="profile" class="button bg-blue-700 text-white py-2 px-4 rounded">Профиль</button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="user_experience" class="button bg-blue-500 text-white py-2 px-4 rounded">Пользовательский опыт</button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="games" class="button bg-blue-500 text-white py-2 px-4 rounded">Игры</button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="jams" class="button bg-blue-500 text-white py-2 px-4 rounded">Джемы</button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="sessions" class="button bg-blue-500 text-white py-2 px-4 rounded">Сессии</button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="notifications" class="button bg-blue-500 text-white py-2 px-4 rounded">Уведомления</button>
+  </div>
 
-    <div class="flex items-center">
-      <div class="w-1/4">
-        <%= f.label :name, class: 'block text-sm font-medium text-gray-700' %>
-      </div>
-      <div class="w-3/4">
-        <%= f.text_field :name, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
-      </div>
-    </div>
+  <div class="mt-4">
+    <%= link_to 'Назад', admin_users_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
+  </div>
 
-    <div class="flex items-center">
-      <div class="w-1/4">
-        <%= f.label :email_confirmed, class: 'block text-sm font-medium text-gray-700' %>
-      </div>
-      <div class="w-3/4">
-        <%= f.check_box :email_confirmed, class: 'mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500', checked: user.email_confirmed %>
-        <span class="ml-2 text-sm text-gray-600">Confirmed</span>
-      </div>
-    </div>
+  <div>
+    <!-- Секция с профилем -->
+    <div data-settings-target="section" data-section="profile">
+      <%= form_with model: [:admin, user] do |f| %>
+        <div class="space-y-4 p-16">
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :email, class: 'block text-sm font-medium text-gray-700' %>
+            </div>
+            <div class="w-3/4">
+              <%= f.email_field :email, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+            </div>
+          </div>
 
-    <div class="flex items-center">
-      <div class="w-1/4">
-        <%= f.label :role, class: 'block text-sm font-medium text-gray-700' %>
-      </div>
-      <div class="w-3/4">
-        <%= f.select :role, User.roles.keys.map { |role| [role.titleize, role] }, {}, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
-      </div>
-    </div>
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :name, class: 'block text-sm font-medium text-gray-700' %>
+            </div>
+            <div class="w-3/4">
+              <%= f.text_field :name, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+            </div>
+          </div>
 
-    <div class="flex items-center">
-      <div class="w-1/4">
-        <%= f.label :password, class: 'block text-sm font-medium text-gray-700' %>
-      </div>
-      <div class="w-3/4">
-        <%= f.password_field :password, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
-      </div>
-    </div>
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :email_confirmed, class: 'block text-sm font-medium text-gray-700' %>
+            </div>
+            <div class="w-3/4">
+              <%= f.check_box :email_confirmed, class: 'mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500', checked: user.email_confirmed %>
+              <span class="ml-2 text-sm text-gray-600">Confirmed</span>
+            </div>
+          </div>
 
-    <div class="flex items-center">
-      <div class="w-1/4">
-        <%= f.label :password_confirmation, class: 'block text-sm font-medium text-gray-700' %>
-      </div>
-      <div class="w-3/4">
-        <%= f.password_field :password_confirmation, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
-      </div>
-    </div>
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :role, class: 'block text-sm font-medium text-gray-700' %>
+            </div>
+            <div class="w-3/4">
+              <%= f.select :role, User.roles.keys.map { |role| [role.titleize, role] }, {}, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+            </div>
+          </div>
 
-    <div class="w-1/4"></div>
-    <div class="w-3/4">
-      <button type="button" onclick="toggleHiddenSection()" class="text-gray-400 hover:underline">
-        Show More Details
-      </button>
-    </div>
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :password, class: 'block text-sm font-medium text-gray-700' %>
+            </div>
+            <div class="w-3/4">
+              <%= f.password_field :password, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+            </div>
+          </div>
 
-    <div id="hidden-section" class="space-y-4 mt-4 hidden">
-      <div class="col-span-full flex items-center gap-x-8 bg-white p-4 rounded-md">
-        <% if user && user.avatar.attached? %>
-          <%= image_tag url_for(user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24 w-24 border-2 border-gray-300 object-cover", data: { target: 'user.avatarImage' } %>
-          <!-- <button class="text-red-500 ml-2" data-action="user#deleteAvatar" data-user-id="<%= user.id %>">Удалить аватар</button> -->
-        <% else %>
-          <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-image rounded-full h-24 w-24 border-2 border-gray-300 object-cover" data-target="user.avatarImage">
-        <% end %>
-        <div class="border border-gray-300 rounded-md bg-white py-2 text-sm font-semibold text-gray-400 shadow-sm">
-          <%= render partial: 'helpers/cropper_modal_admin' %>
-          <%= f.file_field :avatar, class: "hidden", accept: "image/jpeg,image/png", data: { max_size: 1.megabytes.to_i } %>
-        </div>
-      </div>
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :password_confirmation, class: 'block text-sm font-medium text-gray-700' %>
+            </div>
+            <div class="w-3/4">
+              <%= f.password_field :password_confirmation, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+            </div>
+          </div>
 
-      <div class="field col-span-full">
-        <label for="background_image" class="block text-sm font-medium text-gray-800">Заставка</label>
-        <div data-controller="background-image">
-          <div class="relative">
-            <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative bg-white shadow-md">
-              <% if user.background_image.attached? %>
-                <img data-background-image-target="currentBackgroundImg"
-                     id="current-background-img" src="<%= url_for(user.background_image) %>"
-                     alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md" />
-                <!--<button class="text-red-500" data-action="user#deleteBackgroundImage" data-user-id="<%= user.id %>">Удалить заставку</button>-->
+          <div class="w-1/4"></div>
+          <div class="w-3/4">
+            <button type="button" onclick="toggleHiddenSection()" class="text-gray-400 hover:underline">
+              Show More Details
+            </button>
+          </div>
+
+          <div id="hidden-section" class="space-y-4 mt-4 hidden">
+            <div class="col-span-full flex items-center gap-x-8 bg-white p-4 rounded-md">
+              <% if user && user.avatar.attached? %>
+                <%= image_tag url_for(user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24 w-24 border-2 border-gray-300 object-cover", data: { target: 'user.avatarImage' } %>
+                <!-- <button class="text-red-500 ml-2" data-action="user#deleteAvatar" data-user-id="<%= user.id %>">Удалить аватар</button> -->
+              <% else %>
+                <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-image rounded-full h-24 w-24 border-2 border-gray-300 object-cover" data-target="user.avatarImage">
               <% end %>
-              <img data-background-image-target="previewImg" id="preview-img" src="#"
-                   alt="Предварительный просмотр изображения"
-                   class="mt-4 hidden w-full h-auto object-cover rounded-md">
-              <input data-background-image-target="input" type="file" name="user[background_image]"
-                     id="background_image"
-                     class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
+              <div class="border border-gray-300 rounded-md bg-white py-2 text-sm font-semibold text-gray-400 shadow-sm">
+                <%= render partial: 'helpers/cropper_modal_admin' %>
+                <%= f.file_field :avatar, class: "hidden", accept: "image/jpeg,image/png", data: { max_size: 1.megabytes.to_i } %>
+              </div>
+            </div>
+
+            <div class="field col-span-full">
+              <label for="background_image" class="block text-sm font-medium text-gray-800">Заставка</label>
+              <div data-controller="background-image">
+                <div class="relative">
+                  <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative bg-white shadow-md">
+                    <% if user.background_image.attached? %>
+                      <img data-background-image-target="currentBackgroundImg"
+                           id="current-background-img" src="<%= url_for(user.background_image) %>"
+                           alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md" />
+                      <!--<button class="text-red-500" data-action="user#deleteBackgroundImage" data-user-id="<%= user.id %>">Удалить заставку</button>-->
+                    <% end %>
+                    <img data-background-image-target="previewImg" id="preview-img" src="#"
+                         alt="Предварительный просмотр изображения"
+                         class="mt-4 hidden w-full h-auto object-cover rounded-md">
+                    <input data-background-image-target="input" type="file" name="user[background_image]"
+                           id="background_image"
+                           class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="flex items-center">
+              <div class="w-1/4">
+                <%= f.label :real_name, class: 'block text-sm font-medium text-gray-700' %>
+              </div>
+              <div class="w-3/4">
+                <%= f.text_field :real_name, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="w-1/4">
+                <%= f.label :location, class: 'block text-sm font-medium text-gray-700' %>
+              </div>
+              <div class="w-3/4">
+                <%= f.text_field :location, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="w-1/4">
+                <%= f.label :status, class: 'block text-sm font-medium text-gray-700' %>
+              </div>
+              <div class="w-3/4">
+                <%= f.text_field :status, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="w-1/4">
+                <label for="link_username" class="block text-sm font-medium text-gray-700">
+                  Персональная ссылка
+                </label>
+              </div>
+              <div class="w-3/4">
+                <%= f.text_field :link_username, id: 'link_username',
+                                 class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50', placeholder: 'Username',
+                                 data: { settings_target: 'username' },
+                                 pattern: '[a-zA-Z0-9-]+' %>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <div class="w-1/4"></div>
+              <div class="w-3/4">
+                <% if user.link_username.present? %>
+                  <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
+                    https://<%= user.link_username %>.jammer.ru/
+                  </p>
+                <% else %>
+                  <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
+                    https://username.jammer.ru/
+                  </p>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="w-1/4">
+                <label for="phone_number" class="block text-sm font-medium text-gray-700">Номер телефона</label>
+              </div>
+              <div class="w-3/4">
+                <%= f.text_field :phone_number, id: 'phone_number',
+                                 value: user.phone_number,
+                                 autocomplete: 'tel',
+                                 type: 'tel',
+                                 placeholder: '+7 (___) ___-__-__',
+                                 class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="w-1/4">
+                <label for="birthday" class="block text-sm font-medium text-gray-700">День рождения</label>
+              </div>
+              <div class="w-3/4">
+                <%= f.text_field :birthday, id: 'birthday',
+                                 value: user.birthday,
+                                 autocomplete: 'birthday',
+                                 type: 'date',
+                                 class: 'block w-full rounded-md border-gray-300 bg-white/5 py-1.5 text-sm
+                            shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                            focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr' %>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="w-1/4">
+                <%= f.label :timezone, class: 'block text-sm font-medium text-gray-700' %>
+              </div>
+              <div class="w-3/4">
+                <%= f.select :timezone,
+                             options_for_select([ # Уберем (если что) один из вариантов: либо с UTC, либо без
+                                                  ['America/Anchorage', 'America/Anchorage (UTC-09:00)'],
+                                                  ['America/Caracas', 'America/Caracas (UTC-04:00)'],
+                                                  ['America/Chicago', 'America/Chicago (UTC-06:00)'],
+                                                  ['America/Denver', 'America/Denver (UTC-07:00)'],
+                                                  ['America/Los_Angeles', 'America/Los_Angeles (UTC-08:00)'],
+                                                  ['America/New_York', 'America/New_York (UTC-05:00)'],
+                                                  ['America/Santiago', 'America/Santiago (UTC-04:00)'],
+                                                  ['America/Sao_Paulo', 'America/Sao_Paulo (UTC-03:00)'],
+                                                  ['America/St_Johns', 'America/St_Johns (UTC-03:30)'],
+                                                  ['Asia/Bangkok', 'Asia/Bangkok (UTC+07:00)'],
+                                                  ['Asia/Chita', 'Asia/Chita (UTC+09:00)'],
+                                                  ['Asia/Dhaka', 'Asia/Dhaka (UTC+06:00)'],
+                                                  ['Asia/Hong_Kong', 'Asia/Hong_Kong (UTC+08:00)'],
+                                                  ['Asia/Irkutsk', 'Asia/Irkutsk (UTC+08:00)'],
+                                                  ['Asia/Kabul', 'Asia/Kabul (UTC+04:30)'],
+                                                  ['Asia/Kamchatka', 'Asia/Kamchatka (UTC+12:00)'],
+                                                  ['Asia/Karachi', 'Asia/Karachi (UTC+05:00)'],
+                                                  ['Asia/Kathmandu', 'Asia/Kathmandu (UTC+05:45)'],
+                                                  ['Asia/Kolkata', 'Asia/Kolkata (UTC+05:30)'],
+                                                  ['Asia/Krasnoyarsk', 'Asia/Krasnoyarsk (UTC+07:00)'],
+                                                  ['Asia/Magadan', 'Asia/Magadan (UTC+11:00)'],
+                                                  ['Asia/Omsk', 'Asia/Omsk (UTC+06:00)'],
+                                                  ['Asia/Tbilisi', 'Asia/Tbilisi (UTC+04:00)'],
+                                                  ['Asia/Tokyo', 'Asia/Tokyo (UTC+09:00)'],
+                                                  ['Asia/Vladivostok', 'Asia/Vladivostok (UTC+10:00)'],
+                                                  ['Asia/Yangon', 'Asia/Yangon (UTC+06:30)'],
+                                                  ['Asia/Yekaterinburg', 'Asia/Yekaterinburg (UTC+05:00)'],
+                                                  ['Atlantic/Azores', 'Atlantic/Azores (UTC-01:00)'],
+                                                  ['Atlantic/South_Georgia', 'Atlantic/South_Georgia (UTC-02:00)'],
+                                                  ['Australia/Darwin', 'Australia/Darwin (UTC+09:30)'],
+                                                  ['Australia/Sydney', 'Australia/Sydney (UTC+10:00)'],
+                                                  ['Europe/Berlin', 'Europe/Berlin (UTC+01:00)'],
+                                                  ['Europe/Helsinki', 'Europe/Helsinki (UTC+02:00)'],
+                                                  ['Europe/Kaliningrad', 'Europe/Kaliningrad (UTC+02:00)'],
+                                                  ['Europe/Kiev', 'Europe/Kiev (UTC+02:00)'],
+                                                  ['Europe/Minsk', 'Europe/Minsk (UTC+03:00)'],
+                                                  ['Europe/Moscow', 'Europe/Moscow (UTC+03:00)'],
+                                                  ['Europe/Prague', 'Europe/Prague (UTC+01:00)'],
+                                                  ['Europe/Samara', 'Europe/Samara (UTC+04:00)'],
+                                                  ['Europe/Ulyanovsk', 'Europe/Ulyanovsk (UTC+04:00)'],
+                                                  ['Pacific/Auckland', 'Pacific/Auckland (UTC+12:00)'],
+                                                  ['Pacific/Chatham', 'Pacific/Chatham (UTC+12:45)'],
+                                                  ['Pacific/Honolulu', 'Pacific/Honolulu (UTC-10:00)'],
+                                                  ['Pacific/Tongatapu', 'Pacific/Tongatapu (UTC+13:00)'],
+                                                ], selected: user.timezone),
+                             {},
+                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="w-1/4">
+                <%= f.label :visibility, class: 'block text-sm font-medium text-gray-700' %>
+              </div>
+              <div class="w-3/4">
+                <%= f.select :visibility,
+                             options_for_select([
+                                                  ['All'],
+                                                  ['Friends'],
+                                                  ['None']
+                                                ], selected: user.visibility),
+                             {},
+                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="w-1/4">
+                <%= f.label :jams_visibility, class: 'block text-sm font-medium text-gray-700' %>
+              </div>
+              <div class="w-3/4">
+                <%= f.select :jams_visibility,
+                             options_for_select([
+                                                  ['All'],
+                                                  ['Friends'],
+                                                  ['None']
+                                                ], selected: user.jams_visibility),
+                             {},
+                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <div class="w-1/4">
+                <%= f.label :theme, class: 'block text-sm font-medium text-gray-700' %>
+              </div>
+              <div class="w-3/4">
+                <%= f.select :theme,
+                             options_for_select([
+                                                  ['Light'],
+                                                  ['Dark']
+                                                ], selected: user.theme),
+                             {},
+                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center pb-16">
+            <div class="w-1/4"></div>
+            <div class="w-3/4">
+              <div class="mt-6 flex items-center space-x-2">
+                <%= f.submit 'Сохранить', class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
+                <%= link_to 'Назад', admin_users_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-
-      <div class="flex items-center">
-        <div class="w-1/4">
-          <%= f.label :real_name, class: 'block text-sm font-medium text-gray-700' %>
-        </div>
-        <div class="w-3/4">
-          <%= f.text_field :real_name, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
-        </div>
-      </div>
-
-      <div class="flex items-center">
-        <div class="w-1/4">
-          <%= f.label :location, class: 'block text-sm font-medium text-gray-700' %>
-        </div>
-        <div class="w-3/4">
-          <%= f.text_field :location, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
-        </div>
-      </div>
-
-      <div class="flex items-center">
-        <div class="w-1/4">
-          <%= f.label :status, class: 'block text-sm font-medium text-gray-700' %>
-        </div>
-        <div class="w-3/4">
-          <%= f.text_field :status, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
-        </div>
-      </div>
-
-      <div class="flex items-center">
-        <div class="w-1/4">
-          <label for="link_username" class="block text-sm font-medium text-gray-700">
-            Персональная ссылка
-          </label>
-        </div>
-          <div class="w-3/4">
-            <%= f.text_field :link_username, id: 'link_username',
-                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50', placeholder: 'Username',
-                             data: { settings_target: 'username' },
-                             pattern: '[a-zA-Z0-9-]+' %>
-          </div>
-      </div>
-      <div class="flex items-center">
-        <div class="w-1/4"></div>
-        <div class="w-3/4">
-          <% if user.link_username.present? %>
-            <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
-              https://<%= user.link_username %>.jammer.ru/
-            </p>
-          <% else %>
-            <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
-              https://username.jammer.ru/
-            </p>
-          <% end %>
-        </div>
-      </div>
-
-      <div class="flex items-center">
-        <div class="w-1/4">
-          <label for="phone_number" class="block text-sm font-medium text-gray-700">Номер телефона</label>
-        </div>
-        <div class="w-3/4">
-          <%= f.text_field :phone_number, id: 'phone_number',
-                           value: user.phone_number,
-                           autocomplete: 'tel',
-                           type: 'tel',
-                           placeholder: '+7 (___) ___-__-__',
-                           class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
-        </div>
-      </div>
-
-      <div class="flex items-center">
-        <div class="w-1/4">
-          <label for="birthday" class="block text-sm font-medium text-gray-700">День рождения</label>
-        </div>
-        <div class="w-3/4">
-          <%= f.text_field :birthday, id: 'birthday',
-                           value: user.birthday,
-                           autocomplete: 'birthday',
-                           type: 'date',
-                           class: 'block w-full rounded-md border-gray-300 bg-white/5 py-1.5 text-sm
-                            shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
-                            focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr' %>
-        </div>
-      </div>
-
-      <div class="flex items-center">
-        <div class="w-1/4">
-          <%= f.label :timezone, class: 'block text-sm font-medium text-gray-700' %>
-        </div>
-        <div class="w-3/4">
-          <%= f.select :timezone,
-                       options_for_select([ # Уберем (если что) один из вариантов: либо с UTC, либо без
-                                            ['America/Anchorage', 'America/Anchorage (UTC-09:00)'],
-                                            ['America/Caracas', 'America/Caracas (UTC-04:00)'],
-                                            ['America/Chicago', 'America/Chicago (UTC-06:00)'],
-                                            ['America/Denver', 'America/Denver (UTC-07:00)'],
-                                            ['America/Los_Angeles', 'America/Los_Angeles (UTC-08:00)'],
-                                            ['America/New_York', 'America/New_York (UTC-05:00)'],
-                                            ['America/Santiago', 'America/Santiago (UTC-04:00)'],
-                                            ['America/Sao_Paulo', 'America/Sao_Paulo (UTC-03:00)'],
-                                            ['America/St_Johns', 'America/St_Johns (UTC-03:30)'],
-                                            ['Asia/Bangkok', 'Asia/Bangkok (UTC+07:00)'],
-                                            ['Asia/Chita', 'Asia/Chita (UTC+09:00)'],
-                                            ['Asia/Dhaka', 'Asia/Dhaka (UTC+06:00)'],
-                                            ['Asia/Hong_Kong', 'Asia/Hong_Kong (UTC+08:00)'],
-                                            ['Asia/Irkutsk', 'Asia/Irkutsk (UTC+08:00)'],
-                                            ['Asia/Kabul', 'Asia/Kabul (UTC+04:30)'],
-                                            ['Asia/Kamchatka', 'Asia/Kamchatka (UTC+12:00)'],
-                                            ['Asia/Karachi', 'Asia/Karachi (UTC+05:00)'],
-                                            ['Asia/Kathmandu', 'Asia/Kathmandu (UTC+05:45)'],
-                                            ['Asia/Kolkata', 'Asia/Kolkata (UTC+05:30)'],
-                                            ['Asia/Krasnoyarsk', 'Asia/Krasnoyarsk (UTC+07:00)'],
-                                            ['Asia/Magadan', 'Asia/Magadan (UTC+11:00)'],
-                                            ['Asia/Omsk', 'Asia/Omsk (UTC+06:00)'],
-                                            ['Asia/Tbilisi', 'Asia/Tbilisi (UTC+04:00)'],
-                                            ['Asia/Tokyo', 'Asia/Tokyo (UTC+09:00)'],
-                                            ['Asia/Vladivostok', 'Asia/Vladivostok (UTC+10:00)'],
-                                            ['Asia/Yangon', 'Asia/Yangon (UTC+06:30)'],
-                                            ['Asia/Yekaterinburg', 'Asia/Yekaterinburg (UTC+05:00)'],
-                                            ['Atlantic/Azores', 'Atlantic/Azores (UTC-01:00)'],
-                                            ['Atlantic/South_Georgia', 'Atlantic/South_Georgia (UTC-02:00)'],
-                                            ['Australia/Darwin', 'Australia/Darwin (UTC+09:30)'],
-                                            ['Australia/Sydney', 'Australia/Sydney (UTC+10:00)'],
-                                            ['Europe/Berlin', 'Europe/Berlin (UTC+01:00)'],
-                                            ['Europe/Helsinki', 'Europe/Helsinki (UTC+02:00)'],
-                                            ['Europe/Kaliningrad', 'Europe/Kaliningrad (UTC+02:00)'],
-                                            ['Europe/Kiev', 'Europe/Kiev (UTC+02:00)'],
-                                            ['Europe/Minsk', 'Europe/Minsk (UTC+03:00)'],
-                                            ['Europe/Moscow', 'Europe/Moscow (UTC+03:00)'],
-                                            ['Europe/Prague', 'Europe/Prague (UTC+01:00)'],
-                                            ['Europe/Samara', 'Europe/Samara (UTC+04:00)'],
-                                            ['Europe/Ulyanovsk', 'Europe/Ulyanovsk (UTC+04:00)'],
-                                            ['Pacific/Auckland', 'Pacific/Auckland (UTC+12:00)'],
-                                            ['Pacific/Chatham', 'Pacific/Chatham (UTC+12:45)'],
-                                            ['Pacific/Honolulu', 'Pacific/Honolulu (UTC-10:00)'],
-                                            ['Pacific/Tongatapu', 'Pacific/Tongatapu (UTC+13:00)'],
-                                          ], selected: user.timezone),
-                       {},
-                       class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
-        </div>
-      </div>
-
-      <div class="flex items-center">
-        <div class="w-1/4">
-          <%= f.label :visibility, class: 'block text-sm font-medium text-gray-700' %>
-        </div>
-        <div class="w-3/4">
-          <%= f.select :visibility,
-                       options_for_select([
-                                            ['All'],
-                                            ['Friends'],
-                                            ['None']
-                                          ], selected: user.visibility),
-                       {},
-                       class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
-        </div>
-      </div>
-
-      <div class="flex items-center">
-        <div class="w-1/4">
-          <%= f.label :jams_visibility, class: 'block text-sm font-medium text-gray-700' %>
-        </div>
-        <div class="w-3/4">
-          <%= f.select :jams_visibility,
-                       options_for_select([
-                                            ['All'],
-                                            ['Friends'],
-                                            ['None']
-                                          ], selected: user.jams_visibility),
-                       {},
-                       class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
-        </div>
-      </div>
-
-      <div class="flex items-center">
-        <div class="w-1/4">
-          <%= f.label :theme, class: 'block text-sm font-medium text-gray-700' %>
-        </div>
-        <div class="w-3/4">
-          <%= f.select :theme,
-                       options_for_select([
-                                            ['Light'],
-                                            ['Dark']
-                                          ], selected: user.theme),
-                       {},
-                       class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
-        </div>
-      </div>
-    </div>
-
-    <div class="flex items-center pb-16">
-      <div class="w-1/4"></div>
-      <div class="w-3/4">
-        <div class="mt-6 flex items-center space-x-2">
-          <%= f.submit 'Сохранить', class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
-          <%= link_to 'Назад', admin_users_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
-        </div>
-      </div>
-    </div>
-  </div>
-<% end %>
-
-<div class="space-y-4 p-16">
-  <div class="flex items-center">
-    <div class="w-1/4">
-      <p class="block text-sm font-medium text-gray-700">Активные сессии пользователя</p>
-    </div>
-    <div class="w-3/4">
-      <% if @sessions.any? %>
-        <ul class="divide-y divide-gray-200">
-          <% @sessions.each do |session| %>
-            <li class="py-4 flex justify-between items-center">
-              <div>
-                <p class="text-sm font-medium text-gray-900">Session ID: <%= session.session_id %></p>
-                <p class="text-sm text-gray-500">IP Address: <%= session.ip_address %></p>
-                <p class="text-sm text-gray-500">Browser: <%= session.browser || 'Unknown' %></p>
-                <p class="text-sm text-gray-500">Created At: <%= session.created_at %></p>
-              </div>
-              <%= form_tag logout_one_session_sessions_path(user: user, session_id: session.id), method: :post do %>
-                <%= submit_tag 'Log out', class: 'mt-4 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600' %>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
-        <%= form_tag logout_all_sessions_sessions_path(user: user), method: :post do %>
-          <%= submit_tag 'Log out all', class: 'mt-4 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600' %>
-        <% end %>
-      <% else %>
-        <p class="text-sm text-gray-500">No active sessions found.</p>
       <% end %>
+    </div>
+
+    <!-- Секция с пользовательским опытом -->
+    <div data-settings-target="section" data-section="user_experience" class="hidden">
+
+    </div>
+
+    <!-- Секция с играми -->
+    <div data-settings-target="section" data-section="games" class="hidden">
+
+    </div>
+
+    <!-- Секция с джемами -->
+    <div data-settings-target="section" data-section="jams" class="hidden">
+
+    </div>
+
+    <!-- Секция с сессиями -->
+    <div data-settings-target="section" data-section="sessions" class="hidden">
+      <div class="space-y-4 p-4 md:p-16">
+        <div class="flex flex-col md:flex-row items-start">
+          <div class="w-full md:w-1/4 mb-4 md:mb-0">
+            <p class="block text-sm font-medium text-gray-700">Активные сессии</p>
+          </div>
+          <div class="w-full md:w-3/4">
+            <% if @user_sessions.any? %>
+              <ul class="divide-y divide-gray-200">
+                <% @user_sessions.each do |session| %>
+                  <li class="py-4 flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div class="mb-2 md:mb-0">
+                      <p class="text-sm font-medium text-gray-900">Session ID: <%= session.session_id %></p>
+                      <p class="text-sm text-gray-500">IP Address: <%= session.ip_address %></p>
+                      <p class="text-sm text-gray-500">Browser: <%= session.browser || 'Unknown' %></p>
+                      <p class="text-sm text-gray-500">Created At: <%= session.created_at %></p>
+                    </div>
+                    <%= form_tag logout_one_session_sessions_path(user: user, session_id: session.id), method: :post do %>
+                      <%= submit_tag 'Log out', class: 'mt-2 md:mt-0 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600' %>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+              <%= form_tag logout_all_sessions_sessions_path(user: user), method: :post do %>
+                <%= submit_tag 'Log out all', class: 'mt-4 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600' %>
+              <% end %>
+            <% else %>
+              <p class="text-sm text-gray-500">Не найдено активных сессий</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секция с уведомлениями -->
+    <div data-settings-target="section" data-section="notifications" class="hidden">
+      <div class="space-y-4 p-4 md:p-16">
+        <div class="flex flex-col md:flex-row items-start">
+          <div class="w-full md:w-1/4 mb-4 md:mb-0">
+            <p class="block text-sm font-medium text-gray-700">Уведомления</p>
+          </div>
+          <div class="w-full md:w-3/4">
+            <% if @user_notifications.any? %>
+              <% @user_notifications.order(created_at: :desc).each do |notification| %>
+                <% if notification.actor %>
+                  <div class="flex items-start px-4 py-3 border-b border-gray-200">
+                    <div class="mr-3">
+                      <a href='<%= '/users/' + notification.actor.id.to_s %>'>
+                        <% if notification.actor.avatar.attached? %>
+                          <%= image_tag url_for(notification.actor.avatar), alt: "Profile Picture",
+                                        class: "w-16 text-gray-400" %>
+                        <% else %>
+                          <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                               class="w-16 text-gray-400">
+                        <% end %>
+                      </a>
+                    </div>
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">
+                        <a href='<%= '/users/' + notification.actor.id.to_s %>'>
+                          <%= notification.actor.name %>
+                        </a>
+                        <% if notification.action == 'accepted_friendship' %>
+                          принял заявку в друзья
+                        <% elsif notification.action == 'sent_friend_request' %>
+                          отправил запрос в друзья
+                        <% else %>
+                          <%= notification.action %>
+                        <% end %>
+                      </p>
+                      <p class="text-xs text-gray-500"><%= notification.created_at.strftime("%d.%m.%Y, %H:%M")%></p>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            <% else %>
+              <p class="text-sm text-gray-500">У пользователя не было ни одного уведомления</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
