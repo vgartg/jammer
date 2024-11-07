@@ -77,6 +77,7 @@ Rails.application.routes.draw do
   get '/admin', to: 'admins#index'
   namespace :admin do
     resources :users, only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :games, only: [:index, :new, :create, :edit, :update, :destroy]
   end
 
   # Email (mailer)

@@ -3,6 +3,8 @@ class Game < ActiveRecord::Base
   has_one_attached :cover
   has_one_attached :game_file
 
+  attr_accessor :admin_edit
+
   belongs_to :author, foreign_key: 'author_id', class_name: 'User'
 
   has_and_belongs_to_many :tags
