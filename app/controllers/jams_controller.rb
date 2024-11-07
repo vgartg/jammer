@@ -46,10 +46,14 @@ class JamsController < ApplicationController
   def create
     @jam = Jam.new(jam_params.merge(author: current_user))
     @tags = Tag.all
-    if valid_date
-      render :new, status: :see_other and return
-    end
-    if  @jam.save
+    failures = invalid_date
+    if failures
+      flash[:failure] ||= []
+      failures.each do |problem|
+        flash[:failure] << problem
+      end
+      render :new, status: :see_other
+    elsif  @jam.save
       flash[:success] = 'Джем успешно создан!'
       redirect_to dashboard_path
     else
@@ -82,10 +86,14 @@ class JamsController < ApplicationController
 
   def update
     @jam = current_user.jams.find_by_id(params[:id])
-    if valid_date
-      return
-    end
-    if @jam.update(jam_params)
+    failures = invalid_date
+    if failures
+      flash[:failure] ||= []
+      failures.each do |problem|
+        flash[:failure] << problem
+      end
+      render :new, status: :see_other
+      elsif @jam.update(jam_params)
       redirect_to jam_profile_path, notice: 'Джем успешно обновлен.'
     else
       flash[:failure] = @jam.errors.full_messages
@@ -124,15 +132,17 @@ class JamsController < ApplicationController
           .permit(:name, :description, :cover, :game_file, tag_ids: [])
   end
 
-  def valid_date
-    startDate = params[:jam][:start_date]
-    deadline = params[:jam][:deadline]
-    endDate = params[:jam][:end_date]
-    startDate = Date.parse(startDate)
-    deadline = Date.parse(deadline)
-    endDate = Date.parse(endDate)
-    deadline < startDate || endDate < deadline ||
-      startDate.year < 2000 || deadline.year < 2000 || endDate.year < 2000
-  end
+  def invalid_date
+    failures = []
+    startDate = Date.parse(params[:jam][:start_date])
+    deadline = Date.parse(params[:jam][:deadline])
+    endDate = Date.parse(params[:jam][:end_date])
 
+    deadline < startDate ? failures.push("Дата сдачи работ не может быть раньше даты начала") : failures
+    endDate < deadline ? failures.push("Дата окончания джема не может быть раньше даты сдачи работ") : failures
+    startDate.year < 2000 ? failures.push("Некорректная дата начала джема") : failures
+    deadline.year < 2000 ? failures.push("Некорректная дата сдачи работ") : failures
+    endDate.year < 2000 ? failures.push("Некорректная дата окончания джема") : failures
+    failures
+  end
 end

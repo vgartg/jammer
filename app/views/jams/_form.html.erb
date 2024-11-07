@@ -1,4 +1,4 @@
-<div>
+<div data-controller="jams">
   <%= form_with(model: @jam, url: path, local: true) do |f| %>
     <div class="mt-4">
       <%= f.label :name, "Название джема", class: "block text-sm font-medium text-white" %>
@@ -33,7 +33,6 @@
                      shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                      focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
       </div>
-      <span id="start-date-valid" class="hidden text-red-500">Некорректная дата.</span>
     </div>
 
     <div class="mt-4">
@@ -47,8 +46,6 @@
                      shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                      focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
       </div>
-      <span id="deadline-valid" class="hidden text-red-500">Некорректная дата.</span>
-      <span id="deadline-tooltip" class="hidden text-red-500">Дата сдачи работ не может быть раньше даты начала.</span>
     </div>
 
     <script>
@@ -65,168 +62,55 @@
                     shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                     focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
       </div>
-      <span id="end-date-valid" class="hidden text-red-500">Некорректная дата.</span>
-      <span id="end-date-tooltip" class="hidden text-red-500">Дата окончания джема не может быть раньше даты сдачи работ.</span>
     </div>
-
-    <script>
-        document.addEventListener('turbo:render', function() {
-
-            // Change Cover Field
-            const coverInput = document.getElementById('cover-input');
-            const coverPreviewImg = document.getElementById('cover-preview-img');
-            const coverText = document.getElementById('cover-text');
-
-            coverInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-
-                if (file) {
-                    const reader = new FileReader();
-
-                    reader.onload = function(e) {
-                        coverPreviewImg.src = e.target.result;
-                    };
-
-                    reader.readAsDataURL(file);
-
-                    coverPreviewImg.classList.remove('hidden');
-
-                    if (coverText.classList.contains('mt-0')) {
-                        coverText.classList.remove('mt-0')
-                        coverText.classList.add('mt-4')
-                    }
-                }
-            });
-
-            // Change Logo Field
-            const logoInput = document.getElementById('logo-input');
-            const logoPreviewImg = document.getElementById('logo-preview-img');
-            const logoText = document.getElementById('logo-text');
-
-            logoInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-
-                if (file) {
-                    const reader = new FileReader();
-
-                    reader.onload = function(e) {
-                        logoPreviewImg.src = e.target.result;
-                    };
-
-                    reader.readAsDataURL(file);
-
-                    logoPreviewImg.classList.remove('hidden');
-
-                    if (logoText.classList.contains('mt-0')) {
-                        logoText.classList.remove('mt-0')
-                        logoText.classList.add('mt-4')
-                    }
-                }
-            });
-
-            const startDateInput = document.getElementById('start_date');
-            const deadlineInput = document.getElementById('deadline');
-            const endDateInput = document.getElementById('end_date');
-            const startDateValid = document.getElementById('start-date-valid');
-            const deadlineValid = document.getElementById('deadline-valid');
-            const deadlineTooltip = document.getElementById('deadline-tooltip');
-            const endDateValid = document.getElementById('end-date-valid');
-            const endDateTooltip = document.getElementById('end-date-tooltip');
-
-            function validateDates() {
-                const startDateValue = new Date(startDateInput.value);
-                const deadlineValue = new Date(deadlineInput.value);
-                const endDateValue = new Date(endDateInput.value);
-
-                if (deadlineValue < startDateValue){
-                    deadlineTooltip.classList.remove('hidden')
-                } else deadlineTooltip.classList.add('hidden')
-
-                if (endDateValue < deadlineValue) {
-                    endDateTooltip.classList.remove('hidden');
-                } else endDateTooltip.classList.add('hidden');
-
-                if (startDateValue.getFullYear() < 2000){
-                    startDateValid.classList.remove('hidden')
-                } else startDateValid.classList.add('hidden')
-
-                if (deadlineValue.getFullYear() < 2000){
-                    deadlineValid.classList.remove('hidden')
-                } else deadlineValid.classList.add('hidden')
-
-                if (endDateValue.getFullYear() < 2000){
-                    endDateValid.classList.remove('hidden')
-                } else endDateValid.classList.add('hidden')
-            }
-
-            startDateInput.addEventListener('change', validateDates);
-            deadlineInput.addEventListener('change', validateDates);
-            endDateInput.addEventListener('change', validateDates);
-            validateDates();
-
-            // Load Flatpickr
-            flatpickr("#start_date", {
-                dateFormat: "Y-m-d",
-            });
-            flatpickr("#deadline", {
-                dateFormat: "Y-m-d",
-            });
-            flatpickr("#end_date", {
-                dateFormat: "Y-m-d",
-            });
-        });
-    </script>
 
     <div class="mt-4">
       <%= f.label :cover, "Обложка", class: "block text-sm font-medium text-white" %>
-      <!--        <div data-controller="background-image">-->
       <div class="relative mt-2">
         <div class="text-gray-500 border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
-          <% if @jam && @jam.cover.attached? %>
-          <img data-background-image-target="coverPreviewImg" id="cover-preview-img" src="<%#= url_for(@jam.cover) %>"
-               alt="Предварительный просмотр обложки"
-               class="mt-4 w-full h-auto object-cover rounded-md">
+          <% if @jam && @jam.cover.attached? && @jam.cover.persisted? %>
+            <img data-jams-target="coverPreviewImg" id="cover-preview-img" src="<%= url_for(@jam.cover) %>"
+                 alt="Предварительный просмотр обложки"
+                 class="mt-4 w-full h-auto object-cover rounded-md">
           <% else %>
-            <img data-background-image-target="coverPreviewImg" id="cover-preview-img" src="#"
+            <img data-jams-target="coverPreviewImg" id="cover-preview-img" src="#"
                  alt="Предварительный просмотр обложки"
                  class="mt-4 hidden w-full h-auto object-cover rounded-md">
           <% end %>
           <%= f.file_field :cover, id: "cover-input",
-                           required: !@jam.persisted? ? true : false,
+                           required: !@jam.persisted?,
                            accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
-                           class: "absolute inset-0 opacity-0 cursor-pointer" %>
-          <p id="cover-text" class="<%= @jam.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
+                           class: "absolute inset-0 opacity-0 cursor-pointer",
+                           data: { action: "change->jams#updateCoverPreview" } %>
+          <p data-jams-target="coverText" id="cover-text" class="<%= @jam.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
           <p class="text-xs">(рекомендуем 1920x1080px)</p>
         </div>
       </div>
-      <!--        </div>-->
     </div>
 
     <div class="mt-4">
       <%= f.label :logo, "Логотип", class: "block text-sm font-medium text-white" %>
-      <!--        <div data-controller="background-image">-->
       <div class="relative mt-2">
         <div class="text-gray-500 border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
-          <% if @jam && @jam.cover.attached? %>
-            <img data-background-image-target="logoPreviewImg" id="logo-preview-img" src="<%#= url_for(@jam.logo) %>"
-                 alt="Предварительный просмотр обложки"
+          <% if @jam && @jam.logo.attached? && @jam.logo.persisted? %>
+            <img data-jams-target="logoPreviewImg" id="logo-preview-img" src="<%= url_for(@jam.logo) %>"
+                 alt="Предварительный просмотр логотипа"
                  class="mt-4 w-full h-auto object-cover rounded-md">
           <% else %>
-            <img data-background-image-target="logoPreviewImg" id="logo-preview-img" src="#"
-                 alt="Предварительный просмотр обложки"
+            <img data-jams-target="logoPreviewImg" id="logo-preview-img" src="#"
+                 alt="Предварительный просмотр логотипа"
                  class="mt-4 hidden w-full h-auto object-cover rounded-md">
           <% end %>
           <%= f.file_field :logo, id: "logo-input",
-                           required: !@jam.persisted? ? true : false,
+                           required: !@jam.persisted?,
                            accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
-                           class: "absolute inset-0 opacity-0 cursor-pointer" %>
-          <p id="logo-text" class="<%= @jam.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
+                           class: "absolute inset-0 opacity-0 cursor-pointer",
+                           data: { action: "change->jams#updateLogoPreview" } %>
+          <p data-jams-target="logoText" id="logo-text" class="<%= @jam.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
           <p class="text-xs">(рекомендуем 1920x1080px)</p>
         </div>
       </div>
-      <!--        </div>-->
     </div>
-
 
     <%= submit_tag (@jam.persisted? ? 'Изменить джем' : 'Создать джем'), class: "mt-4 flex w-full justify-center rounded-md border
                      border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
