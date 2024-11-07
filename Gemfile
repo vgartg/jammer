@@ -56,7 +56,6 @@ gem 'rest-client'
 gem 'letter_opener', group: :development
 gem 'letter_opener_web', group: :development
 gem 'mail'
-gem 'openssl'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
