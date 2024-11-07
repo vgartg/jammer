@@ -42,7 +42,7 @@ module Admin
 
     def update
       if @user.update(user_params)
-        flash[:success] = 'Готово'
+        flash[:success] = 'Пользователь успешно обновлен'
       else
         flash[:failure] = @user.errors.full_messages
       end
@@ -51,7 +51,7 @@ module Admin
 
     def destroy
       @user.destroy
-      flash[:success] = 'Готово'
+      flash[:success] = 'Пользователь успешно удален'
       redirect_to admin_users_path
     end
 

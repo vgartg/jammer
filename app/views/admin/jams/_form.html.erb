@@ -1,0 +1,140 @@
+<div class="p-6" data-controller="settings">
+  <div class="mt-4">
+    <%= link_to 'Назад', admin_jams_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
+  </div>
+
+  <div>
+    <div>
+      <%= form_with model: [:admin, jam] do |f| %>
+        <div class="space-y-4 p-16">
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :name, class: 'block text-sm font-medium text-gray-700' %>
+            </div>
+            <div class="w-3/4">
+              <%= f.text_field :name, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+            </div>
+          </div>
+
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :description, class: 'block text-sm font-medium text-gray-700' %>
+            </div>
+            <div class="w-3/4">
+              <%= f.text_field :description, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+            </div>
+          </div>
+
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :start_date, "Дата начала", class: "block text-sm font-medium text-gray-700" %>
+            </div>
+            <div class="w-3/4">
+              <%= f.date_field :start_date, required: true,
+                               class: "block w-full appearance-none rounded-md border border-gray-300
+                                  px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
+                                  focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+            </div>
+          </div>
+
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :deadline, "Дедлайн сдачи работ", class: "block text-sm font-medium text-gray-700" %>
+            </div>
+            <div class="w-3/4">
+              <%= f.date_field :deadline, required: true,
+                               class: "block w-full appearance-none rounded-md border border-gray-300
+                                  px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
+                                  focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+            </div>
+          </div>
+
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :end_date, "Дата окончания джема", class: "block text-sm font-medium text-gray-700" %>
+            </div>
+            <div class="w-3/4">
+              <%= f.date_field :end_date, required: true,
+                               class: "block w-full appearance-none rounded-md border border-gray-300
+                                  px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
+                                  focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+            </div>
+          </div>
+
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :cover, "Обложка", class: "block text-sm font-medium text-gray-700" %>
+            </div>
+            <div class="w-3/4">
+              <label class="block text-sm font-medium text-gray-700 mb-2" for="game_cover">
+                Обложка
+              </label>
+              <%= f.file_field :cover, class: "mt-1 block w-full text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:bg-gray-100 file:text-sm file:font-medium hover:file:bg-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" %>
+
+              <% if @jam && @jam.cover.attached? %>
+                <div class="mt-4">
+                  <%= image_tag url_for(@jam.cover), alt: @jam.name,
+                                class: "max-h-56 rounded-md bg-gray-200 object-cover object-center group-hover:opacity-75" %>
+                </div>
+              <% else %>
+                <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80 mt-4">
+                  <img src="https://via.placeholder.com/300" alt="<%= @jam.name %>"
+                       class="max-h-xs object-cover object-center">
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :logo, "Логотип", class: "block text-sm font-medium text-gray-700" %>
+            </div>
+            <div class="w-3/4">
+              <label class="block text-sm font-medium text-gray-700 mb-2" for="game_cover">
+                Логотип
+              </label>
+              <%= f.file_field :logo, class: "mt-1 block w-full text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:bg-gray-100 file:text-sm file:font-medium hover:file:bg-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" %>
+
+              <% if @jam && @jam.logo.attached? %>
+                <div class="mt-4">
+                  <%= image_tag url_for(@jam.logo), alt: @jam.name,
+                                class: "max-h-56 rounded-md bg-gray-200 object-cover object-center group-hover:opacity-75" %>
+                </div>
+              <% else %>
+                <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80 mt-4">
+                  <img src="https://via.placeholder.com/300" alt="<%= @jam.name %>"
+                       class="max-h-xs object-cover object-center">
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="flex items-center">
+            <div class="w-1/4">
+              <%= f.label :tags, "Теги", class: "block text-sm font-medium text-gray-700" %>
+            </div>
+            <div class="w-3/4">
+              <div class="mt-1">
+                <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>
+                  <div class="flex items-center">
+                    <%= b.check_box(class: "mr-2") %>
+                    <%= b.label(class: "text-sm font-medium text-gray-700") %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center pb-16">
+            <div class="w-1/4"></div>
+            <div class="w-3/4">
+              <div class="mt-6 flex items-center space-x-2">
+                <%= f.submit 'Сохранить', class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
