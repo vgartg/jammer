@@ -1,4 +1,4 @@
-<div class="bg-white">
+<div id="page" class="bg-white">
   <div class="pb-16 pt-6 sm:pb-24">
     <div class="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
       <div class="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
@@ -130,7 +130,6 @@
             </div>
           </div>
 
-
           <% if @game.author.present? && session[:current_user] == @game.author.id %>
             <div>
               <%= button_to t('.edit'), game_edit_path(@game), method: :get,
@@ -140,9 +139,9 @@
                                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
               <%= button_to t('.delete'), game_destroy_path(@game), method: :delete,
                             class: "mt-4 flex w-50 justify-center rounded-md border
-                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                              shadow-sm hover:bg-indigo-700 focus:outline-none
-                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+                              border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white
+                              shadow-sm hover:bg-red-700 focus:outline-none
+                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"%>
           <% end %>
           </div>
         </div>

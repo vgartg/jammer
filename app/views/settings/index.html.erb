@@ -63,16 +63,14 @@
           <div class="field col-span-full">
             <label for="background_image" class="block text-sm font-medium text-white"><%= t '.account.image.background_image' %></label>
             <div data-controller="background-image">
-              <div class="relative">
-                <div class="border-dashed border-2 border-gray-300 p-6 text-center rounded-md relative">
+              <div class="relative mt-2">
+                <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
                   <% if @user.background_image.attached? %>
                     <img data-background-image-target="currentBackgroundImg"
                          id="current-background-img" src="<%= url_for(@user.background_image) %>"
                          alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md"/>
                   <% end %>
-                  <img data-background-image-target="previewImg" id="preview-img" src="#"
-                       alt="Предварительный просмотр изображения"
-                       class="mt-4 hidden w-full h-auto object-cover rounded-md">
+<!--                  <img data-background-image-target="previewImg" id="preview-img" src="#" alt="Предварительный просмотр изображения" class="mt-4 hidden w-full h-auto object-cover rounded-md">-->
                   <input data-background-image-target="input" type="file" name="user[background_image]"
                          id="background_image"
                          class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">

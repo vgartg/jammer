@@ -26,16 +26,16 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+
     if @user.save
-      session[:current_user] = @user.id
-      browser_string = request.user_agent
-      browser = UserAgent.parse(browser_string).browser
-      Session.create_session(@user.id, session[:session_id], request.remote_ip, browser: browser)
-      @user.update(last_seen_at: Time.zone.now)
-      redirect_to dashboard_path
+      @token = @user.set_email_confirm_token
+      EmailConfirmMailer.with(user: @user, token: @token).email_confirm.deliver_later
+      flash[:success] = 'Инструкции были отправлены на ваш адрес'
+      redirect_to edit_email_confirm_url(user: { email_confirm_token: @user.email_confirm_token,
+                                                 email: @user.email }).gsub('&amp;', '&')
     else
       flash[:failure] = @user.errors.full_messages
-      render :new, status: :see_other
+      redirect_to register_path
     end
   end
 

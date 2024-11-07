@@ -1,5 +1,10 @@
 class User < ActiveRecord::Base
-  attr_accessor :remember_token
+  include Recoverable
+  include Rememberable
+  include Confirmable
+
+  has_secure_token :password_reset_token
+  has_secure_token :email_confirm_token
 
   VISIBILITY_ALL = 'All'
   VISIBILITY_FRIENDS = 'Friends'
@@ -23,6 +28,8 @@ class User < ActiveRecord::Base
   has_many :jams, foreign_key: "author_id", dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships, dependent: :destroy
+
+  has_many :jam_submissions
 
   has_many :inverse_friendships, class_name: "Friendship", foreign_key: "friend_id", dependent: :destroy
   has_many :inverse_friends, through: :inverse_friendships, source: :user, dependent: :destroy
@@ -88,26 +95,6 @@ class User < ActiveRecord::Base
     last_active_at.present? && last_active_at > 1.minutes.ago
   end
 
-  def remember_me
-    self.remember_token = SecureRandom.urlsafe_base64
-    update_column(:remember_token_digest, digest(remember_token))
-  end
-
-  def forget_me
-    update_column(:remember_token_digest, nil)
-    self.remember_token = nil
-  end
-
-  def digest(string)
-    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
-    BCrypt::Password.create(string, cost: cost)
-  end
-
-  def remember_token_authenticated?(remember_token)
-    return false unless remember_token_digest.present?
-    BCrypt::Password.new(remember_token_digest).is_password?(remember_token)
-  end
-
   def invalidate_other_sessions(current_session_id)
     sessions.where.not(session_id: current_session_id).destroy_all
     update(last_active_at: Time.current)
@@ -141,5 +128,14 @@ class User < ActiveRecord::Base
     when VISIBILITY_NONE
       return false
     end
+  end
+
+  def authenticate_password_reset_token(token)
+    digest(self.password_reset_token) == token
+  end
+
+  def authenticate_email_confirm_token(token)
+    return false unless email_confirm_token.present?
+    BCrypt::Password.new(email_confirm_token).is_password?(token)
   end
 end

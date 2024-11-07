@@ -71,4 +71,52 @@ Rails.application.routes.draw do
 
     get '/settings', to: 'settings#index'
   end
+  get '/requests', to: 'friendships#requests'
+
+  # Sessions
+  resources :sessions do
+    post 'logout_other_sessions', on: :collection
+  end
+
+  # Games
+  get '/games/new', to: 'games#new'
+  post '/games', to: 'games#create'
+  get '/games/:id/edit', to: 'games#edit', as: 'game_edit'
+  patch '/games/:id', to: 'games#update', as: 'game_update'
+  delete '/games/:id', to: 'games#destroy', as: 'game_destroy'
+  get '/games/:id', to: "games#show", as: 'game_profile'
+  get '/games_showcase', to: 'games#showcase'
+  post '/games/:id/submit', to: 'games#submit', as: 'submit'
+
+  # Jams
+  get '/jams/new', to: 'jams#new'
+  post '/jams', to: 'jams#create'
+  get '/jams/:id/edit', to: 'jams#edit', as: 'jam_edit'
+  patch '/jams/:id', to: 'jams#update', as: 'jam_update'
+  delete '/jams/:id', to: 'jams#destroy', as: 'jam_destroy'
+  get '/jams/:id', to: "jams#show", as: 'jam_profile'
+  get '/jams_showcase', to: 'jams#showcase'
+  get '/jams/:id/submit_game', to: 'jams#submit_game', as: 'game_submission'
+  post '/jams/:id/submit_game', to: 'jams#create_submission'
+  get '/jams/:id/show_projects', to: 'jams#show_projects', as: 'jam_show_projects'
+  get '/jams/:id/show_participants', to: 'jams#show_participants', as: 'jam_show_participants'
+
+  resources :jams do
+    member do
+      post 'participate'
+      patch 'delete_project'
+    end
+  end
+
+  resources :notifications, only: [:index, :show] do
+    delete 'destroy_all_notifications', on: :collection
+  end
+  patch '/notifications/mark_as_read', to: 'notifications#mark_as_read'
+
+  get '/notifications', to: 'notifications#index'
+
+  get '/settings', to: 'settings#index'
+
+  resource :password_reset, only: [:new, :create, :edit, :update]
+  resource :email_confirm, only: [:new, :create, :edit, :update]
 end

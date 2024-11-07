@@ -3,6 +3,7 @@ class GamesController < ApplicationController
 
   def new
     @notifications = current_user.notifications
+    @game = Game.new
   end
 
   def showcase
@@ -42,6 +43,18 @@ class GamesController < ApplicationController
     end
   end
 
+  def submit
+    # Check if the submission already exists
+    #existing_submission = JamSubmission.find_by(game_id: params[:game_id], jam_id: params[:jam_id])
+
+    #unless existing_submission
+    #  @submission = JamSubmission.create(submission_params)
+    #end
+    submission = JamSubmission.where(jam_id: params[:jam_id]).find_by(user_id: current_user.id)
+    submission.update(game_id: params[:game_id])
+    redirect_to
+  end
+
   def create
     @game = Game.new(game_params.merge(author: current_user))
     @tags = Tag.all
@@ -58,8 +71,8 @@ class GamesController < ApplicationController
   end
 
   def edit
-    @game = current_user.games.find_by_id(params[:id])
     @tags = Tag.all
+    @game = Game.find(params[:id])
   end
 
   def update
@@ -88,6 +101,11 @@ class GamesController < ApplicationController
   def game_params
     params.require(:game)
           .permit(:name, :description, :cover, :game_file, tag_ids: [])
+  end
+
+  def submission_params
+    params
+      .permit(:game_id, :jam_id, :user_id)
   end
 
   def should_search?

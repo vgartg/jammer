@@ -1,0 +1,90 @@
+<div class="fixed inset-0 flex items-center justify-center bg-gray-950 bg-opacity-60">
+  <div id="modalContent" class="bg-white relative rounded-lg shadow-lg p-6 w-full h-max sm:w-1/2">
+    <h2 id="modalTitle" class="text-lg font-medium text-gray-900">Выберите</h2>
+    <p id="modalDescription" hidden class="mt-2 text-sm text-gray-600">This is a modal dialog. You can put any content here.</p>
+    <script>
+        function alternateShown(id1, id2) {
+            document.getElementById(id1).style.display = "none";
+
+            document.getElementById(id2).style.display = "";
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                document.getElementById('favDialog').focus()
+            }
+        });
+
+        function toggleWidth() {
+            let modal = document.getElementById("modalContent");
+            modal.classList.toggle("sm:w-1/2");
+            modal.classList.toggle("sm:w-3/4");
+        }
+
+        function closeModal() {
+            document.getElementById('favDialog').close()
+        }
+
+        function alternateContent() {
+            title = document.getElementById("modalTitle");
+            description = document.getElementById("modalDescription");
+
+            if (title.innerText === "Выберите") {
+                title.innerText = "Ваши игры";
+                description.innerText = "Выберите одну из ваших игр:";
+            }
+            else {
+                title.innerText = "Выберите";
+                description.innerText = "This is a modal dialog. You can put any content here.";
+            }
+            description.toggleAttribute('hidden')
+        }
+    </script>
+    <div id='buttons' class="mt-4 flex flex-col items-center lg:flex-row lg:justify-center space-x-0 lg:space-x-3 lg:space-y-0 space-y-3">
+      <div class="min-w-max w-full md:w-2/3">
+        <%= button_to "Добавить новую игру", game_submission_path(@jam), method: :get,
+                      class: "w-full h-20 sm:h-14 lg:h-10 sm:h-14 lg:h-10 rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm
+                 font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+      </div>
+      <div class="min-w-max w-full md:w-2/3">
+        <button id="button2" onclick="alternateShown('buttons', 'games'); toggleWidth(); alternateContent()"
+                class="w-full h-20 sm:h-14 lg:h-10 rounded-md border border-transparent bg-gray-300 py-2 px-4 text-sm
+                font-medium text-black shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+          Добавить существующую
+        </button>
+      </div>
+    </div>
+    <div tabindex="0" id="close_button" autofocus class="absolute top-4 right-4">
+      <button onclick="alternateShown('games', 'buttons'); closeModal(); toggleWidth(); alternateContent()">
+        <img src="/exit.svg" alt="Exit Icon" height="24" width="24"/>
+      </button>
+    </div>
+    <div id='games' style="display: none;" class="overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 pr-4 sm:pb-8 my-4 gap-y-12 sm:gap-x-4 max-h-[75vh]">
+      <% @current_user.games.each do |game| %>
+        <% if @game.present? ? !game.id.equal?(@game.id): true %>
+          <div class="group relative">
+            <% if game && game.cover.attached? %>
+              <%= image_tag url_for(game.cover), alt: game.name, class: "rounded-md bg-gray-200 w-full h-full object-cover object-center group-hover:opacity-75" %>
+            <% else %>
+              <img src="https://via.placeholder.com/300" alt="<%= game.name %>" class="rounded-md bg-gray-200 w-full h-full object-cover object-center group-hover:opacity-75">
+            <% end %>
+            <div class="mt-2">
+              <h3 class="text-sm text-gray-700 truncate line-clamp-2">
+                <%= form_with url: submit_path(game), method: :post, local: true do |form| %>
+                  <%= form.hidden_field :game_id, value: game.id %>
+                  <%= form.hidden_field :jam_id, value: @jam.id %>
+                  <%= form.hidden_field :user_id, value: @current_user.id %>
+                  <button type="submit" class="text-left w-full">
+                    <span aria-hidden="true" class="absolute inset-0"></span>
+                    <%= game.name %>
+                  </button>
+                <% end %>
+              </h3>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

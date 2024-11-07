@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_13_185805) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_01_210455) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -45,7 +45,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_13_185805) do
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "friend_id", null: false
-    t.string "status", default: "pending", null: false
+    t.string "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -68,6 +68,14 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_13_185805) do
     t.index ["tag_id"], name: "index_games_tags_on_tag_id"
   end
 
+  create_table "jam_submissions", force: :cascade do |t|
+    t.integer "jam_id"
+    t.integer "game_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+  end
+
   create_table "jams", force: :cascade do |t|
     t.string "name"
     t.integer "author_id"
@@ -79,6 +87,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_13_185805) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
+    t.integer "games", default: [], array: true
+    t.integer "participants", default: [], array: true
+    t.boolean "users_can_votes", default: false
     t.index ["author_id"], name: "index_jams_on_author_id"
     t.index ["name"], name: "index_jams_on_name"
   end
@@ -139,8 +150,17 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_13_185805) do
     t.string "background_image"
     t.string "theme", default: "Light"
     t.string "jams_visibility", default: "All"
+    t.string "auth_via"
+    t.string "social_id"
+    t.string "password_reset_token"
+    t.datetime "password_reset_token_sent_at"
+    t.string "email_confirm_token"
+    t.datetime "email_confirm_token_sent_at"
+    t.boolean "email_confirmed", default: false
+    t.integer "role", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
+    t.index ["role"], name: "index_users_on_role"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

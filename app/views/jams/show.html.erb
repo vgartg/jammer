@@ -55,17 +55,89 @@
           </div>
           <% if @jam.author.present? && session[:current_user] == @jam.author.id %>
             <div>
-              <%= button_to t('.edit'), jam_edit_path(@jam), method: :get,
+              <%= button_to "Список проектов", jam_show_projects_path(@jam), method: :get,
+                            class: "mt-4 flex w-50 justify-center rounded-md border
+                                    border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                                    shadow-sm hover:bg-indigo-700 focus:outline-none
+                                     focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+              <%= button_to "Список участников", jam_show_participants_path(@jam), method: :get,
+                            class: "mt-4 flex w-50 justify-center rounded-md borders
+                                    border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                                    shadow-sm hover:bg-indigo-700 focus:outline-none
+                                     focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+              <%= button_to "Редактировать джем", jam_edit_path(@jam), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md border
                               border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                               shadow-sm hover:bg-indigo-700 focus:outline-none
                                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
               <%= button_to t('.delete'), jam_destroy_path(@jam), method: :delete,
                             class: "mt-4 flex w-50 justify-center rounded-md border
-                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                              shadow-sm hover:bg-indigo-700 focus:outline-none
-                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-          <% end %>
+                              border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white
+                              shadow-sm hover:bg-red-700 focus:outline-none
+                               focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
+          <%else %>
+            <% if @jsb.present? %>
+              <%= button_to "Список проектов", jam_show_projects_path(@jam), method: :get,
+                            class: "mt-4 flex w-50 justify-center rounded-md border
+                                    border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                                    shadow-sm hover:bg-indigo-700 focus:outline-none
+                                     focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+              <%= button_to "Список участников", jam_show_participants_path(@jam), method: :get,
+                            class: "mt-4 flex w-50 justify-center rounded-md borders
+                                    border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                                    shadow-sm hover:bg-indigo-700 focus:outline-none
+                                     focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+              <script>
+                  function showWindow(doc, part_id) {
+                      doc.getElementById(part_id).showModal();
+                      doc.getElementById('modalContent').focus();
+                  }
+
+                  // document.getElementById('favDialog').addEventListener('close', function() {
+                  //     console.log('Dialog has been closed');
+                  // })
+
+
+                  // Close Modal on Page Unload
+                  document.addEventListener('turbo:visit', function() {
+                      document.getElementById('favDialog').close();
+                      // Optionally, you can also add a confirmation dialog if needed
+                      // event.preventDefault();
+                      // event.returnValue = '';  // Required for Chrome to show the confirmation dialog
+                  });
+              </script>
+              <dialog id="favDialog">
+                <%= render partial: 'jams/modal_content' %>
+              </dialog>
+              <%unless @jsb.game_id.present?%>
+                  <button type="button" id="addGame" class="mt-4 flex w-50 justify-center rounded-md border
+                border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                shadow-sm hover:bg-indigo-700 focus:outline-none
+                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" onclick="showWindow(document, 'favDialog')">Добавить игру</button>
+              <%else %>
+                <%= button_to "Редактироват игру", game_edit_path(@game), method: :get,
+                              class: "mt-4 flex w-50 justify-center rounded-md border
+                                  border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                                  shadow-sm hover:bg-indigo-700 focus:outline-none
+                                   focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+                <button type="button" id="addGame" class="mt-4 flex w-50 justify-center rounded-md border
+                  border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                  shadow-sm hover:bg-indigo-700 focus:outline-none
+                  focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" onclick="showWindow(document, 'favDialog')">Заменить игру</button>
+                <%= button_to "Удалить игру", delete_project_jam_path(@jam), method: :patch,
+                              class: "mt-4 flex w-50 justify-center rounded-md border
+                                  border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white
+                                  shadow-sm hover:bg-red-700 focus:outline-none
+                                   focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
+              <% end %>
+            <% else %>
+                <%= button_to "Участвовать", participate_jam_path(@jam), method: :post,
+                              class: "mt-4 flex w-50 justify-center rounded-md border
+                                  border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                                  shadow-sm hover:bg-indigo-700 focus:outline-none
+                                   focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+              <% end %>
+            <% end %>
           </div>
         </div>
       </div>
