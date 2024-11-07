@@ -51,7 +51,8 @@
 
     <div class="mt-6">
       <% if @games.present? %>
-      <%= render partial: 'showcase_grid', locals: { games: @games } %>
+        <%= render partial: 'showcase_grid', locals: { games: @games } %>
+        <%= render partial: 'helpers/pagy' %>
       <% else %>
         <div class="flex justify-between items-center">
           <h2 class="text-1xl font-bold tracking-tight text-gray-600">По текущему запросу ничего не найдено</h2>

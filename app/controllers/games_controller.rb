@@ -14,10 +14,11 @@ class GamesController < ApplicationController
 
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
-      @games = Game.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
+      games = Game.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
                           lower_case_search, lower_case_search)
+      @pagy, @games = pagy(games, limit: 12)
     else
-      @games = Game.all
+      @pagy, @games = pagy(Game.all, limit: 12)
     end
 
     if params[:tag_ids].present?

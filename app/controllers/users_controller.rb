@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.all
+    @pagy, @users = pagy(User.all, limit: 16)
     if current_user
       @notifications = current_user.notifications
     end

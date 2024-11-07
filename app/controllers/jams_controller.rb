@@ -14,10 +14,11 @@ class JamsController < ApplicationController
 
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
-      @jams = Jam.where("LOWER(jams.name) LIKE ? OR LOWER(jams.description) LIKE ?",
+      jams = Jam.where("LOWER(jams.name) LIKE ? OR LOWER(jams.description) LIKE ?",
                         lower_case_search, lower_case_search)
+      @pagy, @jams = pagy(jams, limit: 12)
     else
-      @jams = Jam.all
+      @pagy, @jams = pagy(Jam.all, limit: 12)
     end
 
     if params[:tag_ids].present?

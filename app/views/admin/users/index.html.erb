@@ -50,19 +50,7 @@
         </tbody>
       </table>
     </div>
-    <div class="p-4 mt-4 flex justify-center pagy-nav select-none">
-      <%== pagy_nav(@pagy)
-           .gsub('<a', '<a class="px-3 py-1 mx-1 text-blue-500 bg-gray-100 border border-gray-300 rounded-lg hover:bg-blue-500 hover:text-white [aria-disabled=\'true\']:opacity-70 [aria-disabled=\'true\']:cursor-not-allowed [aria-disabled=\'true\']:focus:outline-none"')
-           .gsub('class="page active"', 'class="bg-blue-500 text-white border-blue-500"')
-           .gsub('class="disabled"', 'class="text-gray-400 bg-gray-200 border-gray-300 cursor-not-allowed [aria-disabled=\'true\']:opacity-70 [aria-disabled=\'true\']:cursor-not-allowed [aria-disabled=\'true\']:focus:outline-none"')
-      %>
-    </div>
-
-    <style>
-        [aria-disabled="true"] {
-            opacity: 0.6;
-        }
-    </style>
+    <%= render partial: 'helpers/pagy' %>
   <% else %>
     <p class="text-gray-500 mt-4">Пользователи не найдены по запросу "<%= params[:query] %>".</p>
   <% end %>

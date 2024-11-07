@@ -45,5 +45,8 @@
         </div>
       <% end %>
     </div>
+    <% if @jams.count > 0 %>
+      <%= render partial: 'helpers/pagy' %>
+    <% end %>
   </div>
 </div>
