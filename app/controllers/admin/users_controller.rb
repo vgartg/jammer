@@ -2,6 +2,7 @@ module Admin
   class UsersController < ApplicationController
     before_action :admin?
     before_action :set_user!, only: %i[edit update destroy]
+    helper_method :find_user_friend
 
     def index
       users = search_users(User.all)
@@ -33,8 +34,15 @@ module Admin
 
     def edit
       @user = User.find(params[:id])
-      @user_sessions = @user.sessions.order(created_at: :desc)
-      @user_notifications = @user.notifications
+
+      if @user
+        @user_sessions = @user.sessions.order(created_at: :desc)
+        @user_notifications = @user.notifications
+        @user_friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
+        @user_sent_requests = @user.friendships.where(status: 'pending')
+        @user_received_requests = @user.inverse_friendships.where(status: 'pending')
+      end
+
       if current_user
         @notifications = current_user.notifications
       end
@@ -81,6 +89,12 @@ module Admin
         end
       else
         users
+      end
+    end
+
+    def find_user_friend(user_friendship, user)
+      if user_friendship.friend
+        user_friendship.friend.id != user.id ? user_friendship.friend : user_friendship.user
       end
     end
 
