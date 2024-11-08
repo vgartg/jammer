@@ -65,11 +65,16 @@ en:
       download: "Download archive (.zip, .rar, .7z)"
       edit: "Edit game"
       delete: "Delete game"
+    form:
+      hint_file: "Drag a file here or click to select a file"
+      hint_image: "Drag an image here or click to select a file"
+      recommendation_file: "(.zip, .rar, .7z, max size of the file is 100MB)"
+      recommendation_image: "(recommend 1920х1080 px)"
     new:
       name: "Name"
       desc: "Description"
       image: "Image"
-      file: "Game file (.zip, .rar, .7z). Max 100MB"
+      file: "Game file"
       tags: "Tags"
       btn: "Create game"
     edit:
@@ -87,11 +92,14 @@ en:
       title: "Friends"
       empty: "No friends yet"
       btn: "Remove friend"
+      offline: "Offline"
     requests:
       sent: "Sent applications"
       income: "Incoming applications"
       sent_empt: "No outgoing requests yet"
       inc_empt: "No incoming requests yet"
+      cancel: "Cancel"
+      accept: "Accept"
   jams:
     create:
       failure: "Jam with that name already exists."
@@ -99,15 +107,21 @@ en:
     destroy:
       success: "Jam has been deleted successfully."
       failure: "Something went wrong!"
+    form:
+      recommendation: "Drag an image here or click to select a file"
+      hint: "(recommend 1920х1080 px)"
     showcase:
       title: "Jams catalogue"
       btn: "Create jam"
       empty: "There are not jams yet"
+      search_placeholder: "Search by jam name or description"
     show:
       description: "Description"
       author: "Author"
       edit: "Edit jam"
       delete: "Delete jam"
+      projects_list: "Projects list"
+      participants: "Participants"
     new:
       name: "Jam name"
       desc: "Description"
@@ -224,6 +238,7 @@ en:
           title: "Delete account"
           hint: "No longer want to use our service? You can delete your account here. This action is not reversible. All information related to this account will be deleted permanently."
           btn: "Delete account"
+          confirm: "Enter your password to delete account:"
   sessions:
     create:
       failure: "Invalid email or password"

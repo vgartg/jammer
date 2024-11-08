@@ -1,7 +1,7 @@
 <div>
   <%= form_for @game, url: path do |f| %>
     <div class="mt-4">
-      <%= f.label :name, "Название игры", class: "block text-sm font-medium text-white" %>
+      <%= f.label :name, t('games.new.name'), class: "block text-sm font-medium text-white" %>
       <div class="mt-2">
         <%= f.text_field :name,
                          required: true,
@@ -12,7 +12,7 @@
     </div>
 
     <div class="mt-4">
-      <%= f.label :description, "Описание", class: "block text-sm font-medium text-white" %>
+      <%= f.label :description, t('games.new.desc'), class: "block text-sm font-medium text-white" %>
       <div class="mt-2">
         <%= f.text_field :description,
                          required: true,
@@ -23,19 +23,19 @@
     </div>
 
     <script>
-        document.addEventListener('turbo:load', function() {
+        document.addEventListener('turbo:load', function () {
             // Change Cover Input
             const coverInput = document.getElementById('cover-input');
             const coverPreviewImg = document.getElementById('cover-preview-img');
             const coverText = document.getElementById('cover-text');
 
-            coverInput.addEventListener('change', function(event) {
+            coverInput.addEventListener('change', function (event) {
                 const file = event.target.files[0];
 
                 if (file) {
                     const reader = new FileReader();
 
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         coverPreviewImg.src = e.target.result;
                     };
 
@@ -55,7 +55,7 @@
             const fileNameDisplay = document.getElementById('file-name');
             const fileText = document.getElementById('file-text');
 
-            gameFileInput.addEventListener('change', function(event) {
+            gameFileInput.addEventListener('change', function (event) {
                 const file = event.target.files[0];
 
                 if (file) {
@@ -74,49 +74,59 @@
 
 
     <div class="mt-4">
-      <%= f.label :avatar, "Обложка", class: "block text-sm font-medium text-white" %>
-<!--      <div data-controller="background-image">-->
-        <div class="relative mt-2">
-          <div class="text-gray-500  border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
-            <% if @game && @game.cover.attached? %>
-              <img data-background-image-target="coverPreviewImg" id="cover-preview-img" src="<%= url_for(@game.cover) %>"
-                   alt="Предварительный просмотр обложки"
-                   class="mt-4 w-full h-auto object-cover rounded-md">
-            <% else %>
-              <img data-background-image-target="coverPreviewImg" id="cover-preview-img" src="#"
-                   alt="Предварительный просмотр обложки"
-                   class="mt-4 hidden w-full h-auto object-cover rounded-md">
-            <% end %>
-            <%= f.file_field :cover, id: "cover-input",
-                             required: !@game.persisted? ? true : false,
-                             accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
-                             class: "absolute inset-0 opacity-0 cursor-pointer" %>
-            <p id="cover-text" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
-            <p class="text-xs">(рекомендуем 1920x1080px)</p>
-          </div>
+      <%= f.label :avatar, t('games.new.image'), class: "block text-sm font-medium text-white" %>
+      <!--      <div data-controller="background-image">-->
+      <div class="relative mt-2">
+        <div class="text-gray-500  border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
+          <% if @game && @game.cover.attached? %>
+            <img data-background-image-target="coverPreviewImg" id="cover-preview-img" src="<%= url_for(@game.cover) %>"
+                 alt="Предварительный просмотр обложки"
+                 class="mt-4 w-full h-auto object-cover rounded-md">
+          <% else %>
+            <img data-background-image-target="coverPreviewImg" id="cover-preview-img" src="#"
+                 alt="Предварительный просмотр обложки"
+                 class="mt-4 hidden w-full h-auto object-cover rounded-md">
+          <% end %>
+          <%= f.file_field :cover, id: "cover-input",
+                           required: !@game.persisted? ? true : false,
+                           accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
+                           class: "absolute inset-0 opacity-0 cursor-pointer" %>
+          <p id="cover-text" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">
+            <%= t '.hint_image' %>
+          </p>
+          <p class="text-xs">
+            <%= t '.recommendation_image' %>
+          </p>
         </div>
-<!--      </div>-->
+      </div>
+      <!--      </div>-->
     </div>
 
     <div class="mt-4">
-      <%= f.label :game_file, "Файл игры", class: "block text-sm font-medium text-white" %>
-<!--      <div data-controller="background-image">-->
-        <div class="relative mt-2 text-gray-500">
-          <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
-            <% if @game && @game.game_file.attached? %>
-              <p data-background-image-target="filePreview" id="file-preview" class="text-white"><span id="file-name"><%= @game.game_file.filename %></span></p>
-            <% else %>
-              <p data-background-image-target="filePreview" id="file-preview" class="text-white"><span id="file-name"></span></p>
-            <% end %>
-            <%= f.file_field :game_file, id: "game-file-input",
-                             required: !@game.persisted? ? true : false,
-                             accept: ".zip,.rar,.7z",
-                             class: "absolute inset-0 opacity-0 cursor-pointer" %>
-            <p id="file-text" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда файл или нажмите, чтобы выбрать файл</p>
-            <p class="text-xs ">(.zip, .rar, .7z, размер до 100 MB)</p>
-          </div>
+      <%= f.label :game_file, t('games.new.file'), class: "block text-sm font-medium text-white" %>
+      <!--      <div data-controller="background-image">-->
+      <div class="relative mt-2 text-gray-500">
+        <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
+          <% if @game && @game.game_file.attached? %>
+            <p data-background-image-target="filePreview" id="file-preview" class="text-white">
+              <span id="file-name"><%= @game.game_file.filename %></span></p>
+          <% else %>
+            <p data-background-image-target="filePreview" id="file-preview" class="text-white">
+              <span id="file-name"></span></p>
+          <% end %>
+          <%= f.file_field :game_file, id: "game-file-input",
+                           required: !@game.persisted? ? true : false,
+                           accept: ".zip,.rar,.7z",
+                           class: "absolute inset-0 opacity-0 cursor-pointer" %>
+          <p id="file-text" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">
+            <%= t '.hint_file' %>
+          </p>
+          <p class="text-xs ">
+            <%= t '.recommendation_file' %>
+          </p>
         </div>
-<!--      </div>-->
+      </div>
+      <!--      </div>-->
     </div>
 
     <div class="mt-4">
@@ -131,7 +141,7 @@
       </div>
     </div>
 
-    <%= f.submit (@game.persisted? ? 'Редактировать игру' : 'Создать игру'), class: "mt-4 flex w-full justify-center rounded-md border
+    <%= f.submit (@game.persisted? ? t('games.show.edit') : t('games.new.btn')), class: "mt-4 flex w-full justify-center rounded-md border
        border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
         hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2", data: { turbo_submits_with: "Создаем...", turbo_track: "dynamic" } %>
 
