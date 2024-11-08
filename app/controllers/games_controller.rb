@@ -59,14 +59,17 @@ class GamesController < ApplicationController
     @game = Game.new(game_params.merge(author: current_user))
     @tags = Tag.all
     if @game.save
-      flash[:success] = "Игра успешно создана!"
+      flash[:success] ||= []
+      flash[:success] << "Игра успешно создана!"
       redirect_to games_showcase_path
     else
-      flash[:failure] = @game.errors.full_messages
+      flash[:failure] ||= []
+      flash[:failure].concat(@game.errors.full_messages)
       render :new, status: :see_other
     end
   rescue ActiveRecord::RecordNotUnique => e
-    flash[:failure] = "Игра с таким названием уже существует."
+    flash[:failure] ||= []
+    flash[:failure] << "Игра с таким названием уже существует."
     render :new, status: :see_other
   end
 
@@ -78,10 +81,12 @@ class GamesController < ApplicationController
   def update
     @game = current_user.games.find_by_id(params[:id])
     if @game.update(game_params)
-      flash[:success] = "Игра успешно обновлена."
+      flash[:success] ||= []
+      flash[:success] << "Игра успешно обновлена."
       redirect_to game_profile_path
     else
-      flash[:failure] = @game.errors.full_messages
+      flash[:failure] ||= []
+      flash[:failure].concat(@game.errors.full_messages)
       render :edit, status: :unprocessable_entity
     end
   end
@@ -89,9 +94,11 @@ class GamesController < ApplicationController
   def destroy
     @game = current_user.games.find_by_id(params[:id])
     if @game.destroy
-      flash[:success] = 'Игра успешно удалена.'
+      flash[:success] ||= []
+      flash[:success] << 'Игра успешно удалена.'
     else
-      flash[:failure] = "Something went wrong!"
+      flash[:failure] ||= []
+      flash[:failure] << "Something went wrong!"
     end
     redirect_to dashboard_path
   end

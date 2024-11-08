@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_01_210455) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_08_121622) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_01_210455) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "author_id"
+    t.integer "status", default: 0
     t.index ["name"], name: "index_games_on_name", unique: true
   end
 
@@ -90,6 +91,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_01_210455) do
     t.integer "games", default: [], array: true
     t.integer "participants", default: [], array: true
     t.boolean "users_can_votes", default: false
+    t.integer "status", default: 0
     t.index ["author_id"], name: "index_jams_on_author_id"
     t.index ["name"], name: "index_jams_on_name"
   end
