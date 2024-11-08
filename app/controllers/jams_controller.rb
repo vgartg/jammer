@@ -1,5 +1,6 @@
 class JamsController < ApplicationController
   before_action :authenticate_user, only: [:new, :create, :edit, :update]
+  before_action :root_check, only: [:edit, :update, :destroy]
 
   def new
     @notifications = current_user.notifications
@@ -14,11 +15,12 @@ class JamsController < ApplicationController
 
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
-      jams = Jam.where("LOWER(jams.name) LIKE ? OR LOWER(jams.description) LIKE ?",
+      jams = Jam.where(status: 1)
+      jams = jams.where("LOWER(jams.name) LIKE ? OR LOWER(jams.description) LIKE ?",
                         lower_case_search, lower_case_search)
       @pagy, @jams = pagy(jams, limit: 12)
     else
-      @pagy, @jams = pagy(Jam.all, limit: 12)
+      @pagy, @jams = pagy(Jam.all.where(status: 1), limit: 12)
     end
 
     if params[:tag_ids].present?
@@ -38,6 +40,10 @@ class JamsController < ApplicationController
 
   def show
     @jam = Jam.find(params[:id])
+    if @jam.status != 1 && current_user != @jam.author
+      flash[:failure] = "Игра находится на модерации"
+      redirect_to dashboard_path
+    end
     if current_user
       @notifications = current_user.notifications
     end
@@ -84,6 +90,13 @@ class JamsController < ApplicationController
   end
 
   private
+
+  def root_check
+    unless current_user.jams.find_by_id(params[:id])
+      flash[:failure] = "Недостаточно прав"
+      redirect_to dashboard_path
+    end
+  end
 
   def jam_params
     params.require(:jam)

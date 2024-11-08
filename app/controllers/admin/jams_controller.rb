@@ -63,7 +63,7 @@ module Admin
 
     def jam_params
       params.require(:jam)
-            .permit(:name, :description, :start_date, :deadline, :end_date, :cover, :logo, tag_ids: []).merge(admin_edit: true)
+            .permit(:name, :description, :start_date, :deadline, :end_date, :status, :cover, :logo, tag_ids: []).merge(admin_edit: true)
     end
   end
 end

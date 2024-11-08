@@ -1,5 +1,6 @@
 class GamesController < ApplicationController
   before_action :authenticate_user, only: [:new, :create, :edit, :update]
+  before_action :root_check, only: [:edit, :update, :destroy]
 
   def new
     @notifications = current_user.notifications
@@ -14,11 +15,12 @@ class GamesController < ApplicationController
 
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
-      games = Game.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
+      games = Game.where(status: 1)
+      games = games.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
                           lower_case_search, lower_case_search)
       @pagy, @games = pagy(games, limit: 12)
     else
-      @pagy, @games = pagy(Game.all, limit: 12)
+      @pagy, @games = pagy(Game.all.where(status: 1), limit: 12)
     end
 
     if params[:tag_ids].present?
@@ -38,6 +40,10 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    if @game.status != 1 && current_user != @game.author
+      flash[:failure] = "Игра находится на модерации"
+      redirect_to dashboard_path
+    end
     if current_user
       @notifications = current_user.notifications
     end
@@ -47,6 +53,10 @@ class GamesController < ApplicationController
     @game = Game.new(game_params.merge(author: current_user))
     @tags = Tag.all
     if @game.save
+      admins = User.where(role: 2)
+      admins.each do |admin|
+        current_user.create_notification(admin, current_user, 'awaiting game moderation', @game, @game.id)
+      end
       flash[:success] = "Игра успешно создана!"
       redirect_to dashboard_path
     else
@@ -66,6 +76,7 @@ class GamesController < ApplicationController
   def update
     @game = current_user.games.find_by_id(params[:id])
     if @game.update(game_params)
+      @game.status = 0
       flash[:success] = "Игра успешно обновлена."
       redirect_to game_profile_path
     else
@@ -85,6 +96,13 @@ class GamesController < ApplicationController
   end
 
   private
+
+  def root_check
+    unless current_user.jams.find_by_id(params[:id])
+      flash[:failure] = "Недостаточно прав"
+      redirect_to dashboard_path
+    end
+  end
 
   def game_params
     params.require(:game)

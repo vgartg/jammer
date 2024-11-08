@@ -78,6 +78,16 @@
                         принял заявку в друзья
                       <% elsif notification.action == 'sent_friend_request' %>
                         отправил запрос в друзья
+                      <% elsif notification.action == 'awaiting game moderation' %>
+                        ожидает модерацию
+                        <% if notification.notifiable %>
+                          <a href="/admin/games/<%= notification.notifiable.id %>/edit"
+                             class="hover:underline">игры
+                          </a>
+                        <% else %>
+                          игры
+                        <% end %>
+
                       <% else %>
                         <%= notification.action %>
                       <% end %>

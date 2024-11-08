@@ -69,7 +69,7 @@ class FriendshipsController < ApplicationController
   def create_notification(recipient, actor, action, notifiable)
     existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action)
 
-    if existing_notifications
+    if existing_notifications.any?
       # Удаляем старые уведомления из БД
       existing_notifications.destroy_all
     end

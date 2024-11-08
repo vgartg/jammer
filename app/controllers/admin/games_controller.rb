@@ -63,7 +63,7 @@ module Admin
 
     def game_params
       params.require(:game)
-            .permit(:name, :description, :cover, :game_file, tag_ids: []).merge(admin_edit: true)
+            .permit(:name, :description, :cover, :status, :game_file, tag_ids: []).merge(admin_edit: true)
     end
   end
 end
