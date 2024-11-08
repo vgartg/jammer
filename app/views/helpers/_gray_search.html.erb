@@ -93,7 +93,7 @@
             </p>
           <% end %>
           <% if @notifications && @notifications.count > 8 %>
-            <%= link_to t('helpers.show_all', notifications_path, class: "flex justify-center p-1") %>
+            <%= link_to t('helpers.show_all'), notifications_path, class: "flex justify-center p-1" %>
           <% end %>
         </div>
       </div>
