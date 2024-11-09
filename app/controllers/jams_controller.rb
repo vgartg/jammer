@@ -53,6 +53,10 @@ class JamsController < ApplicationController
     @jam = Jam.new(jam_params.merge(author: current_user))
     @tags = Tag.all
     if @jam.save
+      admins = User.where(role: 2)
+      admins.each do |admin|
+        current_user.create_notification(admin, current_user, 'awaiting jam moderation', @game)
+      end
       flash[:success] = 'Джем успешно создан!'
       redirect_to dashboard_path
     else

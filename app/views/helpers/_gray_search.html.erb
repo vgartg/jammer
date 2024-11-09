@@ -87,7 +87,44 @@
                         <% else %>
                           игры
                         <% end %>
-
+                      <% elsif notification.action == 'awaiting jam moderation' %>
+                        ожидает модерацию
+                        <% if notification.notifiable %>
+                          <a href="/admin/jams/<%= notification.notifiable.id %>/edit"
+                             class="hover:underline">джема
+                          </a>
+                        <% else %>
+                          джема
+                        <% end %>
+                      <% elsif notification.action == 'awaiting game moderation' %>
+                        ожидает модерацию
+                        <% if notification.notifiable %>
+                          <a href="/admin/games/<%= notification.notifiable.id %>/edit"
+                             class="hover:underline">игры
+                          </a>
+                        <% else %>
+                          игры
+                        <% end %>
+                      <% elsif notification.action == 'game change status after moderation' %>
+                        Статус
+                        <% if notification.notifiable %>
+                          <a href="/games/<%= notification.notifiable.id %>"
+                             class="hover:underline">игры
+                          </a>
+                        <% else %>
+                          игры
+                        <% end %>
+                        изменен после модерации
+                      <% elsif notification.action == 'jam change status after moderation' %>
+                        Статус
+                        <% if notification.notifiable %>
+                          <a href="/games/<%= notification.notifiable.id %>"
+                             class="hover:underline">джема
+                          </a>
+                        <% else %>
+                          джема
+                        <% end %>
+                        изменен после модерации
                       <% else %>
                         <%= notification.action %>
                       <% end %>

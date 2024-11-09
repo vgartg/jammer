@@ -40,7 +40,7 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
-    if @game.status != 1 && current_user != @game.author
+    if @game.status != 1
       flash[:failure] = "Игра находится на модерации"
       redirect_to dashboard_path
     end
@@ -55,7 +55,7 @@ class GamesController < ApplicationController
     if @game.save
       admins = User.where(role: 2)
       admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting game moderation', @game, @game.id)
+        current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
       end
       flash[:success] = "Игра успешно создана!"
       redirect_to dashboard_path

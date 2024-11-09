@@ -20,8 +20,13 @@ module Admin
     end
 
     def update
+      old_status = @jam.status
       if @jam.update(jam_params)
         flash[:success] = 'Джем успешно обновлен'
+        if old_status != @game.status
+          @author = @jam.author
+          @author.create_notification(@author, current_user, 'jam change status after moderation', @jam)
+        end
       else
         flash[:failure] = @jam.errors.full_messages
       end
@@ -41,7 +46,7 @@ module Admin
     end
 
     def sort_jams(jams)
-      sortable_columns = %w[id author_id name created_at]
+      sortable_columns = %w[id author_id name status created_at]
       sort_by = sortable_columns.include?(params[:sort_by]) ? params[:sort_by] : 'id'
       direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
       jams.order("#{sort_by} #{direction}")
@@ -54,7 +59,7 @@ module Admin
         if query.to_i.to_s == query
           jams = jams.where(id: query.to_i)
         else
-          jams = jams.joins(:author).where("jams.name ILIKE :query OR jams.created_at::TEXT ILIKE :query OR users.name ILIKE :query", query: "%#{query}%")
+          jams = jams.joins(:author).where("jams.name ILIKE :query OR jams.status ILIKE :query OR jams.created_at::TEXT ILIKE :query OR users.name ILIKE :query", query: "%#{query}%")
         end
       end
 

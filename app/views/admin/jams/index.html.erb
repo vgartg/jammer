@@ -32,6 +32,10 @@
             <%= sort_arrow('name') %>
           </th>
           <th scope="col" class="py-3 px-6 text-left">
+            <%= link_to 'Status', admin_jams_path(sort_by: 'status', direction: toggle_direction('status')) %>
+            <%= sort_arrow('status') %>
+          </th>
+          <th scope="col" class="py-3 px-6 text-left">
             <%= link_to 'Created At', admin_jams_path(sort_by: 'created_at', direction: toggle_direction('created_at')) %>
             <%= sort_arrow('created_at') %>
           </th>
