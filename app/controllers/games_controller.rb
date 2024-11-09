@@ -38,6 +38,7 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    @review = @game.reviews.find_by(user: current_user) || @game.reviews.build(user: current_user)
     if current_user
       @notifications = current_user.notifications
     end

@@ -2,7 +2,9 @@ class Game < ActiveRecord::Base
   validates :name, :description, presence: true
   has_one_attached :cover
   has_one_attached :game_file
-
+  has_one :rating
+  has_many :ratings
+  has_many :reviews
   has_many :jam_submissions, dependent: :destroy
 
   belongs_to :author, foreign_key: 'author_id', class_name: 'User'
