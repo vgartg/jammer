@@ -38,11 +38,32 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
-    @review = @game.reviews.find_by(user: current_user) || @game.reviews.build(user: current_user)
+    @jam_id = params[:jam_id]
+
+
+    if @jam_id.blank?
+      @rating = @game.ratings.find_by(jam_id: nil)
+
+      if @rating.nil?
+        @rating = @game.ratings.create(jam_id: nil, average_rating: 0.0)
+      end
+      @review = @game.reviews.find_by(user: current_user, jam_id: nil) || @game.reviews.build(user: current_user, jam_id: nil)
+    else
+      @rating = @game.ratings.find_by(jam_id: @jam_id)
+
+      if @rating.nil?
+        @rating = @game.ratings.create(jam_id: @jam_id, average_rating: 0.0)
+      end
+
+      @review = @game.reviews.find_by(user: current_user, jam_id: @jam_id) || @game.reviews.build(user: current_user, jam_id: @jam_id)
+    end
+
     if current_user
       @notifications = current_user.notifications
-    end
+      end
   end
+
+
 
   def submit
     # Check if the submission already exists

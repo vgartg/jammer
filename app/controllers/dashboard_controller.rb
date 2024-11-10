@@ -12,6 +12,9 @@ class DashboardController < ApplicationController
     @jams = Jam.all
     @sessions = @current_user.sessions.order(created_at: :desc)
     @notifications = current_user.notifications
+    @average_rating = @user.games.joins(:ratings)
+                           .where(ratings: { jam_id: nil })
+                           .average(:average_rating)
   end
 
   private

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_09_134210) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_10_132743) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,7 +56,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_09_134210) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "author_id"
-    t.float "average_rating"
     t.index ["name"], name: "index_games_on_name", unique: true
   end
 
@@ -132,6 +131,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_09_134210) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "game_id"
+    t.integer "jam_id"
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 

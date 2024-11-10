@@ -77,6 +77,7 @@ Rails.application.routes.draw do
     resources :ratings, only: [:create]
   end
 
+
   resources :notifications, only: [:index, :show] do
     delete 'destroy_all_notifications', on: :collection
   end

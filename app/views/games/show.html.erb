@@ -22,20 +22,25 @@
           </div>
 
           <div class="mt-4 text-center">
-            <h2 class="text-lg font-semibold">Средняя оценка игры:</h2>
+            <h2 class="text-lg font-semibold">
+              <%= @jam_id.present? ? "Средняя оценка игры в этом джеме:" : "Средняя оценка игры:" %>
+            </h2>
             <p class="text-xl font-bold text-gray-900 inline-flex items-center">
-              <%= @game.rating&.average_rating || 0.0 %>
+              <%= @jam_id.present? ? @game.jam_rating(@jam_id) : @game.overall_rating %>
               <!-- Star icon -->
               <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2"
-                   fill="<%= @game.rating&.average_rating.to_f > 0 ? 'yellow' : 'gray' %>"
+                   fill="<%= (@jam_id.present? && @game.jam_rating(@jam_id).to_f != 0.0) || @game.overall_rating.to_f > 0 ? 'yellow' : 'gray' %>"
                    viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
               </svg>
+
+
             </p>
 
+
             <!-- Show message if average rating is 0 -->
-            <% if @game.rating&.average_rating.to_f == 0 && @game.author != current_user %>
+            <% if @game.overall_rating.to_f == 0 && @game.author != current_user %>
               <p class="text-sm text-black-500 mt-2">Оцените игру в числе первых!</p>
             <% end %>
           </div>
@@ -77,10 +82,13 @@
               <%= form_with model: @rating || @game.ratings.new, url: game_ratings_path(@game), method: :post, id: "rating-form" do |f| %>
                 <%= f.hidden_field :user_mark, value: @review.present? ? @review.user_mark : 0, id: "user_mark" %>
                 <%= f.hidden_field :game_id, value: @game.id %>
-
-
                 <%= f.hidden_field :criterion, id: "rating-comment", value: @review.present? ? @review.criterion : '' %>
+
+                <!-- Добавляем скрытое поле для jam_id -->
+                <%= f.hidden_field :jam_id, value: params[:jam_id] || nil %>
               <% end %>
+
+
 
               <!-- Confirmation button  -->
               <button type="button" data-action="click->star-rating#submitRating"

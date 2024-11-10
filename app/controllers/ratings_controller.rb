@@ -2,22 +2,18 @@ class RatingsController < ApplicationController
   def create
     @game = Game.find(params[:game_id])
 
-    # Создаем или находим рейтинг игры
-    @rating = @game.rating || @game.create_rating(average_rating: 0.0)
+    jam_id = params[:rating][:jam_id].presence
 
-    # Создаем или обновляем отзыв с пользовательской оценкой и комментарием
-    @review = @game.reviews.find_or_initialize_by(user: current_user)
+    @review = @game.reviews.find_or_initialize_by(user: current_user, jam_id: jam_id)
+    @review.user_mark = params[:rating][:user_mark].to_f
+    @review.criterion = params[:rating][:criterion]
+    @review.game_id = @game.id
+    @review.jam_id = jam_id
 
-    # Проверка, если рейтинг или комментарий отсутствует
-    if params[:rating][:user_mark].to_i > 0 || params[:rating][:criterion].present?
-      @review.user_mark = params[:rating][:user_mark].to_i
-      @review.criterion = params[:rating][:criterion]
-      @review.save
+    if @review.save
+      Rating.update_average_rating(@game, jam_id)
     end
 
-    # Обновляем средний рейтинг игры
-    Rating.update_average_rating(@game)
-
-    redirect_to game_path(@game)
+    redirect_to game_path(@game, jam_id: jam_id)
   end
 end

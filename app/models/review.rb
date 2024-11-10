@@ -1,15 +1,9 @@
 class Review < ApplicationRecord
   belongs_to :game
   belongs_to :user
+  belongs_to :jam, optional: true
 
-  validates :user_mark, presence: true
-
-
-  after_save :update_game_average_rating
-
-  private
-
-  def update_game_average_rating
-    Rating.update_average_rating(game)
+  def update_game_average_rating(jam_id = nil)
+    Rating.update_average_rating(game, jam_id)
   end
 end
