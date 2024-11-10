@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   put '/users/:id', to: 'users#update_user'
   post '/update_activity', to: 'users#update_activity'
 
+
   # Friendship
   get '/friends', to: 'friendships#index'
   resources :users do

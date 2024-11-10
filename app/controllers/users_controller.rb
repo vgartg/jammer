@@ -8,6 +8,8 @@ class UsersController < ApplicationController
     end
   end
 
+
+
   def show
     @user = User.find(params[:id])
     @current_user = User.find_by_id(session[:current_user])
@@ -15,6 +17,8 @@ class UsersController < ApplicationController
       @notifications = current_user.notifications
       @friendship = @current_user.friendship_with(@user)
     end
+    @friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
+    @received_requests = @user.inverse_friendships.where(status: 'pending')
   end
 
   def index
@@ -108,6 +112,7 @@ class UsersController < ApplicationController
     @current_user = current_user
     @notifications = current_user.notifications
   end
+
 
   private
 
