@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_27_131605) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_08_121622) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_27_131605) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "author_id"
+    t.integer "status", default: 0
     t.index ["name"], name: "index_games_on_name", unique: true
   end
 
@@ -150,13 +151,17 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_27_131605) do
     t.string "background_image"
     t.string "theme", default: "Light"
     t.string "jams_visibility", default: "All"
+    t.string "auth_via"
+    t.string "social_id"
     t.string "password_reset_token"
     t.datetime "password_reset_token_sent_at"
     t.string "email_confirm_token"
     t.datetime "email_confirm_token_sent_at"
     t.boolean "email_confirmed", default: false
+    t.integer "role", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
+    t.index ["role"], name: "index_users_on_role"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

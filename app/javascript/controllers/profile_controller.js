@@ -2,8 +2,6 @@ import { Controller } from "stimulus"
 
 export default class extends Controller {
     static targets = ["tab-name"];
-
-
     openTab(event) {
         const tabName = event.currentTarget.dataset.tabName;
         let i, tab_content, tab_links;

@@ -8,8 +8,6 @@ class UsersController < ApplicationController
     end
   end
 
-
-
   def show
     @user = User.find(params[:id])
     @current_user = User.find_by_id(session[:current_user])
@@ -112,7 +110,6 @@ class UsersController < ApplicationController
     @current_user = current_user
     @notifications = current_user.notifications
   end
-
 
   private
 
