@@ -103,6 +103,7 @@
     <% end %>
     <div class="mt-6">
       <div class="mt-6 border-t border-gray-100">
+
         <div id="user_info" class="tab_content">
           <ul class="divide-y divide-gray-100">
             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -257,6 +258,8 @@
             </div>
           </ul>
         </div>
+
+
         <% def find_friend(friendship)%>
           <% if friendship.friend %>
             <% friendship.friend.id != @user.id ? friendship.friend : friendship.user%>
@@ -318,6 +321,10 @@
             <% end %>
           </div>
          </div>
+
+
+
+
         <div id="user_followers" class="tab_content hidden">
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
             <% if @received_requests.count > 0 %>
@@ -379,6 +386,8 @@
             <% end %>
           </div>
         </div>
+
+
       </div>
     </div>
   </div>

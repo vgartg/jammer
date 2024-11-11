@@ -1,13 +1,10 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-    static targets = ["tabName"];
-
-
+    static targets = ["tab-name"];
     openTab(event) {
         const tabName = event.currentTarget.dataset.tabName;
         let i, tab_content, tab_links;
-
         tab_content = document.getElementsByClassName("tab_content");
         for (i = 0; i < tab_content.length; i++) {
             tab_content[i].style.display = "none";
@@ -22,4 +19,3 @@ export default class extends Controller {
         event.currentTarget.className += " bg-gray-100";
     }
 }
-
