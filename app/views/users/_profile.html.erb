@@ -216,7 +216,6 @@
                     });
                 }
             </script>
-
             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">Administrating jams</dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
@@ -258,8 +257,6 @@
             </div>
           </ul>
         </div>
-
-
         <% def find_friend(friendship)%>
           <% if friendship.friend %>
             <% friendship.friend.id != @user.id ? friendship.friend : friendship.user%>
@@ -321,10 +318,6 @@
             <% end %>
           </div>
          </div>
-
-
-
-
         <div id="user_followers" class="tab_content hidden">
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
             <% if @received_requests.count > 0 %>
@@ -386,8 +379,6 @@
             <% end %>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>
