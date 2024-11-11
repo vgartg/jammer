@@ -2,7 +2,8 @@ class Game < ActiveRecord::Base
   validates :name, :description, presence: true
   has_one_attached :cover
   has_one_attached :game_file
-
+  has_many :ratings
+  has_many :reviews
   has_many :jam_submissions, dependent: :destroy
 
   belongs_to :author, foreign_key: 'author_id', class_name: 'User'
@@ -13,6 +14,15 @@ class Game < ActiveRecord::Base
 
   validate :game_file_format
   validate :game_file_size
+  # Метод для получения общего рейтинга (для jam_id == nil)
+  def overall_rating
+    ratings.find_by(jam_id: nil)&.average_rating || 0.0
+  end
+
+  # Метод для получения рейтинга для конкретного jam_id
+  def jam_rating(jam_id)
+    ratings.find_by(jam_id: jam_id)&.average_rating || 0.0
+  end
 
   private
   def game_file_format
@@ -23,7 +33,6 @@ class Game < ActiveRecord::Base
       end
     end
   end
-
 
   def game_file_size
     if game_file.attached? && game_file.byte_size > 100.megabytes

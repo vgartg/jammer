@@ -4,7 +4,44 @@
       <h2 class="text-2xl font-bold tracking-tight text-gray-900">Dashboard</h2>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
-      Здесь пока пусто...
+      <% if @average_rating.present? && @user.games.count >0  %>
+        <div>
+          <p class="text-xl font-semibold">Средняя оценка ваших игр:</p>
+          <div class="flex items-center">
+            <span class="text-xl font-bold"><%= @average_rating.round(1) %></span>
+            <%# Render full, half, or empty star icons based on average rating %>
+            <% (1..5).each do |star| %>
+              <% if star <= @average_rating.floor %>
+                <!-- Full Star -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="yellow" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                </svg>
+              <% elsif (star - @average_rating).between?(0, 0.5) %>
+                <!-- Half Star -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="yellow" viewBox="0 0 24 24" stroke="currentColor">
+                  <defs>
+                    <linearGradient id="halfStarGradient">
+                      <stop offset="50%" stop-color="yellow"/>
+                      <stop offset="50%" stop-color="gray"/>
+                    </linearGradient>
+                  </defs>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" fill="url(#halfStarGradient)"
+                        d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                </svg>
+              <% else %>
+                <!-- Empty Star -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="gray" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                </svg>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% else %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
+          Данных пока не достаточно...
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
