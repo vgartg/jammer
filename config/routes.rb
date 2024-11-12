@@ -73,6 +73,10 @@ Rails.application.routes.draw do
       patch 'delete_project'
     end
   end
+  resources :games do
+    resources :ratings, only: [:create]
+  end
+
 
   resources :notifications, only: [:index, :show] do
     delete 'destroy_all_notifications', on: :collection

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_08_121622) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_10_132743) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -88,6 +88,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_08_121622) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
+    t.boolean "users_can_votes", default: false
     t.integer "games", default: [], array: true
     t.integer "participants", default: [], array: true
     t.boolean "users_can_votes", default: false
@@ -113,6 +114,27 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_08_121622) do
     t.boolean "read", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.integer "game_id", null: false
+    t.integer "jam_id"
+    t.float "average_rating", default: 0.0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_ratings_on_game_id"
+    t.index ["jam_id"], name: "index_ratings_on_jam_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.float "user_mark", null: false
+    t.string "criterion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "game_id"
+    t.integer "jam_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|

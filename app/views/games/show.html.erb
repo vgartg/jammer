@@ -8,7 +8,6 @@
           </div>
         </div>
 
-
         <div class="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
           <!-- Image gallery -->
           <div class="flex justify-center mb-7">
@@ -17,51 +16,91 @@
                             class: "rounded-md bg-gray-200 object-cover object-center group-hover:opacity-75 lg:h-80 lg:w-130" %>
             <% else %>
               <div class="w-full max-w-lg aspect-w-1 aspect-h-1 overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-80">
-                <img src="https://via.placeholder.com/300" alt="<%= @game.name %>"
-                     class="object-cover object-center h-full w-full">
+                <img src="https://via.placeholder.com/300" alt="<%= @game.name %>" class="object-cover object-center h-full w-full">
               </div>
             <% end %>
           </div>
 
-          <%# if @game.in_jam? %>
-          <% unless @game.author == current_user %>
-           <!-- Star Rating -->
           <div class="mt-4 text-center">
-            <h2 class="text-lg font-semibold">Оцените игру:</h2>
+            <h2 class="text-lg font-semibold">
+              <%= @jam_id.present? ? "Средняя оценка игры в этом джеме:" : "Средняя оценка игры:" %>
+            </h2>
+            <p class="text-xl font-bold text-gray-900 inline-flex items-center">
+              <%= @jam_id.present? ? @game.jam_rating(@jam_id) : @game.overall_rating %>
+              <!-- Star icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2"
+                   fill="<%= (@jam_id.present? && @game.jam_rating(@jam_id).to_f != 0.0) || @game.overall_rating.to_f > 0 ? 'yellow' : 'gray' %>"
+                   viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+              </svg>
+
+
+            </p>
+
+
+            <!-- Show message if average rating is 0 -->
+            <% if @game.overall_rating.to_f == 0 && @game.author != current_user %>
+              <p class="text-sm text-black-500 mt-2">Оцените игру в числе первых!</p>
+            <% end %>
           </div>
 
-          <div class="mt-2 flex justify-center" data-controller="star-rating">
-            <div class="flex items-center space-x-2" id="star-rating">
-              <% 10.times do |i| %>
-                <svg
-                  class="w-8 h-8 text-gray-300 cursor-pointer transition-all"
-                  data-rating="<%= i + 1 %>"
-                  data-star-rating-target="star"
-                  data-action="mouseenter->star-rating#hover mouseleave->star-rating#leave click->star-rating#setRating"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="gray">
-                  <polygon
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    points="12 17.27 18.18 21 15.64 13.97 21 9.24 13.81 8.64 12 2 10.19 8.64 3 9.24 8.36 13.97 5.82 21 12 17.27"
-                    />
-                </svg>
-              <% end %>
+
+          <% unless @game.author == current_user %>
+            <!-- Star Rating -->
+            <div class="mt-4 text-center">
+              <h2 class="text-lg font-semibold">Оцените игру:</h2>
             </div>
-          </div>
-          <%# else %>
-<!--            <div class="mt-4 text-center">-->
-<!--              <h2 class="text-lg font-semibold">Эта игра не участвует в геймджеме, поэтому рейтинг недоступен.</h2>-->
-<!--            </div>-->
-          <%# end %>
+
+            <div class="mt-2 flex flex-col items-center" data-controller="star-rating">
+              <!-- Stars -->
+              <div class="flex space-x-2" id="star-rating">
+                <% 5.times do |i| %>
+                  <svg class="w-8 h-8 text-gray-300 cursor-pointer transition-all"
+                       data-rating="<%= i + 1 %>"
+                       data-star-rating-target="star"
+                       data-action="mouseenter->star-rating#hover mouseleave->star-rating#leave click->star-rating#setRating"
+                       xmlns="http://www.w3.org/2000/svg"
+                       viewBox="0 0 24 24"
+                       fill="gray">
+                    <polygon stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                             points="12 17.27 18.18 21 15.64 13.97 21 9.24 13.81 8.64 12 2 10.19 8.64 3 9.24 8.36 13.97 5.82 21 12 17.27"/>
+                  </svg>
+                <% end %>
+              </div>
+
+              <!-- Comment field -->
+              <div class="mt-4 w-full max-w-md mx-auto" style="<%= @review.user_mark == 0 ? 'display:none;' : '' %>">
+
+                <label for="comment"></label><textarea id="comment" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
+                                                       placeholder="Введите комментарий..." rows="4" data-action="input->star-rating#handleCommentInput"
+                                                       data-star-rating-target="commentField">
+        <%= @review.criterion %>
+      </textarea>
+              </div>
+
+              <%= form_with model: @rating || @game.ratings.new, url: game_ratings_path(@game), method: :post, id: "rating-form" do |f| %>
+                <%= f.hidden_field :user_mark, value: @review.present? ? @review.user_mark : 0, id: "user_mark" %>
+                <%= f.hidden_field :game_id, value: @game.id %>
+                <%= f.hidden_field :criterion, id: "rating-comment", value: @review.present? ? @review.criterion : '' %>
+
+                <!-- Добавляем скрытое поле для jam_id -->
+                <%= f.hidden_field :jam_id, value: params[:jam_id] || nil %>
+              <% end %>
+
+
+
+              <!-- Confirmation button  -->
+              <button type="button" data-action="click->star-rating#submitRating"
+                      data-star-rating-target="submitButton" class="bg-indigo-600 text-white px-4 py-2 rounded-lg mt-4"
+                      style="display:none;">
+                Сохранить
+              </button>
+            </div>
           <% end %>
+
+
         </div>
-
-
-
-
         <div class="mt-8 lg:col-span-5">
 
           <div class="mt-10">
@@ -124,14 +163,14 @@
                             class: "mt-4 flex w-50 justify-center rounded-md border
                               border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                               shadow-sm hover:bg-indigo-700 focus:outline-none
-                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"%>
+                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
               <%= button_to "Удалить игру", game_destroy_path(@game), method: :delete,
                             class: "mt-4 flex w-50 justify-center rounded-md border
                               border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white
                               shadow-sm hover:bg-red-700 focus:outline-none
-                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"%>
+                               focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
           <% end %>
-            </div>
+          </div>
         </div>
       </div>
     </div>

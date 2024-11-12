@@ -38,10 +38,32 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    @jam_id = params[:jam_id]
+
+
+    if @jam_id.blank?
+      @rating = @game.ratings.find_by(jam_id: nil)
+
+      if @rating.nil?
+        @rating = @game.ratings.create(jam_id: nil, average_rating: 0.0)
+      end
+      @review = @game.reviews.find_by(user: current_user, jam_id: nil) || @game.reviews.build(user: current_user, jam_id: nil)
+    else
+      @rating = @game.ratings.find_by(jam_id: @jam_id)
+
+      if @rating.nil?
+        @rating = @game.ratings.create(jam_id: @jam_id, average_rating: 0.0)
+      end
+
+      @review = @game.reviews.find_by(user: current_user, jam_id: @jam_id) || @game.reviews.build(user: current_user, jam_id: @jam_id)
+    end
+
     if current_user
       @notifications = current_user.notifications
-    end
+      end
   end
+
+
 
   def submit
     # Check if the submission already exists
@@ -59,14 +81,17 @@ class GamesController < ApplicationController
     @game = Game.new(game_params.merge(author: current_user))
     @tags = Tag.all
     if @game.save
-      flash[:success] = "Игра успешно создана!"
+      flash[:success] ||= []
+      flash[:success] << "Игра успешно создана!"
       redirect_to games_showcase_path
     else
-      flash[:failure] = @game.errors.full_messages
+      flash[:failure] ||= []
+      flash[:failure].concat(@game.errors.full_messages)
       render :new, status: :see_other
     end
   rescue ActiveRecord::RecordNotUnique => e
-    flash[:failure] = "Игра с таким названием уже существует."
+    flash[:failure] ||= []
+    flash[:failure] << "Игра с таким названием уже существует."
     render :new, status: :see_other
   end
 
@@ -78,10 +103,12 @@ class GamesController < ApplicationController
   def update
     @game = current_user.games.find_by_id(params[:id])
     if @game.update(game_params)
-      flash[:success] = "Игра успешно обновлена."
+      flash[:success] ||= []
+      flash[:success] << "Игра успешно обновлена."
       redirect_to game_profile_path
     else
-      flash[:failure] = @game.errors.full_messages
+      flash[:failure] ||= []
+      flash[:failure].concat(@game.errors.full_messages)
       render :edit, status: :unprocessable_entity
     end
   end
@@ -89,9 +116,11 @@ class GamesController < ApplicationController
   def destroy
     @game = current_user.games.find_by_id(params[:id])
     if @game.destroy
-      flash[:success] = 'Игра успешно удалена.'
+      flash[:success] ||= []
+      flash[:success] << 'Игра успешно удалена.'
     else
-      flash[:failure] = "Something went wrong!"
+      flash[:failure] ||= []
+      flash[:failure] << "Something went wrong!"
     end
     redirect_to dashboard_path
   end
