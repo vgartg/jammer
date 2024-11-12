@@ -87,7 +87,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_10_132743) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
-    t.boolean "users_can_votes", default: false
     t.integer "games", default: [], array: true
     t.integer "participants", default: [], array: true
     t.index ["author_id"], name: "index_jams_on_author_id"
