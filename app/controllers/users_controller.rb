@@ -15,6 +15,8 @@ class UsersController < ApplicationController
       @notifications = current_user.notifications
       @friendship = @current_user.friendship_with(@user)
     end
+    @friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
+    @received_requests = @user.inverse_friendships.where(status: 'pending')
   end
 
   def index
