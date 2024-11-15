@@ -57,7 +57,7 @@ class GamesController < ApplicationController
       admins.each do |admin|
         current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
       end
-      flash[:success] = "Игра успешно создана!"
+      flash[:success] = "Игра отправлена на модерацию!"
       redirect_to dashboard_path
     else
       flash[:failure] = @game.errors.full_messages
