@@ -16,103 +16,76 @@
     <!-- Секция с профилем -->
     <div data-settings-target="section" data-section="profile">
       <%= form_with model: [:admin, user] do |f| %>
-        <div class="space-y-4 p-16">
-          <div class="flex items-center">
-            <div class="w-1/4">
+        <div class="space-y-6 p-4 md:p-16">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
               <%= f.label :email, class: 'block text-sm font-medium text-gray-700' %>
-            </div>
-            <div class="w-3/4">
               <%= f.email_field :email, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
             </div>
-          </div>
 
-          <div class="flex items-center">
-            <div class="w-1/4">
+            <div>
               <%= f.label :name, class: 'block text-sm font-medium text-gray-700' %>
-            </div>
-            <div class="w-3/4">
               <%= f.text_field :name, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
             </div>
-          </div>
 
-          <div class="flex items-center">
-            <div class="w-1/4">
+            <div>
               <%= f.label :email_confirmed, class: 'block text-sm font-medium text-gray-700' %>
+              <div class="flex items-center pt-1">
+                <%= f.check_box :email_confirmed, class: 'mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500', checked: user.email_confirmed %>
+                <span class="ml-2 text-sm text-gray-600">Confirmed</span>
+              </div>
             </div>
-            <div class="w-3/4">
-              <%= f.check_box :email_confirmed, class: 'mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500', checked: user.email_confirmed %>
-              <span class="ml-2 text-sm text-gray-600">Confirmed</span>
-            </div>
-          </div>
 
-          <div class="flex items-center">
-            <div class="w-1/4">
+            <div>
               <%= f.label :role, class: 'block text-sm font-medium text-gray-700' %>
-            </div>
-            <div class="w-3/4">
               <%= f.select :role, User.roles.keys.map { |role| [role.titleize, role] }, {}, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
             </div>
           </div>
 
-          <div class="flex items-center">
-            <div class="w-1/4">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
               <%= f.label :password, class: 'block text-sm font-medium text-gray-700' %>
-            </div>
-            <div class="w-3/4">
               <%= f.password_field :password, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
             </div>
-          </div>
 
-          <div class="flex items-center">
-            <div class="w-1/4">
+            <div>
               <%= f.label :password_confirmation, class: 'block text-sm font-medium text-gray-700' %>
-            </div>
-            <div class="w-3/4">
               <%= f.password_field :password_confirmation, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
             </div>
           </div>
 
-          <div class="w-1/4"></div>
-          <div class="w-3/4">
+          <div class="flex justify-between">
             <button type="button" onclick="toggleHiddenSection()" class="text-gray-400 hover:underline">
               Show More Details
             </button>
           </div>
 
           <div id="hidden-section" class="space-y-4 mt-4 hidden">
-            <div class="flex items-center">
-              <div class="w-1/4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
                 <label for="avatar" class="block text-sm font-medium text-gray-800">Аватар</label>
-              </div>
-              <div class="w-3/4">
-                <div class="col-span-full flex items-center gap-x-8 bg-white p-4 rounded-md">
+                <div class="flex items-center gap-x-4 bg-white p-4 rounded-md border border-gray-300 shadow-sm">
                   <% if user && user.avatar.attached? %>
-                    <%= image_tag url_for(user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24 w-24 border-2 border-gray-300 object-cover shadow-sm", data: { target: 'user.avatarImage' } %>
-                    <!-- <button class="text-red-500 ml-2" data-action="user#deleteAvatar" data-user-id="<%= user.id %>">Удалить аватар</button> -->
+                    <%= image_tag url_for(user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24 w-24 object-cover" %>
                   <% else %>
-                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-image rounded-full h-24 w-24 border-2 border-gray-300 object-cover shadow-sm" data-target="user.avatarImage">
+                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-image rounded-full h-24 w-24 object-cover" data-target="user.avatarImage">
                   <% end %>
-                  <div class="border border-gray-300 rounded-md bg-white py-2 text-sm font-semibold text-gray-400 shadow-sm flex flex-col items-center justify-center">
-                    <%= render partial: 'helpers/cropper_modal_admin' %>
+                  <div class="flex flex-col items-center justify-center">
                     <%= f.file_field :avatar, class: "hidden", accept: "image/jpeg,image/png", data: { max_size: 1.megabytes.to_i } %>
+                    <%= render partial: 'helpers/cropper_modal_admin' %>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="flex items-center">
-              <div class="w-1/4">
+              <div>
                 <label for="background_image" class="block text-sm font-medium text-gray-800">Заставка</label>
-              </div>
-              <div class="w-3/4">
                 <div data-controller="background-image">
                   <div class="relative">
-                    <div class="max-w-max border-dashed border-2 border-gray-400 p-6 text-center rounded-md bg-white shadow-md">
+                    <div class="max-w-full border-dashed border-2 border-gray-400 p-4 text-center rounded-md bg-white shadow-md">
                       <% if user.background_image.attached? %>
                         <img data-background-image-target="currentBackgroundImg"
                              id="current-background-img" src="<%= url_for(user.background_image) %>"
                              alt="Current Background Image" class="max-h-56 mb-4 object-cover rounded-md shadow-sm" />
-                        <!--<button class="text-red-500" data-action="user#deleteBackgroundImage" data-user-id="<%= user.id %>">Удалить заставку</button>-->
                       <% end %>
                       <img data-background-image-target="previewImg" id="preview-img" src="#"
                            alt="Предварительный просмотр изображения"
@@ -127,49 +100,30 @@
               </div>
             </div>
 
-            <div class="flex items-center">
-              <div class="w-1/4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
                 <%= f.label :real_name, class: 'block text-sm font-medium text-gray-700' %>
-              </div>
-              <div class="w-3/4">
                 <%= f.text_field :real_name, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
               </div>
-            </div>
 
-            <div class="flex items-center">
-              <div class="w-1/4">
+              <div>
                 <%= f.label :location, class: 'block text-sm font-medium text-gray-700' %>
-              </div>
-              <div class="w-3/4">
                 <%= f.text_field :location, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
               </div>
-            </div>
 
-            <div class="flex items-center">
-              <div class="w-1/4">
+              <div>
                 <%= f.label :status, class: 'block text-sm font-medium text-gray-700' %>
-              </div>
-              <div class="w-3/4">
                 <%= f.text_field :status, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
               </div>
-            </div>
 
-            <div class="flex items-center">
-              <div class="w-1/4">
+              <div>
                 <label for="link_username" class="block text-sm font-medium text-gray-700">
                   Персональная ссылка
                 </label>
-              </div>
-              <div class="w-3/4">
                 <%= f.text_field :link_username, id: 'link_username',
                                  class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50', placeholder: 'Username',
                                  data: { settings_target: 'username' },
                                  pattern: '[a-zA-Z0-9-]+' %>
-              </div>
-            </div>
-            <div class="flex items-center">
-              <div class="w-1/4"></div>
-              <div class="w-3/4">
                 <% if user.link_username.present? %>
                   <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
                     https://<%= user.link_username %>.jammer.ru/
@@ -182,11 +136,9 @@
               </div>
             </div>
 
-            <div class="flex items-center">
-              <div class="w-1/4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
                 <label for="phone_number" class="block text-sm font-medium text-gray-700">Номер телефона</label>
-              </div>
-              <div class="w-3/4">
                 <%= f.text_field :phone_number, id: 'phone_number',
                                  value: user.phone_number,
                                  autocomplete: 'tel',
@@ -194,30 +146,20 @@
                                  placeholder: '+7 (___) ___-__-__',
                                  class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
               </div>
-            </div>
 
-            <div class="flex items-center">
-              <div class="w-1/4">
+              <div>
                 <label for="birthday" class="block text-sm font-medium text-gray-700">День рождения</label>
-              </div>
-              <div class="w-3/4">
                 <%= f.text_field :birthday, id: 'birthday',
                                  value: user.birthday,
                                  autocomplete: 'birthday',
                                  type: 'date',
-                                 class: 'block w-full rounded-md border-gray-300 bg-white/5 py-1.5 text-sm
-                            shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
-                            focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr' %>
+                                 class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
               </div>
-            </div>
 
-            <div class="flex items-center">
-              <div class="w-1/4">
+              <div>
                 <%= f.label :timezone, class: 'block text-sm font-medium text-gray-700' %>
-              </div>
-              <div class="w-3/4">
                 <%= f.select :timezone,
-                             options_for_select([ # Уберем (если что) один из вариантов: либо с UTC, либо без
+                             options_for_select([
                                                   ['America/Anchorage', 'America/Anchorage (UTC-09:00)'],
                                                   ['America/Caracas', 'America/Caracas (UTC-04:00)'],
                                                   ['America/Chicago', 'America/Chicago (UTC-06:00)'],
@@ -266,13 +208,9 @@
                              {},
                              class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
               </div>
-            </div>
 
-            <div class="flex items-center">
-              <div class="w-1/4">
+              <div>
                 <%= f.label :visibility, class: 'block text-sm font-medium text-gray-700' %>
-              </div>
-              <div class="w-3/4">
                 <%= f.select :visibility,
                              options_for_select([
                                                   ['All'],
@@ -282,13 +220,9 @@
                              {},
                              class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
               </div>
-            </div>
 
-            <div class="flex items-center">
-              <div class="w-1/4">
+              <div>
                 <%= f.label :jams_visibility, class: 'block text-sm font-medium text-gray-700' %>
-              </div>
-              <div class="w-3/4">
                 <%= f.select :jams_visibility,
                              options_for_select([
                                                   ['All'],
@@ -298,13 +232,9 @@
                              {},
                              class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
               </div>
-            </div>
 
-            <div class="flex items-center">
-              <div class="w-1/4">
+              <div>
                 <%= f.label :theme, class: 'block text-sm font-medium text-gray-700' %>
-              </div>
-              <div class="w-3/4">
                 <%= f.select :theme,
                              options_for_select([
                                                   ['Light'],
@@ -316,200 +246,163 @@
             </div>
           </div>
 
-          <div class="flex items-center pb-16">
-            <div class="w-1/4"></div>
-            <div class="w-3/4">
-              <div class="mt-6 flex items-center space-x-2">
-                <%= f.submit 'Сохранить', class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
-              </div>
-            </div>
+          <div class="flex items-center justify-end pb-10">
+            <%= f.submit 'Сохранить', class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
           </div>
+
         </div>
       <% end %>
     </div>
 
     <!-- Секция с пользовательским опытом -->
     <div data-settings-target="section" data-section="user_experience" class="hidden">
-      <div class="flex items-center pb-16">
-        <div class="w-1/4">
+      <div class="container mx-auto px-4 pt-4">
+        <div class="section pb-16">
           <h2 class="text-2xl font-bold tracking-tight text-gray-900">Друзья</h2>
-        </div>
-        <div class="w-3/4">
-          <% if @user_friendships.count > 0 %>
-            <% @user_friendships.each do |user_friendship| %>
-              <% if find_user_friend(user_friendship, @user) %>
-                <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
-      duration-200 flex items-center space-x-4">
-                  <a href='<%= '/users/' + find_user_friend(user_friendship, @user).id.to_s %>' class="flex items-center space-x-4 flex-grow">
-          <span class="relative">
-            <% if find_user_friend(user_friendship, @user).avatar.attached? %>
-              <%= image_tag url_for(find_user_friend(user_friendship, @user).avatar), alt: "Profile Picture",
-                            class: "h-16 w-16 rounded-full" %>
-            <% else %>
-              <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                   class="h-16 w-16 rounded-full">
-            <% end %>
-            <% if find_user_friend(user_friendship, @user).can_see_online?(@user) %>
-              <% if find_user_friend(user_friendship, @user).online? %>
-                <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
-              <% elsif find_user_friend(user_friendship, @user).last_active_at %>
-                <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
-              <% end %>
-            <% end %>
-          </span>
-                    <div>
-                      <h2 class="text-lg font-semibold text-gray-800"><%= find_user_friend(user_friendship, @user).name %></h2>
-                      <% if find_user_friend(user_friendship, @user).can_see_online?(@user) %>
-                        <p class="mt-6"
-                           data-controller="online">
-                          <% if find_user_friend(user_friendship, @user).last_active_at.present? %>
-      <span id="user-status" class="text-sm text-gray-600"
-            data-online-target="lastActiveAt"
-            data-last-active-at="<%= find_user_friend(user_friendship, @user).last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
-            data-action="load->online#updateStatus"></span>
-                          <% else %>
-                            <span class="text-sm text-gray-600">Offline</span>
-                          <% end %></p>
+          <div class="friend-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% if @user_friendships.count > 0 %>
+              <% @user_friendships.each do |user_friendship| %>
+                <% if find_user_friend(user_friendship, @user) %>
+                  <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 flex items-center space-x-4">
+                    <a href='<%= '/users/' + find_user_friend(user_friendship, @user).id.to_s %>' class="flex items-center space-x-4 flex-grow">
+                  <span class="relative">
+                    <% if find_user_friend(user_friendship, @user).avatar.attached? %>
+                      <%= image_tag url_for(find_user_friend(user_friendship, @user).avatar), alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
+                    <% else %>
+                      <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-16 w-16 rounded-full">
+                    <% end %>
+                    <% if find_user_friend(user_friendship, @user).can_see_online?(@user) %>
+                      <% if find_user_friend(user_friendship, @user).online? %>
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
+                      <% elsif find_user_friend(user_friendship, @user).last_active_at %>
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
                       <% end %>
+                    <% end %>
+                  </span>
+                      <div>
+                        <h2 class="text-lg font-semibold text-gray-800"><%= find_user_friend(user_friendship, @user).name %></h2>
+                        <% if find_user_friend(user_friendship, @user).can_see_online?(@user) %>
+                          <p class="mt-1 text-sm text-gray-600" data-controller="online">
+                            <% if find_user_friend(user_friendship, @user).last_active_at.present? %>
+                          <span id="user-status" data-online-target="lastActiveAt"
+                                data-last-active-at="<%= find_user_friend(user_friendship, @user).last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                                data-action="load->online#updateStatus"></span>
+                            <% else %>
+                              <span>Offline</span>
+                            <% end %>
+                          </p>
+                        <% end %>
+                      </div>
+                    </a>
+                    <div>
+                      <%= button_to "Удалить", user_friendship_path(@user, user_friendship), method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition-colors duration-200" %>
                     </div>
-                  </a>
-                  <div>
-                    <%= button_to "Remove", user_friendship_path(@user, user_friendship), method: :delete,
-                                  class: "bg-red-500 text-white px-3 py-1 rounded-full
-                        hover:bg-red-600 transition-colors duration-200" %>
                   </div>
-                </div>
+                <% end %>
               <% end %>
+            <% else %>
+              <p class="text-xl font-bold tracking-tight text-gray-600">Друзей пока нет</p>
             <% end %>
-          <% else %>
-            <div class="flex justify-between items-center">
-              <h2 class="text-1xl font-bold tracking-tight text-gray-600">Друзей пока нет</h2>
-            </div>
-          <% end %>
+          </div>
         </div>
-      </div>
 
-      <div class="flex items-center pb-16">
-        <div class="w-1/4">
+        <!-- Заявки -->
+        <div class="section pb-16">
           <h2 class="text-2xl font-bold tracking-tight text-gray-900">Заявки</h2>
-        </div>
-        <div class="w-3/4">
-          <% if @user_sent_requests.count > 0 %>
-            <% @user_sent_requests.each do |user_request| %>
-              <% if user_request.friend %>
-                <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
-      duration-200 flex items-center space-x-4">
-                  <a href='<%= '/users/' + user_request.friend.id.to_s %>' class="flex items-center space-x-4 flex-grow">
+          <div class="request-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% if @user_sent_requests.count > 0 %>
+              <% @user_sent_requests.each do |user_request| %>
+                <% if user_request.friend %>
+                  <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 flex items-center space-x-4">
+                    <a href='<%= '/users/' + user_request.friend.id.to_s %>' class="flex items-center space-x-4 flex-grow">
                   <span class="relative">
                     <% if user_request.friend.avatar.attached? %>
-                      <%= image_tag url_for(user_request.friend.avatar), alt: "Profile Picture",
-                                    class: "h-16 w-16 rounded-full" %>
+                      <%= image_tag url_for(user_request.friend.avatar), alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
                     <% else %>
-                      <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                           class="h-16 w-16 rounded-full">
+                      <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-16 w-16 rounded-full">
                     <% end %>
                     <% if user_request.friend.can_see_online?(@user) %>
-                    <% if user_request.friend.online? %>
-              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
-               bg-green-400 ring-2 ring-white"></span>
-            <% elsif user_request.friend.last_active_at %>
-              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
-               bg-gray-400 ring-2 ring-white"></span>
-            <% end %>
+                      <% if user_request.friend.online? %>
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
+                      <% elsif user_request.friend.last_active_at %>
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
                       <% end %>
-          </span>
-                    <div>
-                      <h3 class="text-lg font-semibold text-gray-800"><%= user_request.friend.name %></h3>
-                      <% if user_request.friend.can_see_online?(@user) %>
-                        <p class="mt-6"
-                           data-controller="online">
-                          <% if user_request.friend.last_active_at.present? %>
-      <span id="user-status" class="text-sm text-gray-600"
-            data-online-target="lastActiveAt"
-            data-last-active-at="<%= user_request.friend.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
-            data-action="load->online#updateStatus"></span>
-                          <% else %>
-                            <span class="text-sm text-gray-600">Offline</span>
-                          <% end %>
-                        </p>
-                      <% end %>
-                    </div>
-                  </a>
-                  <%= button_to "Cancel", cancel_user_friendship_path(@user, user_request), method: :delete,
-                                class: "bg-red-500 text-white px-3 py-1 rounded-full
-                        hover:bg-red-600 transition-colors duration-200" %>
-                </div>
+                    <% end %>
+                  </span>
+                      <div>
+                        <h3 class="text-lg font-semibold text-gray-800"><%= user_request.friend.name %></h3>
+                        <% if user_request.friend.can_see_online?(@user) %>
+                          <p class="mt-1 text-sm text-gray-600" data-controller="online">
+                            <% if user_request.friend.last_active_at.present? %>
+                          <span id="user-status" data-online-target="lastActiveAt"
+                                data-last-active-at="<%= user_request.friend.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                                data-action="load->online#updateStatus"></span>
+                            <% else %>
+                              <span>Offline</span>
+                            <% end %>
+                          </p>
+                        <% end %>
+                      </div>
+                    </a>
+                    <%= button_to "Отменить", cancel_user_friendship_path(@user, user_request), method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition-colors duration-200" %>
+                  </div>
+                <% end %>
               <% end %>
+            <% else %>
+              <p class="text-xl font-bold tracking-tight text-gray-600">Исходящие запросы пока пусты</p>
             <% end %>
-          <% else %>
-            <div class="flex justify-between items-center">
-              <h2 class="text-1xl font-bold tracking-tight text-gray-600">Исходящие запросы пока пусты</h2>
-            </div>
-          <% end %>
+          </div>
         </div>
-      </div>
 
-      <div class="flex items-center pb-16">
-        <div class="w-1/4">
+        <!-- Подписчики -->
+        <div class="section pb-16">
           <h2 class="text-2xl font-bold tracking-tight text-gray-900">Подписчики</h2>
-        </div>
-        <div class="w-3/4">
-          <% if @user_received_requests.count > 0 %>
-            <% @user_received_requests.each do |user_request| %>
-              <% if user_request.user %>
-                <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
-                  <a href='<%= '/users/' + user_request.user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
+          <div class="followers-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% if @user_received_requests.count > 0 %>
+              <% @user_received_requests.each do |user_request| %>
+                <% if user_request.user %>
+                  <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
+                    <a href='<%= '/users/' + user_request.user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
                   <span class="relative">
                     <% if user_request.user.avatar.attached? %>
-                      <%= image_tag url_for(user_request.user.avatar), alt: "Profile Picture",
-                                    class: "h-16 w-16 rounded-full" %>
+                      <%= image_tag url_for(user_request.user.avatar), alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
                     <% else %>
-                      <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                           class="h-16 w-16 rounded-full">
+                      <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-16 w-16 rounded-full">
                     <% end %>
                     <% if user_request.user.can_see_online?(@user) %>
-                    <% if user_request.user.online? %>
-              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
-               bg-green-400 ring-2 ring-white"></span>
-            <% elsif user_request.user.last_active_at %>
-              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
-               bg-gray-400 ring-2 ring-white"></span>
-            <% end %>
+                      <% if user_request.user.online? %>
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
+                      <% elsif user_request.user.last_active_at %>
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
                       <% end %>
-          </span>
-                    <div>
-                      <h3 class="text-lg font-semibold text-gray-800"><%= user_request.user.name %></h3>
-                      <% if user_request.user.can_see_online?(@user) %>
-                        <p class="mt-6"
-                           data-controller="online">
-                          <% if user_request.user.last_active_at.present? %>
-      <span id="user-status" class="text-sm text-gray-600"
-            data-online-target="lastActiveAt"
-            data-last-active-at="<%= user_request.user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
-            data-action="load->online#updateStatus"></span>
-                          <% else %>
-                            <span class="text-sm text-gray-600">Offline</span>
-                          <% end %>
-                        </p>
-                      <% end %>
+                    <% end %>
+                  </span>
+                      <div>
+                        <h3 class="text-lg font-semibold text-gray-800"><%= user_request.user.name %></h3>
+                        <% if user_request.user.can_see_online?(@user) %>
+                          <p class="mt-1 text-sm text-gray-600" data-controller="online">
+                            <% if user_request.user.last_active_at.present? %>
+                          <span id="user-status" data-online-target="lastActiveAt"
+                                data-last-active-at="<%= user_request.user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                                data-action="load->online#updateStatus"></span>
+                            <% else %>
+                              <span>Offline</span>
+                            <% end %>
+                          </p>
+                        <% end %>
+                      </div>
+                    </a>
+                    <div class="flex flex-col gap-1">
+                      <%= button_to "Принять", user_friendship_path(@user, user_request), method: :put, class: "bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600 transition-colors duration-200" %>
+                      <%= button_to "Отменить", cancel_user_friendship_path(@user, user_request), method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition-colors duration-200" %>
                     </div>
-                  </a>
-                  <div class="flex flex-col gap-0.5">
-                    <%= button_to "Accept", user_friendship_path(@user, user_request), method: :put,
-                                  class: "bg-green-500 text-white px-3 py-1 rounded-full
-                        hover:bg-green-600 transition-colors duration-200 mb-2" %>
-                    <%= button_to "Cancel", cancel_user_friendship_path(@user, user_request), method: :delete,
-                                  class: "bg-red-500 text-white px-3 py-1 rounded-full
-                        hover:bg-red-600 transition-colors duration-200" %>
                   </div>
-                </div>
+                <% end %>
               <% end %>
+            <% else %>
+              <p class="text-xl font-bold tracking-tight text-gray-600">Входящие запросы пока пусты</p>
             <% end %>
-          <% else %>
-            <div class="flex justify-between items-center">
-              <h2 class="text-1xl font-bold tracking-tight text-gray-600">Входящие запросы пока пусты</h2>
-            </div>
-          <% end %>
+          </div>
         </div>
       </div>
     </div>
