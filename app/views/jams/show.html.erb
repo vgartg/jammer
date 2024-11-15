@@ -6,6 +6,11 @@
           <div class="flex justify-between">
             <h1 class="text-xl font-medium text-gray-900 break-all"><%= @jam.name %></h1>
           </div>
+          <% if @game.status != 1 %>
+            <p class="mt-2 text-red-400 sm:text-sm">Данная игра
+              <%= @game.status == 0 ? 'находится на модерации' : 'отклонена модератором' %>
+            </p>
+          <% end %>
         </div>
 
         <!-- Image gallery -->

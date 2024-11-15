@@ -41,7 +41,7 @@ class JamsController < ApplicationController
   def show
     @jam = Jam.find(params[:id])
     if @jam.status != 1 && current_user != @jam.author
-      flash[:failure] = "Игра находится на модерации"
+      flash[:failure] = "Джем находится на модерации"
       redirect_to dashboard_path
     end
     if current_user

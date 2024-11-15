@@ -40,7 +40,7 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
-    if @game.status != 1
+    if @game.status != 1 && current_user != @game.author
       flash[:failure] = "Игра находится на модерации"
       redirect_to dashboard_path
     end
@@ -98,7 +98,7 @@ class GamesController < ApplicationController
   private
 
   def root_check
-    unless current_user.jams.find_by_id(params[:id])
+    unless current_user.games.find_by_id(params[:id])
       flash[:failure] = "Недостаточно прав"
       redirect_to dashboard_path
     end
