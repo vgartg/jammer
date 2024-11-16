@@ -47,7 +47,7 @@ class JamsController < ApplicationController
     @jam = Jam.new(jam_params.merge(author: current_user))
     @tags = Tag.all
     failures = invalid_date
-    if failures
+    if failures.any?
       flash[:failure] ||= []
       failures.each do |problem|
         flash[:failure] << problem
@@ -87,7 +87,7 @@ class JamsController < ApplicationController
   def update
     @jam = current_user.jams.find_by_id(params[:id])
     failures = invalid_date
-    if failures
+    if failures.any?
       flash[:failure] ||= []
       failures.each do |problem|
         flash[:failure] << problem
