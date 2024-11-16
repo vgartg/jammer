@@ -99,6 +99,10 @@ export default class extends Controller {
         }
         else { errorMessageElement.textContent = ''; }
 
+        if (this._checkErrorMassage()){
+            this._enableSubmitButton();
+        } else this._disableSubmitButton();
+
         if (deadlineInput.value === '') return;
         this.validateDeadline();
     }
@@ -118,6 +122,10 @@ export default class extends Controller {
             errorMessageElement.textContent = 'Дата сдачи работ не может быть раньше даты начала';
         } else { errorMessageElement.textContent = ''; }
 
+        if (this._checkErrorMassage()){
+            this._enableSubmitButton();
+        } else this._disableSubmitButton();
+
         if (endDateInput.value === '') return;
         this.validateEndDates();
     }
@@ -135,5 +143,37 @@ export default class extends Controller {
         else if(endDate < deadline) {
             errorMessageElement.textContent = 'Дата окончания джема не может быть раньше даты сдачи работ';
         } else { errorMessageElement.textContent = ''; }
+
+        if (this._checkErrorMassage()){
+            this._enableSubmitButton();
+        } else this._disableSubmitButton();
+    }
+
+    _checkErrorMassage(){
+        const errorMessageStartDate = document.getElementById('start_date-error-message');
+        const errorMessageDeadline = document.getElementById('deadline-error-message');
+        const errorMessageEndDate = document.getElementById('end_date-error-message');
+
+        return errorMessageStartDate.textContent === '' &&
+            errorMessageDeadline.textContent === '' &&
+            errorMessageEndDate.textContent === '';
+    }
+
+    _enableSubmitButton() {
+        const submitButton = document.getElementById('submit-button');
+
+        submitButton.disabled = false;
+
+        submitButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+        submitButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+    }
+
+    _disableSubmitButton() {
+        const submitButton = document.getElementById('submit-button');
+
+        submitButton.disabled = true;
+
+        submitButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+        submitButton.classList.add('bg-gray-400', 'cursor-not-allowed');
     }
 }
