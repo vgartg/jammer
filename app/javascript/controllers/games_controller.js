@@ -1,7 +1,8 @@
 import {Controller} from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ["input", "tagCheckbox", "tagMode", "toggleTagMode", "resetButton"]
+    static targets = ["input", "tagCheckbox", "tagMode", "toggleTagMode", "resetButton",
+        "coverInput", "coverPreviewImg", "coverText", "fileInput", "fileNameDisplay", "fileText"]
 
 
     connect() {
@@ -72,6 +73,32 @@ export default class extends Controller {
             this.resetButtonTarget.classList.remove("hidden");
         } else {
             this.resetButtonTarget.classList.add("hidden");
+        }
+    }
+
+    updateCoverPreview(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                this.coverPreviewImgTarget.src = e.target.result;
+                this.coverPreviewImgTarget.classList.remove('hidden');
+                this.coverTextTarget.classList.remove('mt-0');
+                this.coverTextTarget.classList.add('mt-4');
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+    updateFileName(event) {
+        const file = event.target.files[0];
+        if (file) {
+            this.fileNameDisplayTarget.textContent = file.name;
+            this.fileNameDisplayTarget.classList.remove('hidden');
+            this.fileTextTarget.classList.remove('mt-0');
+            this.fileTextTarget.classList.add('mt-4');
         }
     }
 }
