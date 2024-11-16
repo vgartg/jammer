@@ -86,4 +86,54 @@ export default class extends Controller {
             textTarget.classList.add('mt-4')
         }
     }
+
+    validateStartDates() {
+        const startDateInput = this.element.querySelector('#start_date');
+        const deadlineInput = this.element.querySelector('#deadline');
+        const errorMessageElement = document.getElementById('start_date-error-message');
+
+        const startDate = new Date(startDateInput.value);
+
+        if (isNaN(startDate.getTime()) || startDate.getFullYear() < 2000) {
+            errorMessageElement.textContent = 'Пожалуйста, введите корректные даты';
+        }
+        else { errorMessageElement.textContent = ''; }
+
+        if (deadlineInput.value === '') return;
+        this.validateDeadline();
+    }
+
+    validateDeadline() {
+        const startDateInput = this.element.querySelector('#start_date');
+        const deadlineInput = this.element.querySelector('#deadline');
+        const endDateInput = this.element.querySelector('#end_date');
+        const errorMessageElement = document.getElementById('deadline-error-message');
+
+        const startDate = new Date(startDateInput.value);
+        const deadline = new Date(deadlineInput.value);
+
+        if (isNaN(deadline.getTime()) || deadline.getFullYear() < 2000) {
+            errorMessageElement.textContent = 'Пожалуйста, введите корректные даты';}
+        else if (deadline < startDate) {
+            errorMessageElement.textContent = 'Дата сдачи работ не может быть раньше даты начала';
+        } else { errorMessageElement.textContent = ''; }
+
+        if (endDateInput.value === '') return;
+        this.validateEndDates();
+    }
+
+    validateEndDates() {
+        const deadlineInput = this.element.querySelector('#deadline');
+        const endDateInput = this.element.querySelector('#end_date');
+        const errorMessageElement = document.getElementById('end_date-error-message');
+
+        const deadline = new Date(deadlineInput.value);
+        const endDate = new Date(endDateInput.value);
+
+        if (isNaN(endDate.getTime()) || endDate.getFullYear() < 2000) {
+            errorMessageElement.textContent = 'Пожалуйста, введите корректные даты';}
+        else if(endDate < deadline) {
+            errorMessageElement.textContent = 'Дата окончания джема не может быть раньше даты сдачи работ';
+        } else { errorMessageElement.textContent = ''; }
+    }
 }

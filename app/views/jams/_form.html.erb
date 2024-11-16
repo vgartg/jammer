@@ -29,10 +29,12 @@
                          autocomplete: 'start_date',
                          required: true,
                          type: 'date',
+                         data: { action: "input->jams#validateStartDates" },
                          class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
                      shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                      focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
       </div>
+      <div id="start_date-error-message" style="color: red;"></div>
     </div>
 
     <div class="mt-4">
@@ -42,14 +44,13 @@
                          autocomplete: 'deadline',
                          required: true,
                          type: 'date',
+                         data: { action: "input->jams#validateDeadline" },
                          class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
                      shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                      focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
       </div>
+      <div id="deadline-error-message" style="color: red;"></div>
     </div>
-
-    <script>
-    </script>
 
     <div class="mt-4">
       <%= f.label :end_date, "Дата окончания джема", class: "block text-sm font-medium text-white" %>
@@ -58,11 +59,15 @@
                          autocomplete: 'end_date',
                          required: true,
                          type: 'date',
+                         data: { action: "input->jams#validateEndDates" },
                          class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
                     shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                     focus:ring-indigo-500 sm:text-sm sm:leading-6 flatpickr" %>
       </div>
+      <div id="end_date-error-message" style="color: red;"></div>
     </div>
+
+
 
     <div class="mt-4">
       <%= f.label :cover, "Обложка", class: "block text-sm font-medium text-white" %>
