@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Подтверждение электронной почты</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          margin: 0;
+          padding: 20px;
+      }
+      .container {
+          max-width: 600px;
+          margin: auto;
+          background: #fff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+          color: #333;
+      }
+      p {
+          color: #555;
+          line-height: 1.6;
+      }
+      .code {
+          display: inline-block;
+          padding: 10px;
+          margin-top: 10px;
+          background-color: #e9ecef;
+          border: 1px solid #ced4da;
+          border-radius: 5px;
+          font-family: monospace;
+          color: #333;
+      }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Подтверждение электронной почты</h1>
+  <p>Вам необходимо подтвердить адрес электронной почты для регистрации на Jammer. Пожалуйста, скопируйте этот код для подтверждения:</p>
+  <p class="code">
+    <% if @user && @token && @user.email_confirm_token %>
+      <%= @token %>
+    <% end %>
+  </p>
+</div>
+
+</body>
+</html>

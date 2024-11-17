@@ -16,6 +16,9 @@ application.register("dashboard", DashboardController)
 import FriendsController from "./friends_controller"
 application.register("friends", FriendsController)
 
+import ProfileController from "./profile_controller"
+application.register("profile", ProfileController)
+
 import GamesController from "./games_controller"
 application.register("games", GamesController)
 

@@ -1,4 +1,4 @@
-<div>
+<div data-controller="profile">
   <div>
     <% if @user.background_image.attached? %>
       <%= image_tag url_for(@user.background_image), class: "h-32 w-full object-cover lg:h-48", alt: "Background Image" %>
@@ -42,6 +42,21 @@
           </p>
         </div>
         <div class="flex justify-between items-center py-2 mt-6 gap-5">
+          <button id="btnUserInfo" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
+                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 bg-gray-100"
+                  data-action="click->profile#openTab" data-tab-name="user_info">
+            Инфо
+          </button>
+          <button id="btnUserFriends" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
+                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  data-action="click->profile#openTab" data-tab-name="user_friends">
+            Друзья
+          </button>
+          <button id="btnUserFollowers" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
+                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  data-action="click->profile#openTab" data-tab-name="user_followers">
+            Подписчики
+          </button>
           <% if @user.id != session[:current_user] %>
             <% if @friendship.nil? %>
               <%= button_to "Add friend", user_friendships_path(@user), method: :post,
@@ -87,156 +102,276 @@
     <% end %>
     <div class="mt-6">
       <div class="mt-6 border-t border-gray-100">
-        <ul class="divide-y divide-gray-100">
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Full name</dt>
-            <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <% if @user.real_name.blank? %>
-                <span>Информации нет</span>
-              <% else %>
-                <span><%= @user.real_name %></span>
-              <% end %>
-            </dd>
-          </div>
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">E-mail</dt>
-            <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <%= @user.email %>
-            </dd>
-          </div>
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Birthday</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <% if @user.birthday.blank? %>
-                <span>Информации нет</span>
-              <% else %>
-                <span><%= Date.parse(@user.birthday).strftime("%d.%m.%Y") %></span>
-              <% end %>
-            </dd>
-          </div>
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Location</dt>
-            <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <% if @user.location.blank? %>
-                <span>Информации нет</span>
-              <% else %>
-                <span><%= @user.location %></span>
-              <% end %>
-            </dd>
-          </div>
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Phone number</dt>
-            <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <% if @user.phone_number.blank? %>
-                <span>Информации нет</span>
-              <% else %>
-                <span><%= @user.phone_number %></span>
-              <% end %>
-            </dd>
-          </div>
 
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Games</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <% if @user.games.any? %>
-                <ul role="list" id="game-list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-                  <% @user.games.each_with_index do |game, index| %>
-                    <li class="relative game-item <%= index >= 8 ? 'hidden' : '' %>">
-                      <a href="/games/<%= game.id %>">
-                        <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
+        <div id="user_info" class="tab_content">
+          <ul class="divide-y divide-gray-100">
+            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Full name</dt>
+              <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <% if @user.real_name.blank? %>
+                  <span>Информации нет</span>
+                <% else %>
+                  <span><%= @user.real_name %></span>
+                <% end %>
+              </dd>
+            </div>
+            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Birthday</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <% if @user.birthday.blank? %>
+                  <span>Информации нет</span>
+                <% else %>
+                  <span><%= Date.parse(@user.birthday).strftime("%d.%m.%Y") %></span>
+                <% end %>
+              </dd>
+            </div>
+            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Location</dt>
+              <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <% if @user.location.blank? %>
+                  <span>Информации нет</span>
+                <% else %>
+                  <span><%= @user.location %></span>
+                <% end %>
+              </dd>
+            </div>
+            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Phone number</dt>
+              <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <% if @user.phone_number.blank? %>
+                  <span>Информации нет</span>
+                <% else %>
+                  <span><%= @user.phone_number %></span>
+                <% end %>
+              </dd>
+            </div>
+
+            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Games</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <% if @user.games.any? %>
+                  <ul role="list" id="game-list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                    <% @user.games.each_with_index do |game, index| %>
+                      <li class="relative game-item <%= index >= 8 ? 'hidden' : '' %>">
+                        <a href="/games/<%= game.id %>">
+                          <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
                 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
                 focus-within:ring-offset-gray-100">
-                          <% if game && game.cover.attached? %>
-                            <%= image_tag url_for(game.cover), alt: game.name,
-                                          class: "pointer-events-none object-cover group-hover:opacity-75" %>
-                          <% else %>
-                            <img src="https://via.placeholder.com/300" alt="<%= game.name %>"
-                                 class="pointer-events-none object-cover group-hover:opacity-75">
-                          <% end %>
-                        </div>
-                        <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
-                          <%= game.name %>
-                        </p>
-                        <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
-                          <%= game.description %>
-                        </p>
-                      </a>
-                    </li>
-                  <% end %>
-                </ul>
-                <button id="toggle-button" class="mt-4 text-gray-400 hover:underline">
-                  Показать все игры
-                </button>
-              <% else %>
-                <span class="text-gray-900">Информации нет</span>
-              <% end %>
-            </dd>
-          </div>
-
-          <script>
-              tb = document.getElementById('toggle-button');
-              if (tb) {
-                  tb.addEventListener('click', function() {
-                      const games = document.querySelectorAll('.game-item.hidden');
-                      const allGames = document.querySelectorAll('.game-item');
-                      const isHidden = games.length > 0;
-                      if (isHidden) {
-                          games.forEach(game => {
-                              game.classList.remove('hidden');
-                          });
-                          this.innerText = 'Скрыть игры';
-                      } else {
-                          allGames.forEach((game, index) => {
-                              if (index >= 8) {
-                                  game.classList.add('hidden');
-                              }
-                          });
-                          this.innerText = 'Показать все игры';
-                      }
-                  });
-              }
-          </script>
-
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm font-medium leading-6 text-gray-900">Administrating jams</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <% if @user.can_see_jams?(current_user) || current_user == @user %>
-                <% if @user.jams.any? %>
-                  <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3
-                sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-                    <% @user.jams.each do |jam| %>
-                      <li class="relative">
-                        <a href="/jams/<%= jam.id %>">
-                          <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
-                        focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
-                         focus-within:ring-offset-gray-100">
-                            <% if jam && jam.cover.attached? %>
-                              <%= image_tag url_for(jam.cover), alt: jam.name,
+                            <% if game && game.cover.attached? %>
+                              <%= image_tag url_for(game.cover), alt: game.name,
                                             class: "pointer-events-none object-cover group-hover:opacity-75" %>
                             <% else %>
-                              <img src="https://via.placeholder.com/300" alt="<%= jam.name %>"
+                              <img src="https://via.placeholder.com/300" alt="<%= game.name %>"
                                    class="pointer-events-none object-cover group-hover:opacity-75">
                             <% end %>
                           </div>
-                          <p class="pointer-events-none mt-2 block text-center truncate text-sm font-medium text-gray-900">
-                            <%= jam.name %>
+                          <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
+                            <%= game.name %>
                           </p>
                           <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
-                            <%= jam.description %>
+                            <%= game.description %>
                           </p>
                         </a>
                       </li>
                     <% end %>
                   </ul>
+                  <% if @user.games.count >= 8 %>
+                    <button id="toggle-button" class="mt-4 text-gray-400 hover:underline">
+                      Показать все игры
+                    </button>
+                  <% end %>
                 <% else %>
                   <span class="text-gray-900">Информации нет</span>
                 <% end %>
-              <% else %>
-                <span class="text-gray-900">Информации нет</span>
+              </dd>
+            </div>
+
+            <script>
+                tb = document.getElementById('toggle-button');
+                if (tb) {
+                    tb.addEventListener('click', function() {
+                        const games = document.querySelectorAll('.game-item.hidden');
+                        const allGames = document.querySelectorAll('.game-item');
+                        const isHidden = games.length > 0;
+                        if (isHidden) {
+                            games.forEach(game => {
+                                game.classList.remove('hidden');
+                            });
+                            this.innerText = 'Скрыть игры';
+                        } else {
+                            allGames.forEach((game, index) => {
+                                if (index >= 8) {
+                                    game.classList.add('hidden');
+                                }
+                            });
+                            this.innerText = 'Показать все игры';
+                        }
+                    });
+                }
+            </script>
+            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Administrating jams</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <% if @user.can_see_jams?(current_user) || current_user == @user %>
+                  <% if @user.jams.any? %>
+                    <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3
+                sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                      <% @user.jams.each do |jam| %>
+                        <li class="relative">
+                          <a href="/jams/<%= jam.id %>">
+                            <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
+                        focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
+                         focus-within:ring-offset-gray-100">
+                              <% if jam && jam.cover.attached? %>
+                                <%= image_tag url_for(jam.cover), alt: jam.name,
+                                              class: "pointer-events-none object-cover group-hover:opacity-75" %>
+                              <% else %>
+                                <img src="https://via.placeholder.com/300" alt="<%= jam.name %>"
+                                     class="pointer-events-none object-cover group-hover:opacity-75">
+                              <% end %>
+                            </div>
+                            <p class="pointer-events-none mt-2 block text-center truncate text-sm font-medium text-gray-900">
+                              <%= jam.name %>
+                            </p>
+                            <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
+                              <%= jam.description %>
+                            </p>
+                          </a>
+                        </li>
+                      <% end %>
+                    </ul>
+                  <% else %>
+                    <span class="text-gray-900">Информации нет</span>
+                  <% end %>
+                <% else %>
+                  <span class="text-gray-900">Информации нет</span>
+                <% end %>
+              </dd>
+            </div>
+          </ul>
+        </div>
+        <% def find_friend(friendship)%>
+          <% if friendship.friend %>
+            <% friendship.friend.id != @user.id ? friendship.friend : friendship.user%>
+          <% end %>
+        <% end %>
+        <div id="user_friends" class="tab_content hidden">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
+            <% if @friendships.count > 0 %>
+              <% @friendships.each do |friendship| %>
+                <% if  find_friend(friendship) %>
+                  <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
+                              duration-200 flex items-center space-x-4">
+                    <a href='<%= '/users/' + find_friend(friendship).id.to_s %>' class="flex items-center space-x-4 flex-grow">
+          <span class="relative">
+            <% if find_friend(friendship).avatar.attached? %>
+              <%= image_tag url_for(find_friend(friendship).avatar), alt: "Profile Picture",
+                            class: "h-16 w-16 rounded-full" %>
+            <% else %>
+              <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full"%>
+            <% end %>
+            <% if find_friend(friendship).can_see_online?(current_user) %>
+              <% if find_friend(friendship).online? %>
+                <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
+              <% elsif find_friend(friendship).last_active_at %>
+                <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
               <% end %>
-            </dd>
+            <% end %>
+          </span>
+                      <div>
+                        <h2 class="text-lg font-semibold text-gray-800"><%= find_friend(friendship).name %></h2>
+                        <% if find_friend(friendship).can_see_online?(current_user) %>
+                          <p class="mt-6"
+                             data-controller="online">
+                            <% if find_friend(friendship).last_active_at.present? %>
+          <span id="user-status" class="text-sm text-gray-600"
+                data-online-target="lastActiveAt"
+                data-last-active-at="<%= find_friend(friendship).last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                data-action="load->online#updateStatus"></span>
+                            <% else %>
+                              <span class="text-sm text-gray-600">Offline</span>
+                            <% end %></p>
+                        <% end %>
+                      </div>
+                    </a>
+                    <%if @current_user == @user %>
+                      <div>
+                        <%= button_to "Remove", user_friendship_path(@current_user, friendship), method: :delete,
+                                      class: "bg-red-500 text-white px-3 py-1 rounded-full
+                          hover:bg-red-600 transition-colors duration-200" %>
+                      </div>
+                    <%end %>
+                  </div>
+                <% end %>
+              <% end %>
+            <% else %>
+              <div class="flex justify-between items-center">
+                <h2 class="text-1xl font-bold tracking-tight text-gray-600">Друзей пока нет</h2>
+              </div>
+            <% end %>
           </div>
-        </ul>
+         </div>
+        <div id="user_followers" class="tab_content hidden">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
+            <% if @received_requests.count > 0 %>
+              <% @received_requests.each do |request| %>
+                <% if request.user %>
+                  <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
+                    <a href='<%= '/users/' + request.user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
+                  <span class="relative">
+                    <% if request.user.avatar.attached? %>
+                      <%= image_tag url_for(request.user.avatar), alt: "Profile Picture",
+                                    class: "h-16 w-16 rounded-full" %>
+                    <% else %>
+                      <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full"%>
+                    <% end %>
+                    <% if request.user.can_see_online?(current_user) %>
+                    <% if request.user.online? %>
+              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
+               bg-green-400 ring-2 ring-white"></span>
+            <% elsif request.user.last_active_at %>
+              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
+               bg-gray-400 ring-2 ring-white"></span>
+            <% end %>
+                      <% end %>
+          </span>
+                      <div>
+                        <h3 class="text-lg font-semibold text-gray-800"><%= request.user.name %></h3>
+                        <% if request.user.can_see_online?(current_user) %>
+                          <p class="mt-6"
+                             data-controller="online">
+                            <% if request.user.last_active_at.present? %>
+      <span id="user-status" class="text-sm text-gray-600"
+            data-online-target="lastActiveAt"
+            data-last-active-at="<%= request.user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+            data-action="load->online#updateStatus"></span>
+                            <% else %>
+                              <span class="text-sm text-gray-600">Offline</span>
+                            <% end %>
+                          </p>
+                        <% end %>
+                      </div>
+                    </a>
+                    <%if @current_user == @user %>
+                      <div class="flex flex-col gap-0.5">
+                        <%= button_to "Accept", user_friendship_path(@current_user, request), method: :put,
+                                      class: "bg-green-500 text-white px-3 py-1 rounded-full
+                        hover:bg-green-600 transition-colors duration-200 mb-2" %>
+                        <%= button_to "Cancel", cancel_user_friendship_path(@current_user, request), method: :delete,
+                                      class: "bg-red-500 text-white px-3 py-1 rounded-full
+                        hover:bg-red-600 transition-colors duration-200" %>
+                      </div>
+                    <%end %>
+                  </div>
+                <% end %>
+              <% end %>
+            <% else %>
+              <div class="flex justify-between items-center">
+                <h2 class="text-1xl font-bold tracking-tight text-gray-600">Подписчиков пока нет</h2>
+              </div>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
