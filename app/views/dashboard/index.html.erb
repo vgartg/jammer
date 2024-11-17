@@ -3,33 +3,41 @@
     <div class="flex justify-between items-center">
       <h2 class="text-2xl font-bold tracking-tight text-gray-900">Dashboard</h2>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
-      <% if @average_rating.present? && @user.games.count >0  %>
+    <div class="grid grid-cols-1 gap-6 pt-4">
+
+      <% if @average_rating_no_jam.present? && @user.games.count > 0 %>
         <div>
           <p class="text-xl font-semibold">Средняя оценка ваших игр:</p>
           <div class="flex items-center">
-            <span class="text-xl font-bold"><%= @average_rating.round(1) %></span>
-            <%# Render full, half, or empty star icons based on average rating %>
+            <span class="text-xl font-bold"><%= @average_rating_no_jam.round(1) %></span>
+            <%# Render stars dynamically based on the average rating %>
             <% (1..5).each do |star| %>
-              <% if star <= @average_rating.floor %>
-                <!-- Full Star -->
+              <% full_star = star <= @average_rating_no_jam.floor %>
+              <% partial_star = star == (@average_rating_no_jam.floor + 1) && @average_rating_no_jam - @average_rating_no_jam.floor > 0 %>
+              <% empty_star = star > @average_rating_no_jam %>
+              <!-- Полностью закрашенная звезда -->
+              <% if full_star %>
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="yellow" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
                 </svg>
-              <% elsif (star - @average_rating).between?(0, 0.5) %>
-                <!-- Half Star -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="yellow" viewBox="0 0 24 24" stroke="currentColor">
+              <% elsif partial_star %>
+                <!-- Частично закрашенная звезда -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" viewBox="0 0 24 24" stroke="currentColor">
                   <defs>
-                    <linearGradient id="halfStarGradient">
-                      <stop offset="50%" stop-color="yellow"/>
-                      <stop offset="50%" stop-color="gray"/>
-                    </linearGradient>
+                    <clipPath id="partialStarClip<%= star %>">
+                      <rect x="0" y="0" width="<%= (@average_rating_no_jam - @average_rating_no_jam.floor) * 24 %>" height="24"/>
+                    </clipPath>
                   </defs>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" fill="url(#halfStarGradient)"
+                  <!-- Серый фон звезды -->
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" fill="gray"
                         d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                  <!-- Желтая часть звезды с клиппингом -->
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" fill="yellow"
+                        d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"
+                        clip-path="url(#partialStarClip<%= star %>)"/>
                 </svg>
               <% else %>
-                <!-- Empty Star -->
+                <!-- Пустая звезда -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="gray" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
                 </svg>
@@ -37,11 +45,126 @@
             <% end %>
           </div>
         </div>
-      <% else %>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
-          Данных пока не достаточно...
+      <% end %>
+
+      <% if @average_rating_in_jams.present? && @user.games.count > 0 %>
+        <div>
+          <p class="text-xl font-semibold">Средняя оценка ваших игр в Джемах:</p>
+          <div class="flex items-center">
+            <span class="text-xl font-bold"><%= @average_rating_in_jams.round(1) %></span>
+            <%# Render stars dynamically based on the average rating %>
+            <% (1..5).each do |star| %>
+              <% full_star = star <= @average_rating_in_jams.floor %>
+              <% partial_star = star == (@average_rating_in_jams.floor + 1) && @average_rating_in_jams - @average_rating_in_jams.floor > 0 %>
+              <% empty_star = star > @average_rating_in_jams %>
+              <!-- Полностью закрашенная звезда -->
+              <% if full_star %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="yellow" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                </svg>
+              <% elsif partial_star %>
+                <!-- Частично закрашенная звезда -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" viewBox="0 0 24 24" stroke="currentColor">
+                  <defs>
+                    <clipPath id="partialStarClip<%= star %>">
+                      <rect x="0" y="0" width="<%= (@average_rating_in_jams - @average_rating_in_jams.floor) * 24 %>" height="24"/>
+                    </clipPath>
+                  </defs>
+                  <!-- Серый фон звезды -->
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" fill="gray"
+                        d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                  <!-- Желтая часть звезды с клиппингом -->
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" fill="yellow"
+                        d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"
+                        clip-path="url(#partialStarClip<%= star %>)"/>
+                </svg>
+              <% else %>
+                <!-- Пустая звезда -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="gray" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                </svg>
+              <% end %>
+            <% end %>
+          </div>
         </div>
       <% end %>
+
+      <%# List games the user has rated %>
+      <% if @reviews_in_jams.any? %>
+        <div>
+          <p class="text-xl font-semibold">Ваши отзывы в джемах:</p>
+          <% @reviews_in_jams.each do |review| %>
+            <div class="bg-gray-100 p-4 mb-4 rounded-lg">
+              <p class="font-medium text-gray-900">
+                <!-- Game name clickable, linking to the game page -->
+                <a href="<%= game_path(review.game) %>" class="text-blue-600 hover:underline"><%= review.game.name %></a>
+                <span class="text-sm text-gray-500">
+            <!-- Jam name clickable, linking to the jam page -->
+            (<a href="<%= jam_path(review.jam) %>" class="text-blue-600 hover:underline"><%= review.jam.name %></a>)
+          </span>
+              </p>
+              <div class="flex items-center">
+                <p class="text-xl font-bold mr-4">Оценка: <%= review.user_mark %></p>
+                <div class="flex items-center">
+                  <% (1..5).each do |star| %>
+                    <% if star <= review.user_mark.to_i %>
+                      <!-- Filled star (yellow) -->
+                      <svg class="w-4 h-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                      </svg>
+                    <% else %>
+                      <!-- Empty star (gray) -->
+                      <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                      </svg>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+              <p class="mt-2 text-gray-700"><%= review.criterion %></p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+<%# Display reviews for games outside of jams (where jam_id is nil) %>
+      <% if @reviews_no_jam.any? %>
+        <div>
+          <p class="text-xl font-semibold">Ваши отзывы на игры:</p>
+          <% @reviews_no_jam.each do |review| %>
+            <div class="bg-gray-100 p-4 mb-4 rounded-lg">
+              <p class="font-medium text-gray-900">
+                <!-- Game name clickable, linking to the game page -->
+                <a href="<%= game_path(review.game) %>" class="text-blue-600 hover:underline"><%= review.game.name %></a>
+              </p>
+              <div class="flex items-center">
+                <p class="text-xl font-bold mr-4">Оценка: <%= review.user_mark %></p>
+                <div class="flex items-center">
+                  <% (1..5).each do |star| %>
+                    <% if star <= review.user_mark.to_i %>
+                      <!-- Filled star (yellow) -->
+                      <svg class="w-4 h-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                      </svg>
+                    <% else %>
+                      <!-- Empty star (gray) -->
+                      <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                      </svg>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+              <p class="mt-2 text-gray-700"><%= review.criterion %></p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+
+
+    </div>
+
     </div>
   </div>
-</div>
+
