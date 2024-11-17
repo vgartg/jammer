@@ -83,7 +83,7 @@ class GamesController < ApplicationController
     if @game.save
       flash[:success] ||= []
       flash[:success] << "Игра успешно создана!"
-      redirect_to games_showcase_path
+      redirect_to dashboard_path
     else
       flash[:failure] ||= []
       flash[:failure].concat(@game.errors.full_messages)
