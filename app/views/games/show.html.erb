@@ -111,9 +111,7 @@
               <h2 class="text-lg font-semibold">Отзывы пользователей:</h2>
               <% @reviews.each do |review| %>
                 <div class="mt-4 flex justify-center">
-                  <div class="flex flex-col items-center">
-
-
+                  <div class="flex flex-col items-center line-clamp-2">
                     <div class="flex items-center mb-2">
                       <% if @current_user && @current_user.avatar.attached? %>
                         <%= image_tag url_for(@current_user.avatar), alt: "Profile Picture",
@@ -143,7 +141,7 @@
                       </div>
                     </div>
 
-                    <p class="text-sm text-gray-500 text-center">
+                    <p class="text-sm text-gray-500 text-center truncate">
                       <%= review.criterion.presence || 'Комментарий не оставлен' %>
                     </p>
                   </div>
@@ -151,11 +149,6 @@
               <% end %>
             </div>
           <% end %>
-
-
-
-
-
 
         </div>
         <div class="mt-8 lg:col-span-5">
