@@ -45,7 +45,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_10_132743) do
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "friend_id", null: false
-    t.string "status", null: false
+    t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
