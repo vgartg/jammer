@@ -57,9 +57,9 @@ module Admin
         query = params[:query].strip.downcase
 
         if query.to_i.to_s == query
-          jams = jams.where(id: query.to_i)
+          jams = jams.where("jams.id = :query OR jams.status = :query", query: query.to_i)
         else
-          jams = jams.joins(:author).where("jams.name ILIKE :query OR jams.status ILIKE :query OR jams.created_at::TEXT ILIKE :query OR users.name ILIKE :query", query: "%#{query}%")
+          jams = jams.joins(:author).where("jams.name ILIKE :query OR jams.created_at::TEXT ILIKE :query OR users.name ILIKE :query", query: "%#{query}%")
         end
       end
 

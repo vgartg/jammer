@@ -57,9 +57,9 @@ module Admin
         query = params[:query].strip.downcase
 
         if query.to_i.to_s == query
-          games = games.where(id: query.to_i)
+          games = games.where("games.id = :query OR games.status = :query", query: query.to_i)
         else
-          games = games.joins(:author).where("games.name ILIKE :query OR games.status ILIKE :query OR games.created_at::TEXT ILIKE :query OR users.name ILIKE :query", query: "%#{query}%")
+          games = games.joins(:author).where("games.name ILIKE :query OR games.created_at::TEXT ILIKE :query OR users.name ILIKE :query", query: "%#{query}%")
         end
       end
 
