@@ -1,0 +1,25 @@
+<tbody class="text-gray-600 text-sm font-light">
+<% @jams.each do |jam| %>
+  <tr class="border-b hover:bg-gray-100">
+    <th scope="row" class="py-3 px-6"><%= jam.id %></th>
+    <td class="py-3 px-6">
+      <% if jam.author_id.present? %>
+        <a class="break-all hover:underline" href="<%= user_profile_path(jam.author) %>">
+          <%= truncate(jam.author.name, length: 15) %>
+        </a>
+      <% else %>
+        <span>Автор неизвестен</span>
+      <% end %>
+    </td>
+    <td class="py-3 px-6 hover:underline">
+      <%= link_to truncate(jam.name, length: 15), jam_profile_path(jam), class: 'break-all' %>
+    </td>
+    <td class="py-3 px-10"><%= jam.status %></td>
+    <td class="py-3 px-6"><%= jam.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+    <td class="py-3 px-6 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+      <%= link_to 'Edit', edit_moderator_jam_path(jam), class: 'bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600' %>
+      <%= link_to 'Delete', moderator_jam_path(jam), class: 'bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600', data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %>
+    </td>
+  </tr>
+<% end %>
+</tbody>

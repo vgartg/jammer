@@ -59,6 +59,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def moderator?
+    @user = current_user
+    # Права администратора включают в себя права модератора и выше, поэтому такая проверка
+    if @user && @user.role == 'basic'
+      flash[:failure] = 'Недостаточно прав'
+      redirect_to dashboard_path
+    end
+  end
+
   def update_last_active_at
     if current_user
       current_user.update(last_active_at: Time.current)

@@ -81,6 +81,14 @@ Rails.application.routes.draw do
     end
   end
 
+  # Moderator
+  get '/moderator', to: 'moderators#index'
+  namespace :moderator do
+    [:games, :jams].each do |resource|
+      resources resource, only: [:index, :edit, :update, :destroy]
+    end
+  end
+
   # Email (mailer)
   resource :password_reset, only: [:new, :create, :edit, :update]
   resource :email_confirm, only: [:new, :create, :edit, :update]

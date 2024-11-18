@@ -52,12 +52,12 @@ class GamesController < ApplicationController
     @game = Game.new(game_params.merge(author: current_user))
     @tags = Tag.all
     if @game.save
-      admins = User.where(role: 2)
+      admins = User.where(role: [1, 2])
       admins.each do |admin|
         current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
       end
       flash[:success] = "Игра отправлена на модерацию!"
-      redirect_to game_profile_path
+      redirect_to dashboard_path
     else
       flash[:failure] = @game.errors.full_messages
       render :new, status: :see_other
@@ -75,7 +75,7 @@ class GamesController < ApplicationController
   def update
     @game = current_user.games.find_by_id(params[:id])
     if @game.update(game_params)
-      admins = User.where(role: 2)
+      admins = User.where(role: [1, 2])
       admins.each do |admin|
         current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
       end

@@ -118,6 +118,21 @@
                           </a>
                         </li>
                       <% end %>
+                      <% if @current_user.role == 'moderator' %>
+                        <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                  hover:bg-gray-800 text-gray-400 cursor-pointer" id="moderator"
+                            data-content-id="moderator" data-action="click->dashboard#dashboardChanger">
+                          <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                    text-gray-400">
+                            <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
+                            </svg>
+                            Панель модератора
+                          </a>
+                        </li>
+                      <% end %>
                       <li class="hidden group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
                   hover:bg-gray-800 text-gray-400 cursor-pointer" id="zaglushka"
                           data-content-id="zaglushka" data-action="click->dashboard#dashboardChanger
@@ -306,6 +321,21 @@
                           <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
                         </svg>
                         Панель администратора
+                      </a>
+                    </li>
+                  <% end %>
+                  <% if @current_user.role == 'moderator' %>
+                    <li class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 cursor-pointer
+               hover:bg-gray-800" id="moderator"
+                        data-content-id="moderator" data-action="click->dashboard#dashboardChanger">
+                      <a class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6
+                text-gray-400">
+                        <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                             stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
+                        </svg>
+                        Панель модератора
                       </a>
                     </li>
                   <% end %>

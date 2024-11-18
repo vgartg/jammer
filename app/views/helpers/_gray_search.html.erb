@@ -60,7 +60,7 @@
                 <div class="flex items-start px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition duration-200">
                   <div class="flex-shrink-0">
                     <% if notification.notifiable.is_a?(Game) %>
-                      <a href="<%= current_user.role == 'admin' ? '/admin/games/' : '/games/' %><%= notification.notifiable.id %><%= current_user.role == 'admin' ? '/edit' : '' %>">
+                      <a href="<%= (current_user.role == 'admin' ? '/admin/games/' : current_user.role == 'moderator' ? '/moderator/games/' : '/games/') %><%= notification.notifiable.id %><%= current_user.role == 'admin' || current_user.role == 'moderator' ? '/edit' : '' %>">
                         <% if notification.notifiable.cover.attached? %>
                           <%= image_tag url_for(notification.notifiable.cover), alt: notification.notifiable.name,
                                         class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover object-center group-hover:opacity-75" %>
@@ -72,7 +72,7 @@
                         <% end %>
                       </a>
                     <% elsif notification.notifiable.is_a?(Jam) %>
-                      <a href="<%= current_user.role == 'admin' ? '/admin/jams/' : '/jams/' %><%= notification.notifiable.id %><%= current_user.role == 'admin' ? '/edit' : '' %>">
+                      <a href="<%= (current_user.role == 'admin' ? '/admin/jams/' : current_user.role == 'moderator' ? '/moderator/jams/' : '/jams/') %><%= notification.notifiable.id %><%= current_user.role == 'admin' || current_user.role == 'moderator' ? '/edit' : '' %>">
                         <% if notification.notifiable.cover.attached? %>
                           <%= image_tag url_for(notification.notifiable.cover), alt: notification.notifiable.name,
                                         class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover object-center group-hover:opacity-75" %>
@@ -92,10 +92,10 @@
                   <div class="ml-3 flex-1">
                     <p class="text-sm font-semibold text-gray-900">
                       <% if notification.notifiable.is_a?(Game) %>
-                        <a href="<%= current_user.role == 'admin' ? '/admin/games/' : '/games/' %><%= notification.notifiable.id %><%= current_user.role == 'admin' ? '/edit' : '' %>",
+                        <a href="<%= (current_user.role == 'admin' ? '/admin/games/' : current_user.role == 'moderator' ? '/moderator/games/' : '/games/') %><%= notification.notifiable.id %><%= current_user.role == 'admin' || current_user.role == 'moderator' ? '/edit' : '' %>",
                            class="text-gray-600 hover:underline"><%= notification.notifiable.name %></a>
                       <% elsif notification.notifiable.is_a?(Jam) %>
-                        <a href="<%= current_user.role == 'admin' ? '/admin/jams/' : '/jams/' %><%= notification.notifiable.id %><%= current_user.role == 'admin' ? '/edit' : '' %>",
+                        <a href="<%= (current_user.role == 'admin' ? '/admin/jams/' : current_user.role == 'moderator' ? '/moderator/jams/' : '/jams/') %><%= notification.notifiable.id %><%= current_user.role == 'admin' || current_user.role == 'moderator' ? '/edit' : '' %>",
                            class="text-gray-600 hover:underline"><%= notification.notifiable.name %></a>
                       <% elsif notification.actor %>
                         <a href='<%= user_path(notification.actor) %>' class="text-gray-600 hover:underline"><%= notification.actor.name %></a>
@@ -110,6 +110,7 @@
           <% else %>
             <p class="px-4 py-2 text-sm text-gray-600 text-center">Нет уведомлений для отображения.</p>
           <% end %>
+
           <% if notifications && notifications.count > 8 %>
             <a href="/notifications" class="flex justify-center p-1">Показать все</a>
           <% end %>

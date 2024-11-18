@@ -52,7 +52,7 @@ class JamsController < ApplicationController
     @jam = Jam.new(jam_params.merge(author: current_user))
     @tags = Tag.all
     if @jam.save
-      admins = User.where(role: 2)
+      admins = User.where(role: [1, 2])
       admins.each do |admin|
         current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
       end
@@ -75,7 +75,7 @@ class JamsController < ApplicationController
   def update
     @jam = current_user.jams.find_by_id(params[:id])
     if @jam.update(jam_params)
-      admins = User.where(role: 2)
+      admins = User.where(role: [1, 2])
       admins.each do |admin|
         current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
       end

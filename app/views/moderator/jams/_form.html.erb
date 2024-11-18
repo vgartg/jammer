@@ -1,11 +1,11 @@
 <div class="p-6" data-controller="settings">
   <div class="mt-4">
-    <%= link_to 'Назад', request.referer && URI(request.referer).path != request.fullpath ? URI(request.referer).path : admin_jams_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
+    <%= link_to 'Назад', request.referer && URI(request.referer).path != request.fullpath ? URI(request.referer).path : moderator_jams_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
   </div>
 
   <div>
     <div>
-      <%= form_with model: [:admin, jam] do |f| %>
+      <%= form_with model: [:moderator, jam] do |f| %>
         <div class="space-y-4 p-16">
           <div class="flex items-center">
             <div class="w-1/4">
