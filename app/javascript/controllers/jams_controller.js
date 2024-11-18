@@ -2,13 +2,14 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
     static targets = [
-        "input", "tagCheckbox", "tagMode", "toggleTagMode",
+        "input", "tagCheckbox", "tagMode", "toggleTagMode", "resetButton",
         "coverInput", "coverPreviewImg", "coverText",
         "logoInput", "logoPreviewImg", "logoText"
     ]
 
     connect() {
         this.timeout = null
+        this.updateResetButtonVisibility();
     }
 
     search() {
@@ -16,6 +17,7 @@ export default class extends Controller {
         this.timeout = setTimeout(() => {
             this.performSearch()
         }, 200)
+        this.updateResetButtonVisibility();
     }
 
     performSearch() {
@@ -49,9 +51,27 @@ export default class extends Controller {
             .catch()
     }
 
-    toggleTagMode(event) {
+    toggleTagMode() {
         this.tagModeTarget.value = this.toggleTagModeTarget.checked ? 'any' : 'all'
         this.search()
+    }
+
+    resetTags() {
+        this.tagCheckboxTargets.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        this.toggleTagModeTarget.checked = false;
+        this.tagModeTarget.value = 'all';
+        this.search();
+    }
+    updateResetButtonVisibility() {
+        const anyTagSelected = this.tagCheckboxTargets.some(checkbox => checkbox.checked);
+        const isTagModeEnabled = this.toggleTagModeTarget.checked;
+        if (anyTagSelected || isTagModeEnabled) {
+            this.resetButtonTarget.classList.remove("hidden");
+        } else {
+            this.resetButtonTarget.classList.add("hidden");
+        }
     }
 
     updateCoverPreview(event) {
