@@ -16,9 +16,6 @@ application.register("dashboard", DashboardController)
 import FriendsController from "./friends_controller"
 application.register("friends", FriendsController)
 
-import ProfileController from "./profile_controller"
-application.register("profile", ProfileController)
-
 import GamesController from "./games_controller"
 application.register("games", GamesController)
 
@@ -27,6 +24,9 @@ application.register("header", HeaderController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import JamsController from "./jams_controller"
+application.register("jams", JamsController)
 
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
@@ -37,6 +37,9 @@ application.register("notifications", NotificationsController)
 import OnlineController from "./online_controller"
 application.register("online", OnlineController)
 
+import ProfileController from "./profile_controller"
+application.register("profile", ProfileController)
+
 import SettingsController from "./settings_controller"
 application.register("settings", SettingsController)
 
@@ -46,8 +49,8 @@ application.register("star-rating", StarRatingController)
 import ThemeController from "./theme_controller"
 application.register("theme", ThemeController)
 
+import ToggleTruncateController from "./toggle_truncate_controller"
+application.register("toggle-truncate", ToggleTruncateController)
+
 import UserController from "./user_controller"
 application.register("user", UserController)
-
-import JamsController from "./jams_controller"
-application.register("jams", JamsController)

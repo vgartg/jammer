@@ -74,6 +74,7 @@ Rails.application.routes.draw do
     end
   end
   resources :games do
+    resources :reviews, only: [:destroy]
     resources :ratings, only: [:create]
   end
 

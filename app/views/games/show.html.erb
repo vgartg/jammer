@@ -67,6 +67,7 @@
                              points="12 17.27 18.18 21 15.64 13.97 21 9.24 13.81 8.64 12 2 10.19 8.64 3 9.24 8.36 13.97 5.82 21 12 17.27"/>
                   </svg>
                 <% end %>
+
               </div>
 
               <!-- Comment field -->
@@ -74,6 +75,7 @@
 
                 <label for="comment"></label><textarea id="comment" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
                                                        placeholder="Введите комментарий..." rows="4" data-action="input->star-rating#handleCommentInput"
+                                                       maxlength="1000"
                                                        data-star-rating-target="commentField">
         <%= @review.criterion %>
       </textarea>
@@ -83,22 +85,71 @@
                 <%= f.hidden_field :user_mark, value: @review.present? ? @review.user_mark : 0, id: "user_mark" %>
                 <%= f.hidden_field :game_id, value: @game.id %>
                 <%= f.hidden_field :criterion, id: "rating-comment", value: @review.present? ? @review.criterion : '' %>
-
-                <!-- Добавляем скрытое поле для jam_id -->
                 <%= f.hidden_field :jam_id, value: params[:jam_id] || nil %>
               <% end %>
 
 
 
-              <!-- Confirmation button  -->
+
               <button type="button" data-action="click->star-rating#submitRating"
                       data-star-rating-target="submitButton" class="bg-indigo-600 text-white px-4 py-2 rounded-lg mt-4"
                       style="display:none;">
                 Сохранить
               </button>
+              <% if @review && @review.user == current_user && @review.id.present? %>
+                <%= button_to 'Удалить отзыв', game_review_path(@game, @review), method: :delete,
+                              class: 'bg-red-600 text-white px-4 py-2 rounded-lg mt-4' %>
+              <% end %>
+
+
+            </div>
+
+
+
+        <% end %>
+          <% if @reviews.present? %>
+            <div class="mt-8 text-center">
+              <h2 class="text-lg font-semibold">Отзывы пользователей:</h2>
+              <% @reviews.each do |review| %>
+                <div class="mt-4 flex items-start">
+                  <div class="flex flex-col items-start mr-4">
+                    <div class="flex items-center mb-2">
+                      <% if @current_user && @current_user.avatar.attached? %>
+                        <%= image_tag url_for(@current_user.avatar), alt: "Profile Picture",
+                                      class: "h-8 w-8 rounded-full bg-gray-50 mr-2" %>
+                      <% else %>
+                        <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full bg-gray-50 mr-2" %>
+                      <% end %>
+
+
+                      <p class="font-medium text-gray-900 mr-4">
+                        <%= review.user.name %>
+                      </p>
+
+
+                      <div class="flex items-center">
+                        <% (1..5).each do |star| %>
+                          <% if star <= review.user_mark.to_i %>
+                            <svg class="w-4 h-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                            </svg>
+                          <% else %>
+                            <svg class="w-4 h-4 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                            </svg>
+                          <% end %>
+                        <% end %>
+                      </div>
+                    </div>
+
+                    <p class="text-sm text-gray-500 break-all text-left">
+                      <%= review.criterion.presence || 'Комментарий не оставлен' %>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
             </div>
           <% end %>
-
 
         </div>
         <div class="mt-8 lg:col-span-5">
