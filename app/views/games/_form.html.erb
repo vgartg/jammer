@@ -90,7 +90,7 @@
 
             <%= f.file_field :cover, id: "cover-input",
                              required: !@game.persisted? ? true : false,
-                             accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
+                             accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif, .png",
                              class: "absolute inset-0 opacity-0 cursor-pointer" %>
             <p id="cover-text" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
             <p class="text-xs">(рекомендуем 1920x1080px)</p>
