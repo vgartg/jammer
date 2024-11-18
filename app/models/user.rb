@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
   end
 
   def create_notification(recipient, actor, action, notifiable)
-    existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action)
+    existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action, notifiable: notifiable)
 
     if existing_notifications.any?
       # Удаляем старые уведомления из БД

@@ -23,7 +23,7 @@ module Admin
       old_status = @jam.status
       if @jam.update(jam_params)
         flash[:success] = 'Джем успешно обновлен'
-        if old_status != @game.status
+        if old_status != @jam.status
           @author = @jam.author
           @author.create_notification(@author, current_user, 'jam change status after moderation', @jam)
         end

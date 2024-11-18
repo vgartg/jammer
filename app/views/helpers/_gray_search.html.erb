@@ -71,6 +71,18 @@
                           </div>
                         <% end %>
                       </a>
+                    <% elsif notification.notifiable.is_a?(Jam) %>
+                      <a href="<%= current_user.role == 'admin' ? '/admin/jams/' : '/jams/' %><%= notification.notifiable.id %><%= current_user.role == 'admin' ? '/edit' : '' %>">
+                        <% if notification.notifiable.cover.attached? %>
+                          <%= image_tag url_for(notification.notifiable.cover), alt: notification.notifiable.name,
+                                        class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover object-center group-hover:opacity-75" %>
+                        <% else %>
+                          <div class="w-16 h-16 lg:w-20 lg:h-20 bg-gray-200 rounded-md flex items-center justify-center">
+                            <img src="https://via.placeholder.com/150" alt="<%= notification.notifiable.name %>"
+                                 class="w-full h-full object-cover">
+                          </div>
+                        <% end %>
+                      </a>
                     <% elsif notification.actor %>
                       <a href='<%= user_path(notification.actor) %>'>
                         <%= notification.actor.avatar.attached? ? image_tag(url_for(notification.actor.avatar), alt: "Profile Picture", class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover") : image_tag("https://via.placeholder.com/150", alt: "Profile Picture", class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200") %>
@@ -81,6 +93,9 @@
                     <p class="text-sm font-semibold text-gray-900">
                       <% if notification.notifiable.is_a?(Game) %>
                         <a href="<%= current_user.role == 'admin' ? '/admin/games/' : '/games/' %><%= notification.notifiable.id %><%= current_user.role == 'admin' ? '/edit' : '' %>",
+                           class="text-gray-600 hover:underline"><%= notification.notifiable.name %></a>
+                      <% elsif notification.notifiable.is_a?(Jam) %>
+                        <a href="<%= current_user.role == 'admin' ? '/admin/jams/' : '/jams/' %><%= notification.notifiable.id %><%= current_user.role == 'admin' ? '/edit' : '' %>",
                            class="text-gray-600 hover:underline"><%= notification.notifiable.name %></a>
                       <% elsif notification.actor %>
                         <a href='<%= user_path(notification.actor) %>' class="text-gray-600 hover:underline"><%= notification.actor.name %></a>
