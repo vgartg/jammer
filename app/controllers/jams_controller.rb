@@ -10,6 +10,10 @@ class JamsController < ApplicationController
     @search_results = nil
     @tags = Tag.all
     if current_user
+      @my_jams = Jam.where(author: current_user)
+      @jams_under_moderation = @my_jams.where(status: 0)
+      @jams_accepted = @my_jams.where(status: 1)
+      @jams_rejected = @my_jams.where(status: 2)
       @notifications = current_user.notifications
     end
 

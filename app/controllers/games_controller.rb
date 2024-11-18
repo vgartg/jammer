@@ -10,6 +10,10 @@ class GamesController < ApplicationController
     @search_results = nil
     @tags = Tag.all
     if current_user
+      @my_games = Game.where(author: current_user)
+      @games_under_moderation = @my_games.where(status: 0)
+      @games_accepted = @my_games.where(status: 1)
+      @games_rejected = @my_games.where(status: 2)
       @notifications = current_user.notifications
     end
 
