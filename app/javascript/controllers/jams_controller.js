@@ -9,7 +9,6 @@ export default class extends Controller {
 
     connect() {
         this.timeout = null
-        this.updateResetButtonVisibility();
     }
 
     search() {
