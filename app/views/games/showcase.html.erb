@@ -66,9 +66,9 @@
     <div data-games-target="allGames" class="hidden">
       <h3 class="text-xl font-semibold my-4">Все игры</h3>
       <% if @games.present? %>
-        <%= render partial: 'showcase_grid', locals: { games: @games } %>
-        <%= render partial: 'helpers/pagy' %>
-      <% else %>
+        <%= render partial: 'helpers/showcase_grid', locals: { items: @games } %>
+        <%= render partial: 'helpers/pagy' if @games.count > 10 %>
+    <% else %>
         <p class="text-gray-600 mt-2">Нет доступных игр.</p>
       <% end %>
     </div>
@@ -76,21 +76,21 @@
     <div data-games-target="myGames" class="mt-6">
       <h3 class="text-xl font-semibold my-4">Мои игры</h3>
       <% if @games_accepted.present? %>
-        <%= render partial: 'showcase_grid', locals: { games: @games_accepted } %>
+        <%= render partial: 'helpers/showcase_grid', locals: { items: @games_accepted } %>
       <% else %>
         <p class="text-gray-600 mt-2">У вас нет принятых игр.</p>
       <% end %>
 
       <h3 class="text-xl font-semibold my-4">Игры на модерации</h3>
       <% if @games_under_moderation.present? %>
-        <%= render partial: 'showcase_grid', locals: { games: @games_under_moderation } %>
+        <%= render partial: 'helpers/showcase_grid', locals: { items: @games_under_moderation } %>
       <% else %>
         <p class="text-gray-600 mt-2">У вас нет игр на модерации.</p>
       <% end %>
 
       <h3 class="text-xl font-semibold my-4">Отклоненные игры</h3>
       <% if @games_rejected.present? %>
-        <%= render partial: 'showcase_grid', locals: { games: @games_rejected } %>
+        <%= render partial: 'helpers/showcase_grid', locals: { items: @games_rejected } %>
       <% else %>
         <p class="text-gray-600 mt-2">У вас нет отклоненных игр.</p>
       <% end %>
