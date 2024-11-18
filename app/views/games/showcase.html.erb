@@ -8,6 +8,17 @@
                       focus:ring-offset-2 transition duration-300" %>
     </div>
 
+    <% if current_user %>
+      <div class="flex space-x-4 mb-8">
+        <button data-action="click->games#toggleGames"
+                data-games-target="showAll"
+                class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200">Все игры</button>
+        <button data-action="click->games#toggleGames"
+                data-games-target="showMine"
+                class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200">Мои игры</button>
+      </div>
+    <% end %>
+
     <%= form_with url: games_showcase_path, method: :get,
                   data: { action: "input->games#search", games_target: "searchForm" },
                   class: "mt-6 mb-4" do |f| %>
@@ -52,21 +63,11 @@
                  locals: { results: @search_results } if @search_results %>
     </div>
 
-    <% if current_user %>
-      <div class="flex space-x-4 mb-8">
-        <button data-action="click->games#toggleGames"
-                data-games-target="showAll"
-                class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200">Все игры</button>
-        <button data-action="click->games#toggleGames"
-                data-games-target="showMine"
-                class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200">Мои игры</button>
-      </div>
-    <% end %>
-
     <div data-games-target="allGames" class="hidden">
       <h3 class="text-xl font-semibold my-4">Все игры</h3>
       <% if @games.present? %>
         <%= render partial: 'showcase_grid', locals: { games: @games } %>
+        <%= render partial: 'helpers/pagy' %>
       <% else %>
         <p class="text-gray-600 mt-2">Нет доступных игр.</p>
       <% end %>

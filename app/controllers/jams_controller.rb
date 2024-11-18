@@ -3,7 +3,6 @@ class JamsController < ApplicationController
   before_action :root_check, only: [:edit, :update, :destroy]
 
   def new
-    @notifications = current_user.notifications
   end
 
   def showcase
@@ -14,7 +13,6 @@ class JamsController < ApplicationController
       @jams_under_moderation = @my_jams.where(status: 0)
       @jams_accepted = @my_jams.where(status: 1)
       @jams_rejected = @my_jams.where(status: 2)
-      @notifications = current_user.notifications
     end
 
     if should_search?
@@ -48,9 +46,6 @@ class JamsController < ApplicationController
       flash[:failure] = "Джем находится на модерации"
       redirect_to dashboard_path
     end
-    if current_user
-      @notifications = current_user.notifications
-    end
   end
 
   def create
@@ -59,7 +54,7 @@ class JamsController < ApplicationController
     if @jam.save
       admins = User.where(role: 2)
       admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting jam moderation', @game)
+        current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
       end
       flash[:success] = 'Джем успешно создан!'
       redirect_to dashboard_path
@@ -80,7 +75,13 @@ class JamsController < ApplicationController
   def update
     @jam = current_user.jams.find_by_id(params[:id])
     if @jam.update(jam_params)
-      redirect_to jam_profile_path, notice: 'Джем успешно обновлен.'
+      admins = User.where(role: 2)
+      admins.each do |admin|
+        current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
+      end
+      @jam.update(status: 0)
+      flash[:success] = "Джем обновлен и отправлен на повторную модерацию!"
+      redirect_to jam_profile_path
     else
       flash[:failure] = @jam.errors.full_messages
       render :edit, status: :unprocessable_entity

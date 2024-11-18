@@ -8,9 +8,6 @@ module Admin
       users = search_users(User.all)
       users = sort_users(users)
       @pagy, @users = pagy(users, limit: 10)
-      if current_user
-        @notifications = current_user.notifications
-      end
     end
 
     def create
@@ -27,9 +24,6 @@ module Admin
 
     def new
       @user = User.new
-      if current_user
-        @notifications = current_user.notifications
-      end
     end
 
     def edit
@@ -41,10 +35,6 @@ module Admin
         @user_friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
         @user_sent_requests = @user.friendships.where(status: 'pending')
         @user_received_requests = @user.inverse_friendships.where(status: 'pending')
-      end
-
-      if current_user
-        @notifications = current_user.notifications
       end
     end
 

@@ -39,10 +39,10 @@
             <path stroke-linecap="round" stroke-linejoin="round"
                   d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
           </svg>
-          <% if @notifications && @notifications.where(read: false).count > 0 %>
+          <% if notifications && notifications.where(read: false).count > 0 %>
       <span class="absolute top-0 right-0 inline-block h-3 w-3 rounded-full bg-red-500
        text-white text-xs flex items-center justify-center">
-        <%= @notifications.where(read: false).count %>
+        <%= notifications.where(read: false).count %>
       </span>
           <% end %>
         </button>
@@ -54,9 +54,9 @@
              id="dashboard_notifications_menu"
              data-target="notifications.notificationsMenu"
              style="max-height: 60vh" >
-          <% if @notifications && @notifications.any? %>
+          <% if notifications && notifications.any? %>
             <div class="max-w-2xl mx-auto bg-white rounded-lg overflow-hidden">
-              <% @notifications.order(created_at: :desc).first(8).each do |notification| %>
+              <% notifications.order(created_at: :desc).first(8).each do |notification| %>
                 <div class="flex items-start px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition duration-200">
                   <div class="flex-shrink-0">
                     <% if notification.notifiable.is_a?(Game) %>
@@ -110,7 +110,7 @@
           <% else %>
             <p class="px-4 py-2 text-sm text-gray-600 text-center">Нет уведомлений для отображения.</p>
           <% end %>
-          <% if @notifications && @notifications.count > 8 %>
+          <% if notifications && notifications.count > 8 %>
             <a href="/notifications" class="flex justify-center p-1">Показать все</a>
           <% end %>
         </div>

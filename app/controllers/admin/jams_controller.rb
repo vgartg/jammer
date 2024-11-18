@@ -7,16 +7,10 @@ module Admin
       jams = search_jams(Jam.all)
       jams = sort_jams(jams)
       @pagy, @jams = pagy(jams, limit: 10)
-      if current_user
-        @notifications = current_user.notifications
-      end
     end
 
     def edit
       @jam = Jam.find(params[:id])
-      if current_user
-        @notifications = current_user.notifications
-      end
     end
 
     def update

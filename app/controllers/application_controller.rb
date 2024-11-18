@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user
+  helper_method :notifications
   helper_method :require_subdomain
   before_action :update_last_active_at
   include Pagy::Backend
@@ -36,6 +37,12 @@ class ApplicationController < ActionController::Base
     end
 
     @current_user = nil
+  end
+
+  def notifications
+    if current_user
+      @notifications = current_user.notifications
+    end
   end
 
   def sign_in(user)

@@ -3,7 +3,6 @@ class GamesController < ApplicationController
   before_action :root_check, only: [:edit, :update, :destroy]
 
   def new
-    @notifications = current_user.notifications
   end
 
   def showcase
@@ -14,7 +13,6 @@ class GamesController < ApplicationController
       @games_under_moderation = @my_games.where(status: 0)
       @games_accepted = @my_games.where(status: 1)
       @games_rejected = @my_games.where(status: 2)
-      @notifications = current_user.notifications
     end
 
     if should_search?
@@ -48,9 +46,6 @@ class GamesController < ApplicationController
       flash[:failure] = "Игра находится на модерации"
       redirect_to dashboard_path
     end
-    if current_user
-      @notifications = current_user.notifications
-    end
   end
 
   def create
@@ -62,7 +57,7 @@ class GamesController < ApplicationController
         current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
       end
       flash[:success] = "Игра отправлена на модерацию!"
-      redirect_to dashboard_path
+      redirect_to game_profile_path
     else
       flash[:failure] = @game.errors.full_messages
       render :new, status: :see_other
@@ -80,8 +75,12 @@ class GamesController < ApplicationController
   def update
     @game = current_user.games.find_by_id(params[:id])
     if @game.update(game_params)
-      @game.status = 0
-      flash[:success] = "Игра успешно обновлена."
+      admins = User.where(role: 2)
+      admins.each do |admin|
+        current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
+      end
+      @game.update(status: 0)
+      flash[:success] = "Игра обновлена и отправлена на повторную модерацию!"
       redirect_to game_profile_path
     else
       flash[:failure] = @game.errors.full_messages

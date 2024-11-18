@@ -11,7 +11,6 @@ class DashboardController < ApplicationController
     @games = Game.all.where(status: 1)
     @jams = Jam.all.where(status: 1)
     @sessions = @current_user.sessions.order(created_at: :desc)
-    @notifications = current_user.notifications
   end
 
   private

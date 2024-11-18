@@ -7,16 +7,10 @@ module Admin
       games = search_games(Game.all)
       games = sort_games(games)
       @pagy, @games = pagy(games, limit: 10)
-      if current_user
-        @notifications = current_user.notifications
-      end
     end
 
     def edit
       @game = Game.find(params[:id])
-      if current_user
-        @notifications = current_user.notifications
-      end
     end
 
     def update
