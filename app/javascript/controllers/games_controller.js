@@ -3,7 +3,8 @@ import {Controller} from "@hotwired/stimulus"
 export default class extends Controller {
     static targets = ["input", "tagCheckbox", "tagMode", "toggleTagMode", "resetButton",
         "coverInput", "coverPreviewImg", "coverText",
-        "fileInput", "fileNameDisplay", "fileText"]
+        "fileInput", "fileNameDisplay", "fileText",
+        "checkbox", "label"]
 
 
     connect() {
@@ -97,5 +98,21 @@ export default class extends Controller {
             this.fileTextTarget.classList.remove('mt-0');
             this.fileTextTarget.classList.add('mt-4');
         }
+    }
+
+    toggleSelection(event) {
+        const label = event.currentTarget;
+        const checkbox = label.querySelector("[data-games-target='checkbox']");
+        const isChecked = checkbox.checked;
+
+        if (isChecked) {
+            label.classList.remove("bg-indigo-500", "border-indigo-500", "text-white");
+            label.classList.add("border-gray-300", "text-gray-700");
+        } else {
+            label.classList.add("bg-indigo-500", "border-indigo-500", "text-white");
+            label.classList.remove("bg-white", "border-gray-300", "text-gray-700");
+        }
+
+        checkbox.checked = !isChecked;
     }
 }

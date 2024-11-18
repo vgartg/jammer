@@ -4,7 +4,8 @@ export default class extends Controller {
     static targets = [
         "input", "tagCheckbox", "tagMode", "toggleTagMode", "resetButton",
         "coverInput", "coverPreviewImg", "coverText",
-        "logoInput", "logoPreviewImg", "logoText"
+        "logoInput", "logoPreviewImg", "logoText",
+        "checkbox", "label"
     ]
 
     connect() {
@@ -194,5 +195,21 @@ export default class extends Controller {
 
         submitButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
         submitButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+    }
+
+    toggleSelection(event) {
+        const label = event.currentTarget;
+        const checkbox = label.querySelector("[data-jams-target='checkbox']");
+        const isChecked = checkbox.checked;
+
+        if (isChecked) {
+            label.classList.remove("bg-indigo-500", "border-indigo-500", "text-white");
+            label.classList.add("border-gray-300", "text-gray-700");
+        } else {
+            label.classList.add("bg-indigo-500", "border-indigo-500", "text-white");
+            label.classList.remove("bg-white", "border-gray-300", "text-gray-700");
+        }
+
+        checkbox.checked = !isChecked;
     }
 }

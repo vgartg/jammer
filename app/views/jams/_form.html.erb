@@ -118,13 +118,20 @@
     </div>
 
     <div class="mt-4">
-      <%= f.label :tags, "Теги", class: "block text-sm font-medium text-gray-700" %>
-      <div class="mt-1">
+      <%= f.label :tags, "Теги", class: "block text-sm font-medium text-white" %>
+      <div class="mt-1 grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-8">
         <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>
-          <div class="flex items-center">
-            <%= b.check_box(class: "mr-2") %>
-            <%= b.label(class: "text-sm font-medium text-gray-700") %>
-          </div>
+          <label class="relative flex items-center justify-center rounded-lg border px-4 py-2 shadow-sm cursor-pointer
+            text-center break-words transition transform hover:scale-105
+            <%= 'bg-indigo-500 border-indigo-500 text-white' if f.object.tag_ids.include?(b.object.id) %>
+            <%= 'border-gray-300 text-gray-700' unless f.object.tag_ids.include?(b.object.id) %>"
+                 style="min-height: 50px; max-width: 150px;"
+                 data-controller="jams"
+                 data-action="click->jams#toggleSelection"
+                 data-jams-target="label">
+            <%= b.check_box(class: "absolute inset-0 opacity-0 cursor-pointer", data: { jams_target: "checkbox" }) %>
+            <span class="text-center text-sm font-medium" data-jams-target="label"><%= b.text %></span>
+          </label>
         <% end %>
       </div>
     </div>
