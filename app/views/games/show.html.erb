@@ -75,6 +75,7 @@
 
                 <label for="comment"></label><textarea id="comment" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
                                                        placeholder="Введите комментарий..." rows="4" data-action="input->star-rating#handleCommentInput"
+                                                       maxlength="1000"
                                                        data-star-rating-target="commentField">
         <%= @review.criterion %>
       </textarea>
@@ -110,8 +111,8 @@
             <div class="mt-8 text-center">
               <h2 class="text-lg font-semibold">Отзывы пользователей:</h2>
               <% @reviews.each do |review| %>
-                <div class="mt-4 flex justify-center">
-                  <div class="flex flex-col items-center line-clamp-2">
+                <div class="mt-4 flex items-start">
+                  <div class="flex flex-col items-start mr-4">
                     <div class="flex items-center mb-2">
                       <% if @current_user && @current_user.avatar.attached? %>
                         <%= image_tag url_for(@current_user.avatar), alt: "Profile Picture",
@@ -141,7 +142,7 @@
                       </div>
                     </div>
 
-                    <p class="text-sm text-gray-500 text-center truncate">
+                    <p class="text-sm text-gray-500 break-all text-left">
                       <%= review.criterion.presence || 'Комментарий не оставлен' %>
                     </p>
                   </div>

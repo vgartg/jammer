@@ -94,26 +94,22 @@
         <div>
           <p class="text-xl font-semibold">Ваши отзывы в джемах:</p>
           <% @reviews_in_jams.each do |review| %>
-            <div class="bg-gray-100 p-4 mb-4 rounded-lg">
+            <div class="bg-gray-100 cursor-pointer p-4 mb-4 rounded-lg" data-controller="toggle-truncate" data-action="click->toggle-truncate#toggle">
               <p class="font-medium text-gray-900">
-                <!-- Game name clickable, linking to the game page -->
                 <a href="<%= game_path(review.game) %>" class="text-blue-600 hover:underline"><%= review.game.name %></a>
                 <span class="text-sm text-gray-500">
-            <!-- Jam name clickable, linking to the jam page -->
-            (<a href="<%= jam_path(review.jam) %>" class="text-blue-600 hover:underline"><%= review.jam.name %></a>)
-          </span>
+          (<a href="<%= jam_path(review.jam) %>" class="text-blue-600 hover:underline"><%= review.jam.name %></a>)
+        </span>
               </p>
               <div class="flex items-center">
                 <p class="text-xl font-bold mr-4">Оценка: <%= review.user_mark %></p>
                 <div class="flex items-center">
                   <% (1..5).each do |star| %>
                     <% if star <= review.user_mark.to_i %>
-                      <!-- Filled star (yellow) -->
                       <svg class="w-4 h-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
                       </svg>
                     <% else %>
-                      <!-- Empty star (gray) -->
                       <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
                       </svg>
@@ -121,18 +117,21 @@
                   <% end %>
                 </div>
               </div>
-              <p class="mt-2 text-gray-700"><%= review.criterion %></p>
+              <!-- Отзыв -->
+              <p data-toggle-truncate-target="text" class="text-gray-700 truncate ">
+                <%= review.criterion.presence || 'Комментарий не оставлен' %>
+              </p>
             </div>
           <% end %>
         </div>
-      <% end %>
 
+    <% end %>
 <%# Display reviews for games outside of jams (where jam_id is nil) %>
       <% if @reviews_no_jam.any? %>
         <div>
           <p class="text-xl font-semibold">Ваши отзывы на игры:</p>
           <% @reviews_no_jam.each do |review| %>
-            <div class="bg-gray-100 p-4 mb-4 rounded-lg line-clamp-2">
+            <div class="bg-gray-100 cursor-pointer p-4 mb-4 rounded-lg" data-controller="toggle-truncate" data-action="click->toggle-truncate#toggle">
               <p class="font-medium text-gray-900">
                 <!-- Game name clickable, linking to the game page -->
                 <a href="<%= game_path(review.game) %>" class="text-blue-600 hover:underline"><%= review.game.name %></a>
@@ -155,9 +154,13 @@
                   <% end %>
                 </div>
               </div>
-              <p class="mt-2 text-gray-700 truncate"><%= review.criterion %></p>
+              <!-- Отзыв -->
+              <p data-toggle-truncate-target="text" class="mt-2 text-gray-700 truncate">
+                <%= review.criterion.presence || 'Комментарий не оставлен' %>
+              </p>
             </div>
-          <% end %>
+
+        <% end %>
         </div>
       <% end %>
 
