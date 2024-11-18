@@ -1,7 +1,8 @@
 import {Controller} from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ["input", "tagCheckbox", "tagMode", "toggleTagMode", "allGames", "myGames", "showAll", "showMine"]
+    static targets = ["input", "tagCheckbox", "tagMode", "toggleTagMode", "allGames", "myGames", "showAll",
+        "showMine", "searchForm"]
 
 
     connect() {
@@ -56,6 +57,7 @@ export default class extends Controller {
 
     displayAllGames() {
         this.allGamesTarget.classList.remove("hidden");
+        this.searchFormTarget.classList.remove("hidden");
         this.myGamesTarget.classList.add("hidden");
 
         this.showAllTarget.classList.add("font-bold", "text-gray-800");
@@ -65,6 +67,7 @@ export default class extends Controller {
     displayMyGames() {
         this.myGamesTarget.classList.remove("hidden");
         this.allGamesTarget.classList.add("hidden");
+        this.searchFormTarget.classList.add("hidden");
 
         this.showMineTarget.classList.add("font-bold", "text-gray-800");
         this.showAllTarget.classList.remove("font-bold", "text-gray-800");
