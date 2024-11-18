@@ -57,6 +57,9 @@ gem 'letter_opener', group: :development
 gem 'letter_opener_web', group: :development
 gem 'mail'
 
+gem 'trix'
+gem 'actiontext'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]

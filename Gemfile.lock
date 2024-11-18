@@ -293,6 +293,8 @@ GEM
     thruster (0.1.8-x86_64-linux)
     tilt (2.4.0)
     timeout (0.4.1)
+    trix (0.10.1)
+      rails
     turbo-rails (2.0.11)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
@@ -321,6 +323,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  actiontext
   aws-sdk-s3 (~> 1)
   bcrypt (~> 3.1.7)
   bootsnap
@@ -348,6 +351,7 @@ DEPENDENCIES
   sprockets-rails
   stimulus-rails
   thruster
+  trix
   turbo-rails
   tzinfo-data
   useragent
