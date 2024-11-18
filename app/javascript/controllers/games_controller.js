@@ -1,12 +1,14 @@
 import {Controller} from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ["input", "tagCheckbox", "tagMode", "toggleTagMode", "resetButton"]
+    static targets = ["input", "tagCheckbox", "tagMode", "toggleTagMode", "resetButton",
+        "coverInput", "coverPreviewImg", "coverText",
+        "fileInput", "fileNameDisplay", "fileText",
+        "checkbox", "label"]
 
 
     connect() {
         this.timeout = null
-        this.updateResetButtonVisibility();
     }
 
     search() {
@@ -73,5 +75,44 @@ export default class extends Controller {
         } else {
             this.resetButtonTarget.classList.add("hidden");
         }
+    }
+
+    updateCoverPreview(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.coverPreviewImgTarget.src = e.target.result;
+                this.coverPreviewImgTarget.classList.remove('hidden');
+                this.coverTextTarget.classList.remove('mt-0');
+                this.coverTextTarget.classList.add('mt-4');
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    updateFileName(event) {
+        const file = event.target.files[0];
+        if (file) {
+            this.fileNameDisplayTarget.textContent = file.name;
+            this.fileNameDisplayTarget.classList.remove('hidden');
+            this.fileTextTarget.classList.remove('mt-0');
+            this.fileTextTarget.classList.add('mt-4');
+        }
+    }
+
+    toggleSelection(event) {
+        const label = event.currentTarget;
+        const checkbox = label.querySelector("[data-games-target='checkbox']");
+        const isChecked = checkbox.checked;
+
+        if (isChecked) {
+            label.classList.remove("bg-indigo-500", "border-indigo-500", "text-white");
+            label.classList.add("border-gray-300", "text-gray-700");
+        } else {
+            label.classList.add("bg-indigo-500", "border-indigo-500", "text-white");
+            label.classList.remove("bg-white", "border-gray-300", "text-gray-700");
+        }
+
+        checkbox.checked = !isChecked;
     }
 }
