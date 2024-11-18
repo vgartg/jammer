@@ -84,7 +84,7 @@
           <% end %>
           <%= f.file_field :cover, id: "cover-input",
                            required: !@jam.persisted?,
-                           accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
+                           accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif, .png",
                            class: "absolute inset-0 opacity-0 cursor-pointer",
                            data: { action: "change->jams#updateCoverPreview" } %>
           <p data-jams-target="coverText" id="cover-text" class="<%= @jam.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
@@ -108,12 +108,31 @@
           <% end %>
           <%= f.file_field :logo, id: "logo-input",
                            required: !@jam.persisted?,
-                           accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif",
+                           accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif, .png",
                            class: "absolute inset-0 opacity-0 cursor-pointer",
                            data: { action: "change->jams#updateLogoPreview" } %>
           <p data-jams-target="logoText" id="logo-text" class="<%= @jam.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
           <p class="text-xs">(рекомендуем 1920x1080px)</p>
         </div>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <%= f.label :tags, "Теги", class: "block text-sm font-medium text-white" %>
+      <div class="mt-1 grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+        <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>
+          <label class="relative flex items-center justify-center rounded-lg border px-4 py-2 shadow-sm cursor-pointer
+            text-center break-words transition transform hover:scale-105
+            <%= 'bg-indigo-500 border-indigo-500 text-white' if f.object.tag_ids.include?(b.object.id) %>
+            <%= 'border-gray-300 text-gray-700' unless f.object.tag_ids.include?(b.object.id) %>"
+                 style="min-height: 50px; max-width: 150px;"
+                 data-controller="jams"
+                 data-action="click->jams#toggleSelection"
+                 data-jams-target="label">
+            <%= b.check_box(class: "absolute inset-0 opacity-0 cursor-pointer", data: { jams_target: "checkbox" }) %>
+            <span class="text-center text-sm font-medium" data-jams-target="label"><%= b.text %></span>
+          </label>
+        <% end %>
       </div>
     </div>
 

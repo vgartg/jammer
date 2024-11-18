@@ -2,9 +2,10 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
     static targets = [
-        "input", "tagCheckbox", "tagMode", "toggleTagMode",
+        "input", "tagCheckbox", "tagMode", "toggleTagMode", "resetButton",
         "coverInput", "coverPreviewImg", "coverText",
-        "logoInput", "logoPreviewImg", "logoText"
+        "logoInput", "logoPreviewImg", "logoText",
+        "checkbox", "label"
     ]
 
     connect() {
@@ -16,6 +17,7 @@ export default class extends Controller {
         this.timeout = setTimeout(() => {
             this.performSearch()
         }, 200)
+        this.updateResetButtonVisibility();
     }
 
     performSearch() {
@@ -49,9 +51,27 @@ export default class extends Controller {
             .catch()
     }
 
-    toggleTagMode(event) {
+    toggleTagMode() {
         this.tagModeTarget.value = this.toggleTagModeTarget.checked ? 'any' : 'all'
         this.search()
+    }
+
+    resetTags() {
+        this.tagCheckboxTargets.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        this.toggleTagModeTarget.checked = false;
+        this.tagModeTarget.value = 'all';
+        this.search();
+    }
+    updateResetButtonVisibility() {
+        const anyTagSelected = this.tagCheckboxTargets.some(checkbox => checkbox.checked);
+        const isTagModeEnabled = this.toggleTagModeTarget.checked;
+        if (anyTagSelected || isTagModeEnabled) {
+            this.resetButtonTarget.classList.remove("hidden");
+        } else {
+            this.resetButtonTarget.classList.add("hidden");
+        }
     }
 
     updateCoverPreview(event) {
@@ -175,5 +195,21 @@ export default class extends Controller {
 
         submitButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
         submitButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+    }
+
+    toggleSelection(event) {
+        const label = event.currentTarget;
+        const checkbox = label.querySelector("[data-jams-target='checkbox']");
+        const isChecked = checkbox.checked;
+
+        if (isChecked) {
+            label.classList.remove("bg-indigo-500", "border-indigo-500", "text-white");
+            label.classList.add("border-gray-300", "text-gray-700");
+        } else {
+            label.classList.add("bg-indigo-500", "border-indigo-500", "text-white");
+            label.classList.remove("bg-white", "border-gray-300", "text-gray-700");
+        }
+
+        checkbox.checked = !isChecked;
     }
 }
