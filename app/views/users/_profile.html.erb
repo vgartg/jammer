@@ -35,7 +35,12 @@
           </span>
       <div class="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
         <div class="mt-6 min-w-0 flex-1 sm:hidden md:block">
-          <h1 class="truncate text-2xl font-bold text-gray-900"><%= @user.name %></h1>
+          <h1 class="truncate text-2xl font-bold text-gray-900">
+            <% unless current_user.role == 'basic' || @user.role == 'basic' %>
+              <span class="<%= @user.role == 'moderator' ? 'text-green-500' : 'text-red-500' %>">[<%= @user.role[0].upcase %>]</span>
+            <% end %>
+            <%= @user.name %>
+          </h1>
           <p class="truncate mt-1">
             <% unless @user.status.blank? %>
               <span class="text-gray-900"><%= @user.status %></span>
