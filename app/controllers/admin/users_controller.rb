@@ -15,6 +15,9 @@ module Admin
 
       if @user.save
         flash[:success] = 'Пользователь успешно создан'
+
+        create_administration_record(current_user, @user, {}, 'create')
+
         redirect_to admin_users_path
       else
         flash[:failure] = @user.errors.full_messages
@@ -41,6 +44,12 @@ module Admin
     def update
       if @user.update(user_params)
         flash[:success] = 'Пользователь успешно обновлен'
+
+        changes = @user.previous_changes.except("updated_at")
+
+        if changes.any?
+          create_administration_record(current_user, @user, changes, 'edit')
+        end
       else
         flash[:failure] = @user.errors.full_messages
       end
@@ -48,7 +57,7 @@ module Admin
     end
 
     def destroy
-      @user.destroy
+      create_administration_record(current_user, @user, {}, 'delete') if @user.destroy
       flash[:success] = 'Пользователь успешно удален'
       redirect_to admin_users_path
     end

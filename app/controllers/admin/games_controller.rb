@@ -14,12 +14,19 @@ module Admin
     end
 
     def update
-      old_status = @game.status
+      old_game = @game.dup
       if @game.update(game_params)
         flash[:success] = 'Игра успешно обновлена'
-        if old_status != @game.status
+
+        if old_game.status != @game.status
           @author = @game.author
           @author.create_notification(@author, current_user, 'game change status after moderation', @game)
+        end
+
+        changes = @game.previous_changes.except("updated_at")
+
+        if changes.any?
+          create_administration_record(current_user, @game, changes, 'edit')
         end
       else
         flash[:failure] = @game.errors.full_messages
@@ -28,7 +35,7 @@ module Admin
     end
 
     def destroy
-      @game.destroy
+      create_administration_record(current_user, @game, {}, 'delete') if @game.destroy
       flash[:success] = 'Игра успешно удалена'
       redirect_to admin_games_path
     end

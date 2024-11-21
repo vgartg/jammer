@@ -68,6 +68,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def create_administration_record(admin, item, changes, action)
+    AdministrationTracking.create(
+      admin_id: admin.id,
+      structure_type: item.class.name,
+      structure_id: item.id,
+      changed_fields: {
+        new_attributes: changes.transform_values(&:last),
+        old_attributes: changes.transform_values(&:first)
+      },
+      action: action
+    )
+  end
+
   def update_last_active_at
     if current_user
       current_user.update(last_active_at: Time.current)
