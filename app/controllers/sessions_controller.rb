@@ -66,7 +66,13 @@ class SessionsController < ApplicationController
 
   def logout_all_sessions
     user = User.find(params[:user])
-    user.sessions.destroy_all ? flash[:success] = 'Все сессии успешно удалены' : flash[:failure] = 'Не удалось удалить сессии'
+    session_ids = user.sessions.pluck(:id)
+    if user.sessions.destroy_all
+      flash[:success] = 'Все сессии успешно удалены'
+      create_administration_record(current_user, user, { 'session_ids' => session_ids }, 'delete') if user != current_user
+    else
+      flash[:failure] = 'Не удалось удалить сессии'
+    end
     redirect_to edit_admin_user_path(user)
   end
 
@@ -74,7 +80,12 @@ class SessionsController < ApplicationController
     user = User.find(params[:user])
     session = Session.find(params[:session_id])
     user_session = user.sessions.find_by(id: session.id)
-    user_session&.destroy ? flash[:success] = 'Сессия успешно удалена' : flash[:failure] = 'Не удалось удалить сессию'
+    if user_session&.destroy
+      flash[:success] = 'Сессия успешно удалена'
+      create_administration_record(current_user, user, { 'session_id' => session.id }, 'delete') if user != current_user
+    else
+      flash[:failure] = 'Не удалось удалить сессию'
+    end
     redirect_to edit_admin_user_path(user)
   end
 

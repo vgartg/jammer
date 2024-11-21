@@ -69,14 +69,27 @@ class ApplicationController < ActionController::Base
   end
 
   def create_administration_record(admin, item, changes, action)
+    last_changes = changes.transform_values { |value| Array(value).last }
+    first_changes = changes.transform_values { |value| Array(value).first }
+    present_changes = last_changes.present? && first_changes.present?
+    changed_fields = if present_changes && action != 'delete'
+                       {
+                         new_attributes: last_changes,
+                         old_attributes: first_changes
+                       }
+                     elsif changes.present?
+                       {
+                         new_attributes: {},
+                         old_attributes: changes
+                       }
+                     else
+                       {}
+                     end
     AdministrationTracking.create(
       admin_id: admin.id,
       structure_type: item.class.name,
       structure_id: item.id,
-      changed_fields: {
-        new_attributes: changes.transform_values(&:last),
-        old_attributes: changes.transform_values(&:first)
-      },
+      changed_fields: changed_fields,
       action: action
     )
   end

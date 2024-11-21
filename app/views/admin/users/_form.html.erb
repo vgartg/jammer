@@ -294,9 +294,6 @@
                         <% end %>
                       </div>
                     </a>
-                    <div>
-                      <%= button_to "Удалить", user_friendship_path(@user, user_friendship), method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition-colors duration-200" %>
-                    </div>
                   </div>
                 <% end %>
               <% end %>
@@ -329,22 +326,21 @@
                       <% end %>
                     <% end %>
                   </span>
-                      <div>
-                        <h3 class="text-lg font-semibold text-gray-800"><%= user_request.friend.name %></h3>
-                        <% if user_request.friend.can_see_online?(@user) %>
-                          <p class="mt-1 text-sm text-gray-600" data-controller="online">
-                            <% if user_request.friend.last_active_at.present? %>
-                          <span id="user-status" data-online-target="lastActiveAt"
-                                data-last-active-at="<%= user_request.friend.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
-                                data-action="load->online#updateStatus"></span>
-                            <% else %>
-                              <span>Offline</span>
-                            <% end %>
-                          </p>
-                        <% end %>
-                      </div>
+                    <div>
+                      <h3 class="text-lg font-semibold text-gray-800"><%= user_request.friend.name %></h3>
+                      <% if user_request.friend.can_see_online?(@user) %>
+                        <p class="mt-1 text-sm text-gray-600" data-controller="online">
+                          <% if user_request.friend.last_active_at.present? %>
+                        <span id="user-status" data-online-target="lastActiveAt"
+                              data-last-active-at="<%= user_request.friend.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                              data-action="load->online#updateStatus"></span>
+                          <% else %>
+                            <span>Offline</span>
+                          <% end %>
+                        </p>
+                      <% end %>
+                    </div>
                     </a>
-                    <%= button_to "Отменить", cancel_user_friendship_path(@user, user_request), method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition-colors duration-200" %>
                   </div>
                 <% end %>
               <% end %>
@@ -392,10 +388,6 @@
                         <% end %>
                       </div>
                     </a>
-                    <div class="flex flex-col gap-1">
-                      <%= button_to "Принять", user_friendship_path(@user, user_request), method: :put, class: "bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600 transition-colors duration-200" %>
-                      <%= button_to "Отменить", cancel_user_friendship_path(@user, user_request), method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition-colors duration-200" %>
-                    </div>
                   </div>
                 <% end %>
               <% end %>
