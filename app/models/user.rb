@@ -145,7 +145,7 @@ class User < ActiveRecord::Base
   end
 
   def get_all_participating_jams()
-    Jam.joins("JOIN jam_submissions ON (jams.id=jam_submissions.jam_id)")
+    Jam.joins("JOIN jam_submissions ON (jams.id=jam_submissions.jam_id)").where('jam_submissions.user_id = ?', self.id)
   end
 
   def authenticate_password_reset_token(token)
