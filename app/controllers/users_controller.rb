@@ -127,6 +127,6 @@ class UsersController < ApplicationController
     params.require(:user)
           .permit(:name, :email, :password, :password_confirmation, :avatar, :background_image,
                   :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
-                  :visibility, :jams_visibility, :theme)
+                  :visibility, :jams_administrating_visibility, :jams_participating_visibility, :theme)
   end
 end
