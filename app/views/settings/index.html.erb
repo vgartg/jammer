@@ -352,13 +352,13 @@
       <div>
         <h2 class="text-base font-semibold leading-7 text-white">Set Jams Visibility</h2>
         <p class="mt-1 text-sm leading-6 text-gray-400">
-          Select who can see jams you are administrating.
+          Select who can see jams you are administrating and participating.
         </p>
       </div>
       <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
           <div class="col-span-full">
-            <label for="timezone" class="block text-sm font-medium leading-6 text-white">Who can see my jams?</label>
+            <label for="timezone" class="block text-sm font-medium leading-6 text-white">Who can see my administrating jams?</label>
             <div class="mt-2 relative">
               <%= f.select :jams_administrating_visibility,
                            options_for_select([
@@ -373,30 +373,8 @@
                            id: 'jams_administrating_visibility' %>
             </div>
           </div>
-          <% if @user.id == session[:current_user] %>
-            <div class="mt-4">
-              <%= f.submit "Save", id: "account-jam-info-button-save", class: "mt-4 flex w-50 justify-center
-               rounded-md border
-                         border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                         shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
-                          focus:ring-offset-2 cursor-pointer" %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-
-    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-      <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Set Jams Visibility</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">
-          Select who can see jams you are participating.
-        </p>
-      </div>
-      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
-        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
           <div class="col-span-full">
-            <label for="timezone" class="block text-sm font-medium leading-6 text-white">Who can see my jams?</label>
+            <label for="timezone" class="block text-sm font-medium leading-6 text-white">Who can see my participating jams?</label>
             <div class="mt-2 relative">
               <%= f.select :jams_participating_visibility,
                            options_for_select([
