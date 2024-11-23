@@ -16,7 +16,7 @@
       ring-white sm:h-32 sm:w-32" %>
             <% else %>
           <%= image_tag 'empty-avatar.jpg', class: "h-24 w-24 rounded-full ring-4
-      ring-white sm:h-32 sm:w-32"%>
+      ring-white sm:h-32 sm:w-32" %>
             <% end %>
         <% if @user.can_see_online?(current_user) %>
           <% if @user.online? %>
@@ -188,7 +188,7 @@
             <script>
                 tb = document.getElementById('toggle-button');
                 if (tb) {
-                    tb.addEventListener('click', function() {
+                    tb.addEventListener('click', function () {
                         const games = document.querySelectorAll('.game-item.hidden');
                         const allGames = document.querySelectorAll('.game-item');
                         const isHidden = games.length > 0;
@@ -211,13 +211,13 @@
             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">Administrating jams</dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                <% if @user.can_see_jams?(current_user) || current_user == @user %>
+                <% if @user.can_see_administrating_jams?(current_user) || current_user == @user %>
                   <% if @user.jams.any? %>
                     <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3
                 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
                       <% @user.jams.each do |jam| %>
                         <li class="relative">
-                          <a href="/jams/<%= jam.id %>">
+                          <%= link_to jams_url + '/' + jam.id.to_s do %>
                             <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
                         focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
                          focus-within:ring-offset-gray-100">
@@ -229,13 +229,53 @@
                                      class="pointer-events-none object-cover group-hover:opacity-75">
                               <% end %>
                             </div>
-                            <p class="pointer-events-none mt-2 block text-center truncate text-sm font-medium text-gray-900">
+                            <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
                               <%= jam.name %>
                             </p>
                             <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
                               <%= jam.description %>
                             </p>
-                          </a>
+                          <% end %>
+                        </li>
+                      <% end %>
+                    </ul>
+                  <% else %>
+                    <span class="text-gray-900">Информации нет</span>
+                  <% end %>
+                <% else %>
+                  <span class="text-gray-900">Информации нет</span>
+                <% end %>
+              </dd>
+            </div>
+
+            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">Participating jams</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <% if @user.can_see_participating_jams?(current_user) || current_user == @user %>
+                  <% if @user.jam_submissions.any? %>
+                    <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3
+                sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                      <% @user.get_all_participating_jams.each do |jam| %>
+                        <li class="relative">
+                          <%= link_to jams_url + '/' + jam.id.to_s do %>
+                            <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
+                        focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
+                         focus-within:ring-offset-gray-100">
+                              <% if jam && jam.cover.attached? %>
+                                <%= image_tag url_for(jam.cover), alt: jam.name,
+                                              class: "pointer-events-none object-cover group-hover:opacity-75" %>
+                              <% else %>
+                                <img src="https://via.placeholder.com/300" alt="<%= jam.name %>"
+                                     class="pointer-events-none object-cover group-hover:opacity-75">
+                              <% end %>
+                            </div>
+                            <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
+                              <%= jam.name %>
+                            </p>
+                            <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
+                              <%= jam.description %>
+                            </p>
+                          <% end %>
                         </li>
                       <% end %>
                     </ul>
@@ -248,17 +288,18 @@
               </dd>
             </div>
           </ul>
+
         </div>
-        <% def find_friend(friendship)%>
+        <% def find_friend(friendship) %>
           <% if friendship.friend %>
-            <% friendship.friend.id != @user.id ? friendship.friend : friendship.user%>
+            <% friendship.friend.id != @user.id ? friendship.friend : friendship.user %>
           <% end %>
         <% end %>
         <div id="user_friends" class="tab_content hidden">
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
             <% if @friendships.count > 0 %>
               <% @friendships.each do |friendship| %>
-                <% if  find_friend(friendship) %>
+                <% if find_friend(friendship) %>
                   <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
                               duration-200 flex items-center space-x-4">
                     <a href='<%= '/users/' + find_friend(friendship).id.to_s %>' class="flex items-center space-x-4 flex-grow">
@@ -267,7 +308,7 @@
               <%= image_tag url_for(find_friend(friendship).avatar), alt: "Profile Picture",
                             class: "h-16 w-16 rounded-full" %>
             <% else %>
-              <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full"%>
+              <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full" %>
             <% end %>
             <% if find_friend(friendship).can_see_online?(current_user) %>
               <% if find_friend(friendship).online? %>
@@ -293,13 +334,13 @@
                         <% end %>
                       </div>
                     </a>
-                    <%if @current_user == @user %>
+                    <% if @current_user == @user %>
                       <div>
                         <%= button_to "Remove", user_friendship_path(@current_user, friendship), method: :delete,
                                       class: "bg-red-500 text-white px-3 py-1 rounded-full
                           hover:bg-red-600 transition-colors duration-200" %>
                       </div>
-                    <%end %>
+                    <% end %>
                   </div>
                 <% end %>
               <% end %>
@@ -309,7 +350,7 @@
               </div>
             <% end %>
           </div>
-         </div>
+        </div>
         <div id="user_followers" class="tab_content hidden">
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
             <% if @received_requests.count > 0 %>
@@ -322,7 +363,7 @@
                       <%= image_tag url_for(request.user.avatar), alt: "Profile Picture",
                                     class: "h-16 w-16 rounded-full" %>
                     <% else %>
-                      <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full"%>
+                      <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full" %>
                     <% end %>
                     <% if request.user.can_see_online?(current_user) %>
                     <% if request.user.online? %>
@@ -351,7 +392,7 @@
                         <% end %>
                       </div>
                     </a>
-                    <%if @current_user == @user %>
+                    <% if @current_user == @user %>
                       <div class="flex flex-col gap-0.5">
                         <%= button_to "Accept", user_friendship_path(@current_user, request), method: :put,
                                       class: "bg-green-500 text-white px-3 py-1 rounded-full
@@ -360,7 +401,7 @@
                                       class: "bg-red-500 text-white px-3 py-1 rounded-full
                         hover:bg-red-600 transition-colors duration-200" %>
                       </div>
-                    <%end %>
+                    <% end %>
                   </div>
                 <% end %>
               <% end %>
