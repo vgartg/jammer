@@ -51,11 +51,11 @@ trix-toolbar .trix-button {
   border: none;
   border-bottom: 1px solid #ddd;
   border-radius: 0;
-  background: transparent; }
+  background: white; }
   trix-toolbar .trix-button:not(:first-child) {
     border-left: 1px solid #ccc; }
   trix-toolbar .trix-button.trix-active {
-    background: #cbeefa;
+    background: #a4e3ff;
     color: black; }
   trix-toolbar .trix-button:not(:disabled) {
     cursor: pointer; }
