@@ -1,7 +1,7 @@
 <div class="bg-white">
   <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
     <h1 class="text-2xl font-bold text-center mb-8">Настройка Жюри</h1>
-    <%= form_for @jam, url: host_list_update_path(@jam), method: :patch, html: {class: 'md:col-span-2' } do |f| %>
+    <%= form_for @jam, url: jury_configuration_update_path(@jam), method: :post, html: {class: 'md:col-span-2' } do |f| %>
     <table class="w-full text-left text-sm text-gray-700 dark:text-gray-400">
       <thead class="text-xs text-gray-50 uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400">
       <tr>
@@ -48,36 +48,30 @@
           </td>
 
             <td class="px-8 py-4 justify-center">
-              <%= f.check_box :host_update, {}, '1', nil %>
+              <%= f.check_box :hostsId, { multiple: true }, user.id, nil %>
             </td>
-            <%= f.hidden_field :user_id, value: current_user.id %>
-          <td class="px-10 py-4 justify-center">
-            <input type="checkbox" class="w-6 h-6 text-blue-800 text-center bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+          <td class="px-8 py-4 justify-center">
+            <%= f.check_box :adminsId, { multiple: true }, user.id, nil %>
           </td>
-          <td class="px-8 py-4">
-            <input type="checkbox" class="w-6 h-6 text-blue-800 text-center bg-gray-100 flex items-center rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+          <td class="px-8 py-4 justify-center">
+            <%= f.check_box :juriesId, { multiple: true }, user.id, nil %>
           </td>
           <td class="px-6 py-4 text-center">
             280 days ago
           </td>
-          <td
-          <%= button_to "Удалить", delete_user_path(@jam), method: :delete,
-                        data: { confirm: "Вы уверены, что хотите удалить?" },
-                        class: "mt-4 flex w-50 justify-center rounded-md border
-                              border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white
-                              shadow-sm hover:bg-red-700 focus:outline-none
-                               focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
+          <td class="px-6 py-4 text-center">
+            <%= link_to 'Удалить', '#', class: 'delete-user-link text-red-600', data: { user_id: user.id, jam_id: @jam.id } %>
           </td>
         </tr>
       <% end %>
       </tbody>
     </table>
-      <%= f.hidden_field :host_ids, multiple: true, value: @jam.hosts.map(&:id) %>
       <%= f.submit "Сохранить", id: "table-info-button-save", class: "mt-4 flex w-50 justify-center
      rounded-md border
                        border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                        shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
                         focus:ring-offset-2 cursor-pointer" %>
     <% end %>
+
   </div>
 </div>

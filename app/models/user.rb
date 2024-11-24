@@ -23,10 +23,6 @@ class User < ActiveRecord::Base
   has_many :jams, foreign_key: "author_id", dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships, dependent: :destroy
-
-  has_many :hosted_jams, class_name: 'Jam', foreign_key: 'host_id', dependent: :destroy
-  has_many :admin_jams, class_name: 'Jam', foreign_key: 'admin_id', dependent: :destroy
-  has_many :jury_jams, class_name: 'Jam', foreign_key: 'jury_id', dependent: :destroy
   belongs_to :jam, optional: true
 
   has_many :jam_submissions

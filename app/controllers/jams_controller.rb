@@ -41,13 +41,13 @@ class JamsController < ApplicationController
     if current_user
       @notifications = current_user.notifications
     end
-    @hosts = @jam.hosts
-    @admins = @jam.admins
-    @jury = @jam.juries
+    @hosts = @jam.hostsId
   end
 
   def create
     @jam = Jam.new(jam_params.merge(author: current_user))
+    @jam.update(:participantsId => User.all.pluck(:id))
+    @jam.participants = User.all
     @tags = Tag.all
     if @jam.save
       flash[:success] = 'Джем успешно создан!'
@@ -90,11 +90,19 @@ class JamsController < ApplicationController
     end
   end
 
-  def host_list_update
-    @jam = current_user.jams.find_by_id(params[:id])
-    user_id = params[:user_id]
-    if params[:host_update] && params[:host_update][user_id] == '1'
-      @jam.host_update
+  def jury_configuration_update
+    @jam = Jam.find_by(id: params[:id])
+    if @jam.nil?
+      flash[:error] = "Запись Jam не найдена"
+      redirect_to jury_configuration_path
+      return
+    end
+    if @jam.update(jam_params)
+      flash[:notice] = "Настройки сохранены"
+      redirect_to jury_configuration_path
+    else
+      flash[:error] = "Ошибка сохранения настроек"
+      redirect_to jury_configuration_path
     end
   end
 
@@ -109,38 +117,30 @@ class JamsController < ApplicationController
   end
 
   def jury_configuration
-    @jam = current_user.jams.find_by_id(params[:id])
-    @users = User.all
-    @hosts = @jam.hosts
-    @admins = @jam.admins
-    @jury = @jam.juries
+    @jam = Jam.find(params[:id])
+    if @jam.nil?
+      flash[:error] = "Запись Jam не найдена"
+      redirect_to dashboard_path
+      return
+    end
+    @users = @jam.participants
+    @hosts = @jam.hostsId
+    @admins = @jam.adminsId
+    @juries = @jam.juriesId
   end
-
-  # def update
-  #   @jam = Jam.find(params[:id])
-  #
-  #   # Передаем current_user в host_update
-  #   @jam.host_update(current_user)
-  #
-  #   if @jam.save
-  #     redirect_to @jam, notice: 'Джем успешно обновлен.'
-  #   else
-  #     render :edit
-  #   end
-  # end
-
   def delete_user
-    @jam = current_user.jams.find_by_id(params[:id])
-    @user = User.find(params[:id])
-    @user.destroy
-    redirect_to :dashboard, notice: 'User was successfully destroyed.'
+    @jam = Jam.find(params[:id])
+    user = User.find(params[:user_id])
+    @jam.participants.delete(user)
+    @jam.update(:participantsId => @jam.participants.pluck(:id))
+    @jam.save
   end
 
   private
 
   def jam_params
     params.require(:jam)
-          .permit(:name, :description, :start_date, :deadline, :end_date, :cover, :logo, :users_can_votes, tag_ids: [])
+          .permit(:name, :description, :start_date, :deadline, :end_date, :cover, :logo, :users_can_votes, :user_id, tag_ids: [], hostsId: [], adminsId: [], juriesId: [], participants: [] )
   end
 
   def should_search?

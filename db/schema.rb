@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_04_161712) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_23_154257) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -87,10 +87,10 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_04_161712) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
-    t.integer "jury_id"
-    t.integer "host_id"
-    t.integer "admin_id"
-    t.bigint "hosts"
+    t.bigint "hostsId", default: [], array: true
+    t.bigint "adminsId", default: [], array: true
+    t.bigint "juriesId", default: [], array: true
+    t.bigint "participantsId", default: [], array: true
     t.index ["author_id"], name: "index_jams_on_author_id"
     t.index ["name"], name: "index_jams_on_name"
   end
