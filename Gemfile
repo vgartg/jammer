@@ -50,13 +50,13 @@ gem 'rexml', '>= 3.3.6'
 gem 'browser'
 gem 'flatpickr'
 gem 'useragent'
-gem 'sinatra'
 gem 'rest-client'
 
 gem 'letter_opener', group: :development
 gem 'letter_opener_web', group: :development
 gem 'mail'
-gem 'openssl'
+
+gem 'nokogiri', '~> 1.16.7'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

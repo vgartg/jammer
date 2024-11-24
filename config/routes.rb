@@ -67,6 +67,20 @@ Rails.application.routes.draw do
   get '/jams_showcase', to: 'jams#showcase'
   get '/jams/:id/submit_game', to: 'jams#submit_game', as: 'game_submission'
   post '/jams/:id/submit_game', to: 'jams#create_submission'
+  get '/jams/:id/show_projects', to: 'jams#show_projects', as: 'jam_show_projects'
+  get '/jams/:id/show_participants', to: 'jams#show_participants', as: 'jam_show_participants'
+
+  resources :jams do
+    member do
+      post 'participate'
+      patch 'delete_project'
+    end
+  end
+  resources :games do
+    resources :reviews, only: [:destroy]
+    resources :ratings, only: [:create]
+  end
+
 
   resources :notifications, only: [:index, :show] do
     delete 'destroy_all_notifications', on: :collection
@@ -76,4 +90,7 @@ Rails.application.routes.draw do
   get '/notifications', to: 'notifications#index'
 
   get '/settings', to: 'settings#index'
+
+  resource :password_reset, only: [:new, :create, :edit, :update]
+  resource :email_confirm, only: [:new, :create, :edit, :update]
 end

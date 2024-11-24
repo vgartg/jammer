@@ -62,26 +62,28 @@
     </div>
     <div id='games' style="display: none;" class="overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 pr-4 sm:pb-8 my-4 gap-y-12 sm:gap-x-4 max-h-[75vh]">
       <% @current_user.games.each do |game| %>
-        <div class="group relative">
-          <% if game && game.cover.attached? %>
-            <%= image_tag url_for(game.cover), alt: game.name, class: "rounded-md bg-gray-200 w-full h-full object-cover object-center group-hover:opacity-75" %>
-          <% else %>
-            <img src="https://via.placeholder.com/300" alt="<%= game.name %>" class="rounded-md bg-gray-200 w-full h-full object-cover object-center group-hover:opacity-75">
-          <% end %>
-          <div class="mt-2">
-            <h3 class="text-sm text-gray-700 truncate line-clamp-2">
-              <%= form_with url: submit_path(game), method: :post, local: true do |form| %>
-                <%= form.hidden_field :game_id, value: game.id %>
-                <%= form.hidden_field :jam_id, value: @jam.id %>
-                <%= form.hidden_field :user_id, value: @current_user.id %>
-                <button type="submit" class="text-left w-full">
-                  <span aria-hidden="true" class="absolute inset-0"></span>
-                  <%= game.name %>
-                </button>
-              <% end %>
-            </h3>
+        <% if @game.present? ? !game.id.equal?(@game.id): true %>
+          <div class="group relative">
+            <% if game && game.cover.attached? %>
+              <%= image_tag url_for(game.cover), alt: game.name, class: "rounded-md bg-gray-200 w-full h-full object-cover object-center group-hover:opacity-75" %>
+            <% else %>
+              <img src="https://via.placeholder.com/300" alt="<%= game.name %>" class="rounded-md bg-gray-200 w-full h-full object-cover object-center group-hover:opacity-75">
+            <% end %>
+            <div class="mt-2">
+              <h3 class="text-sm text-gray-700 truncate line-clamp-2">
+                <%= form_with url: submit_path(game), method: :post, local: true do |form| %>
+                  <%= form.hidden_field :game_id, value: game.id %>
+                  <%= form.hidden_field :jam_id, value: @jam.id %>
+                  <%= form.hidden_field :user_id, value: @current_user.id %>
+                  <button type="submit" class="text-left w-full">
+                    <span aria-hidden="true" class="absolute inset-0"></span>
+                    <%= game.name %>
+                  </button>
+                <% end %>
+              </h3>
+            </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
   </div>

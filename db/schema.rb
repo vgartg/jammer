@@ -42,10 +42,22 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_23_154257) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "administration_tracking", force: :cascade do |t|
+    t.bigint "admin_id", null: false
+    t.string "structure_type", null: false
+    t.bigint "structure_id", null: false
+    t.json "changed_fields", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "action"
+    t.index ["admin_id", "structure_type", "structure_id"], name: "idx_on_admin_id_structure_type_structure_id_75f645dcb5"
+    t.index ["admin_id"], name: "index_administration_tracking_on_admin_id"
+  end
+
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "friend_id", null: false
-    t.string "status", null: false
+    t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -56,6 +68,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_23_154257) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "author_id"
+    t.integer "status", default: 0
     t.index ["name"], name: "index_games_on_name", unique: true
   end
 
@@ -87,6 +100,10 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_23_154257) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
+    t.integer "games", default: [], array: true
+    t.integer "participants", default: [], array: true
+    t.boolean "users_can_votes", default: false
+    t.integer "status", default: 0
     t.bigint "hostsId", default: [], array: true
     t.bigint "adminsId", default: [], array: true
     t.bigint "juriesId", default: [], array: true
@@ -113,6 +130,27 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_23_154257) do
     t.boolean "read", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.integer "game_id", null: false
+    t.integer "jam_id"
+    t.float "average_rating", default: 0.0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_ratings_on_game_id"
+    t.index ["jam_id"], name: "index_ratings_on_jam_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.float "user_mark", null: false
+    t.string "criterion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "game_id"
+    t.integer "jam_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -150,7 +188,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_23_154257) do
     t.string "visibility", default: "All"
     t.string "background_image"
     t.string "theme", default: "Light"
-    t.string "jams_visibility", default: "All"
     t.string "auth_via"
     t.string "social_id"
     t.string "password_reset_token"
@@ -158,13 +195,18 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_23_154257) do
     t.string "email_confirm_token"
     t.datetime "email_confirm_token_sent_at"
     t.boolean "email_confirmed", default: false
+    t.integer "role", default: 0
+    t.string "jams_participating_visibility", default: "All"
+    t.string "jams_administrating_visibility", default: "All"
     t.integer "jam_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
+    t.index ["role"], name: "index_users_on_role"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "administration_tracking", "users", column: "admin_id"
   add_foreign_key "games", "users", column: "author_id"
   add_foreign_key "games_tags", "games"
   add_foreign_key "games_tags", "tags"
