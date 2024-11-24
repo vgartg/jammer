@@ -27,10 +27,19 @@ export default class extends Controller {
         url.searchParams.delete('tag_ids[]')
 
         this.tagCheckboxTargets.forEach(checkbox => {
-            if (checkbox.checked) {
-                url.searchParams.append('tag_ids[]', checkbox.value)
+            const label = checkbox.closest("[data-games-target='label']");
+            const isChecked = checkbox.checked;
+
+            if (isChecked) {
+                url.searchParams.append('tag_ids[]', checkbox.value);
+
+                label.classList.add("bg-indigo-500", "border-indigo-500", "text-white");
+                label.classList.remove("bg-white", "border-gray-300", "text-gray-700");
+            } else {
+                label.classList.remove("bg-indigo-500", "border-indigo-500", "text-white");
+                label.classList.add("border-gray-300", "text-gray-700");
             }
-        })
+        });
 
         url.searchParams.set('tag_mode', this.tagModeTarget.value)
 
