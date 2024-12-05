@@ -1,0 +1,37 @@
+<div class="grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6">
+  <% items.each do |item| %>
+    <div class="bg-white shadow-md rounded-lg overflow-hidden transition-transform transform hover:scale-105">
+      <a href="/games/<%= item.id %>">
+        <% if item && item.cover.attached? %>
+          <%= image_tag url_for(item.cover), alt: item.name,
+                        class: "h-56 w-full object-cover object-center" %>
+        <% else %>
+          <div class="aspect-w-16 aspect-h-9 bg-gray-200">
+            <img src="https://via.placeholder.com/300" alt="<%= item.name %>"
+                 class="object-cover object-center">
+          </div>
+        <% end %>
+      </a>
+
+      <div class="p-4">
+        <h3 class="text-lg font-medium text-gray-800 truncate">
+          <a href="/games/<%= item.id %>"><%= item.name %></a>
+        </h3>
+        <p class="mt-1 text-sm text-gray-500 line-clamp-2"><%= item.description %></p>
+
+        <div class="mt-2 text-gray-500 flex flex-wrap gap-2">
+          <% item.tags.each do |tag| %>
+            <span class="bg-gray-200 px-3 py-1 rounded-full text-sm font-medium text-gray-700"><%= tag.name %></span>
+          <% end %>
+        </div>
+        <% if item.author.present? %>
+          <a class="mt-2 block text-gray-700 text-sm" href="<%= user_profile_path(item.author) %>">
+            <%= item.author.name %>
+          </a>
+        <% else %>
+          <p class="mt-2 text-gray-600 text-sm">Автор не найден</p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

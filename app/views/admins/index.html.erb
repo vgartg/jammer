@@ -1,0 +1,53 @@
+<div class="p-16">
+  <h1 class="text-3xl font-bold mb-6">Панель администратора</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Пользователи</h2>
+        <p class="text-gray-600 mb-4">Управление пользователями</p>
+      </div>
+      <%= link_to 'Перейти', admin_users_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Игры</h2>
+        <p class="text-gray-600 mb-4">Редактирование и удаление игр</p>
+      </div>
+      <%= link_to 'Перейти', admin_games_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Джемы</h2>
+        <p class="text-gray-600 mb-4">Управление джемами и их участниками</p>
+      </div>
+      <%= link_to 'Перейти', admin_jams_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Статистика</h2>
+        <p class="text-gray-600 mb-4">Просмотр статистики пользователей, игр и джемов</p>
+      </div>
+      <%= link_to 'Перейти', '', class: 'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition mt-4' %>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Настройки</h2>
+        <p class="text-gray-600 mb-4">Настройка параметров платформы</p>
+      </div>
+      <%= link_to 'Перейти', '', class: 'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition mt-4' %>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Поддержка</h2>
+        <p class="text-gray-600 mb-4">Связь с поддержкой, часто задаваемые вопросы</p>
+      </div>
+      <%= link_to 'Перейти', '', class: 'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition mt-4' %>
+    </div>
+  </div>
+</div>

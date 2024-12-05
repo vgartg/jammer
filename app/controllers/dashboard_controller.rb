@@ -8,10 +8,9 @@ class DashboardController < ApplicationController
     @sent_requests = current_user.friendships.where(status: 'pending')
     @received_requests = current_user.inverse_friendships.where(status: 'pending')
     @current_user = current_user
-    @games = Game.all
-    @jams = Jam.all
+    @games = Game.all.where(status: 1)
+    @jams = Jam.all.where(status: 1)
     @sessions = @current_user.sessions.order(created_at: :desc)
-    @notifications = current_user.notifications
   end
 
   private

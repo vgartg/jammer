@@ -1,0 +1,18 @@
+<tbody class="text-gray-600 text-sm font-light">
+<% @users.each do |user| %>
+  <tr class="border-b hover:bg-gray-100">
+    <th scope="row" class="py-3 px-6"><%= user.id %></th>
+    <td class="py-3 px-6 hover:underline">
+      <%= link_to user.name, user_profile_path(user), class: 'break-all' %>
+    </td>
+    <td class="py-3 px-6"><%= user.email %></td>
+    <td class="py-3 px-6"><%= user.role %></td>
+    <td class="py-3 px-6"><%= user.created_at %></td>
+    <td class="py-3 px-6 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+      <%= link_to 'Edit', edit_admin_user_path(user), class: 'bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600' %>
+      <%= link_to 'Delete', admin_user_path(user), class: 'bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600',
+                  data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %>
+    </td>
+  </tr>
+<% end %>
+</tbody>

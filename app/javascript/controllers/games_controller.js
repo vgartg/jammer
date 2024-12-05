@@ -1,11 +1,13 @@
 import {Controller} from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ["input", "tagCheckbox", "tagMode", "toggleTagMode"]
+    static targets = ["input", "tagCheckbox", "tagMode", "toggleTagMode", "allGames", "myGames", "showAll",
+        "showMine", "searchForm"]
 
 
     connect() {
         this.timeout = null
+        this.displayAllGames();
     }
 
     search() {
@@ -51,5 +53,31 @@ export default class extends Controller {
     toggleTagMode(event) {
         this.tagModeTarget.value = this.toggleTagModeTarget.checked ? 'any' : 'all'
         this.search()
+    }
+
+    displayAllGames() {
+        this.allGamesTarget.classList.remove("hidden");
+        this.searchFormTarget.classList.remove("hidden");
+        this.myGamesTarget.classList.add("hidden");
+
+        this.showAllTarget.classList.add("font-bold", "text-gray-800");
+        this.showMineTarget.classList.remove("font-bold", "text-gray-800");
+    }
+
+    displayMyGames() {
+        this.myGamesTarget.classList.remove("hidden");
+        this.allGamesTarget.classList.add("hidden");
+        this.searchFormTarget.classList.add("hidden");
+
+        this.showMineTarget.classList.add("font-bold", "text-gray-800");
+        this.showAllTarget.classList.remove("font-bold", "text-gray-800");
+    }
+
+    toggleGames(event) {
+        if (event.currentTarget.dataset.gamesTarget === "showAll") {
+            this.displayAllGames();
+        } else if (event.currentTarget.dataset.gamesTarget === "showMine") {
+            this.displayMyGames();
+        }
     }
 }

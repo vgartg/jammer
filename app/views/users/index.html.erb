@@ -26,7 +26,12 @@
               <% end %>
           </span>
             <div>
-              <h2 class="text-lg font-semibold text-gray-800"><%= user.name %></h2>
+              <h2 class="text-lg font-semibold text-gray-800">
+              <% unless current_user.role == 'basic' || user.role == 'basic' %>
+                <span class="<%= user.role == 'moderator' ? 'text-green-500' : 'text-red-500' %>">[<%= user.role[0].upcase %>]</span>
+              <% end %>
+              <%= user.name %>
+              </h2>
               <% if user.can_see_online?(current_user) %>
               <p class="mt-6"
                  data-controller="online">
@@ -46,5 +51,6 @@
         <% end %>
       <% end %>
   </div>
+  <%= render partial: 'helpers/pagy' %>
 </div>
 </div>

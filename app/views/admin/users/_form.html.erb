@@ -1,0 +1,595 @@
+<div class="p-6" data-controller="settings">
+  <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mb-4">
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="profile" class="button bg-blue-700 text-white py-2 px-4 rounded">Профиль</button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="user_experience" class="button bg-blue-500 text-white py-2 px-4 rounded">Пользовательский опыт</button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="games" class="button bg-blue-500 text-white py-2 px-4 rounded">Игры</button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="jams" class="button bg-blue-500 text-white py-2 px-4 rounded">Джемы</button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="sessions" class="button bg-blue-500 text-white py-2 px-4 rounded">Сессии</button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="notifications" class="button bg-blue-500 text-white py-2 px-4 rounded">Уведомления</button>
+  </div>
+
+  <div class="mt-4">
+    <%= link_to 'Назад', request.referer && URI(request.referer).path != request.fullpath ? URI(request.referer).path : admin_users_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
+  </div>
+
+  <div>
+    <!-- Секция с профилем -->
+    <div data-settings-target="section" data-section="profile">
+      <%= form_with model: [:admin, user] do |f| %>
+        <div class="space-y-6 p-4 md:p-16">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <%= f.label :email, class: 'block text-sm font-medium text-gray-700' %>
+              <%= f.email_field :email, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+            </div>
+
+            <div>
+              <%= f.label :name, class: 'block text-sm font-medium text-gray-700' %>
+              <%= f.text_field :name, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+            </div>
+
+            <div>
+              <%= f.label :email_confirmed, class: 'block text-sm font-medium text-gray-700' %>
+              <div class="flex items-center pt-1">
+                <%= f.check_box :email_confirmed, class: 'mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500', checked: user.email_confirmed %>
+                <span class="ml-2 text-sm text-gray-600">Confirmed</span>
+              </div>
+            </div>
+
+            <div>
+              <%= f.label :role, class: 'block text-sm font-medium text-gray-700' %>
+              <%= f.select :role, User.roles.keys.map { |role| [role.titleize, role] }, {}, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <%= f.label :password, class: 'block text-sm font-medium text-gray-700' %>
+              <%= f.password_field :password, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+            </div>
+
+            <div>
+              <%= f.label :password_confirmation, class: 'block text-sm font-medium text-gray-700' %>
+              <%= f.password_field :password_confirmation, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+            </div>
+          </div>
+
+          <div class="flex justify-between">
+            <button type="button" onclick="toggleHiddenSection()" class="text-gray-400 hover:underline">
+              Show More Details
+            </button>
+          </div>
+
+          <div id="hidden-section" class="space-y-4 mt-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label for="avatar" class="block text-sm font-medium text-gray-800">Аватар</label>
+                <div class="flex items-center gap-x-4 bg-white p-4 rounded-md border border-gray-300 shadow-sm">
+                  <% if user && user.avatar.attached? %>
+                    <%= image_tag url_for(user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24 w-24 object-cover" %>
+                  <% else %>
+                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-image rounded-full h-24 w-24 object-cover" data-target="user.avatarImage">
+                  <% end %>
+                  <div class="flex flex-col items-center justify-center">
+                    <%= f.file_field :avatar, class: "hidden", accept: "image/jpeg,image/png", data: { max_size: 1.megabytes.to_i } %>
+                    <%= render partial: 'helpers/cropper_modal_admin' %>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label for="background_image" class="block text-sm font-medium text-gray-800">Заставка</label>
+                <div data-controller="background-image">
+                  <div class="relative">
+                    <div class="max-w-full border-dashed border-2 border-gray-400 p-4 text-center rounded-md bg-white shadow-md">
+                      <% if user.background_image.attached? %>
+                        <img data-background-image-target="currentBackgroundImg"
+                             id="current-background-img" src="<%= url_for(user.background_image) %>"
+                             alt="Current Background Image" class="max-h-56 mb-4 object-cover rounded-md shadow-sm" />
+                      <% end %>
+                      <img data-background-image-target="previewImg" id="preview-img" src="#"
+                           alt="Предварительный просмотр изображения"
+                           class="mt-4 hidden w-full h-auto object-cover rounded-md shadow-sm">
+                      <input data-background-image-target="input" type="file" name="user[background_image]"
+                             id="background_image"
+                             class="absolute inset-0 opacity-0 cursor-pointer max-h-56" accept="image/*">
+                      <label for="background_image" class="mt-2 text-xs text-gray-500 cursor-pointer hover:text-gray-700">Загрузить новую заставку</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <%= f.label :real_name, class: 'block text-sm font-medium text-gray-700' %>
+                <%= f.text_field :real_name, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+              </div>
+
+              <div>
+                <%= f.label :location, class: 'block text-sm font-medium text-gray-700' %>
+                <%= f.text_field :location, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+              </div>
+
+              <div>
+                <%= f.label :status, class: 'block text-sm font-medium text-gray-700' %>
+                <%= f.text_field :status, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+              </div>
+
+              <div>
+                <label for="link_username" class="block text-sm font-medium text-gray-700">
+                  Персональная ссылка
+                </label>
+                <%= f.text_field :link_username, id: 'link_username',
+                                 class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50', placeholder: 'Username',
+                                 data: { settings_target: 'username' },
+                                 pattern: '[a-zA-Z0-9-]+' %>
+                <% if user.link_username.present? %>
+                  <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
+                    https://<%= user.link_username %>.jammer.ru/
+                  </p>
+                <% else %>
+                  <p class="mt-2 text-gray-400 sm:text-sm" data-target="settings.fullLink">
+                    https://username.jammer.ru/
+                  </p>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label for="phone_number" class="block text-sm font-medium text-gray-700">Номер телефона</label>
+                <%= f.text_field :phone_number, id: 'phone_number',
+                                 value: user.phone_number,
+                                 autocomplete: 'tel',
+                                 type: 'tel',
+                                 placeholder: '+7 (___) ___-__-__',
+                                 class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+              </div>
+
+              <div>
+                <label for="birthday" class="block text-sm font-medium text-gray-700">День рождения</label>
+                <%= f.text_field :birthday, id: 'birthday',
+                                 value: user.birthday,
+                                 autocomplete: 'birthday',
+                                 type: 'date',
+                                 class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+              </div>
+
+              <div>
+                <%= f.label :timezone, class: 'block text-sm font-medium text-gray-700' %>
+                <%= f.select :timezone,
+                             options_for_select([
+                                                  ['America/Anchorage', 'America/Anchorage (UTC-09:00)'],
+                                                  ['America/Caracas', 'America/Caracas (UTC-04:00)'],
+                                                  ['America/Chicago', 'America/Chicago (UTC-06:00)'],
+                                                  ['America/Denver', 'America/Denver (UTC-07:00)'],
+                                                  ['America/Los_Angeles', 'America/Los_Angeles (UTC-08:00)'],
+                                                  ['America/New_York', 'America/New_York (UTC-05:00)'],
+                                                  ['America/Santiago', 'America/Santiago (UTC-04:00)'],
+                                                  ['America/Sao_Paulo', 'America/Sao_Paulo (UTC-03:00)'],
+                                                  ['America/St_Johns', 'America/St_Johns (UTC-03:30)'],
+                                                  ['Asia/Bangkok', 'Asia/Bangkok (UTC+07:00)'],
+                                                  ['Asia/Chita', 'Asia/Chita (UTC+09:00)'],
+                                                  ['Asia/Dhaka', 'Asia/Dhaka (UTC+06:00)'],
+                                                  ['Asia/Hong_Kong', 'Asia/Hong_Kong (UTC+08:00)'],
+                                                  ['Asia/Irkutsk', 'Asia/Irkutsk (UTC+08:00)'],
+                                                  ['Asia/Kabul', 'Asia/Kabul (UTC+04:30)'],
+                                                  ['Asia/Kamchatka', 'Asia/Kamchatka (UTC+12:00)'],
+                                                  ['Asia/Karachi', 'Asia/Karachi (UTC+05:00)'],
+                                                  ['Asia/Kathmandu', 'Asia/Kathmandu (UTC+05:45)'],
+                                                  ['Asia/Kolkata', 'Asia/Kolkata (UTC+05:30)'],
+                                                  ['Asia/Krasnoyarsk', 'Asia/Krasnoyarsk (UTC+07:00)'],
+                                                  ['Asia/Magadan', 'Asia/Magadan (UTC+11:00)'],
+                                                  ['Asia/Omsk', 'Asia/Omsk (UTC+06:00)'],
+                                                  ['Asia/Tbilisi', 'Asia/Tbilisi (UTC+04:00)'],
+                                                  ['Asia/Tokyo', 'Asia/Tokyo (UTC+09:00)'],
+                                                  ['Asia/Vladivostok', 'Asia/Vladivostok (UTC+10:00)'],
+                                                  ['Asia/Yangon', 'Asia/Yangon (UTC+06:30)'],
+                                                  ['Asia/Yekaterinburg', 'Asia/Yekaterinburg (UTC+05:00)'],
+                                                  ['Atlantic/Azores', 'Atlantic/Azores (UTC-01:00)'],
+                                                  ['Atlantic/South_Georgia', 'Atlantic/South_Georgia (UTC-02:00)'],
+                                                  ['Australia/Darwin', 'Australia/Darwin (UTC+09:30)'],
+                                                  ['Australia/Sydney', 'Australia/Sydney (UTC+10:00)'],
+                                                  ['Europe/Berlin', 'Europe/Berlin (UTC+01:00)'],
+                                                  ['Europe/Helsinki', 'Europe/Helsinki (UTC+02:00)'],
+                                                  ['Europe/Kaliningrad', 'Europe/Kaliningrad (UTC+02:00)'],
+                                                  ['Europe/Kiev', 'Europe/Kiev (UTC+02:00)'],
+                                                  ['Europe/Minsk', 'Europe/Minsk (UTC+03:00)'],
+                                                  ['Europe/Moscow', 'Europe/Moscow (UTC+03:00)'],
+                                                  ['Europe/Prague', 'Europe/Prague (UTC+01:00)'],
+                                                  ['Europe/Samara', 'Europe/Samara (UTC+04:00)'],
+                                                  ['Europe/Ulyanovsk', 'Europe/Ulyanovsk (UTC+04:00)'],
+                                                  ['Pacific/Auckland', 'Pacific/Auckland (UTC+12:00)'],
+                                                  ['Pacific/Chatham', 'Pacific/Chatham (UTC+12:45)'],
+                                                  ['Pacific/Honolulu', 'Pacific/Honolulu (UTC-10:00)'],
+                                                  ['Pacific/Tongatapu', 'Pacific/Tongatapu (UTC+13:00)'],
+                                                ], selected: user.timezone),
+                             {},
+                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+              </div>
+
+              <div>
+                <%= f.label :visibility, class: 'block text-sm font-medium text-gray-700' %>
+                <%= f.select :visibility,
+                             options_for_select([
+                                                  ['All'],
+                                                  ['Friends'],
+                                                  ['None']
+                                                ], selected: user.visibility),
+                             {},
+                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+              </div>
+
+              <div>
+                <%= f.label :jams_visibility, class: 'block text-sm font-medium text-gray-700' %>
+                <%= f.select :jams_visibility,
+                             options_for_select([
+                                                  ['All'],
+                                                  ['Friends'],
+                                                  ['None']
+                                                ], selected: user.jams_visibility),
+                             {},
+                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+              </div>
+
+              <div>
+                <%= f.label :theme, class: 'block text-sm font-medium text-gray-700' %>
+                <%= f.select :theme,
+                             options_for_select([
+                                                  ['Light'],
+                                                  ['Dark']
+                                                ], selected: user.theme),
+                             {},
+                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-end pb-10">
+            <%= f.submit 'Сохранить', class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
+          </div>
+
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Секция с пользовательским опытом -->
+    <div data-settings-target="section" data-section="user_experience" class="hidden">
+      <div class="container mx-auto px-4 pt-4">
+        <div class="section pb-16">
+          <h2 class="text-2xl font-bold tracking-tight text-gray-900">Друзья</h2>
+          <div class="friend-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% if @user_friendships.count > 0 %>
+              <% @user_friendships.each do |user_friendship| %>
+                <% if find_user_friend(user_friendship, @user) %>
+                  <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 flex items-center space-x-4">
+                    <a href='<%= '/users/' + find_user_friend(user_friendship, @user).id.to_s %>' class="flex items-center space-x-4 flex-grow">
+                  <span class="relative">
+                    <% if find_user_friend(user_friendship, @user).avatar.attached? %>
+                      <%= image_tag url_for(find_user_friend(user_friendship, @user).avatar), alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
+                    <% else %>
+                      <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-16 w-16 rounded-full">
+                    <% end %>
+                    <% if find_user_friend(user_friendship, @user).can_see_online?(@user) %>
+                      <% if find_user_friend(user_friendship, @user).online? %>
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
+                      <% elsif find_user_friend(user_friendship, @user).last_active_at %>
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
+                      <% end %>
+                    <% end %>
+                  </span>
+                      <div>
+                        <h2 class="text-lg font-semibold text-gray-800"><%= find_user_friend(user_friendship, @user).name %></h2>
+                        <% if find_user_friend(user_friendship, @user).can_see_online?(@user) %>
+                          <p class="mt-1 text-sm text-gray-600" data-controller="online">
+                            <% if find_user_friend(user_friendship, @user).last_active_at.present? %>
+                          <span id="user-status" data-online-target="lastActiveAt"
+                                data-last-active-at="<%= find_user_friend(user_friendship, @user).last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                                data-action="load->online#updateStatus"></span>
+                            <% else %>
+                              <span>Offline</span>
+                            <% end %>
+                          </p>
+                        <% end %>
+                      </div>
+                    </a>
+                  </div>
+                <% end %>
+              <% end %>
+            <% else %>
+              <p class="text-xl font-bold tracking-tight text-gray-600">Друзей пока нет</p>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Заявки -->
+        <div class="section pb-16">
+          <h2 class="text-2xl font-bold tracking-tight text-gray-900">Заявки</h2>
+          <div class="request-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% if @user_sent_requests.count > 0 %>
+              <% @user_sent_requests.each do |user_request| %>
+                <% if user_request.friend %>
+                  <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 flex items-center space-x-4">
+                    <a href='<%= '/users/' + user_request.friend.id.to_s %>' class="flex items-center space-x-4 flex-grow">
+                  <span class="relative">
+                    <% if user_request.friend.avatar.attached? %>
+                      <%= image_tag url_for(user_request.friend.avatar), alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
+                    <% else %>
+                      <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-16 w-16 rounded-full">
+                    <% end %>
+                    <% if user_request.friend.can_see_online?(@user) %>
+                      <% if user_request.friend.online? %>
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
+                      <% elsif user_request.friend.last_active_at %>
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
+                      <% end %>
+                    <% end %>
+                  </span>
+                    <div>
+                      <h3 class="text-lg font-semibold text-gray-800"><%= user_request.friend.name %></h3>
+                      <% if user_request.friend.can_see_online?(@user) %>
+                        <p class="mt-1 text-sm text-gray-600" data-controller="online">
+                          <% if user_request.friend.last_active_at.present? %>
+                        <span id="user-status" data-online-target="lastActiveAt"
+                              data-last-active-at="<%= user_request.friend.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                              data-action="load->online#updateStatus"></span>
+                          <% else %>
+                            <span>Offline</span>
+                          <% end %>
+                        </p>
+                      <% end %>
+                    </div>
+                    </a>
+                  </div>
+                <% end %>
+              <% end %>
+            <% else %>
+              <p class="text-xl font-bold tracking-tight text-gray-600">Исходящие запросы пока пусты</p>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Подписчики -->
+        <div class="section pb-16">
+          <h2 class="text-2xl font-bold tracking-tight text-gray-900">Подписчики</h2>
+          <div class="followers-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% if @user_received_requests.count > 0 %>
+              <% @user_received_requests.each do |user_request| %>
+                <% if user_request.user %>
+                  <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
+                    <a href='<%= '/users/' + user_request.user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
+                  <span class="relative">
+                    <% if user_request.user.avatar.attached? %>
+                      <%= image_tag url_for(user_request.user.avatar), alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
+                    <% else %>
+                      <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-16 w-16 rounded-full">
+                    <% end %>
+                    <% if user_request.user.can_see_online?(@user) %>
+                      <% if user_request.user.online? %>
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
+                      <% elsif user_request.user.last_active_at %>
+                        <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
+                      <% end %>
+                    <% end %>
+                  </span>
+                      <div>
+                        <h3 class="text-lg font-semibold text-gray-800"><%= user_request.user.name %></h3>
+                        <% if user_request.user.can_see_online?(@user) %>
+                          <p class="mt-1 text-sm text-gray-600" data-controller="online">
+                            <% if user_request.user.last_active_at.present? %>
+                          <span id="user-status" data-online-target="lastActiveAt"
+                                data-last-active-at="<%= user_request.user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                                data-action="load->online#updateStatus"></span>
+                            <% else %>
+                              <span>Offline</span>
+                            <% end %>
+                          </p>
+                        <% end %>
+                      </div>
+                    </a>
+                  </div>
+                <% end %>
+              <% end %>
+            <% else %>
+              <p class="text-xl font-bold tracking-tight text-gray-600">Входящие запросы пока пусты</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секция с играми -->
+    <div data-settings-target="section" data-section="games" class="hidden">
+      <div class="space-y-4 p-4 md:p-16">
+        <div class="flex flex-col md:flex-row items-start">
+          <div class="w-full md:w-1/4 mb-4 md:mb-0">
+            <p class="block text-sm font-medium text-gray-700">Игры</p>
+          </div>
+          <div class="w-full md:w-3/4">
+            <% if @user.games.any? %>
+              <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3
+                sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                <% @user.games.each do |game| %>
+                  <li class="relative">
+                    <a href="/games/<%= game.id %>">
+                      <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
+                        focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
+                         focus-within:ring-offset-gray-100">
+                        <% if game && game.cover.attached? %>
+                          <%= image_tag url_for(game.cover), alt: game.name,
+                                        class: "pointer-events-none object-cover group-hover:opacity-75" %>
+                        <% else %>
+                          <img src="https://via.placeholder.com/300" alt="<%= game.name %>"
+                               class="pointer-events-none object-cover group-hover:opacity-75">
+                        <% end %>
+                      </div>
+                      <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
+                        <%= game.name %>
+                      </p>
+                      <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
+                        <%= game.description %>
+                      </p>
+                    </a>
+
+                    <div class="pt-2">
+                      <%= link_to 'Edit', edit_admin_game_path(game),
+                                  class: 'bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600' %>
+                      <%= link_to 'Delete', admin_game_path(game),
+                                  class: 'bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600',
+                                  data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %>
+                    </div>
+                  </li>
+                <% end %>
+              </ul>
+            <% else %>
+              <span class="text-sm text-gray-500">Информации нет</span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секция с джемами -->
+    <div data-settings-target="section" data-section="jams" class="hidden">
+      <div class="space-y-4 p-4 md:p-16">
+        <div class="flex flex-col md:flex-row items-start">
+          <div class="w-full md:w-1/4 mb-4 md:mb-0">
+            <p class="block text-sm font-medium text-gray-700">Джемы</p>
+          </div>
+          <div class="w-full md:w-3/4">
+            <% if @user.jams.any? %>
+              <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3
+                sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                <% @user.jams.each do |jam| %>
+                  <li class="relative">
+                    <a href="/jams/<%= jam.id %>">
+                      <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
+                        focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
+                         focus-within:ring-offset-gray-100">
+                        <% if jam && jam.cover.attached? %>
+                          <%= image_tag url_for(jam.cover), alt: jam.name,
+                                        class: "pointer-events-none object-cover group-hover:opacity-75" %>
+                        <% else %>
+                          <img src="https://via.placeholder.com/300" alt="<%= jam.name %>"
+                               class="pointer-events-none object-cover group-hover:opacity-75">
+                        <% end %>
+                      </div>
+                      <p class="pointer-events-none mt-2 block text-center truncate text-sm font-medium text-gray-900">
+                        <%= jam.name %>
+                      </p>
+                      <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
+                        <%= jam.description %>
+                      </p>
+                    </a>
+
+                    <div class="pt-2">
+                      <%= link_to 'Edit', edit_admin_jam_path(jam),
+                                  class: 'bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600' %>
+                      <%= link_to 'Delete', admin_jam_path(jam),
+                                  class: 'bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600',
+                                  data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %>
+                    </div>
+                  </li>
+                <% end %>
+              </ul>
+            <% else %>
+              <span class="text-sm text-gray-500">Информации нет</span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секция с сессиями -->
+    <div data-settings-target="section" data-section="sessions" class="hidden">
+      <div class="space-y-4 p-4 md:p-16">
+        <div class="flex flex-col md:flex-row items-start">
+          <div class="w-full md:w-1/4 mb-4 md:mb-0">
+            <p class="block text-sm font-medium text-gray-700">Активные сессии</p>
+          </div>
+          <div class="w-full md:w-3/4">
+            <% if @user_sessions.any? %>
+              <ul class="divide-y divide-gray-200">
+                <% @user_sessions.each do |session| %>
+                  <li class="py-4 flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div class="mb-2 md:mb-0">
+                      <p class="text-sm font-medium text-gray-900">Session ID: <%= session.session_id %></p>
+                      <p class="text-sm text-gray-500">IP Address: <%= session.ip_address %></p>
+                      <p class="text-sm text-gray-500">Browser: <%= session.browser || 'Unknown' %></p>
+                      <p class="text-sm text-gray-500">Created At: <%= session.created_at %></p>
+                    </div>
+                    <%= form_tag logout_one_session_sessions_path(user: user, session_id: session.id), method: :post do %>
+                      <%= submit_tag 'Log out', class: 'mt-2 md:mt-0 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600' %>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+              <%= form_tag logout_all_sessions_sessions_path(user: user), method: :post do %>
+                <%= submit_tag 'Log out all', class: 'mt-4 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600' %>
+              <% end %>
+            <% else %>
+              <p class="text-sm text-gray-500">Не найдено активных сессий</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секция с уведомлениями -->
+    <div data-settings-target="section" data-section="notifications" class="hidden">
+      <div class="space-y-4 p-4 md:p-16">
+        <div class="flex flex-col md:flex-row items-start">
+          <div class="w-full md:w-1/4 mb-4 md:mb-0">
+            <p class="block text-sm font-medium text-gray-700">Уведомления</p>
+          </div>
+          <div class="w-full md:w-3/4">
+            <% if @user_notifications.any? %>
+              <% @user_notifications.order(created_at: :desc).each do |notification| %>
+                <% if notification.actor %>
+                  <div class="flex items-start px-4 py-3 border-b border-gray-200">
+                    <div class="mr-3">
+                      <a href='<%= '/users/' + notification.actor.id.to_s %>'>
+                        <% if notification.actor.avatar.attached? %>
+                          <%= image_tag url_for(notification.actor.avatar), alt: "Profile Picture",
+                                        class: "w-16 text-gray-400" %>
+                        <% else %>
+                          <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                               class="w-16 text-gray-400">
+                        <% end %>
+                      </a>
+                    </div>
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">
+                        <a href='<%= '/users/' + notification.actor.id.to_s %>'>
+                          <%= notification.actor.name %>
+                        </a>
+                        <% if notification.action == 'accepted_friendship' %>
+                          принял заявку в друзья
+                        <% elsif notification.action == 'sent_friend_request' %>
+                          отправил запрос в друзья
+                        <% else %>
+                          <%= notification.action %>
+                        <% end %>
+                      </p>
+                      <p class="text-xs text-gray-500"><%= notification.created_at.strftime("%d.%m.%Y, %H:%M")%></p>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            <% else %>
+              <p class="text-sm text-gray-500">У пользователя не было ни одного уведомления</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function toggleHiddenSection() {
+        var section = document.getElementById("hidden-section");
+        section.classList.toggle("hidden");
+    }
+</script>

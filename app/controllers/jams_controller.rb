@@ -1,23 +1,28 @@
 class JamsController < ApplicationController
   before_action :authenticate_user, only: [:new, :create, :edit, :update]
+  before_action :root_check, only: [:edit, :update, :destroy]
 
   def new
-    @notifications = current_user.notifications
   end
 
   def showcase
     @search_results = nil
     @tags = Tag.all
     if current_user
-      @notifications = current_user.notifications
+      @my_jams = Jam.where(author: current_user)
+      @jams_under_moderation = @my_jams.where(status: 0)
+      @jams_accepted = @my_jams.where(status: 1)
+      @jams_rejected = @my_jams.where(status: 2)
     end
 
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
-      @jams = Jam.where("LOWER(jams.name) LIKE ? OR LOWER(jams.description) LIKE ?",
+      jams = Jam.where(status: 1)
+      jams = jams.where("LOWER(jams.name) LIKE ? OR LOWER(jams.description) LIKE ?",
                         lower_case_search, lower_case_search)
+      @pagy, @jams = pagy(jams, limit: 12)
     else
-      @jams = Jam.all
+      @pagy, @jams = pagy(Jam.all.where(status: 1), limit: 12)
     end
 
     if params[:tag_ids].present?
@@ -37,8 +42,9 @@ class JamsController < ApplicationController
 
   def show
     @jam = Jam.find(params[:id])
-    if current_user
-      @notifications = current_user.notifications
+    if @jam.status != 1 && current_user != @jam.author
+      flash[:failure] = "Джем находится на модерации"
+      redirect_to dashboard_path
     end
   end
 
@@ -46,6 +52,10 @@ class JamsController < ApplicationController
     @jam = Jam.new(jam_params.merge(author: current_user))
     @tags = Tag.all
     if @jam.save
+      admins = User.where(role: [1, 2])
+      admins.each do |admin|
+        current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
+      end
       flash[:success] = 'Джем успешно создан!'
       redirect_to dashboard_path
     else
@@ -65,7 +75,13 @@ class JamsController < ApplicationController
   def update
     @jam = current_user.jams.find_by_id(params[:id])
     if @jam.update(jam_params)
-      redirect_to jam_profile_path, notice: 'Джем успешно обновлен.'
+      admins = User.where(role: [1, 2])
+      admins.each do |admin|
+        current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
+      end
+      @jam.update(status: 0)
+      flash[:success] = "Джем обновлен и отправлен на повторную модерацию!"
+      redirect_to jam_profile_path
     else
       flash[:failure] = @jam.errors.full_messages
       render :edit, status: :unprocessable_entity
@@ -83,6 +99,13 @@ class JamsController < ApplicationController
   end
 
   private
+
+  def root_check
+    unless current_user.jams.find_by_id(params[:id])
+      flash[:failure] = "Недостаточно прав"
+      redirect_to dashboard_path
+    end
+  end
 
   def jam_params
     params.require(:jam)

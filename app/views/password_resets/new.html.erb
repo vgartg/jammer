@@ -10,7 +10,7 @@
   </div>
 
   <%= f.submit 'Отправить', class: 'w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500' %>
-  <%= link_to 'Назад', login_path, class: 'inline-block mt-4 px-4 py-2 text-blue-600 bg-gray-200 rounded-lg hover:bg-gray-300' %>
+  <%= link_to 'Назад', request.referer && URI(request.referer).path != request.fullpath ? URI(request.referer).path : login_path, class: 'inline-block mt-4 px-4 py-2 text-blue-600 bg-gray-200 rounded-lg hover:bg-gray-300' %>
 <% end %>
   </div>
 </div>

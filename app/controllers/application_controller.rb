@@ -1,7 +1,9 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user
+  helper_method :notifications
   helper_method :require_subdomain
   before_action :update_last_active_at
+  include Pagy::Backend
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from ActionController::RoutingError, with: :render_404
 
@@ -37,11 +39,60 @@ class ApplicationController < ActionController::Base
     @current_user = nil
   end
 
+  def notifications
+    if current_user
+      @notifications = current_user.notifications
+    end
+  end
+
   def sign_in(user)
     session[:current_user] = user.id
   end
 
   private
+
+  def admin?
+    @user = current_user
+    unless @user && @user.role == 'admin'
+      flash[:failure] = 'Недостаточно прав'
+      redirect_to dashboard_path
+    end
+  end
+
+  def moderator?
+    @user = current_user
+    # Права администратора включают в себя права модератора и выше, поэтому такая проверка
+    if @user && @user.role == 'basic'
+      flash[:failure] = 'Недостаточно прав'
+      redirect_to dashboard_path
+    end
+  end
+
+  def create_administration_record(admin, item, changes, action)
+    last_changes = changes.transform_values { |value| Array(value).last }
+    first_changes = changes.transform_values { |value| Array(value).first }
+    present_changes = last_changes.present? && first_changes.present?
+    changed_fields = if present_changes && action != 'delete'
+                       {
+                         new_attributes: last_changes,
+                         old_attributes: first_changes
+                       }
+                     elsif changes.present?
+                       {
+                         new_attributes: {},
+                         old_attributes: changes
+                       }
+                     else
+                       {}
+                     end
+    AdministrationTracking.create(
+      admin_id: admin.id,
+      structure_type: item.class.name,
+      structure_id: item.id,
+      changed_fields: changed_fields,
+      action: action
+    )
+  end
 
   def update_last_active_at
     if current_user

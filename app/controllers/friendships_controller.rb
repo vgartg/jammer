@@ -7,7 +7,6 @@ class FriendshipsController < ApplicationController
     @sent_requests = current_user.friendships.where(status: 'pending')
     @received_requests = current_user.inverse_friendships.where(status: 'pending')
     @current_user = current_user
-    @notifications = current_user.notifications
   end
 
   def requests
@@ -15,7 +14,6 @@ class FriendshipsController < ApplicationController
     @sent_requests = current_user.friendships.where(status: 'pending')
     @received_requests = current_user.inverse_friendships.where(status: 'pending')
     @current_user = current_user
-    @notifications = current_user.notifications
   end
 
   def create
@@ -69,7 +67,7 @@ class FriendshipsController < ApplicationController
   def create_notification(recipient, actor, action, notifiable)
     existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action)
 
-    if existing_notifications
+    if existing_notifications.any?
       # Удаляем старые уведомления из БД
       existing_notifications.destroy_all
     end

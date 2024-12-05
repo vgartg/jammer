@@ -42,6 +42,8 @@ Rails.application.routes.draw do
   # Sessions
   resources :sessions do
     post 'logout_other_sessions', on: :collection
+    post 'logout_all_sessions', on: :collection
+    post 'logout_one_session', on: :collection
   end
 
   # Games
@@ -71,6 +73,23 @@ Rails.application.routes.draw do
 
   get '/settings', to: 'settings#index'
 
+  # Admin
+  get '/admin', to: 'admins#index'
+  namespace :admin do
+    [:users, :games, :jams].each do |resource|
+      resources resource, only: [:index, :new, :create, :edit, :update, :destroy]
+    end
+  end
+
+  # Moderator
+  get '/moderator', to: 'moderators#index'
+  namespace :moderator do
+    [:games, :jams].each do |resource|
+      resources resource, only: [:index, :edit, :update, :destroy]
+    end
+  end
+
+  # Email (mailer)
   resource :password_reset, only: [:new, :create, :edit, :update]
   resource :email_confirm, only: [:new, :create, :edit, :update]
 end

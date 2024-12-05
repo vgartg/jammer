@@ -2,11 +2,12 @@ import { Controller } from "stimulus";
 import flatpickr from 'flatpickr';
 
 export default class extends Controller {
-    static targets = ["username", "fullLink", "section"];
+    static targets = ["username", "fullLink", "section", "button"];
 
     connect() {
         this.updateLink();
         this.usernameTarget.addEventListener('input', () => this.updateLink());
+        this.initFlatpickr();
 
         this.sectionTargets.forEach((section, index) => {
             if (index !== 0) {
@@ -14,8 +15,25 @@ export default class extends Controller {
             }
         });
 
-        this.formatPhoneNumber();
-        this.initFlatpickr();
+        this.buttons = this.buttonTargets; // Ссылаемся на все кнопки
+    }
+
+    showSection(event) {
+        event.preventDefault();
+
+        const sectionToShow = event.currentTarget.getAttribute("data-section");
+
+        this.sectionTargets.forEach(section => {
+            section.classList.toggle('hidden', section.getAttribute('data-section') !== sectionToShow);
+        });
+
+        this.buttonTargets.forEach(button => {
+            button.classList.remove('bg-blue-700');
+            button.classList.add('bg-blue-500');
+        });
+
+        event.currentTarget.classList.add('bg-blue-700');
+        event.currentTarget.classList.remove('bg-blue-500');
     }
 
     close_notice() {
@@ -71,9 +89,7 @@ export default class extends Controller {
 
     updateLink() {
         let username = this.usernameTarget.value.trim();
-
         username = username.replace(/[^a-zA-Z0-9-]/g, '');
-
         const validUsername = /^[a-zA-Z0-9-]*$/.test(username);
 
         this.usernameTarget.value = username;

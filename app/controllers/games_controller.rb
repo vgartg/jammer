@@ -1,23 +1,28 @@
 class GamesController < ApplicationController
   before_action :authenticate_user, only: [:new, :create, :edit, :update]
+  before_action :root_check, only: [:edit, :update, :destroy]
 
   def new
-    @notifications = current_user.notifications
   end
 
   def showcase
     @search_results = nil
     @tags = Tag.all
     if current_user
-      @notifications = current_user.notifications
+      @my_games = Game.where(author: current_user)
+      @games_under_moderation = @my_games.where(status: 0)
+      @games_accepted = @my_games.where(status: 1)
+      @games_rejected = @my_games.where(status: 2)
     end
 
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
-      @games = Game.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
+      games = Game.where(status: 1)
+      games = games.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
                           lower_case_search, lower_case_search)
+      @pagy, @games = pagy(games, limit: 12)
     else
-      @games = Game.all
+      @pagy, @games = pagy(Game.all.where(status: 1), limit: 12)
     end
 
     if params[:tag_ids].present?
@@ -37,8 +42,9 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
-    if current_user
-      @notifications = current_user.notifications
+    if @game.status != 1 && current_user != @game.author
+      flash[:failure] = "Игра находится на модерации"
+      redirect_to dashboard_path
     end
   end
 
@@ -46,7 +52,11 @@ class GamesController < ApplicationController
     @game = Game.new(game_params.merge(author: current_user))
     @tags = Tag.all
     if @game.save
-      flash[:success] = "Игра успешно создана!"
+      admins = User.where(role: [1, 2])
+      admins.each do |admin|
+        current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
+      end
+      flash[:success] = "Игра отправлена на модерацию!"
       redirect_to dashboard_path
     else
       flash[:failure] = @game.errors.full_messages
@@ -65,7 +75,12 @@ class GamesController < ApplicationController
   def update
     @game = current_user.games.find_by_id(params[:id])
     if @game.update(game_params)
-      flash[:success] = "Игра успешно обновлена."
+      admins = User.where(role: [1, 2])
+      admins.each do |admin|
+        current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
+      end
+      @game.update(status: 0)
+      flash[:success] = "Игра обновлена и отправлена на повторную модерацию!"
       redirect_to game_profile_path
     else
       flash[:failure] = @game.errors.full_messages
@@ -84,6 +99,13 @@ class GamesController < ApplicationController
   end
 
   private
+
+  def root_check
+    unless current_user.games.find_by_id(params[:id])
+      flash[:failure] = "Недостаточно прав"
+      redirect_to dashboard_path
+    end
+  end
 
   def game_params
     params.require(:game)

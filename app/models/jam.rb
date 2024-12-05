@@ -3,6 +3,9 @@ class Jam < ActiveRecord::Base
   has_one_attached :cover
   has_one_attached :logo
 
+  attr_accessor :admin_edit
+  attr_accessor :moderator_edit
+
   belongs_to :author, foreign_key: 'author_id', class_name: 'User'
 
   has_and_belongs_to_many :tags

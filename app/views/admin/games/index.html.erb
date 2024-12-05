@@ -1,0 +1,54 @@
+<div class="overflow-x-auto">
+  <div class="flex flex-col md:flex-row items-center bg-gray-100 p-4 rounded-lg shadow-md mb-6 justify-between flex-wrap">
+    <%= form_with url: admin_games_path, method: :get, class: "pb-4", local: true do |form| %>
+      <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4 w-full">
+        <div class="flex items-center w-full md:w-auto">
+          <%= form.label :query, "Поиск игр", class: 'block font-semibold text-gray-700 mr-2' %>
+          <%= form.text_field :query, value: params[:query], placeholder: '', class: 'border border-gray-300 rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full' %>
+        </div>
+        <div class="flex items-center space-x-2 mt-2 md:mt-0">
+          <%= form.submit 'Поиск', class: 'bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-150 ease-in-out shadow' %>
+          <%= link_to 'Сбросить', admin_games_path, class: 'text-gray-500 hover:text-gray-700 font-semibold' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @games.any? %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-200">
+        <thead>
+        <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+          <th scope="col" class="flex justify-center py-3 px-6 text-left">
+            <%= link_to 'Id', admin_games_path(sort_by: 'id', direction: toggle_direction('id')) %>
+            <%= sort_arrow('id') %>
+          </th>
+          <th scope="col" class="py-3 px-6 text-left">
+            <%= link_to 'Author_id', admin_games_path(sort_by: 'author_id', direction: toggle_direction('author_id')) %>
+            <%= sort_arrow('author_id') %>
+          </th>
+          <th scope="col" class="py-3 px-6 text-left">
+            <%= link_to 'Name', admin_games_path(sort_by: 'name', direction: toggle_direction('name')) %>
+            <%= sort_arrow('name') %>
+          </th>
+          <th scope="col" class="py-3 px-6 text-left">
+            <%= link_to 'Status', admin_games_path(sort_by: 'status', direction: toggle_direction('status')) %>
+            <%= sort_arrow('status') %>
+          </th>
+          <th scope="col" class="py-3 px-6 text-left">
+            <%= link_to 'Created At', admin_games_path(sort_by: 'created_at', direction: toggle_direction('created_at')) %>
+            <%= sort_arrow('created_at') %>
+          </th>
+          <th scope="col" class="py-3 px-6 text-left"></th>
+        </tr>
+        </thead>
+        <tbody class="text-gray-600 text-sm font-light">
+        <%= render partial: 'admin/games/game' %>
+        </tbody>
+      </table>
+    </div>
+    <%= render partial: 'helpers/pagy' %>
+  <% else %>
+    <p class="text-gray-500 m-8">Игры не найдены по запросу "<%= params[:query] %>".</p>
+  <% end %>
+</div>
