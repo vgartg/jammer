@@ -23,7 +23,7 @@
 
           <div class="mt-4 text-center">
             <h2 class="text-lg font-semibold">
-              <%= @jam_id.present? ? "Средняя оценка игры в этом джеме:" : "Средняя оценка игры:" %>
+              <%= @jam_id.present? ? t('.jam_rating') : t('.rating') %>
             </h2>
             <p class="text-xl font-bold text-gray-900 inline-flex items-center">
               <%= @jam_id.present? ? @game.jam_rating(@jam_id) : @game.overall_rating %>
@@ -41,7 +41,9 @@
 
             <!-- Show message if average rating is 0 -->
             <% if @game.overall_rating.to_f == 0 && @game.author != current_user %>
-              <p class="text-sm text-black-500 mt-2">Оцените игру в числе первых!</p>
+              <p class="text-sm text-black-500 mt-2">
+                <%= t '.rate_p' %>
+              </p>
             <% end %>
           </div>
 
@@ -49,7 +51,9 @@
           <% unless @game.author == current_user %>
             <!-- Star Rating -->
             <div class="mt-4 text-center">
-              <h2 class="text-lg font-semibold">Оцените игру:</h2>
+              <h2 class="text-lg font-semibold">
+                <%= t '.rate' %>
+              </h2>
             </div>
 
             <div class="mt-2 flex flex-col items-center" data-controller="star-rating">
@@ -105,8 +109,7 @@
             </div>
 
 
-
-        <% end %>
+          <% end %>
           <% if @reviews.present? %>
             <div class="mt-8 text-center">
               <h2 class="text-lg font-semibold">Отзывы пользователей:</h2>

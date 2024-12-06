@@ -45,17 +45,17 @@
           <button id="btnUserInfo" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
                           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 bg-gray-100"
                   data-action="click->profile#openTab" data-tab-name="user_info">
-            Инфо
+            <%= t '.info_tab' %>
           </button>
           <button id="btnUserFriends" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
                           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   data-action="click->profile#openTab" data-tab-name="user_friends">
-            Друзья
+            <%= t '.friends_tab' %>
           </button>
           <button id="btnUserFollowers" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
                           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   data-action="click->profile#openTab" data-tab-name="user_followers">
-            Подписчики
+            <%= t '.subscribers' %>
           </button>
           <% if @user.id != session[:current_user] %>
             <% if @friendship.nil? %>
@@ -94,7 +94,9 @@
             data-last-active-at="<%= @user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
             data-action="load->online#updateStatus"></span>
         <% else %>
-          <span class="text-sm text-gray-600">Offline</span>
+          <span class="text-sm text-gray-600">
+            <%= t '.offline' %>
+          </span>
         <% end %>
       </p>
     <% end %>
@@ -103,40 +105,40 @@
         <div id="user_info" class="tab_content">
           <ul class="divide-y divide-gray-100">
             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Full name</dt>
+              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.full_name' %></dt>
               <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <% if @user.real_name.blank? %>
-                  <span>Информации нет</span>
+                  <span><%= t '.no_info' %></span>
                 <% else %>
                   <span><%= @user.real_name %></span>
                 <% end %>
               </dd>
             </div>
             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Birthday</dt>
+              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.birthday' %></dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <% if @user.birthday.blank? %>
-                  <span>Информации нет</span>
+                  <span><%= t '.no_info' %></span>
                 <% else %>
                   <span><%= Date.parse(@user.birthday).strftime("%d.%m.%Y") %></span>
                 <% end %>
               </dd>
             </div>
             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Location</dt>
+              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.location' %></dt>
               <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <% if @user.location.blank? %>
-                  <span>Информации нет</span>
+                  <span><%= t '.no_info' %></span>
                 <% else %>
                   <span><%= @user.location %></span>
                 <% end %>
               </dd>
             </div>
             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Phone number</dt>
+              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.phone' %></dt>
               <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <% if @user.phone_number.blank? %>
-                  <span>Информации нет</span>
+                  <span><%= t '.no_info' %></span>
                 <% else %>
                   <span><%= @user.phone_number %></span>
                 <% end %>
@@ -144,7 +146,7 @@
             </div>
 
             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Games</dt>
+              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.games' %></dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <% if @user.games.any? %>
                   <ul role="list" id="game-list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
@@ -209,7 +211,7 @@
                 }
             </script>
             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Administrating jams</dt>
+              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.adm_jams' %></dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <% if @user.can_see_administrating_jams?(current_user) || current_user == @user %>
                   <% if @user.jams.any? %>
@@ -240,16 +242,16 @@
                       <% end %>
                     </ul>
                   <% else %>
-                    <span class="text-gray-900">Информации нет</span>
+                    <span class="text-gray-900"><%= t '.no_info' %></span>
                   <% end %>
                 <% else %>
-                  <span class="text-gray-900">Информации нет</span>
+                  <span class="text-gray-900"><%= t '.no_info' %></span>
                 <% end %>
               </dd>
             </div>
 
             <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">Participating jams</dt>
+              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.part_jams' %></dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <% if @user.can_see_participating_jams?(current_user) || current_user == @user %>
                   <% if @user.jam_submissions.any? %>
@@ -280,10 +282,10 @@
                       <% end %>
                     </ul>
                   <% else %>
-                    <span class="text-gray-900">Информации нет</span>
+                    <span class="text-gray-900"><%= t '.no_info' %></span>
                   <% end %>
                 <% else %>
-                  <span class="text-gray-900">Информации нет</span>
+                  <span class="text-gray-900"><%= t '.no_info' %></span>
                 <% end %>
               </dd>
             </div>
@@ -329,14 +331,14 @@
                 data-last-active-at="<%= find_friend(friendship).last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
                 data-action="load->online#updateStatus"></span>
                             <% else %>
-                              <span class="text-sm text-gray-600">Offline</span>
+                              <span class="text-sm text-gray-600"><%= t '.offline' %></span>
                             <% end %></p>
                         <% end %>
                       </div>
                     </a>
                     <% if @current_user == @user %>
                       <div>
-                        <%= button_to "Remove", user_friendship_path(@current_user, friendship), method: :delete,
+                        <%= button_to t('.remove'), user_friendship_path(@current_user, friendship), method: :delete,
                                       class: "bg-red-500 text-white px-3 py-1 rounded-full
                           hover:bg-red-600 transition-colors duration-200" %>
                       </div>
@@ -346,7 +348,9 @@
               <% end %>
             <% else %>
               <div class="flex justify-between items-center">
-                <h2 class="text-1xl font-bold tracking-tight text-gray-600">Друзей пока нет</h2>
+                <h2 class="text-1xl font-bold tracking-tight text-gray-600">
+                  <%= t '.no_friends' %>
+                </h2>
               </div>
             <% end %>
           </div>
@@ -394,10 +398,10 @@
                     </a>
                     <% if @current_user == @user %>
                       <div class="flex flex-col gap-0.5">
-                        <%= button_to "Accept", user_friendship_path(@current_user, request), method: :put,
+                        <%= button_to t('.accept'), user_friendship_path(@current_user, request), method: :put,
                                       class: "bg-green-500 text-white px-3 py-1 rounded-full
                         hover:bg-green-600 transition-colors duration-200 mb-2" %>
-                        <%= button_to "Cancel", cancel_user_friendship_path(@current_user, request), method: :delete,
+                        <%= button_to t('.decline'), cancel_user_friendship_path(@current_user, request), method: :delete,
                                       class: "bg-red-500 text-white px-3 py-1 rounded-full
                         hover:bg-red-600 transition-colors duration-200" %>
                       </div>
@@ -407,7 +411,9 @@
               <% end %>
             <% else %>
               <div class="flex justify-between items-center">
-                <h2 class="text-1xl font-bold tracking-tight text-gray-600">Подписчиков пока нет</h2>
+                <h2 class="text-1xl font-bold tracking-tight text-gray-600">
+                  <%= t '.no_subscribers' %>
+                </h2>
               </div>
             <% end %>
           </div>

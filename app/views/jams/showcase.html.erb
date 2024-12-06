@@ -11,12 +11,12 @@
       <div class="flex flex-wrap gap-4">
         <%= f.text_field :search,
                          value: params[:search],
-                         placeholder: "Поиск по названию или описанию джема",
+                         placeholder: t('.search'),
                          data: { jams_target: "input" }, autocomplete: "off",
                          class: "block w-full max-w-lg sm:max-w-xs px-4 py-3 border
                          border-gray-300 rounded-md shadow-sm focus:outline-none
                          focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
-        <%= submit_tag "Искать",
+        <%= submit_tag t('.search_btn'),
                        class: "ml-2 inline-flex items-center justify-center px-4 py-2
       border border-transparent rounded-md shadow-sm text-sm
       font-medium text-white bg-indigo-600 hover:bg-indigo-700
@@ -39,7 +39,7 @@
       <div class="mt-4 flex flex-wrap gap-2">
         <%= check_box_tag :toggle_tag_mode, 'any', params[:tag_mode] == 'any',
                           data: { action: "change->jams#toggleTagMode", jams_target: "toggleTagMode" } %>
-        <%= label_tag :toggle_tag_mode, " Искать хотя бы с одним из выбранных тегов",
+        <%= label_tag :toggle_tag_mode, t('.checkbox'),
                       class: "text-sm font-medium text-gray-700" %>
 
         <div id="reset-button" class="ml-4 flex items-center space-x-1 text-indigo-600 cursor-pointer hidden"
@@ -47,7 +47,9 @@
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
-          <span class="text-sm font-medium">Сбросить фильтры</span>
+          <span class="text-sm font-medium">
+            <%= t '.reset_options' %>
+          </span>
         </div>
 
       </div>
@@ -60,10 +62,12 @@
 
     <div class="mt-6">
       <% if @jams.present? %>
-      <%= render partial: 'showcase_grid', locals: { jams: @jams } %>
+        <%= render partial: 'showcase_grid', locals: { jams: @jams } %>
       <% else %>
         <div class="flex justify-between items-center">
-          <h2 class="text-1xl font-bold tracking-tight text-gray-600">По текущему запросу ничего не найдено</h2>
+          <h2 class="text-1xl font-bold tracking-tight text-gray-600">
+            <%= t '.no_result' %>
+          </h2>
         </div>
       <% end %>
     </div>

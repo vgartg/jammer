@@ -75,9 +75,9 @@
                         <%= notification.actor.name %>
                       </a>
                       <% if notification.action == 'accepted_friendship' %>
-                        принял заявку в друзья
+                        <%= t 'helpers.accept' %>
                       <% elsif notification.action == 'sent_friend_request' %>
-                        отправил запрос в друзья
+                        <%= t 'helpers.sent' %>
                       <% else %>
                         <%= notification.action %>
                       <% end %>

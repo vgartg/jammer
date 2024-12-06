@@ -37,6 +37,15 @@ en:
     left-menu:
       requests: "Requests"
       settings: "Settings"
+  dashboard:
+    index:
+      title: "Dashboard"
+      games_reviews: "Your games reviews: "
+      rating: "Rating: "
+      games_rating: "Average rating of your games: "
+      jams_games_rating: "Average rating of your games in jams: "
+      jams_reviews: "Your jams reviews: "
+      no_comment: "No comment"
   games:
     create:
       success: "Game has been created successfully!"
@@ -65,13 +74,18 @@ en:
       download: "Download archive (.zip, .rar, .7z)"
       edit: "Edit game"
       delete: "Delete game"
-    new:
+      rating: "Average game rating:"
+      jam_rating: "Average game rating in this jam:"
+      rate_p: "Be the first to rate the game!"
+    form:
       name: "Name"
       desc: "Description"
       image: "Image"
       file: "Game file (.zip, .rar, .7z). Max 100MB"
       tags: "Tags"
       btn: "Create game"
+      hint1: "Drag file or press to choose file"
+      hint2: "(.zip, .rar, .7z, max size 100 MB)"
     edit:
       current_file: "Current file: "
       download: "Download archive"
@@ -92,6 +106,8 @@ en:
       income: "Incoming applications"
       sent_empt: "No outgoing requests yet"
       inc_empt: "No incoming requests yet"
+      accept: "Accept"
+      cancel: "Cancel"
   jams:
     create:
       failure: "Jam with that name already exists."
@@ -103,12 +119,24 @@ en:
       title: "Jams catalogue"
       btn: "Create jam"
       empty: "There are not jams yet"
+      search: "Search jams via name or description"
+      search_btn: "Search"
+      checkbox: "Search with at least one of chosen tags"
+      reset_options: "Reset filters"
+      no_result: "Nothing was found"
     show:
       description: "Description"
       author: "Author"
       edit: "Edit jam"
       delete: "Delete jam"
-    new:
+      edit_game: "Edit game"
+      add_game: "Add game"
+      delete_game: "Delete game"
+      participants: "Participants"
+      projects: "Projects"
+      participate: "Participate"
+      change_game: "Change game"
+    form:
       name: "Jam name"
       desc: "Description"
       start_date: "Start date"
@@ -118,6 +146,9 @@ en:
       logo: "Logo"
       tags: "Tags"
       btn: "Create jam"
+      hint1: "Drag 
+      image or press to choose file"
+      hint2: "(recommend 1920x1080px)"
     edit:
       name: "Jam name"
       desc: "Description"
@@ -128,6 +159,17 @@ en:
       logo: "Logo"
       tags: "Tags"
       btn: "Save changes"
+    show_participants:
+      title: "All participants"
+      no_participants: "There are no participants yet"
+    show_projects:
+      title: "Projects"
+    modal_content:
+      title: "Choose"
+      your_games: "Your games"
+      your_games_hint: "Choose one of your games:"
+      add_new: "Add new game"
+      add_existing: "Add existing game"
   users:
     destroy:
       success: "The account has been successfully deleted."
@@ -152,6 +194,16 @@ en:
       adm_jams: "Administating jams"
       no_info: "None"
       edit: "Edit profile"
+      offline: "Offline"
+      part_jams: "Participating jams"
+      info_tab: "Information"
+      friends_tab: "Friends"
+      subscribers: "Subscribers"
+      remove: "Remove friend"
+      accept: "Accept invitation"
+      decline: "Decline invitation"
+      no_subscribers: "No subscribers yet"
+      no_friends: "No friends yet"
     new:
       title: "Sign up your account"
       email: "Email address"
@@ -199,8 +251,9 @@ en:
           hint: "Select who can see your online status."
         jams_visibility:
           title: "Set Jams Visibility"
-          label: "Who can see my jams?"
-          hint: "Select who can see jams you are administrating."
+          label1: "Who can see jams I administrate?"
+          label2: "Who can see jams I participate?"
+          hint: "Select who can see jams you are administrating and participating."
         password:
           title: "Change password"
           hint: "Update your password associated with your account."
@@ -224,6 +277,9 @@ en:
           title: "Delete account"
           hint: "No longer want to use our service? You can delete your account here. This action is not reversible. All information related to this account will be deleted permanently."
           btn: "Delete account"
+          popup_title: "Enter your password to delete account:"
+          pswd: "Password"
+          cancel: "Cancel"
   sessions:
     create:
       failure: "Invalid email or password"
@@ -243,6 +299,8 @@ en:
   helpers:
     no_notif: "No notifications to display."
     show_all: "Show all"
+    sent: "want to be your friend"
+    accept: "accept your request"
   notifications:
     index:
       title: "Notifications"
