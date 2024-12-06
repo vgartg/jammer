@@ -15,6 +15,8 @@ class UsersController < ApplicationController
       @notifications = current_user.notifications
       @friendship = @current_user.friendship_with(@user)
     end
+    @friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
+    @received_requests = @user.inverse_friendships.where(status: 'pending')
   end
 
   def index
@@ -26,16 +28,18 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+
     if @user.save
-      session[:current_user] = @user.id
-      browser_string = request.user_agent
-      browser = UserAgent.parse(browser_string).browser
-      Session.create_session(@user.id, session[:session_id], request.remote_ip, browser: browser)
-      @user.update(last_seen_at: Time.zone.now)
-      redirect_to dashboard_path
+      @token = @user.set_email_confirm_token
+      EmailConfirmMailer.with(user: @user, token: @token).email_confirm.deliver_later
+      flash[:success] ||= []
+      flash[:success] << 'Инструкции были отправлены на ваш адрес'
+      redirect_to edit_email_confirm_url(user: { email_confirm_token: @user.email_confirm_token,
+                                                 email: @user.email }).gsub('&amp;', '&')
     else
-      flash[:failure] = @user.errors.full_messages
-      render :new, status: :see_other
+      flash[:failure] ||= []
+      flash[:failure].concat(@user.errors.full_messages)
+      redirect_to register_path
     end
   end
 
@@ -43,7 +47,8 @@ class UsersController < ApplicationController
     @user = current_user
     if @user.authenticate(params[:user][:password])
       @user.destroy
-      flash[:success] = t 'users.destroy.success'
+      flash[:success] ||= []
+      flash[:success] << t 'users.destroy.success'
       render json: { success: true }, status: :ok
     else
       flash[:error] = t 'users.destroy.error'
@@ -60,40 +65,42 @@ class UsersController < ApplicationController
 
     if user_params[:password].present? || user_params[:password_confirmation].present? || params[:user][:current_password].present?
       unless @user.authenticate(params[:user][:current_password])
-        flash[:failure] = t 'users.update_user.failure1'
-        # render :edit_user, status: :see_other
+        flash[:failure] ||= []
+        flash[:failure] << t 'users.update_user.failure1'
         redirect_to settings_path
         return
       end
 
       if user_params[:password].blank? || user_params[:password_confirmation].blank? || params[:user][:current_password].blank?
-        flash[:failure] = t 'users.update_user.failure2'
-        # render :edit_user, status: :see_other
+        flash[:failure] ||= []
+        flash[:failure] << t 'users.update_user.failure2'
         redirect_to settings_path
         return
       elsif user_params[:password].length < 5
-        flash[:failure] = t 'users.update_user.failure3'
-        # render :edit_user, status: :see_other
+        flash[:failure] ||= []
+        flash[:failure] << t 'users.update_user.failure3'
         redirect_to settings_path
         return
       elsif user_params[:password] != user_params[:password_confirmation]
-        flash[:failure] = t 'users.update_user.failure4'
-        # render :edit_user, status: :see_other
+        flash[:failure] ||= []
+        flash[:failure] << t 'users.update_user.failure4'
         redirect_to settings_path
         return
       elsif user_params[:password] == params[:user][:current_password]
-        flash[:failure] = t 'users.update_user.failure5'
-        # render :edit_user, status: :see_other
+        flash[:failure] ||= []
+        flash[:failure] << t 'users.update_user.failure5'
         redirect_to settings_path
         return
       end
     end
 
     if @user.update(user_params)
-      flash[:success] = t 'users.update_user.success'
+      flash[:success] ||= []
+      flash[:success] << t 'users.update_user.success'
       redirect_to settings_path
     else
-      flash[:failure] = t 'users.update_user.failure6'
+      flash[:failure] ||= []
+      flash[:failure] << t 'users.update_user.failure6'
       redirect_to settings_path
     end
   end
@@ -120,6 +127,6 @@ class UsersController < ApplicationController
     params.require(:user)
           .permit(:name, :email, :password, :password_confirmation, :avatar, :background_image,
                   :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
-                  :visibility, :jams_visibility, :theme)
+                  :visibility, :jams_administrating_visibility, :jams_participating_visibility, :theme)
   end
 end

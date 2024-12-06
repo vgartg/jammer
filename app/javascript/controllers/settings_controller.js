@@ -2,7 +2,7 @@ import { Controller } from "stimulus";
 import flatpickr from 'flatpickr';
 
 export default class extends Controller {
-    static targets = ["username", "fullLink", "section"];
+    static targets = ["username", "fullLink", "section", "notice"];
 
     connect() {
         if (this.hasUsernameTarget) {
@@ -23,7 +23,10 @@ export default class extends Controller {
     }
 
     close_notice() {
-        this.element.remove();
+        const notice = event.currentTarget.closest('.problem-block');
+        if (notice) {
+            notice.remove();
+        }
     }
 
     formatPhoneNumber() {

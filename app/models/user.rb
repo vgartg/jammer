@@ -1,5 +1,10 @@
 class User < ActiveRecord::Base
-  attr_accessor :remember_token
+  include Recoverable
+  include Rememberable
+  include Confirmable
+
+  has_secure_token :password_reset_token
+  has_secure_token :email_confirm_token
 
   VISIBILITY_ALL = 'All'
   VISIBILITY_FRIENDS = 'Friends'
@@ -12,7 +17,8 @@ class User < ActiveRecord::Base
   validates :password, :password_confirmation, presence: true, on: :create
 
   validates :visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
-  validates :jams_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
+  validates :jams_administrating_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
+  validates :jams_participating_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
   validates :theme, inclusion: { in: [THEME_LIGHT, THEME_DARK] }
 
   validate :password_length, on: :create
@@ -23,6 +29,8 @@ class User < ActiveRecord::Base
   has_many :jams, foreign_key: "author_id", dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships, dependent: :destroy
+
+  has_many :jam_submissions
 
   has_many :inverse_friendships, class_name: "Friendship", foreign_key: "friend_id", dependent: :destroy
   has_many :inverse_friends, through: :inverse_friendships, source: :user, dependent: :destroy
@@ -88,26 +96,6 @@ class User < ActiveRecord::Base
     last_active_at.present? && last_active_at > 1.minutes.ago
   end
 
-  def remember_me
-    self.remember_token = SecureRandom.urlsafe_base64
-    update_column(:remember_token_digest, digest(remember_token))
-  end
-
-  def forget_me
-    update_column(:remember_token_digest, nil)
-    self.remember_token = nil
-  end
-
-  def digest(string)
-    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
-    BCrypt::Password.create(string, cost: cost)
-  end
-
-  def remember_token_authenticated?(remember_token)
-    return false unless remember_token_digest.present?
-    BCrypt::Password.new(remember_token_digest).is_password?(remember_token)
-  end
-
   def invalidate_other_sessions(current_session_id)
     sessions.where.not(session_id: current_session_id).destroy_all
     update(last_active_at: Time.current)
@@ -130,8 +118,8 @@ class User < ActiveRecord::Base
     Notification.where(recipient_id: id)
   end
 
-  def can_see_jams?(other_user)
-    case self.jams_visibility
+  def can_see_administrating_jams?(other_user)
+    case self.jams_administrating_visibility
     when VISIBILITY_ALL
       return true
     when VISIBILITY_FRIENDS
@@ -141,5 +129,31 @@ class User < ActiveRecord::Base
     when VISIBILITY_NONE
       return false
     end
+  end
+
+  def can_see_participating_jams?(other_user)
+    case self.jams_participating_visibility
+    when VISIBILITY_ALL
+      return true
+    when VISIBILITY_FRIENDS
+      active_friendships = self.friendships.where(status: 'accepted').pluck(:friend_id) +
+        self.inverse_friendships.where(status: 'accepted').pluck(:user_id)
+      return active_friendships.include?(other_user.id) if other_user
+    when VISIBILITY_NONE
+      return false
+    end
+  end
+
+  def get_all_participating_jams()
+    Jam.joins("JOIN jam_submissions ON (jams.id=jam_submissions.jam_id)").where('jam_submissions.user_id = ?', self.id)
+  end
+
+  def authenticate_password_reset_token(token)
+    digest(self.password_reset_token) == token
+  end
+
+  def authenticate_email_confirm_token(token)
+    return false unless email_confirm_token.present?
+    BCrypt::Password.new(email_confirm_token).is_password?(token)
   end
 end

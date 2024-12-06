@@ -47,10 +47,8 @@
           </div>
 
           <div class="text-sm leading-6">
-            <a href="#" class="font-semibold text-indigo-600
-      hover:text-indigo-500">
-              <%= t '.recover' %>
-            </a>
+            <!-- <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a> -->
+            <%= link_to t('.recover'), new_password_reset_path, class: 'font-semibold text-indigo-600 hover:text-indigo-500' %>
           </div>
         </div>
 

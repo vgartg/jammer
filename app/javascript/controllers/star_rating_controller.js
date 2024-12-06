@@ -1,39 +1,77 @@
-import { Controller } from "@hotwired/stimulus";
+import {Controller} from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["star"];
-// Метод вызывается при подключении контроллера
+  static targets = ["star", "submitButton", "commentField"];
+
   connect() {
-    this.currentRating = 0;
-    this.updateStars(0);
+    this.initialRating = parseInt(document.getElementById("user_mark").value) || 0;
+    this.currentRating = this.initialRating;
+    this.updateStars(this.currentRating);
+
+    this.initialComment = document.getElementById("rating-comment").value || '';
+    this.commentFieldTarget.value = this.initialComment;
+
+    this.submitButtonTarget.style.display = "none";
+
+    // Если рейтинг равен 0, скрыть поле комментария
+    this.toggleCommentField();
   }
 
-  // Обновление рейгинга
   updateStars(rating) {
     this.starTargets.forEach((star) => {
       const starRating = parseInt(star.dataset.rating);
-      if (starRating <= rating) {
-        star.style.fill = "#FFD700"; // Золотой цвет
-      } else {
-        star.style.fill = "gray";
-      }
+      star.style.fill = starRating <= rating ? "#FFD700" : "gray";
     });
   }
 
-  // Обработка наведения мыши для предварительного просмотра рейтинга
   hover(event) {
     const rating = parseInt(event.currentTarget.dataset.rating);
     this.updateStars(rating);
   }
 
-  // Сброс звезд на текущий рейтинг при уводе курсора
   leave() {
     this.updateStars(this.currentRating);
   }
 
-  // Установка нового рейтинга при клике на звезду
   setRating(event) {
     this.currentRating = parseInt(event.currentTarget.dataset.rating);
     this.updateStars(this.currentRating);
+
+    document.getElementById("user_mark").value = this.currentRating;
+
+    // Обновляем видимость поля комментария в зависимости от рейтинга
+    this.toggleCommentField();
+
+    this.toggleSubmitButton();
+  }
+
+  handleCommentInput() {
+    this.toggleSubmitButton();
+    const hiddenField = document.getElementById("rating-comment");
+    hiddenField.value = this.commentFieldTarget.value.trim();
+  }
+
+  toggleSubmitButton() {
+    const comment = this.commentFieldTarget.value.trim();
+    if (this.currentRating !== this.initialRating || comment !== '') {
+      this.submitButtonTarget.style.display = "inline-block";
+    } else {
+      this.submitButtonTarget.style.display = "none";
+    }
+  }
+
+  // Логика скрытия или отображения поля комментария в зависимости от рейтинга
+  toggleCommentField() {
+    if (this.currentRating > 0) {
+      this.commentFieldTarget.style.display = "block";
+    } else {
+      this.commentFieldTarget.style.display = "none";
+    }
+  }
+
+  submitRating(event) {
+    const form = document.getElementById("rating-form");
+    document.getElementById("rating-comment").value = this.commentFieldTarget.value;
+    form.submit();
   }
 }

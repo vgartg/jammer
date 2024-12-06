@@ -1,73 +1,8 @@
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+<div class="flex bg-gray-900 min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="mt-10 mx-auto w-full max-w-sm lg:w-[60%] lg:max-w-none">
 
     <%= render partial: 'helpers/errors' %>
 
-    <%= form_for :game, url: games_url do |f| %>
-
-      <div class="mt-4">
-        <%= f.label t('.name'), class: "block text-sm font-medium text-gray-700" %>
-        <div class="mt-1">
-          <%= f.text_field :name, required: true,
-                           class: "block w-full appearance-none rounded-md border border-gray-300
-                            px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
-                             focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
-        </div>
-      </div>
-
-      <div class="mt-4">
-        <%= f.label t('.desc'),
-                    class: "block text-sm font-medium text-gray-700" %>
-        <div class="mt-1">
-          <%= f.text_field :description, required: true, class: "block w-full appearance-none
-          rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm
-           focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
-        </div>
-      </div>
-
-      <div class="mt-4">
-        <%= f.label :avatar, t('.image'), class: "block text-sm font-medium text-gray-700" %>
-        <div class="mt-1">
-          <%= f.file_field :cover, required: true,
-                           class: "block w-full appearance-none rounded-md border border-gray-300
-                            px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
-                             focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
-        </div>
-      </div>
-
-      <div class="mt-4">
-        <%= f.label :game_file, t('.file'), class: "block text-sm font-medium text-gray-700" %>
-        <div class="mt-1">
-          <%= f.file_field :game_file, required: true, accept: ".zip,.rar,.7z", class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
-        </div>
-      </div>
-
-      <div class="mt-4">
-        <%= f.label :tags, t('.tags'), class: "block text-sm font-medium text-gray-700" %>
-        <div class="mt-1">
-          <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>
-            <div class="flex items-center">
-              <%= b.check_box(class: "mr-2") %>
-              <%= b.label(class: "text-sm font-medium text-gray-700") %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-      <%= f.submit t('.btn'), class: "mt-4 flex w-full justify-center rounded-md border
-       border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
-        hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2", data: { turbo_submits_with: "Создаем...", turbo_track: "dynamic" } %>
-
-      <div class='blur-background hidden' id='blur'>
-        <div class="loading-spinner hidden" id="loading">
-          <div id="square1"></div>
-          <div id="square2"></div>
-          <div id="square3"></div>
-          <div id="square4"></div>
-          <div id="square5"></div>
-        </div>
-      </div>
-
-
-    <% end %>
+    <%= render partial: 'games/form', locals: {path: games_url(@game)} %>
   </div>
 </div>

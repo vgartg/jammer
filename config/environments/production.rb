@@ -9,6 +9,16 @@ Rails.application.configure do
   # Eager load code on boot for better performance and memory savings (ignored by Rake tasks).
   config.eager_load = true
 
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address              => 'smtp.mail.ru',
+    :port                 => 587,
+    :domain               => ENV['MAIL_DOMAIN'],
+    :user_name            => ENV['MAIL_ADDRESS'],
+    :password             => ENV['MAIL_PASSWORD'],
+    :authentication       => 'plain',
+    :enable_starttls_auto => true  }
+
   # Full error reports are disabled.
   config.consider_all_requests_local = false
 
@@ -57,7 +67,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  config.action_mailer.default_url_options = { host: ENV['MAIL_DOMAIN'] }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {
