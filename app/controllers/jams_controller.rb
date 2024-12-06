@@ -99,7 +99,7 @@ class JamsController < ApplicationController
       render :new, status: :see_other
     elsif  @jam.save
       flash[:success] ||= []
-      flash[:success] << t 'jams.create.success'
+      flash[:success] << t('jams.create.success')
       redirect_to dashboard_path
     else
       flash[:failure] ||= []
@@ -108,7 +108,7 @@ class JamsController < ApplicationController
     end
   rescue ActiveRecord::RecordNotUnique => e
     flash[:failure] ||= []
-    flash[:failure] << t 'jams.create.failure'
+    flash[:failure] << t('jams.create.failure')
     render :new, status: :see_other
   end
 
@@ -156,10 +156,10 @@ class JamsController < ApplicationController
     @jam = current_user.jams.find_by_id(params[:id])
     if @jam.destroy
       flash[:success] ||= []
-      flash[:success] << t 'jams.destroy.success'
+      flash[:success] << t('jams.destroy.success')
     else
       flash[:failure] ||= []
-      flash[:failure] << t 'jams.destroy.failure'
+      flash[:failure] << t('jams.destroy.failure')
     end
     redirect_to :dashboard
   end
