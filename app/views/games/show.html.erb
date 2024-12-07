@@ -78,7 +78,7 @@
               <div class="mt-4 w-full max-w-md mx-auto" style="<%= @review.user_mark == 0 ? 'display:none;' : '' %>">
 
                 <label for="comment"></label><textarea id="comment" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
-                                                       placeholder="Введите комментарий..." rows="4" data-action="input->star-rating#handleCommentInput"
+                                                       placeholder="<%= t '.comment_placeholder' %>" rows="4" data-action="input->star-rating#handleCommentInput"
                                                        maxlength="1000"
                                                        data-star-rating-target="commentField">
         <%= @review.criterion %>
@@ -98,7 +98,7 @@
               <button type="button" data-action="click->star-rating#submitRating"
                       data-star-rating-target="submitButton" class="bg-indigo-600 text-white px-4 py-2 rounded-lg mt-4"
                       style="display:none;">
-                Сохранить
+                <%= t '.save' %>
               </button>
               <% if @review && @review.user == current_user && @review.id.present? %>
                 <%= button_to t('.delete_btn'), game_review_path(@game, @review), method: :delete,
@@ -112,7 +112,9 @@
           <% end %>
           <% if @reviews.present? %>
             <div class="mt-8 text-center">
-              <h2 class="text-lg font-semibold">Отзывы пользователей:</h2>
+              <h2 class="text-lg font-semibold">
+                <%= t '.reviews' %>
+              </h2>
               <% @reviews.each do |review| %>
                 <div class="mt-4 flex items-start">
                   <div class="flex flex-col items-start mr-4">
@@ -202,7 +204,9 @@
                   <%= @game.author.name %>
                 </a>
               <% else %>
-                <p>Автор не найден</p>
+                <p>
+                  <%= t '.no_author' %>
+                </p>
               <% end %>
             </div>
           </div>
@@ -220,7 +224,9 @@
                   <%= t '.download' %>
                 </a>
               <% else %>
-                <p class="text-gray-500">Файл игры не прикреплён.</p>
+                <p class="text-gray-500">
+                  <%= t '.no_game' %>
+                </p>
               <% end %>
             </div>
           </div>

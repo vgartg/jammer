@@ -79,6 +79,11 @@ en:
       jam_rating: "Average game rating in this jam:"
       rate_p: "Be the first to rate the game!"
       delete_btn: "Delete review"
+      reviews: "Reviews:"
+      no_game: "The game file was not attached"
+      comment_placeholder: "Enter comment..."
+      save: "Save"
+      no_author: "Author not found"
     form:
       name: "Name"
       desc: "Description"
@@ -139,6 +144,7 @@ en:
       projects: "Projects"
       participate: "Participate"
       change_game: "Change game"
+      no_tags: "Tags not found"
     form:
       name: "Jam name"
       desc: "Description"
@@ -167,6 +173,9 @@ en:
       no_participants: "There are no participants yet"
     show_projects:
       title: "Projects"
+      no_projects: "No games have been downloaded yet"
+      not_found: "Nothing was found"
+      no_author: "Author not found"
     modal_content:
       title: "Choose"
       your_games: "Your games"
