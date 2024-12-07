@@ -101,7 +101,7 @@
                 Сохранить
               </button>
               <% if @review && @review.user == current_user && @review.id.present? %>
-                <%= button_to 'Удалить отзыв', game_review_path(@game, @review), method: :delete,
+                <%= button_to t('.delete_btn'), game_review_path(@game, @review), method: :delete,
                               class: 'bg-red-600 text-white px-4 py-2 rounded-lg mt-4' %>
               <% end %>
 

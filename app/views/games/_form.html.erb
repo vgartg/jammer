@@ -42,9 +42,12 @@
                            required: !@game.persisted? ? true : false,
                            accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif, .png",
                            class: "absolute inset-0 opacity-0 cursor-pointer" %>
-          <p data-games-target="coverText" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">Перетащите сюда
-            изображение или нажмите, чтобы выбрать файл</p>
-          <p class="text-xs">(рекомендуем 1920x1080px)</p>
+          <p data-games-target="coverText" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">
+            <%= t '.hint1' %>
+          </p>
+          <p class="text-xs">
+            <%= t '.recommend' %>
+          </p>
         </div>
       </div>
     </div>

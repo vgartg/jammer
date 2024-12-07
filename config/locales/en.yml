@@ -37,6 +37,7 @@ en:
     left-menu:
       requests: "Requests"
       settings: "Settings"
+      plug: "Empty yet"
   dashboard:
     index:
       title: "Dashboard"
@@ -77,6 +78,7 @@ en:
       rating: "Average game rating:"
       jam_rating: "Average game rating in this jam:"
       rate_p: "Be the first to rate the game!"
+      delete_btn: "Delete review"
     form:
       name: "Name"
       desc: "Description"
@@ -86,6 +88,7 @@ en:
       btn: "Create game"
       hint1: "Drag file or press to choose file"
       hint2: "(.zip, .rar, .7z, max size 100 MB)"
+      recommend: "(recommend 1920х1080px)"
     edit:
       current_file: "Current file: "
       download: "Download archive"
@@ -306,3 +309,10 @@ en:
       title: "Notifications"
       accept: "accepted your friend request"
       sent: "sent a friend request"
+  email_confirms:
+    edit:
+      title: "Email confirmation"
+      code: "Code"
+      confirm: "Confirm"
+      back: "Back to"
+      login: "login page"

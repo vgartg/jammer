@@ -73,8 +73,12 @@
                   <input data-background-image-target="input" type="file" name="user[background_image]"
                          id="background_image"
                          class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
-                  <p class="text-gray-500 mt-4 text-sm">Перетащите сюда изображение или нажмите, чтобы выбрать файл</p>
-                  <p class="text-gray-500 text-xs">(рекомендуем 1920x1080px)</p>
+                  <p class="text-gray-500 mt-4 text-sm">
+                    <%= t 'games.form.hint1' %>
+                  </p>
+                  <p class="text-gray-500 text-xs">
+                    <%= t 'games.form.recommend' %>
+                  </p>
                 </div>
               </div>
             </div>
