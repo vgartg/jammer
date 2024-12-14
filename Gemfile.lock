@@ -328,6 +328,7 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (>= 6.4.3)
   rails (~> 8.0.0.beta1)
+  rails-i18n
   rest-client
   rexml (>= 3.3.6)
   selenium-webdriver

@@ -23,7 +23,7 @@
 
           <div class="mt-4 text-center">
             <h2 class="text-lg font-semibold">
-              <%= @jam_id.present? ? "Средняя оценка игры в этом джеме:" : "Средняя оценка игры:" %>
+              <%= @jam_id.present? ? t('.jam_rating') : t('.rating') %>
             </h2>
             <p class="text-xl font-bold text-gray-900 inline-flex items-center">
               <%= @jam_id.present? ? @game.jam_rating(@jam_id) : @game.overall_rating %>
@@ -41,7 +41,9 @@
 
             <!-- Show message if average rating is 0 -->
             <% if @game.overall_rating.to_f == 0 && @game.author != current_user %>
-              <p class="text-sm text-black-500 mt-2">Оцените игру в числе первых!</p>
+              <p class="text-sm text-black-500 mt-2">
+                <%= t '.rate_p' %>
+              </p>
             <% end %>
           </div>
 
@@ -49,7 +51,9 @@
           <% unless @game.author == current_user %>
             <!-- Star Rating -->
             <div class="mt-4 text-center">
-              <h2 class="text-lg font-semibold">Оцените игру:</h2>
+              <h2 class="text-lg font-semibold">
+                <%= t '.rate' %>
+              </h2>
             </div>
 
             <div class="mt-2 flex flex-col items-center" data-controller="star-rating">
@@ -74,7 +78,7 @@
               <div class="mt-4 w-full max-w-md mx-auto" style="<%= @review.user_mark == 0 ? 'display:none;' : '' %>">
 
                 <label for="comment"></label><textarea id="comment" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
-                                                       placeholder="Введите комментарий..." rows="4" data-action="input->star-rating#handleCommentInput"
+                                                       placeholder="<%= t '.comment_placeholder' %>" rows="4" data-action="input->star-rating#handleCommentInput"
                                                        maxlength="1000"
                                                        data-star-rating-target="commentField">
         <%= @review.criterion %>
@@ -94,10 +98,10 @@
               <button type="button" data-action="click->star-rating#submitRating"
                       data-star-rating-target="submitButton" class="bg-indigo-600 text-white px-4 py-2 rounded-lg mt-4"
                       style="display:none;">
-                Сохранить
+                <%= t '.save' %>
               </button>
               <% if @review && @review.user == current_user && @review.id.present? %>
-                <%= button_to 'Удалить отзыв', game_review_path(@game, @review), method: :delete,
+                <%= button_to t('.delete_btn'), game_review_path(@game, @review), method: :delete,
                               class: 'bg-red-600 text-white px-4 py-2 rounded-lg mt-4' %>
               <% end %>
 
@@ -105,11 +109,12 @@
             </div>
 
 
-
-        <% end %>
+          <% end %>
           <% if @reviews.present? %>
             <div class="mt-8 text-center">
-              <h2 class="text-lg font-semibold">Отзывы пользователей:</h2>
+              <h2 class="text-lg font-semibold">
+                <%= t '.reviews' %>
+              </h2>
               <% @reviews.each do |review| %>
                 <div class="mt-4 flex items-start">
                   <div class="flex flex-col items-start mr-4">
@@ -152,10 +157,14 @@
           <% end %>
 
         </div>
+
+
         <div class="mt-8 lg:col-span-5">
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Описание:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t 'activerecord.attributes.game.description' %>
+            </h2>
 
             <div class="prose prose-sm mt-4 text-gray-500">
               <p class="break-all">
@@ -165,7 +174,9 @@
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Теги:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t '.tags' %>
+            </h2>
             <div class="mt-4 text-gray-500">
               <% if @game.tags.any? %>
                 <ul class="flex flex-wrap gap-2">
@@ -176,46 +187,58 @@
                   <% end %>
                 </ul>
               <% else %>
-                <p>Теги не найдены</p>
+                <p>
+                  <%= t '.tags_not_found' %>
+                </p>
               <% end %>
             </div>
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Автор:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t '.author' %>
+            </h2>
             <div class="prose prose-sm mt-4 text-gray-500">
               <% if @game.author.present? %>
                 <a class="break-all" href="<%= user_profile_path(@game.author) %>">
                   <%= @game.author.name %>
                 </a>
               <% else %>
-                <p>Автор не найден</p>
+                <p>
+                  <%= t '.no_author' %>
+                </p>
               <% end %>
             </div>
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Файл игры:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t '.game_file' %>
+            </h2>
             <div class="mt-4">
               <% if @game.game_file.attached? %>
-                <p class="text-red-600">Внимание: мы не несем ответственности за содержимое архива.</p>
+                <p class="text-red-600">
+                  <%= t '.warning' %>
+                </p>
                 <a href="<%= url_for(@game.game_file) %>" download class="text-indigo-600 hover:text-indigo-900">
-                  Скачать архив (.zip, .rar, .7z)
+                  <%= t '.download' %>
                 </a>
               <% else %>
-                <p class="text-gray-500">Файл игры не прикреплён.</p>
+                <p class="text-gray-500">
+                  <%= t '.no_game' %>
+                </p>
               <% end %>
             </div>
           </div>
 
           <% if @game.author.present? && session[:current_user] == @game.author.id %>
             <div>
-              <%= button_to "Редактировать игру", game_edit_path(@game), method: :get,
+              <%= button_to t('.edit'), game_edit_path(@game), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md border
                               border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                               shadow-sm hover:bg-indigo-700 focus:outline-none
                                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-              <%= button_to "Удалить игру", game_destroy_path(@game), method: :delete,
+              <%= button_to t('.delete'), game_destroy_path(@game), method: :delete,
                             class: "mt-4 flex w-50 justify-center rounded-md border
                               border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white
                               shadow-sm hover:bg-red-700 focus:outline-none

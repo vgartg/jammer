@@ -36,9 +36,9 @@ class FriendshipsController < ApplicationController
 
     if @friendship.update(status: 'accepted')
       create_notification(@friendship.user, current_user, 'accepted_friendship', @friendship)
-      flash[:notice] = "Запрос дружбы принят."
+      flash[:notice] = t 'friendships.update.notice'
     else
-      flash[:alert] = "Не удалось принять запрос дружбы."
+      flash[:alert] = t 'friendships.update.alert'
     end
     redirect_to user_profile_path(@friendship.user)
   end
@@ -46,14 +46,14 @@ class FriendshipsController < ApplicationController
   def cancel
     @friendship = Friendship.find(params[:id])
     @friendship.destroy
-    flash[:notice] = "Запрос на дружбу отменен."
+    flash[:notice] = t 'friendships.update.notice'
     redirect_to user_profile_path(@friendship.friend)
   end
 
   def destroy
     @friendship = Friendship.find(params[:id])
     @friendship.destroy
-    flash[:notice] = "Дружба отменена."
+    flash[:notice] = t 'friendships.update.notice'
     @friendship.friend.id != current_user.id ? friend = @friendship.friend : friend = @friendship.user
     redirect_to user_profile_path(friend)
   end

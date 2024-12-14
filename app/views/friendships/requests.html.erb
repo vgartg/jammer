@@ -5,29 +5,29 @@
         <button id="btnSentRequests" class="tab_links bg-blue-500 hover:bg-blue-700
          text-white font-bold py-2 px-4 rounded mr-2 bg-blue-700 my-4"
                 data-action="click->friends#openTab" data-tab-name="sent_requests">
-          Sent applications
+          <%= t '.sent' %>
         </button>
         <button id="btnReceivedRequests" class="tab_links bg-blue-500 hover:bg-blue-700
          text-white font-bold py-2 px-4 rounded"
                 data-action="click->friends#openTab" data-tab-name="received_requests">
-          Incoming applications
+          <%= t '.income' %>
         </button>
       </div>
 
       <div id="sent_requests" class="tab_content">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
           <% if @sent_requests.count > 0 %>
-          <% @sent_requests.each do |request| %>
-            <% if request.friend %>
-              <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
+            <% @sent_requests.each do |request| %>
+              <% if request.friend %>
+                <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
       duration-200 flex items-center space-x-4">
-                <a href='<%= '/users/' + request.friend.id.to_s %>' class="flex items-center space-x-4 flex-grow">
+                  <a href='<%= '/users/' + request.friend.id.to_s %>' class="flex items-center space-x-4 flex-grow">
                   <span class="relative">
                     <% if request.friend.avatar.attached? %>
                       <%= image_tag url_for(request.friend.avatar), alt: "Profile Picture",
                                     class: "h-16 w-16 rounded-full" %>
                     <% else %>
-                      <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full"%>
+                      <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full" %>
                     <% end %>
                     <% if request.friend.can_see_online?(current_user) %>
                     <% if request.friend.online? %>
@@ -39,32 +39,34 @@
             <% end %>
                       <% end %>
           </span>
-                  <div>
-                    <h3 class="text-lg font-semibold text-gray-800"><%= request.friend.name %></h3>
-                    <% if request.friend.can_see_online?(current_user) %>
-                      <p class="mt-6"
-                         data-controller="online">
-                        <% if request.friend.last_active_at.present? %>
+                    <div>
+                      <h3 class="text-lg font-semibold text-gray-800"><%= request.friend.name %></h3>
+                      <% if request.friend.can_see_online?(current_user) %>
+                        <p class="mt-6"
+                           data-controller="online">
+                          <% if request.friend.last_active_at.present? %>
       <span id="user-status" class="text-sm text-gray-600"
             data-online-target="lastActiveAt"
             data-last-active-at="<%= request.friend.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
             data-action="load->online#updateStatus"></span>
-                        <% else %>
-                          <span class="text-sm text-gray-600">Offline</span>
-                        <% end %>
-                      </p>
-                    <% end %>
-                  </div>
-                </a>
-                <%= button_to "Cancel", cancel_user_friendship_path(@current_user, request), method: :delete,
-                              class: "bg-red-500 text-white px-3 py-1 rounded-full
+                          <% else %>
+                            <span class="text-sm text-gray-600">Offline</span>
+                          <% end %>
+                        </p>
+                      <% end %>
+                    </div>
+                  </a>
+                  <%= button_to t('.cancel_inv'), cancel_user_friendship_path(@current_user, request), method: :delete,
+                                class: "bg-red-500 text-white px-3 py-1 rounded-full
                         hover:bg-red-600 transition-colors duration-200" %>
-              </div>
+                </div>
+              <% end %>
             <% end %>
-          <% end %>
           <% else %>
             <div class="flex justify-between items-center">
-              <h2 class="text-1xl font-bold tracking-tight text-gray-600">Исходящие запросы пока пусты</h2>
+              <h2 class="text-1xl font-bold tracking-tight text-gray-600">
+                <%= t '.sent_empt' %>
+              </h2>
             </div>
           <% end %>
         </div>
@@ -73,16 +75,16 @@
       <div id="received_requests" class="tab_content hidden">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
           <% if @received_requests.count > 0 %>
-          <% @received_requests.each do |request| %>
-            <% if request.user %>
-              <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
-                <a href='<%= '/users/' + request.user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
+            <% @received_requests.each do |request| %>
+              <% if request.user %>
+                <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
+                  <a href='<%= '/users/' + request.user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
                   <span class="relative">
                     <% if request.user.avatar.attached? %>
                       <%= image_tag url_for(request.user.avatar), alt: "Profile Picture",
                                     class: "h-16 w-16 rounded-full" %>
                     <% else %>
-                      <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full"%>
+                      <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full" %>
                     <% end %>
                     <% if request.user.can_see_online?(current_user) %>
                     <% if request.user.online? %>
@@ -94,37 +96,39 @@
             <% end %>
                       <% end %>
           </span>
-                  <div>
-                    <h3 class="text-lg font-semibold text-gray-800"><%= request.user.name %></h3>
-                    <% if request.user.can_see_online?(current_user) %>
-                      <p class="mt-6"
-                         data-controller="online">
-                        <% if request.user.last_active_at.present? %>
+                    <div>
+                      <h3 class="text-lg font-semibold text-gray-800"><%= request.user.name %></h3>
+                      <% if request.user.can_see_online?(current_user) %>
+                        <p class="mt-6"
+                           data-controller="online">
+                          <% if request.user.last_active_at.present? %>
       <span id="user-status" class="text-sm text-gray-600"
             data-online-target="lastActiveAt"
             data-last-active-at="<%= request.user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
             data-action="load->online#updateStatus"></span>
-                        <% else %>
-                          <span class="text-sm text-gray-600">Offline</span>
-                        <% end %>
-                      </p>
-                    <% end %>
-                  </div>
-                </a>
-                <div class="flex flex-col gap-0.5">
-                  <%= button_to "Accept", user_friendship_path(@current_user, request), method: :put,
-                                class: "bg-green-500 text-white px-3 py-1 rounded-full
+                          <% else %>
+                            <span class="text-sm text-gray-600">Offline</span>
+                          <% end %>
+                        </p>
+                      <% end %>
+                    </div>
+                  </a>
+                  <div class="flex flex-col gap-0.5">
+                    <%= button_to t('.accept'), user_friendship_path(@current_user, request), method: :put,
+                                  class: "bg-green-500 text-white px-3 py-1 rounded-full
                         hover:bg-green-600 transition-colors duration-200 mb-2" %>
-                  <%= button_to "Cancel", cancel_user_friendship_path(@current_user, request), method: :delete,
-                                class: "bg-red-500 text-white px-3 py-1 rounded-full
+                    <%= button_to t('.cancel'), cancel_user_friendship_path(@current_user, request), method: :delete,
+                                  class: "bg-red-500 text-white px-3 py-1 rounded-full
                         hover:bg-red-600 transition-colors duration-200" %>
+                  </div>
                 </div>
-              </div>
+              <% end %>
             <% end %>
-          <% end %>
           <% else %>
             <div class="flex justify-between items-center">
-              <h2 class="text-1xl font-bold tracking-tight text-gray-600">Входящие запросы пока пусты</h2>
+              <h2 class="text-1xl font-bold tracking-tight text-gray-600">
+                <%= t '.inc_empt' %>
+              </h2>
             </div>
           <% end %>
         </div>

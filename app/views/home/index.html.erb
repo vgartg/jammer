@@ -17,17 +17,20 @@
             <% unless @current_user %>
               <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-400 ring-1
                ring-white/10 hover:ring-white/20">
-                Регистрация <a href="<%= register_path %>" class="font-semibold text-white">
+                <%= t 'layouts.header.sign_up' %><a href="<%= register_path %>" class="font-semibold text-white">
                 <span class="absolute inset-0" aria-hidden="true"></span>
-                Read more <span aria-hidden="true">&rarr;</span></a>
+                <%= t 'home.read_mode' %>
+                <span aria-hidden="true">&rarr;</span></a>
               </div>
             <% end %>
           </div>
           <div class="text-center">
             <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-              Прототип сервиса Jammer
+              <%= t 'home.title' %>
             </h1>
-            <p class="mt-6 text-lg leading-8 text-gray-300">Онлайн-сервис для размещения, продажи и загрузки инди-игр</p>
+            <p class="mt-6 text-lg leading-8 text-gray-300">
+              <%= t 'home.description' %>
+            </p>
           </div>
         </div>
       </div>

@@ -1,21 +1,21 @@
 <div class="bg-white">
   <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
     <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-bold tracking-tight text-gray-900">Друзья</h2>
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900"><%= t '.title' %></h2>
     </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
-  <% if @friendships.count > 0 %>
-  <% @friendships.each do |friendship| %>
-    <% if find_friend(friendship) %>
-      <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
+      <% if @friendships.count > 0 %>
+        <% @friendships.each do |friendship| %>
+          <% if find_friend(friendship) %>
+            <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
       duration-200 flex items-center space-x-4">
-        <a href='<%= '/users/' + find_friend(friendship).id.to_s %>' class="flex items-center space-x-4 flex-grow">
+              <a href='<%= '/users/' + find_friend(friendship).id.to_s %>' class="flex items-center space-x-4 flex-grow">
           <span class="relative">
             <% if find_friend(friendship).avatar.attached? %>
               <%= image_tag url_for(find_friend(friendship).avatar), alt: "Profile Picture",
                             class: "h-16 w-16 rounded-full" %>
             <% else %>
-              <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full"%>
+              <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full" %>
             <% end %>
             <% if find_friend(friendship).can_see_online?(current_user) %>
               <% if find_friend(friendship).online? %>
@@ -25,35 +25,35 @@
               <% end %>
             <% end %>
           </span>
-          <div>
-            <h2 class="text-lg font-semibold text-gray-800"><%= find_friend(friendship).name %></h2>
-            <% if find_friend(friendship).can_see_online?(current_user) %>
-              <p class="mt-6"
-                 data-controller="online">
-                <% if find_friend(friendship).last_active_at.present? %>
+                <div>
+                  <h2 class="text-lg font-semibold text-gray-800"><%= find_friend(friendship).name %></h2>
+                  <% if find_friend(friendship).can_see_online?(current_user) %>
+                    <p class="mt-6"
+                       data-controller="online">
+                      <% if find_friend(friendship).last_active_at.present? %>
       <span id="user-status" class="text-sm text-gray-600"
             data-online-target="lastActiveAt"
             data-last-active-at="<%= find_friend(friendship).last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
             data-action="load->online#updateStatus"></span>
-                <% else %>
-                  <span class="text-sm text-gray-600">Offline</span>
-                <% end %></p>
-            <% end %>
-          </div>
-        </a>
-        <div>
-          <%= button_to "Remove", user_friendship_path(@current_user, friendship), method: :delete,
-                        class: "bg-red-500 text-white px-3 py-1 rounded-full
+                      <% else %>
+                        <span class="text-sm text-gray-600">Offline</span>
+                      <% end %></p>
+                  <% end %>
+                </div>
+              </a>
+              <div>
+                <%= button_to t('.btn'), user_friendship_path(@current_user, friendship), method: :delete,
+                              class: "bg-red-500 text-white px-3 py-1 rounded-full
                         hover:bg-red-600 transition-colors duration-200" %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      <% else %>
+        <div class="flex justify-between items-center">
+          <h2 class="text-1xl font-bold tracking-tight text-gray-600"><%= t '.empty' %></h2>
         </div>
-      </div>
-    <% end %>
-  <% end %>
-  <% else %>
-    <div class="flex justify-between items-center">
-      <h2 class="text-1xl font-bold tracking-tight text-gray-600">Друзей пока нет</h2>
+      <% end %>
     </div>
-  <% end %>
-</div>
-</div>
+  </div>
 </div>

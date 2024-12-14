@@ -1,22 +1,25 @@
 <div class="bg-white">
   <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
     <div class="flex justify-between items-center">
-      <h2 class="px-4 text-2xl font-bold tracking-tight text-gray-900">Все пользователи</h2>
+      <h2 class="px-4 text-2xl font-bold tracking-tight text-gray-900">
+        <%= t '.title' %>
+      </h2>
     </div>
-  <div class="grid sm:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
+    <div class="grid sm:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
       <% @users.each do |user| %>
         <% unless user.id == session[:current_user] %>
-        <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
+          <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
       duration-200 flex items-center space-x-4">
-          <a href='<%= '/users/' + user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
-          <span class="relative">
+            <%= link_to users_path + '/' + user.id.to_s, class: "flex items-center space-x-4 flex-grow" do %>
+              <!--            <a href='<%#= '/users/' + user.id.to_s %>' class="">-->
+              <span class="relative">
             <% if user && user.avatar.attached? %>
               <%= image_tag url_for(user.avatar), alt: "Profile Picture",
                             class: "h-16 w-16 rounded-full" %>
             <% else %>
-              <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full"%>
+              <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full" %>
             <% end %>
-            <% if user.can_see_online?(current_user) %>
+                <% if user.can_see_online?(current_user) %>
             <% if user.online? %>
               <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
             <% elsif user.last_active_at %>
@@ -24,26 +27,27 @@
             <% end %>
               <% end %>
           </span>
-            <div>
-              <h2 class="text-lg font-semibold text-gray-800"><%= user.name %></h2>
-              <% if user.can_see_online?(current_user) %>
-              <p class="mt-6"
-                 data-controller="online">
-                <% if user.last_active_at.present? %>
+              <div>
+                <h2 class="text-lg font-semibold text-gray-800"><%= user.name %></h2>
+                <% if user.can_see_online?(current_user) %>
+                  <p class="mt-6"
+                     data-controller="online">
+                    <% if user.last_active_at.present? %>
       <span id="user-status" class="text-sm text-gray-600"
             data-online-target="lastActiveAt"
             data-last-active-at="<%= user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
             data-action="load->online#updateStatus"></span>
-                  <% else %>
-                <span class="text-sm text-gray-600">Offline</span>
+                    <% else %>
+                      <span class="text-sm text-gray-600">Offline</span>
+                    <% end %>
+                  </p>
                 <% end %>
-              </p>
-              <% end %>
-            </div>
-          </a>
-        </div>
+              </div>
+            <% end %>
+            <!--            </a>-->
+          </div>
         <% end %>
       <% end %>
+    </div>
   </div>
-</div>
 </div>

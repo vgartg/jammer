@@ -21,9 +21,9 @@
           <div class="mt-4 justify-between line-clamp-2">
             <div class="flex-1">
               <h3 class="text-sm text-gray-700 truncate">
-                <a href="/games/<%= game.id %>">
+                <%= link_to game_profile_path(game.id) do %>
                   <%= game.name %>
-                </a>
+                <% end %>
               </h3>
               <p class="mt-1 text-sm text-gray-500 line-clamp-2"><%= game.description %></p>
             </div>
@@ -32,7 +32,9 @@
                 <%= game.author.name %>
               </a>
             <% else %>
-              <p>Автор не найден</p>
+              <p>
+                <%= t '.no_author' %>
+              </p>
             <% end %>
           </div>
         </div>

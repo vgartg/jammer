@@ -29,7 +29,7 @@ class SessionsController < ApplicationController
       end
     else
       flash[:failure] ||= []
-      flash[:failure] << "Invalid email or password"
+      flash[:failure] << t('sessions.create.failure')
       redirect_to login_path
     end
   end
@@ -59,11 +59,11 @@ class SessionsController < ApplicationController
       current_user.invalidate_other_sessions(session[:session_id])
       current_user.forget_me
       flash[:success] ||= []
-      flash[:success] << "Successfully logged out of other sessions"
+      flash[:success] << t('sessions.logout_other_sessions.success')
       redirect_to settings_path
     else
       flash[:failure] ||= []
-      flash[:failure] << "Invalid password"
+      flash[:failure] << t('sessions.logout_other_sessions.failure')
       redirect_to settings_path
     end
   end

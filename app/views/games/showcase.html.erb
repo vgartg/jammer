@@ -1,8 +1,8 @@
 <div class="bg-white" data-controller="games">
   <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
     <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-bold tracking-tight text-gray-900">Каталог игр</h2>
-      <%= button_to "Создать игру", games_new_path, method: :get,
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900"><%= t '.title' %></h2>
+      <%= button_to t(".create"), games_new_path, method: :get,
                     class: "rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
     </div>
     <%= form_with url: games_showcase_path, method: :get,
@@ -11,12 +11,12 @@
       <div class="flex flex-wrap gap-4">
         <%= f.text_field :search,
                          value: params[:search],
-                         placeholder: "Поиск по названию или описанию игры",
+                         placeholder: t(".search_placeholder"),
                          data: { games_target: "input" }, autocomplete: "off",
                          class: "block w-full max-w-lg sm:max-w-xs px-4 py-3 border
                          border-gray-300 rounded-md shadow-sm focus:outline-none
                          focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
-        <%= submit_tag "Искать",
+        <%= submit_tag t(".search"),
                        class: "ml-2 inline-flex items-center justify-center px-4 py-2
       border border-transparent rounded-md shadow-sm text-sm
       font-medium text-white bg-indigo-600 hover:bg-indigo-700
@@ -39,7 +39,7 @@
       <div class="mt-4 flex flex-wrap gap-2">
         <%= check_box_tag :toggle_tag_mode, 'any', params[:tag_mode] == 'any',
                           data: { action: "change->games#toggleTagMode", games_target: "toggleTagMode" } %>
-        <%= label_tag :toggle_tag_mode, " Искать хотя бы с одним из выбранных тегов",
+        <%= label_tag :toggle_tag_mode, t(".checkbox"),
                       class: "text-sm font-medium text-gray-700" %>
 
         <div id="reset-button" class="ml-4 flex items-center space-x-1 text-indigo-600 cursor-pointer hidden"
@@ -47,7 +47,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
-          <span class="text-sm font-medium">Сбросить фильтры</span>
+          <span class="text-sm font-medium"><%= t '.reset_filters' %></span>
         </div>
       </div>
     <% end %>
@@ -59,10 +59,10 @@
 
     <div class="mt-6">
       <% if @games.present? %>
-      <%= render partial: 'showcase_grid', locals: { games: @games } %>
+        <%= render partial: 'showcase_grid', locals: { games: @games } %>
       <% else %>
         <div class="flex justify-between items-center">
-          <h2 class="text-1xl font-bold tracking-tight text-gray-600">По текущему запросу ничего не найдено</h2>
+          <h2 class="text-1xl font-bold tracking-tight text-gray-600"><%= t '.not_found' %></h2>
         </div>
       <% end %>
     </div>

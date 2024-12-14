@@ -11,7 +11,7 @@
   <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" data-action="click->dashboard#openMobileMenu">
     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
          aria-hidden="true">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
     </svg>
   </button>
 
@@ -24,7 +24,7 @@
            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path fill-rule="evenodd"
               d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-              clip-rule="evenodd" />
+              clip-rule="evenodd"/>
       </svg>
       <input id="search-field" class="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900
            placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..."
@@ -35,7 +35,7 @@
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
              stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round"
-                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
         </svg>
       </button>
 
@@ -48,14 +48,14 @@
             <%= image_tag url_for(@user.avatar), alt: "Profile Picture",
                           class: "h-8 w-8 rounded-full bg-gray-50" %>
           <% else %>
-            <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full bg-gray-50"%>
+            <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full bg-gray-50" %>
           <% end %>
           <span class="hidden lg:flex lg:items-center">
                 <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true"><%= @user.name %></span>
                 <svg class="ml-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path fill-rule="evenodd"
                         d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                        clip-rule="evenodd" />
+                        clip-rule="evenodd"/>
                 </svg>
               </span>
         </button>
@@ -63,9 +63,9 @@
             shadow-lg ring-1 ring-gray-900/5 focus:outline-none" role="menu" aria-orientation="vertical"
              aria-labelledby="user-menu-button" tabindex="-1" id="dashboard_profile_menu">
           <!-- Active: "bg-gray-50", Not Active: "" -->
-          <%= button_to "Your profile", user_profile_path(id: session[:current_user]), method: :get,
+          <%= button_to t('buttons.profile'), user_profile_path(id: session[:current_user]), method: :get,
                         class: "block px-3 py-1 text-sm leading-6 text-gray-900" %>
-          <%= button_to "Sign out", logout_path, method: :delete,
+          <%= button_to t('buttons.sign_out'), logout_path, method: :delete,
                         class: "block px-3 py-1 text-sm leading-6 text-gray-900" %>
         </div>
       </div>

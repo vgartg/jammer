@@ -28,7 +28,9 @@
         <div class="mt-8 lg:col-span-5">
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Описание:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t '.description' %>
+            </h2>
 
             <div class="prose prose-sm mt-4 text-gray-500">
               <p class="break-all">
@@ -38,7 +40,9 @@
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Теги:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t 'games.form.tags' %>
+            </h2>
             <div class="mt-4 text-gray-500">
               <% if @jam.tags.any? %>
                 <ul class="flex flex-wrap gap-2">
@@ -49,13 +53,17 @@
                   <% end %>
                 </ul>
               <% else %>
-                <p>Теги не найдены</p>
+                <p>
+                  <%= t '.no_tags' %>
+                </p>
               <% end %>
             </div>
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Автор:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t '.author' %>
+            </h2>
             <div class="prose prose-sm mt-4 text-gray-500">
               <% if @jam.author.present? %>
                 <a class="break-all" href="<%= user_profile_path(@jam.author) %>">
@@ -68,34 +76,34 @@
           </div>
           <% if @jam.author.present? && session[:current_user] == @jam.author.id %>
             <div>
-              <%= button_to "Список проектов", jam_show_projects_path(@jam), method: :get,
+              <%= button_to t('.projects'), jam_show_projects_path(@jam), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md border
                                     border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                                     shadow-sm hover:bg-indigo-700 focus:outline-none
                                      focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-              <%= button_to "Список участников", jam_show_participants_path(@jam), method: :get,
+              <%= button_to t('.participants'), jam_show_participants_path(@jam), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md borders
                                     border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                                     shadow-sm hover:bg-indigo-700 focus:outline-none
                                      focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-              <%= button_to "Редактировать джем", jam_edit_path(@jam), method: :get,
+              <%= button_to t('.edit'), jam_edit_path(@jam), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md border
                               border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                               shadow-sm hover:bg-indigo-700 focus:outline-none
                                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-              <%= button_to "Удалить джем", jam_destroy_path(@jam), method: :delete,
+              <%= button_to t('.delete'), jam_destroy_path(@jam), method: :delete,
                             class: "mt-4 flex w-50 justify-center rounded-md border
                               border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white
                               shadow-sm hover:bg-red-700 focus:outline-none
                                focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
-          <%else %>
+          <% else %>
             <% if @jsb.present? %>
-              <%= button_to "Список проектов", jam_show_projects_path(@jam), method: :get,
+              <%= button_to t('.projects'), jam_show_projects_path(@jam), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md border
                                     border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                                     shadow-sm hover:bg-indigo-700 focus:outline-none
                                      focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-              <%= button_to "Список участников", jam_show_participants_path(@jam), method: :get,
+              <%= button_to t('.participants'), jam_show_participants_path(@jam), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md borders
                                     border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                                     shadow-sm hover:bg-indigo-700 focus:outline-none
@@ -112,7 +120,7 @@
 
 
                   // Close Modal on Page Unload
-                  document.addEventListener('turbo:visit', function() {
+                  document.addEventListener('turbo:visit', function () {
                       document.getElementById('favDialog').close();
                       // Optionally, you can also add a confirmation dialog if needed
                       // event.preventDefault();
@@ -122,13 +130,15 @@
               <dialog id="favDialog">
                 <%= render partial: 'jams/modal_content' %>
               </dialog>
-              <%unless @jsb.game_id.present?%>
-                  <button type="button" id="addGame" class="mt-4 flex w-50 justify-center rounded-md border
+              <% unless @jsb.game_id.present? %>
+                <button type="button" id="addGame" class="mt-4 flex w-50 justify-center rounded-md border
                 border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                 shadow-sm hover:bg-indigo-700 focus:outline-none
-                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" onclick="showWindow(document, 'favDialog')">Добавить игру</button>
-              <%else %>
-                <%= button_to "Редактировать игру", game_edit_path(@game), method: :get,
+                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" onclick="showWindow(document, 'favDialog')">
+                  <%= t '.add_game' %>
+                </button>
+              <% else %>
+                <%= button_to t('.edit_game'), game_edit_path(@game), method: :get,
                               class: "mt-4 flex w-50 justify-center rounded-md border
                                   border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                                   shadow-sm hover:bg-indigo-700 focus:outline-none
@@ -136,21 +146,23 @@
                 <button type="button" id="addGame" class="mt-4 flex w-50 justify-center rounded-md border
                   border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                   shadow-sm hover:bg-indigo-700 focus:outline-none
-                  focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" onclick="showWindow(document, 'favDialog')">Заменить игру</button>
-                <%= button_to "Удалить игру", delete_project_jam_path(@jam), method: :patch,
+                  focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" onclick="showWindow(document, 'favDialog')">
+                  <%= t '.change_game' %>
+                </button>
+                <%= button_to t('.delete_game'), delete_project_jam_path(@jam), method: :patch,
                               class: "mt-4 flex w-50 justify-center rounded-md border
                                   border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white
                                   shadow-sm hover:bg-red-700 focus:outline-none
                                    focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
               <% end %>
             <% elsif current_user %>
-                <%= button_to "Участвовать", participate_jam_path(@jam), method: :post,
-                              class: "mt-4 flex w-50 justify-center rounded-md border
+              <%= button_to t('.participate'), participate_jam_path(@jam), method: :post,
+                            class: "mt-4 flex w-50 justify-center rounded-md border
                                   border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                                   shadow-sm hover:bg-indigo-700 focus:outline-none
                                    focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-              <% end %>
             <% end %>
+          <% end %>
           </div>
         </div>
       </div>

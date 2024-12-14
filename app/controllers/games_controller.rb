@@ -57,16 +57,13 @@ class GamesController < ApplicationController
     end
   end
 
-
-
-
   def submit
     # Check if the submission already exists
-    #existing_submission = JamSubmission.find_by(game_id: params[:game_id], jam_id: params[:jam_id])
+    # existing_submission = JamSubmission.find_by(game_id: params[:game_id], jam_id: params[:jam_id])
 
-    #unless existing_submission
+    # unless existing_submission
     #  @submission = JamSubmission.create(submission_params)
-    #end
+    # end
     submission = JamSubmission.where(jam_id: params[:jam_id]).find_by(user_id: current_user.id)
     submission.update(game_id: params[:game_id])
     redirect_to
@@ -77,7 +74,7 @@ class GamesController < ApplicationController
     @tags = Tag.all
     if @game.save
       flash[:success] ||= []
-      flash[:success] << "Игра успешно создана!"
+      flash[:success] << translate("games.create.success")
       redirect_to dashboard_path
     else
       flash[:failure] ||= []
@@ -86,7 +83,7 @@ class GamesController < ApplicationController
     end
   rescue ActiveRecord::RecordNotUnique => e
     flash[:failure] ||= []
-    flash[:failure] << "Игра с таким названием уже существует."
+    flash[:failure] << t('games.create.failure')
     render :new, status: :see_other
   end
 
@@ -99,7 +96,7 @@ class GamesController < ApplicationController
     @game = current_user.games.find_by_id(params[:id])
     if @game.update(game_params)
       flash[:success] ||= []
-      flash[:success] << "Игра успешно обновлена."
+      flash[:success] << t('games.update.success')
       redirect_to game_profile_path
     else
       flash[:failure] ||= []
@@ -112,10 +109,10 @@ class GamesController < ApplicationController
     @game = current_user.games.find_by_id(params[:id])
     if @game.destroy
       flash[:success] ||= []
-      flash[:success] << 'Игра успешно удалена.'
+      flash[:success] << t('games.destroy.success')
     else
       flash[:failure] ||= []
-      flash[:failure] << "Something went wrong!"
+      flash[:failure] << t('games.destroy.failure')
     end
     redirect_to dashboard_path
   end
