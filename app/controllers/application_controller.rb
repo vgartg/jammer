@@ -85,13 +85,19 @@ class ApplicationController < ActionController::Base
                      else
                        {}
                      end
-    AdministrationTracking.create(
+    administration_record = AdministrationTracking.new(
       admin_id: admin.id,
       structure_type: item.class.name,
       structure_id: item.id,
       changed_fields: changed_fields,
       action: action
     )
+
+    if administration_record.save
+      Rails.logger.info("Запись успешно сохранена: #{administration_record.inspect}")
+    else
+      Rails.logger.error("Ошибка при сохранении записи: #{administration_record.errors.full_messages.join(', ')}")
+    end
   end
 
   def update_last_active_at

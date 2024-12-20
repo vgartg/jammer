@@ -128,27 +128,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_21_171004) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "ratings", force: :cascade do |t|
-    t.integer "game_id", null: false
-    t.integer "jam_id"
-    t.float "average_rating", default: 0.0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["game_id"], name: "index_ratings_on_game_id"
-    t.index ["jam_id"], name: "index_ratings_on_jam_id"
-  end
-
-  create_table "reviews", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.float "user_mark", null: false
-    t.string "criterion"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "game_id"
-    t.integer "jam_id"
-    t.index ["user_id"], name: "index_reviews_on_user_id"
-  end
-
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "session_id"

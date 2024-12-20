@@ -76,6 +76,7 @@ Rails.application.routes.draw do
   # Admin
   get '/admin', to: 'admins#index'
   namespace :admin do
+    resources :actions, only: [:index]
     [:users, :games, :jams].each do |resource|
       resources resource, only: [:index, :new, :create, :edit, :update, :destroy]
     end

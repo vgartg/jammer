@@ -47,8 +47,12 @@ module Admin
 
         changes = @user.previous_changes.except("updated_at")
 
+        puts 12345
+        puts changes
+
         if changes.any?
           create_administration_record(current_user, @user, changes, 'edit')
+          puts 'goodd'
         end
       else
         flash[:failure] = @user.errors.full_messages

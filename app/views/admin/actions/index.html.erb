@@ -1,0 +1,53 @@
+<h1 class="text-2xl font-bold mb-6 text-center">Журнал действий администраторов</h1>
+<div class="overflow-x-auto px-4">
+  <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+    <thead>
+    <tr class="bg-gray-200 text-gray-600 uppercase text-xs md:text-sm">
+      <th class="py-3 px-6 text-left">Администратор</th>
+      <th class="py-3 px-6 text-left">Тип записи</th>
+      <th class="py-3 px-6 text-left">ID записи</th>
+      <th class="py-3 px-6 text-left">Действие</th>
+      <th class="py-3 px-6 text-left">Изменения</th>
+      <th class="py-3 px-6 text-left">Дата</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @actions.each do |action| %>
+      <tr class="border-b hover:bg-gray-100">
+        <td class="py-3 px-6 text-sm md:text-base"><%= action.admin_id %></td>
+        <td class="py-3 px-6 text-sm md:text-base"><%= action.structure_type %></td>
+        <td class="py-3 px-6 text-sm md:text-base"><%= action.structure_id %></td>
+        <td class="py-3 px-6 text-sm md:text-base"><%= action.action %></td>
+        <td class="py-3 px-6 text-sm md:text-base">
+          <% changes = action.changed_fields %>
+          <% if changes.present? && changes.is_a?(Hash) %>
+            <div>
+              <strong>Старые значения:</strong>
+              <ul>
+                <% changes['old_attributes'].each do |key, value| %>
+                  <li><%= "#{key}: #{value}" %></li>
+                <% end %>
+              </ul>
+            </div>
+            <div>
+              <strong>Новые значения:</strong>
+              <ul>
+                <% changes['new_attributes'].each do |key, value| %>
+                  <li><%= "#{key}: #{value}" %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% else %>
+            <span>Нет изменений</span>
+          <% end %>
+        </td>
+        <td class="py-3 px-6 text-sm md:text-base"><%= action.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% if @actions.count > 15 %>
+  <%= render partial: 'helpers/pagy' %>
+<% end %>

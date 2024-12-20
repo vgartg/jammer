@@ -18,8 +18,6 @@ class UsersController < ApplicationController
 
   def index
     @pagy, @users = pagy(User.all, limit: 16)
-    if current_user
-    end
   end
 
   def create

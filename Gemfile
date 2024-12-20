@@ -51,6 +51,7 @@ gem 'browser'
 gem 'flatpickr'
 gem 'useragent'
 gem 'rest-client'
+gem 'ostruct'
 
 gem 'letter_opener', group: :development
 gem 'letter_opener_web', group: :development

@@ -51,6 +51,8 @@
         <% end %>
       <% end %>
   </div>
-  <%= render partial: 'helpers/pagy' %>
+  <% if @users.count > 16 %>
+    <%= render partial: 'helpers/pagy' %>
+  <% end %>
 </div>
 </div>
