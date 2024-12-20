@@ -1,8 +1,8 @@
 class SessionsController < ApplicationController
   def new
-    if current_user
-      redirect_to user_path(current_user.id)
-    end
+    return unless current_user
+
+    redirect_to user_path(current_user.id)
   end
 
   def create
@@ -15,9 +15,7 @@ class SessionsController < ApplicationController
         unless Session.all.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).exists?
           Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
         end
-        if params[:remember_me] == "1"
-          remember(user)
-        end
+        remember(user) if params[:remember_me] == '1'
         redirect_to dashboard_path
       else
         @token = user.set_email_confirm_token
@@ -27,7 +25,7 @@ class SessionsController < ApplicationController
                                                    email: user.email }).gsub('&amp;', '&')
       end
     else
-      flash[:failure] = ["Invalid email or password"]
+      flash[:failure] = ['Invalid email or password']
       render :new, status: :see_other
     end
   end
@@ -56,10 +54,10 @@ class SessionsController < ApplicationController
     if current_user && current_user.authenticate(params[:password])
       current_user.invalidate_other_sessions(session[:session_id])
       current_user.forget_me
-      flash[:success] = "Successfully logged out of other sessions"
+      flash[:success] = 'Successfully logged out of other sessions'
       redirect_to settings_path
     else
-      flash[:failure] = "Invalid password"
+      flash[:failure] = 'Invalid password'
       redirect_to settings_path
     end
   end
@@ -69,7 +67,10 @@ class SessionsController < ApplicationController
     session_ids = user.sessions.pluck(:id)
     if user.sessions.destroy_all
       flash[:success] = 'Все сессии успешно удалены'
-      create_administration_record(current_user, user, { 'session_ids' => session_ids }, 'delete') if user != current_user
+      if user != current_user
+        create_administration_record(current_user, user, { 'session_ids' => session_ids },
+                                     'delete')
+      end
     else
       flash[:failure] = 'Не удалось удалить сессии'
     end

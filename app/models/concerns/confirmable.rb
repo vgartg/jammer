@@ -6,7 +6,7 @@ module Confirmable
       token = generate_token
       update_column(:email_confirm_token, digest(token))
       update_column(:email_confirm_token_sent_at, Time.current)
-      return token
+      token
     end
 
     def generate_token(length = 6)

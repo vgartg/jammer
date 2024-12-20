@@ -22,11 +22,9 @@ module Moderator
           @author.create_notification(@author, current_user, 'game change status after moderation', @game)
         end
 
-        changes = @game.previous_changes.except("updated_at")
+        changes = @game.previous_changes.except('updated_at')
 
-        if changes.any?
-          create_administration_record(current_user, @game, changes, 'edit')
-        end
+        create_administration_record(current_user, @game, changes, 'edit') if changes.any?
       else
         flash[:failure] = @game.errors.full_messages
       end
@@ -57,9 +55,11 @@ module Moderator
         query = params[:query].strip.downcase
 
         if query.to_i.to_s == query
-          games = games.where("games.id = :query OR games.status = :query", query: query.to_i)
+          games = games.where('games.id = :query OR games.status = :query', query: query.to_i)
         else
-          games = games.joins(:author).where("games.name ILIKE :query OR games.created_at::TEXT ILIKE :query OR users.name ILIKE :query", query: "%#{query}%")
+          games = games.joins(:author).where(
+            'games.name ILIKE :query OR games.created_at::TEXT ILIKE :query OR users.name ILIKE :query', query: "%#{query}%"
+          )
         end
       end
 

@@ -22,9 +22,7 @@ class FriendshipsController < ApplicationController
 
     unless existing_friendship
       @friendship = current_user.friendships.build(friend: @user, status: 'pending')
-      if @friendship.save
-        create_notification(@user, current_user, 'sent_friend_request', @friendship)
-      end
+      create_notification(@user, current_user, 'sent_friend_request', @friendship) if @friendship.save
     end
     redirect_to user_profile_path(@user)
   end
@@ -34,9 +32,9 @@ class FriendshipsController < ApplicationController
 
     if @friendship.update(status: 'accepted')
       create_notification(@friendship.user, current_user, 'accepted_friendship', @friendship)
-      flash[:notice] = "Запрос дружбы принят."
+      flash[:notice] = 'Запрос дружбы принят.'
     else
-      flash[:alert] = "Не удалось принять запрос дружбы."
+      flash[:alert] = 'Не удалось принять запрос дружбы.'
     end
     redirect_to user_profile_path(@friendship.user)
   end
@@ -44,24 +42,24 @@ class FriendshipsController < ApplicationController
   def cancel
     @friendship = Friendship.find(params[:id])
     @friendship.destroy
-    flash[:notice] = "Запрос на дружбу отменен."
+    flash[:notice] = 'Запрос на дружбу отменен.'
     redirect_to user_profile_path(@friendship.friend)
   end
 
   def destroy
     @friendship = Friendship.find(params[:id])
     @friendship.destroy
-    flash[:notice] = "Дружба отменена."
-    @friendship.friend.id != current_user.id ? friend = @friendship.friend : friend = @friendship.user
+    flash[:notice] = 'Дружба отменена.'
+    friend = @friendship.friend.id != current_user.id ? @friendship.friend : @friendship.user
     redirect_to user_profile_path(friend)
   end
 
   private
 
   def find_friend(friendship)
-    if friendship.friend
-      friendship.friend.id != current_user.id ? friendship.friend : friendship.user
-    end
+    return unless friendship.friend
+
+    friendship.friend.id != current_user.id ? friendship.friend : friendship.user
   end
 
   def create_notification(recipient, actor, action, notifiable)

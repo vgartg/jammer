@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-
   def setup
     @user = users(:todd)
     @another_user = users(:bob)
@@ -53,6 +52,7 @@ class UserTest < ActiveSupport::TestCase
     @user.update(last_active_at: Time.current)
     assert @user.online?
   end
+
   def test_cascade_games_delete
     todd = users(:todd)
     todd.destroy!
@@ -61,5 +61,4 @@ class UserTest < ActiveSupport::TestCase
       Game.find(games(:tes3).id)
     end
   end
-
 end

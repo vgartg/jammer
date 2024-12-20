@@ -24,9 +24,9 @@ module ApplicationHelper
     when 'sent_friend_request'
       'отправил запрос в друзья'
     when 'awaiting game moderation'
-      "- игра ожидает модерацию"
+      '- игра ожидает модерацию'
     when 'awaiting jam moderation'
-      "- джем ожидает модерацию"
+      '- джем ожидает модерацию'
     when 'game change status after moderation'
       '- статус игры изменен после модерации'
     when 'jam change status after moderation'
