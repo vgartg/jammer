@@ -19,18 +19,19 @@ class SessionsController < ApplicationController
         redirect_to dashboard_path
       elsif !user.email_confirm_period_valid? && user.last_active_at.nil? && user.last_seen_at.nil?
         user.destroy
-          flash[:failure] = 'Ваш аккаунт был удален из-за истечения срока действия токена. Пожалуйста, зарегистрируйтесь снова.'
-          redirect_to login_path
+        flash[:failure] =
+          'Ваш аккаунт был удален из-за истечения срока действия токена. Пожалуйста, зарегистрируйтесь снова.'
+        redirect_to login_path
+      else
+        if user.email_confirm_period_valid?
+          flash[:success] = 'Письмо с кодом для входа уже было отправлено на вашу почту'
         else
-          if user.email_confirm_period_valid?
-            flash[:success] = 'Письмо с кодом для входа уже было отправлено на вашу почту'
-          else
-            @token = user.set_email_confirm_token
-            EmailConfirmMailer.with(user: user, token: @token).email_confirm.deliver_later
-            flash[:success] = 'Инструкции были отправлены на ваш адрес'
-          end
-          redirect_to edit_email_confirm_url(user: { email_confirm_token: user.email_confirm_token,
-                                                     email: user.email }).gsub('&amp;', '&')
+          @token = user.set_email_confirm_token
+          EmailConfirmMailer.with(user: user, token: @token).email_confirm.deliver_later
+          flash[:success] = 'Инструкции были отправлены на ваш адрес'
+        end
+        redirect_to edit_email_confirm_url(user: { email_confirm_token: user.email_confirm_token,
+                                                   email: user.email }).gsub('&amp;', '&')
       end
     else
       flash[:failure] = ['Invalid email or password']
