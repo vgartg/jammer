@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   THEME_LIGHT = 'Light'
   THEME_DARK = 'Dark'
 
-  attr_accessor :admin_edit
+  attr_accessor :admin_edit, :current_password
 
   validates :name, :email, presence: true, uniqueness: true
   validates :password, :password_confirmation, presence: true, on: :create
@@ -28,25 +28,25 @@ class User < ActiveRecord::Base
   has_secure_password
   has_one_attached :avatar
   has_one_attached :background_image
-  has_many :games, foreign_key: "author_id", dependent: :destroy
-  has_many :jams, foreign_key: "author_id", dependent: :destroy
+  has_many :games, foreign_key: 'author_id', dependent: :destroy
+  has_many :jams, foreign_key: 'author_id', dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships, dependent: :destroy
 
-  has_many :inverse_friendships, class_name: "Friendship", foreign_key: "friend_id", dependent: :destroy
+  has_many :inverse_friendships, class_name: 'Friendship', foreign_key: 'friend_id', dependent: :destroy
   has_many :inverse_friends, through: :inverse_friendships, source: :user, dependent: :destroy
 
   has_many :sessions, dependent: :destroy
 
-  has_many :notifications, ->(user) { unscope(where: :user_id).where("actor_id = ? OR recipient_id = ?", user.id, user.id) },
+  has_many :notifications, lambda { |user|
+    unscope(where: :user_id).where('actor_id = ? OR recipient_id = ?', user.id, user.id)
+  },
            class_name: 'Notification', dependent: :destroy
 
-  attr_accessor :current_password
-
   def password_length
-    if password.nil? || password.length < 5
-      errors.add(:password, type: :invalid, message: 'must be at least 5 characters long')
-    end
+    return unless password.nil? || password.length < 5
+
+    errors.add(:password, type: :invalid, message: 'must be at least 5 characters long')
   end
 
   def friend_request(user)
@@ -67,7 +67,8 @@ class User < ActiveRecord::Base
   end
 
   def create_notification(recipient, actor, action, notifiable)
-    existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action, notifiable: notifiable)
+    existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action,
+                                                notifiable: notifiable)
 
     if existing_notifications.any?
       # Удаляем старые уведомления из БД
@@ -103,15 +104,15 @@ class User < ActiveRecord::Base
   end
 
   def can_see_online?(other_user)
-    case self.visibility
+    case visibility
     when VISIBILITY_ALL
-      return true
+      true
     when VISIBILITY_FRIENDS
-      active_friendships = self.friendships.where(status: 'accepted').pluck(:friend_id) +
-        self.inverse_friendships.where(status: 'accepted').pluck(:user_id)
-      return active_friendships.include?(other_user.id) if other_user
+      active_friendships = friendships.where(status: 'accepted').pluck(:friend_id) +
+                           inverse_friendships.where(status: 'accepted').pluck(:user_id)
+      active_friendships.include?(other_user.id) if other_user
     when VISIBILITY_NONE
-      return false
+      false
     end
   end
 
@@ -120,24 +121,25 @@ class User < ActiveRecord::Base
   end
 
   def can_see_jams?(other_user)
-    case self.jams_visibility
+    case jams_visibility
     when VISIBILITY_ALL
-      return true
+      true
     when VISIBILITY_FRIENDS
-      active_friendships = self.friendships.where(status: 'accepted').pluck(:friend_id) +
-        self.inverse_friendships.where(status: 'accepted').pluck(:user_id)
-      return active_friendships.include?(other_user.id) if other_user
+      active_friendships = friendships.where(status: 'accepted').pluck(:friend_id) +
+                           inverse_friendships.where(status: 'accepted').pluck(:user_id)
+      active_friendships.include?(other_user.id) if other_user
     when VISIBILITY_NONE
-      return false
+      false
     end
   end
 
   def authenticate_password_reset_token(token)
-    digest(self.password_reset_token) == token
+    digest(password_reset_token) == token
   end
 
   def authenticate_email_confirm_token(token)
     return false unless email_confirm_token.present?
+
     BCrypt::Password.new(email_confirm_token).is_password?(token)
   end
 end

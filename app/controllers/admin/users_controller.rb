@@ -32,23 +32,27 @@ module Admin
     def edit
       @user = User.find(params[:id])
 
-      if @user
-        @user_sessions = @user.sessions.order(created_at: :desc)
-        @user_notifications = @user.notifications
-        @user_friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
-        @user_sent_requests = @user.friendships.where(status: 'pending')
-        @user_received_requests = @user.inverse_friendships.where(status: 'pending')
-      end
+      return unless @user
+
+      @user_sessions = @user.sessions.order(created_at: :desc)
+      @user_notifications = @user.notifications
+      @user_friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
+      @user_sent_requests = @user.friendships.where(status: 'pending')
+      @user_received_requests = @user.inverse_friendships.where(status: 'pending')
     end
 
     def update
       if @user.update(user_params)
         flash[:success] = 'Пользователь успешно обновлен'
 
-        changes = @user.previous_changes.except("updated_at")
+        changes = @user.previous_changes.except('updated_at')
+
+        puts 12_345
+        puts changes
 
         if changes.any?
           create_administration_record(current_user, @user, changes, 'edit')
+          puts 'goodd'
         end
       else
         flash[:failure] = @user.errors.full_messages
@@ -80,11 +84,11 @@ module Admin
         query = params[:query].strip.downcase
 
         if query.to_i.to_s == query
-          users = users.where(id: query.to_i)
+          users.where(id: query.to_i)
         else
           role_query = User.roles[query]
-          users = users.where("name ILIKE :query OR email ILIKE :query OR created_at::TEXT ILIKE :query OR role = :role_query",
-                              query: "%#{query}%", role_query: role_query)
+          users.where('name ILIKE :query OR email ILIKE :query OR created_at::TEXT ILIKE :query OR role = :role_query',
+                      query: "%#{query}%", role_query: role_query)
         end
       else
         users
@@ -92,9 +96,9 @@ module Admin
     end
 
     def find_user_friend(user_friendship, user)
-      if user_friendship.friend
-        user_friendship.friend.id != user.id ? user_friendship.friend : user_friendship.user
-      end
+      return unless user_friendship.friend
+
+      user_friendship.friend.id != user.id ? user_friendship.friend : user_friendship.user
     end
 
     def user_params

@@ -14,9 +14,10 @@ class DashboardController < ApplicationController
   end
 
   private
+
   def find_friend(friendship)
-    if friendship.friend
-      friendship.friend.id != current_user.id ? friendship.friend : friendship.user
-    end
+    return unless friendship.friend
+
+    friendship.friend.id != current_user.id ? friendship.friend : friendship.user
   end
 end

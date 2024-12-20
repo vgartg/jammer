@@ -8,6 +8,6 @@ class CreateAdministrationTracking < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :administration_tracking, [:admin_id, :structure_type, :structure_id]
+    add_index :administration_tracking, %i[admin_id structure_type structure_id]
   end
 end

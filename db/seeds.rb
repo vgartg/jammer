@@ -30,4 +30,4 @@ default_tags.each do |tag|
   Tag.find_or_create_by(name: tag[:name])
 end
 
-puts "Default tags added."
+puts 'Default tags added.'

@@ -1,9 +1,8 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user, only: [:new, :create, :edit, :update]
-  before_action :root_check, only: [:edit, :update, :destroy]
+  before_action :authenticate_user, only: %i[new create edit update]
+  before_action :root_check, only: %i[edit update destroy]
 
-  def new
-  end
+  def new; end
 
   def showcase
     @search_results = nil
@@ -18,7 +17,7 @@ class GamesController < ApplicationController
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
       games = Game.where(status: 1)
-      games = games.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
+      games = games.where('LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?',
                           lower_case_search, lower_case_search)
       @pagy, @games = pagy(games, limit: 12)
     else
@@ -27,11 +26,11 @@ class GamesController < ApplicationController
 
     if params[:tag_ids].present?
       tag_ids = params[:tag_ids].map(&:to_i)
-      if params[:tag_mode] == 'any'
-        @games = @games.joins(:tags).where(tags: { id: tag_ids }).distinct
-      else
-        @games = @games.joins(:tags).group('games.id').having('array_agg(tags.id) @> ARRAY[?]::bigint[]', tag_ids)
-      end
+      @games = if params[:tag_mode] == 'any'
+                 @games.joins(:tags).where(tags: { id: tag_ids }).distinct
+               else
+                 @games.joins(:tags).group('games.id').having('array_agg(tags.id) @> ARRAY[?]::bigint[]', tag_ids)
+               end
     end
 
     respond_to do |format|
@@ -42,10 +41,10 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
-    if @game.status != 1 && current_user != @game.author
-      flash[:failure] = "Игра находится на модерации"
-      redirect_to dashboard_path
-    end
+    return unless @game.status != 1 && current_user != @game.author
+
+    flash[:failure] = 'Игра находится на модерации'
+    redirect_to dashboard_path
   end
 
   def create
@@ -56,14 +55,14 @@ class GamesController < ApplicationController
       admins.each do |admin|
         current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
       end
-      flash[:success] = "Игра отправлена на модерацию!"
+      flash[:success] = 'Игра отправлена на модерацию!'
       redirect_to dashboard_path
     else
       flash[:failure] = @game.errors.full_messages
       render :new, status: :see_other
     end
-  rescue ActiveRecord::RecordNotUnique => e
-    flash[:failure] = "Игра с таким названием уже существует."
+  rescue ActiveRecord::RecordNotUnique
+    flash[:failure] = 'Игра с таким названием уже существует.'
     render :new, status: :see_other
   end
 
@@ -80,7 +79,7 @@ class GamesController < ApplicationController
         current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
       end
       @game.update(status: 0)
-      flash[:success] = "Игра обновлена и отправлена на повторную модерацию!"
+      flash[:success] = 'Игра обновлена и отправлена на повторную модерацию!'
       redirect_to game_profile_path
     else
       flash[:failure] = @game.errors.full_messages
@@ -93,7 +92,7 @@ class GamesController < ApplicationController
     if @game.destroy
       flash[:success] = 'Игра успешно удалена.'
     else
-      flash[:failure] = "Something went wrong!"
+      flash[:failure] = 'Something went wrong!'
     end
     redirect_to dashboard_path
   end
@@ -101,10 +100,10 @@ class GamesController < ApplicationController
   private
 
   def root_check
-    unless current_user.games.find_by_id(params[:id])
-      flash[:failure] = "Недостаточно прав"
-      redirect_to dashboard_path
-    end
+    return if current_user.games.find_by_id(params[:id])
+
+    flash[:failure] = 'Недостаточно прав'
+    redirect_to dashboard_path
   end
 
   def game_params

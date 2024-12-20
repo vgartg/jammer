@@ -1,25 +1,23 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user, only: [:edit_user, :update_user, :destroy]
+  before_action :authenticate_user, only: %i[edit_user update_user destroy]
   before_action :require_subdomain, only: :frontpage
 
   def new
-    if current_user
-      redirect_to user_path(current_user.id)
-    end
+    return unless current_user
+
+    redirect_to user_path(current_user.id)
   end
 
   def show
     @user = User.find(params[:id])
     @current_user = User.find_by_id(session[:current_user])
-    if @current_user
-      @friendship = @current_user.friendship_with(@user)
-    end
+    return unless @current_user
+
+    @friendship = @current_user.friendship_with(@user)
   end
 
   def index
     @pagy, @users = pagy(User.all, limit: 16)
-    if current_user
-    end
   end
 
   def create
@@ -58,35 +56,35 @@ class UsersController < ApplicationController
 
     if user_params[:password].present? || user_params[:password_confirmation].present? || params[:user][:current_password].present?
       unless @user.authenticate(params[:user][:current_password])
-        flash[:failure] = "Current password is incorrect."
+        flash[:failure] = 'Current password is incorrect.'
         redirect_to settings_path
         return
       end
 
       if user_params[:password].blank? || user_params[:password_confirmation].blank? || params[:user][:current_password].blank?
-        flash[:failure] = "All fields must be filled in"
+        flash[:failure] = 'All fields must be filled in'
         redirect_to settings_path
         return
       elsif user_params[:password].length < 5
-        flash[:failure] = "New password is too short (minimum is 5 characters)."
+        flash[:failure] = 'New password is too short (minimum is 5 characters).'
         redirect_to settings_path
         return
       elsif user_params[:password] != user_params[:password_confirmation]
-        flash[:failure] = "New passwords do not match."
+        flash[:failure] = 'New passwords do not match.'
         redirect_to settings_path
         return
       elsif user_params[:password] == params[:user][:current_password]
-        flash[:failure] = "New password must be different from the old one."
+        flash[:failure] = 'New password must be different from the old one.'
         redirect_to settings_path
         return
       end
     end
 
     if @user.update(user_params)
-      flash[:success] = "Successfully saved!"
+      flash[:success] = 'Successfully saved!'
       redirect_to settings_path
     else
-      flash[:failure] = "Something went wrong!"
+      flash[:failure] = 'Something went wrong!'
       redirect_to settings_path
     end
   end

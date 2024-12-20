@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class OnlineStatusTest < ActiveSupport::TestCase
   def setup
@@ -69,11 +69,11 @@ class OnlineStatusTest < ActiveSupport::TestCase
     days_diff = (hours_diff / 24).to_i.abs
 
     if days_diff > 0
-      "Был в сети #{days_diff} #{day_title(days_diff, ['дней', 'день', 'дня'])} назад"
+      "Был в сети #{days_diff} #{day_title(days_diff, %w[дней день дня])} назад"
     elsif hours_diff > 0
-      "Был в сети #{hours_diff} #{day_title(hours_diff, ['часов', 'час', 'часа'])} назад"
+      "Был в сети #{hours_diff} #{day_title(hours_diff, %w[часов час часа])} назад"
     elsif minutes_diff > 0
-      "Был в сети #{minutes_diff} #{day_title(minutes_diff, ['минут', 'минуту', 'минуты'])} назад"
+      "Был в сети #{minutes_diff} #{day_title(minutes_diff, %w[минут минуту минуты])} назад"
     else
       'Online'
     end

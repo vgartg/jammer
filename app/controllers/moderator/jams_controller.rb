@@ -22,11 +22,9 @@ module Moderator
           @author.create_notification(@author, current_user, 'jam change status after moderation', @jam)
         end
 
-        changes = @jam.previous_changes.except("updated_at")
+        changes = @jam.previous_changes.except('updated_at')
 
-        if changes.any?
-          create_administration_record(current_user, @jam, changes, 'edit')
-        end
+        create_administration_record(current_user, @jam, changes, 'edit') if changes.any?
       else
         flash[:failure] = @jam.errors.full_messages
       end
@@ -57,9 +55,11 @@ module Moderator
         query = params[:query].strip.downcase
 
         if query.to_i.to_s == query
-          jams = jams.where("jams.id = :query OR jams.status = :query", query: query.to_i)
+          jams = jams.where('jams.id = :query OR jams.status = :query', query: query.to_i)
         else
-          jams = jams.joins(:author).where("jams.name ILIKE :query OR jams.created_at::TEXT ILIKE :query OR users.name ILIKE :query", query: "%#{query}%")
+          jams = jams.joins(:author).where(
+            'jams.name ILIKE :query OR jams.created_at::TEXT ILIKE :query OR users.name ILIKE :query', query: "%#{query}%"
+          )
         end
       end
 

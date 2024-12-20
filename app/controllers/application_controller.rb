@@ -40,9 +40,9 @@ class ApplicationController < ActionController::Base
   end
 
   def notifications
-    if current_user
-      @notifications = current_user.notifications
-    end
+    return unless current_user
+
+    @notifications = current_user.notifications
   end
 
   def sign_in(user)
@@ -53,19 +53,19 @@ class ApplicationController < ActionController::Base
 
   def admin?
     @user = current_user
-    unless @user && @user.role == 'admin'
-      flash[:failure] = 'Недостаточно прав'
-      redirect_to dashboard_path
-    end
+    return if @user && @user.role == 'admin'
+
+    flash[:failure] = 'Недостаточно прав'
+    redirect_to dashboard_path
   end
 
   def moderator?
     @user = current_user
     # Права администратора включают в себя права модератора и выше, поэтому такая проверка
-    if @user && @user.role == 'basic'
-      flash[:failure] = 'Недостаточно прав'
-      redirect_to dashboard_path
-    end
+    return unless @user && @user.role == 'basic'
+
+    flash[:failure] = 'Недостаточно прав'
+    redirect_to dashboard_path
   end
 
   def create_administration_record(admin, item, changes, action)
@@ -85,31 +85,35 @@ class ApplicationController < ActionController::Base
                      else
                        {}
                      end
-    AdministrationTracking.create(
+    administration_record = AdministrationTracking.new(
       admin_id: admin.id,
       structure_type: item.class.name,
       structure_id: item.id,
       changed_fields: changed_fields,
       action: action
     )
+
+    if administration_record.save
+      Rails.logger.info("Запись успешно сохранена: #{administration_record.inspect}")
+    else
+      Rails.logger.error("Ошибка при сохранении записи: #{administration_record.errors.full_messages.join(', ')}")
+    end
   end
 
   def update_last_active_at
-    if current_user
-      current_user.update(last_active_at: Time.current)
-    end
+    return unless current_user
+
+    current_user.update(last_active_at: Time.current)
   end
 
   def render_404(exception = nil)
-    if exception
-      logger.info "Rendering 404 with exception: #{exception.message}"
-    end
+    logger.info "Rendering 404 with exception: #{exception.message}" if exception
     render template: 'errors/not_found', status: 404
   end
 
   def require_subdomain
     subdomain = Subdomain.extract_subdomain(request)
-    if subdomain == "localhost" || subdomain == "127" # Пока такой костыль, на продакшене нужно поменять
+    if %w[localhost 127].include?(subdomain) # Пока такой костыль, на продакшене нужно поменять
       render 'home/index'
     else
       @subdomain_owner = User.find_by_link_username(subdomain)
