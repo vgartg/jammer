@@ -1,10 +1,10 @@
 <div id="page" class="bg-white">
   <div class="pb-16 pt-6 sm:pb-24">
     <div class="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-      <div class="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
+      <div class="lg:grid lg:grid-cols-12 lg:gap-x-8">
         <div class="lg:col-span-5 lg:col-start-8">
           <div class="flex justify-between">
-            <h1 class="text-xl font-medium text-gray-900 break-all"><%= @game.name %></h1>
+            <h1 class="text-2xl font-medium text-gray-900 break-all"><%= @game.name %></h1>
           </div>
         </div>
 
@@ -159,10 +159,10 @@
         </div>
 
 
-        <div class="mt-8 lg:col-span-5">
+        <div class="mt-4 lg:col-span-5">
 
-          <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">
+          <div class="mt-5">
+            <h2 class="text-lg font-medium text-gray-900">
               <%= t 'activerecord.attributes.game.description' %>
             </h2>
 
@@ -174,37 +174,35 @@
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">
+            <h2 class="text-lg font-medium text-gray-900">
               <%= t '.tags' %>
             </h2>
             <div class="mt-4 text-gray-500">
               <% if @game.tags.any? %>
                 <ul class="flex flex-wrap gap-2">
                   <% @game.tags.each do |tag| %>
-                    <li class="bg-gray-200 px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+                    <li class="bg-indigo-200 px-4 py-2 rounded-full text-sm font-medium text-indigo-700">
                       <%= tag.name %>
                     </li>
                   <% end %>
                 </ul>
               <% else %>
-                <p>
-                  <%= t '.tags_not_found' %>
-                </p>
+                <p class="text-gray-500"><%= t '.tags_not_found' %></p>
               <% end %>
             </div>
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">
+            <h2 class="text-lg font-medium text-gray-900">
               <%= t '.author' %>
             </h2>
-            <div class="prose prose-sm mt-4 text-gray-500">
+            <div class="prose prose-sm mt-2 text-gray-500">
               <% if @game.author.present? %>
-                <a class="break-all" href="<%= user_profile_path(@game.author) %>">
+                <a class="text-indigo-600 hover:text-indigo-900" href="<%= user_profile_path(@game.author) %>">
                   <%= @game.author.name %>
                 </a>
               <% else %>
-                <p>
+                <p class="text-gray-500">
                   <%= t '.no_author' %>
                 </p>
               <% end %>
