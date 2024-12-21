@@ -23,15 +23,28 @@
       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
       </div>
 
-      <div class="mt-4 flex flex-wrap gap-2">
-        <% @tags.each do |tag| %>
-          <div>
-            <%= check_box_tag 'tag_ids[]', tag.id, params[:tag_ids]&.include?(tag.id.to_s),
-                              id: "tag_#{tag.id}", class: "mr-2",
-                              data: { games_target: "tagCheckbox", action: "change->games#search" } %>
-            <%= label_tag "tag_#{tag.id}", tag.name, class: "text-sm font-medium text-gray-700" %>
-          </div>
-        <% end %>
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-white">Теги</label>
+        <div class="mt-1 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-10">
+          <% @tags.each do |tag| %>
+            <label data-games-target="label"
+                   class="relative flex items-center justify-center rounded-lg border px-4 py-2 shadow-sm cursor-pointer
+          text-center break-words transition transform hover:scale-105
+          <%= 'bg-indigo-500 border-indigo-500 text-white' if params[:tag_ids]&.include?(tag.id.to_s) %>
+          <%= 'border-gray-300 text-gray-700' unless params[:tag_ids]&.include?(tag.id.to_s) %>"
+                   style="min-height: 30px; max-width: 115px;">
+
+              <%= check_box_tag 'tag_ids[]', tag.id, params[:tag_ids]&.include?(tag.id.to_s),
+                                id: "tag_#{tag.id}",
+                                class: "absolute inset-0 w-full h-full opacity-0 cursor-pointer",
+                                data: { games_target: "tagCheckbox", action: "change->games#search" } %>
+
+              <span class="text-center text-sm font-medium pointer-events-none" data-games-target="label">
+          <%= tag.name %>
+        </span>
+            </label>
+          <% end %>
+        </div>
       </div>
 
       <%= hidden_field_tag :tag_mode, params[:tag_mode] || 'all', data: { games_target: "tagMode" } %>
