@@ -27,7 +27,7 @@
           </span>
             <div>
               <h2 class="text-lg font-semibold text-gray-800">
-              <% if current_user && current_user.role != 'basic' && user.role == 'basic' %>
+              <% if current_user && current_user.role != 'basic' && user.role != 'basic' %>
                 <span class="<%= user.role == 'moderator' ? 'text-green-500' : 'text-red-500' %>">[<%= user.role[0].upcase %>]</span>
               <% end %>
               <%= user.name %>
