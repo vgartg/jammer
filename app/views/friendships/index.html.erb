@@ -36,7 +36,9 @@
             data-last-active-at="<%= find_friend(friendship).last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
             data-action="load->online#updateStatus"></span>
                       <% else %>
-                        <span class="text-sm text-gray-600">Offline</span>
+                        <span class="text-sm text-gray-600">
+                          <%= t 'users.profile.offline' %>
+                        </span>
                       <% end %></p>
                   <% end %>
                 </div>
