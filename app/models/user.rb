@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   validates :password, :password_confirmation, presence: true, on: :create
 
   validates :visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
-  validates :jams_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
+  # validates :jams_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
   validates :theme, inclusion: { in: [THEME_LIGHT, THEME_DARK] }
 
   validate :password_length, on: :create

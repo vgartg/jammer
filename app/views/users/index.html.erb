@@ -17,7 +17,7 @@
               <img src="https://via.placeholder.com/150" alt="Profile Picture"
                    class="h-16 w-16 rounded-full">
             <% end %>
-            <% if user.can_see_online?(current_user) %>
+            <% if current_user && user.can_see_online?(current_user) %>
             <% if user.online? %>
               <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
             <% elsif user.last_active_at %>
@@ -27,7 +27,7 @@
           </span>
             <div>
               <h2 class="text-lg font-semibold text-gray-800">
-              <% unless current_user.role == 'basic' || user.role == 'basic' %>
+              <% if current_user && current_user.role != 'basic' && user.role == 'basic' %>
                 <span class="<%= user.role == 'moderator' ? 'text-green-500' : 'text-red-500' %>">[<%= user.role[0].upcase %>]</span>
               <% end %>
               <%= user.name %>
