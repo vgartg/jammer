@@ -5,7 +5,7 @@
     <tr class="bg-gray-200 text-gray-600 uppercase text-xs md:text-sm">
       <th class="py-3 px-6 text-left">Администратор</th>
       <th class="py-3 px-6 text-left">Тип записи</th>
-      <th class="py-3 px-6 text-left">ID записи</th>
+      <th class="py-3 px-6 text-left">ID объекта записи</th>
       <th class="py-3 px-6 text-left">Действие</th>
       <th class="py-3 px-6 text-left">Изменения</th>
       <th class="py-3 px-6 text-left">Дата</th>
@@ -47,7 +47,4 @@
     </tbody>
   </table>
 </div>
-
-<% if @actions.count > 15 %>
-  <%= render partial: 'helpers/pagy' %>
-<% end %>
+<%= render partial: 'helpers/pagy' %>
