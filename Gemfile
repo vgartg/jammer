@@ -53,6 +53,7 @@ gem 'rest-client'
 gem 'rexml', '>= 3.3.6'
 gem 'rubocop'
 gem 'useragent'
+gem 'app_version'
 
 gem 'letter_opener', group: :development
 gem 'letter_opener_web', group: :development
