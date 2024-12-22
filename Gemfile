@@ -45,6 +45,7 @@ gem 'tzinfo-data', platforms: %i[windows jruby]
 gem 'bootsnap', require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+gem 'app_version'
 gem 'browser'
 gem 'flatpickr'
 gem 'image_processing', '~> 1.2'
@@ -53,7 +54,6 @@ gem 'rest-client'
 gem 'rexml', '>= 3.3.6'
 gem 'rubocop'
 gem 'useragent'
-gem 'app_version'
 
 gem 'letter_opener', group: :development
 gem 'letter_opener_web', group: :development

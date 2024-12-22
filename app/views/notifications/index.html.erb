@@ -3,9 +3,8 @@
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-2xl font-bold tracking-tight text-gray-900">Уведомления</h2>
     </div>
-    <% if notifications && notifications.any? %>
+    <% if notifications&.any? %>
       <% notifications.order(created_at: :desc).first(8).each do |notification| %>
-
         <div class="flex items-start px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition duration-200">
           <div class="flex-shrink-0 mr-3">
             <% if notification.notifiable.is_a?(Game) %>
@@ -16,7 +15,15 @@
                   <img src="https://via.placeholder.com/150" alt="<%= notification.notifiable.name %>" class="w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200">
                 <% end %>
               </a>
-            <% elsif notification.actor %>
+              <% elsif notification.notifiable.is_a?(Jam) %>
+                <a href="/jams/<%= notification.notifiable.id %>">
+                  <% if notification.notifiable.cover.attached? %>
+                    <%= image_tag url_for(notification.notifiable.cover), alt: notification.notifiable.name, class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover" %>
+                  <% else %>
+                    <img src="https://via.placeholder.com/150" alt="<%= notification.notifiable.name %>" class="w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200">
+                  <% end %>
+                </a>
+            <% else notification.actor %>
               <a href='<%= user_path(notification.actor) %>'>
                 <%= notification.actor.avatar.attached? ? image_tag(url_for(notification.actor.avatar), alt: "Profile Picture", class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover") : image_tag("https://via.placeholder.com/150", alt: "Profile Picture", class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200") %>
               </a>
@@ -27,7 +34,9 @@
             <p class="text-sm font-semibold text-gray-900">
               <% if notification.notifiable.is_a?(Game) %>
                 <a href="/games/<%= notification.notifiable.id %>" class="text-gray-600 hover:underline"><%= notification.notifiable.name %></a>
-              <% elsif notification.actor %>
+                <% elsif notification.notifiable.is_a?(Jam) %>
+                  <a href="/jams/<%= notification.notifiable.id %>" class="text-gray-600 hover:underline"><%= notification.notifiable.name %></a>
+            <% else notification.actor %>
                 <a href='<%= user_path(notification.actor) %>' class="text-gray-600 hover:underline"><%= notification.actor.name %></a>
               <% end %>
               <%= notification_message(notification) %>
@@ -35,7 +44,6 @@
             <p class="text-xs text-gray-500"><%= notification.created_at.strftime("%d.%m.%Y, %H:%M") %></p>
           </div>
         </div>
-
       <% end %>
     <% else %>
       <p class="px-4 py-2 text-sm text-gray-600 text-center">Нет уведомлений для отображения.</p>
