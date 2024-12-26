@@ -221,4 +221,40 @@ export default class extends Controller {
 
         checkbox.checked = !isChecked;
     }
+    updateContributorStatus(event) {
+        const url = new URL(`/jams/${this.data.get("jamId")}/update_contributor`, window.location.origin);
+
+        const userId = event.target.dataset.userId;
+        const status = event.target.dataset.status;
+        const value = event.target.checked;
+
+        const body = JSON.stringify({
+            user_id: userId,
+            attribute: status,
+            value: value
+        });
+
+        fetch(url.toString(), {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content,
+                'Accept': 'text/vnd.turbo-stream.html'
+            },
+            body: body
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error("Can't update contributor role");
+                }
+            })
+            .then(html => {
+                Turbo.renderStreamMessage(html);
+            })
+            .catch(error => {
+                console.error("Ошибка при обновлении роли участника:", error.message);
+            });
+    }
 }

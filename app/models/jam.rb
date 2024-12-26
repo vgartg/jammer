@@ -9,6 +9,8 @@ class Jam < ActiveRecord::Base
   has_one_attached :logo
 
   has_many :jam_submissions, dependent: :destroy
+  has_many :jam_contributors
+  has_many :contributors, through: :jam_contributors, source: :user
 
   belongs_to :author, foreign_key: 'author_id', class_name: 'User'
 
