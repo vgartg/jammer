@@ -15,8 +15,8 @@
   <div class="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true"></div>
 
   <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-    <form class="relative flex flex-1" action="#" method="GET">
-      <label for="search-field" class="sr-only">Search</label>
+    <form class="relative flex flex-1" action="<%= search_path %>" method="GET">
+      <label for="search-field" class="sr-only"><%= t 'search.search' %></label>
       <svg class="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path fill-rule="evenodd"
@@ -24,10 +24,10 @@
               clip-rule="evenodd"/>
       </svg>
       <input id="search-field" class="block h-full w-full bg-gray-900 border-0 py-0 pl-8 pr-0 text-white
-           placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder=
-        <%= t 'search' %>
-        type="search" name="search">
+       placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder="<%= t 'search.search' %>"
+             type="search" name="search">
     </form>
+
     <div class="flex items-center gap-x-4 lg:gap-x-6">
       <div class="relative" data-controller="notifications">
         <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 relative"

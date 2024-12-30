@@ -17,7 +17,14 @@ en:
     profile: "Profile"
     sign_out: "Sign out"
     add_friend: "Add friend"
-  search: "Search..."
+  search:
+    search: "Search"
+    search_results: "Search Results"
+    games: "Games"
+    jams: "Jams"
+    settings: "Settings"
+    helpers:
+      no_results: "No results found."
   home:
     title: "Jammer service prototype"
     description: "Online service for hosting, selling and downloading indie games"

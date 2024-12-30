@@ -1,0 +1,23 @@
+<h1><%= t 'search.search_results' %>: "<%= params[:search] %>"</h1>
+
+<% if @results[:games].any? %>
+  <h2><%= t 'search.games' %></h2>
+  <ul>
+    <% @results[:games].each do |game| %>
+      <li><%= link_to game.name, game_path(game) %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @results[:jams].any? %>
+  <h2><%= t 'search.jams' %></h2>
+  <ul>
+    <% @results[:jams].each do |jam| %>
+      <li><%= link_to jam.name, jam_path(jam) %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% unless @results.values.flatten.any? %>
+  <p><%= t 'search.helpers.no_results' %></p>
+<% end %>

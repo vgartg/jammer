@@ -87,6 +87,8 @@ Rails.application.routes.draw do
 
     get '/settings', to: 'settings#index'
 
+    get '/search', to: 'search#index', as: 'search'
+
 
   resource :password_reset, only: [:new, :create, :edit, :update]
   resource :email_confirm, only: [:new, :create, :edit, :update]

@@ -17,7 +17,14 @@ ru:
     profile: "Профиль"
     sign_out: "Выйти"
     add_friend: "Добавить в друзья"
-  search: "Поиск..."
+  search:
+    search: "Поиск"
+    search_results: "Результаты поиска"
+    games: "Игры"
+    jams: "Джемы"
+    settings: "Настройки"
+    helpers:
+      no_results: "Результаты не найдены."
   home:
     title: "Прототип сервиса Jammer"
     description: "Онлайн-сервис для размещения, продажи и загрузки инди-игр"

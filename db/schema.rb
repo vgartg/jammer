@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_22_174452) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_26_072405) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -55,7 +55,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_22_174452) do
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "friend_id", null: false
-    t.string "status", null: false
+    t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -76,6 +76,17 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_22_174452) do
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_games_tags_on_game_id"
     t.index ["tag_id"], name: "index_games_tags_on_tag_id"
+  end
+
+  create_table "jam_contributors", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "jam_id"
+    t.boolean "status", default: true, null: false
+    t.boolean "is_host"
+    t.boolean "is_admin"
+    t.boolean "is_judge"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "jam_submissions", force: :cascade do |t|
