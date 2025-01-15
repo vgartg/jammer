@@ -104,6 +104,48 @@ class UsersController < ApplicationController
     @current_user = current_user
   end
 
+  def oauth_callback
+    session_code = params[:code]
+    result = RestClient.post('https://github.com/login/oauth/access_token',
+                             { client_id: ENV['GITHUB_CLIENT_ID'],
+                               client_secret: ENV['GITHUB_CLIENT_SECRET'],
+                               code: session_code },
+                             accept: :json)
+    access_token = JSON.parse(result)['access_token']
+
+    user_response = RestClient.get('https://api.github.com/user',
+                                   { Authorization: "token #{access_token}" })
+    user_data = JSON.parse(user_response)
+
+    @user = User.find_or_initialize_by(github_id: user_data['id']) do |user|
+      user.email = user_data['email']
+      user.name = user_data['login']
+
+      # Генерируем временный пароль
+      temp_password = SecureRandom.hex(16)
+      user.password = temp_password
+      user.password_confirmation = temp_password
+    end
+
+    if @user.new_record?
+      if @user.save
+        # Отправьте электронное письмо с подтверждением адреса и ссылкой на установку пароля
+        PasswordResetMailer.with(user: @user).password_reset.deliver_later
+
+        session[:current_user] = @user.id
+
+        flash[:info] = "Вы успешно зарегистрировались! Проверьте свою почту, чтобы установить новый пароль."
+        redirect_to dashboard_path # Переадресация на страницу с информацией
+      else
+        flash[:error] = 'Не удалось создать пользователя.'
+        redirect_to login_path
+      end
+    else
+      session[:current_user] = @user.id
+      redirect_to dashboard_path
+    end
+  end
+
   private
 
   def user_params

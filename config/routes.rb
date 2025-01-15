@@ -93,4 +93,9 @@ Rails.application.routes.draw do
   # Email (mailer)
   resource :password_reset, only: %i[new create edit update]
   resource :email_confirm, only: %i[new create edit update]
+
+  # OAuth
+  get '/oauth/callback', to: 'users#oauth_callback'
+  get '/auth/:provider/callback', to: 'sessions#omniauth'
+  get '/auth/failure', to: 'sessions#failure'
 end

@@ -1,7 +1,6 @@
 class SessionsController < ApplicationController
   def new
     return unless current_user
-
     redirect_to user_path(current_user.id)
   end
 
@@ -12,7 +11,7 @@ class SessionsController < ApplicationController
     if user.present? && user.authenticate(auth_params[:password])
       if user.email_confirmed
         session[:current_user] = user.id
-        unless Session.all.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).exists?
+        unless Session.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).exists?
           Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
         end
         remember(user) if params[:remember_me] == '1'
@@ -97,6 +96,48 @@ class SessionsController < ApplicationController
       flash[:failure] = 'Не удалось удалить сессию'
     end
     redirect_to edit_admin_user_path(user)
+  end
+
+  def omniauth
+    auth = request.env['omniauth.auth']
+    user = User.find_or_initialize_by(provider: auth['provider'], uid: auth['uid'])
+
+    browser_string = request.user_agent
+    browser = UserAgent.parse(browser_string).browser
+
+    if user.persisted?
+      session[:current_user] = user.id
+      unless Session.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).exists?
+        Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
+      end
+      flash[:success] = 'Вы успешно вошли через GitHub!'
+      redirect_to dashboard_path
+    else
+      temp_password = SecureRandom.hex(16)
+      user.assign_attributes(
+        name: auth['info']['nickname'] || auth['info']['name'],
+        email: auth['info']['email'],
+        # Устанавливаем временный пароль
+        password: temp_password,
+        password_confirmation: temp_password
+      )
+      if user.save
+        session[:current_user] = user.id
+        unless Session.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).exists?
+          Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
+        end
+        flash[:success] = 'Вы успешно зарегистрировались через GitHub!'
+        redirect_to dashboard_path
+      else
+        flash[:failure] = user.errors.full_messages.to_sentence
+        redirect_to login_path
+      end
+    end
+  end
+
+  def failure
+    flash[:failure] = 'Авторизация через GitHub не удалась. Попробуйте снова.'
+    redirect_to login_path
   end
 
   private
