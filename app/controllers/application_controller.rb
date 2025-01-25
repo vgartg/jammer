@@ -22,17 +22,18 @@ class ApplicationController < ActionController::Base
 
     browser_string = request.user_agent
     browser = UserAgent.parse(browser_string).browser
-    if session[:current_user] && Session.all.where(ip_address: request.remote_ip, browser: browser).exists?
-      @current_user = User.find_by_id(session[:current_user])
+
+    if session[:current_user] && Session.where(ip_address: request.remote_ip, browser: browser).exists?
+      @current_user = User.find_by(id: session[:current_user])
     elsif cookies.encrypted[:current_user].present?
-      user = User.find_by_id(cookies.encrypted[:current_user])
+      user = User.find_by(id: cookies.encrypted[:current_user])
       if user&.remember_token_authenticated?(cookies.encrypted[:remember_token])
         sign_in(user)
         @current_user = user
       end
     end
 
-    if @current_user && session[:session_id].present? && @current_user.sessions.where(user_id: @current_user.id).exists?
+    if @current_user && session[:session_id].present? && @current_user.sessions.exists?(user_id: @current_user.id)
       return @current_user
     end
 

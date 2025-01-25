@@ -24,6 +24,9 @@ class User < ActiveRecord::Base
   # validates :jams_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
   validates :theme, inclusion: { in: [THEME_LIGHT, THEME_DARK] }
 
+  validates :provider, presence: true, if: -> { uid.present? }
+  validates :uid, presence: true, if: -> { provider.present? }
+
   validate :password_length, on: :create
   has_secure_password
   has_one_attached :avatar
@@ -139,7 +142,6 @@ class User < ActiveRecord::Base
 
   def authenticate_email_confirm_token(token)
     return false unless email_confirm_token.present?
-
     BCrypt::Password.new(email_confirm_token).is_password?(token)
   end
 end
