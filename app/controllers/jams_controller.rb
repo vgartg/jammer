@@ -1,4 +1,5 @@
 class JamsController < ApplicationController
+  include Contributor
   before_action :authenticate_user, only: [:new, :create, :edit, :update, :submit_game]
 
   def new
@@ -16,6 +17,31 @@ class JamsController < ApplicationController
       end
     end
     redirect_to jam_profile_path(params[:id])
+  end
+  def add_contributor
+    result = add_contributor_logic(params[:id], params[:search])
+    flash[result[:success] ? :success : :failure] ||= []
+    flash[result[:success] ? :success : :failure] << result[:message]
+    redirect_to jam_setting_judges_path(params[:id])
+  end
+
+  def delete_contributor
+    result = delete_contributor_logic(params[:id], params[:user_id])
+    flash[result[:success] ? :success : :failure] ||= []
+    flash[result[:success] ? :success : :failure] << result[:message]
+    redirect_to jam_setting_judges_path(params[:id])
+  end
+
+  def update_contributor
+    contributor = JamContributor.find_by(jam_id: params[:id], user_id: params[:user_id])
+    attribute = params[:attribute]
+    value = ActiveModel::Type::Boolean.new.cast(params[:value])
+    contributor.update(attribute => value)
+  end
+
+  def setting_judges
+    @tags = Tag.all
+    @contributors = @jam.jam_contributors
   end
 
   def delete_project

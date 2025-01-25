@@ -2,6 +2,7 @@
 @import 'flatpickr/dist/flatpickr.min.css';
 @import 'flatpickr/dist/themes/dark.css';
 @import 'load_spinner.css';
+@import "actiontext.css";
 
 @tailwind base;
 @tailwind components;

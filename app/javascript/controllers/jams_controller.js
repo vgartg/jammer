@@ -26,10 +26,19 @@ export default class extends Controller {
         url.searchParams.delete('tag_ids[]')
 
         this.tagCheckboxTargets.forEach(checkbox => {
-            if (checkbox.checked) {
-                url.searchParams.append('tag_ids[]', checkbox.value)
+            const label = checkbox.closest("[data-jams-target='label']");
+            const isChecked = checkbox.checked;
+
+            if (isChecked) {
+                url.searchParams.append('tag_ids[]', checkbox.value);
+
+                label.classList.add("bg-indigo-500", "border-indigo-500", "text-white");
+                label.classList.remove("bg-white", "border-gray-300", "text-gray-700");
+            } else {
+                label.classList.remove("bg-indigo-500", "border-indigo-500", "text-white");
+                label.classList.add("border-gray-300", "text-gray-700");
             }
-        })
+        });
 
         url.searchParams.set('tag_mode', this.tagModeTarget.value)
 
@@ -237,5 +246,41 @@ export default class extends Controller {
         }
 
         checkbox.checked = !isChecked;
+    }
+    updateContributorStatus(event) {
+        const url = new URL(`/jams/${this.data.get("jamId")}/update_contributor`, window.location.origin);
+
+        const userId = event.target.dataset.userId;
+        const status = event.target.dataset.status;
+        const value = event.target.checked;
+
+        const body = JSON.stringify({
+            user_id: userId,
+            attribute: status,
+            value: value
+        });
+
+        fetch(url.toString(), {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content,
+                'Accept': 'text/vnd.turbo-stream.html'
+            },
+            body: body
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error("Can't update contributor role");
+                }
+            })
+            .then(html => {
+                Turbo.renderStreamMessage(html);
+            })
+            .catch(error => {
+                console.error("Ошибка при обновлении роли участника:", error.message);
+            });
     }
 }

@@ -1,20 +1,20 @@
 <div class="bg-white">
   <div class="pb-16 pt-6 sm:pb-24">
-    <div class="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-      <div class="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
+    <div class="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-full lg:px-8">
+      <div class="lg:grid lg:grid-cols-12 lg:gap-x-8">
         <div class="lg:col-span-5 lg:col-start-8">
           <div class="flex justify-between">
-            <h1 class="text-xl font-medium text-gray-900 break-all"><%= @jam.name %></h1>
+            <h1 class="text-2xl font-medium text-gray-900 break-all"><%= @jam.name %></h1>
           </div>
         </div>
 
         <!-- Image gallery -->
         <div class="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
-          <div class="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
+          <div class="flex flex-col lg:grid-cols-1 lg:grid-rows-3 lg:gap-8">
             <% if @jam && @jam.cover.attached? %>
               <%= image_tag url_for(@jam.cover), alt: @jam.name,
                             class: "rounded-md bg-gray-200
-                            object-cover object-center group-hover:opacity-75" %>
+                            object-cover object-center group-hover:opacity-75 w-3/4" %>
             <% else %>
               <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200
                           lg:aspect-none group-hover:opacity-75 lg:h-80">
@@ -22,55 +22,55 @@
                      class="object-cover object-center ">
               </div>
             <% end %>
+
+            <div class="mt-5">
+              <h2 class="text-lg font-medium text-gray-900">
+                <%= t '.description' %>
+              </h2>
+
+              <div class="prose prose-sm mt-4 text-gray-500">
+                <p class="trix-content">
+                  <%= @jam.description %>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="mt-8 lg:col-span-5">
 
-          <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">
-              <%= t '.description' %>
-            </h2>
 
-            <div class="prose prose-sm mt-4 text-gray-500">
-              <p class="break-all">
-                <%= @jam.description %>
-              </p>
-            </div>
-          </div>
+        <div class="mt-4 lg:col-span-5">
 
-          <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">
+          <div class="mt-5">
+            <h2 class="text-lg font-medium text-gray-900">
               <%= t 'games.form.tags' %>
             </h2>
             <div class="mt-4 text-gray-500">
               <% if @jam.tags.any? %>
                 <ul class="flex flex-wrap gap-2">
                   <% @jam.tags.each do |tag| %>
-                    <li class="bg-gray-200 px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+                    <li class="bg-indigo-200 px-4 py-2 rounded-full text-sm font-medium text-indigo-700">
                       <%= tag.name %>
                     </li>
                   <% end %>
                 </ul>
               <% else %>
-                <p>
-                  <%= t '.no_tags' %>
-                </p>
+                <p class="text-gray-500"><%= t '.no_tags' %></p>
               <% end %>
             </div>
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">
+            <h2 class="text-lg font-medium text-gray-900">
               <%= t '.author' %>
             </h2>
-            <div class="prose prose-sm mt-4 text-gray-500">
+            <div class="prose prose-sm mt-2 text-gray-500">
               <% if @jam.author.present? %>
-                <a class="break-all" href="<%= user_profile_path(@jam.author) %>">
+                <a class="text-indigo-600 hover:text-indigo-900" href="<%= user_profile_path(@jam.author) %>">
                   <%= @jam.author.name %>
                 </a>
               <% else %>
-                <p>Автор не найден</p>
+                <p class="text-gray-500">Автор не найден</p>
               <% end %>
             </div>
           </div>
@@ -82,6 +82,11 @@
                                     shadow-sm hover:bg-indigo-700 focus:outline-none
                                      focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
               <%= button_to t('.participants'), jam_show_participants_path(@jam), method: :get,
+                            class: "mt-4 flex w-50 justify-center rounded-md borders
+                                    border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
+                                    shadow-sm hover:bg-indigo-700 focus:outline-none
+                                     focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+              <%= button_to t('.judges'), jam_setting_judges_path(@jam), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md borders
                                     border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                                     shadow-sm hover:bg-indigo-700 focus:outline-none

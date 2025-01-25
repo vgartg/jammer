@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     get '/jams/new', to: 'jams#new'
     post '/jams', to: 'jams#create'
     get '/jams/:id/edit', to: 'jams#edit', as: 'jam_edit'
+    get '/jams/:id/setting_judges', to: 'jams#setting_judges', as: 'jam_setting_judges'
     patch '/jams/:id', to: 'jams#update', as: 'jam_update'
     delete '/jams/:id', to: 'jams#destroy', as: 'jam_destroy'
     get '/jams/:id', to: "jams#show", as: 'jam_profile'
@@ -71,6 +72,9 @@ Rails.application.routes.draw do
       member do
         post 'participate'
         patch 'delete_project'
+        post 'add_contributor'
+        patch 'update_contributor', to: 'jams#update_contributor', as: 'update_contributor'
+        delete 'delete_contributor/:user_id', to: 'jams#delete_contributor', as: 'delete_contributor'
       end
     end
     resources :games do

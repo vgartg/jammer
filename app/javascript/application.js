@@ -10,3 +10,6 @@ import "./controllers"
 import "./update_activity"
 // @ts-ignore
 import "./animation"
+
+import "trix"
+import "@rails/actiontext"
