@@ -23,9 +23,13 @@ export default class extends Controller {
     }
 
     close_notice() {
-        const notice = event.currentTarget.closest('.problem-block');
-        if (notice) {
-            notice.remove();
+        const bad_notice = event.currentTarget.closest('.problem-block');
+        const good_notice = event.currentTarget.closest('.success-block');
+        if (bad_notice) {
+            bad_notice.remove();
+        }
+        else if (good_notice) {
+            good_notice.remove();
         }
     }
 
