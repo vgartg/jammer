@@ -121,16 +121,19 @@ export default class extends Controller {
         const deadlineInput = this.element.querySelector('#deadline');
         const errorMessageElement = document.getElementById('start_date-error-message');
 
-        const startDate = new Date(startDateInput.value);
+        const startDate = this._parseDate(startDateInput.value);
 
-        if (isNaN(startDate.getTime()) || startDate.getFullYear() < 2000) {
+        if (!startDate || startDate.getFullYear() < 2000) {
             errorMessageElement.textContent = 'Пожалуйста, введите корректные даты';
+        } else {
+            errorMessageElement.textContent = '';
         }
-        else { errorMessageElement.textContent = ''; }
 
-        if (this._checkErrorMassage()){
+        if (this._checkErrorMassage()) {
             this._enableSubmitButton();
-        } else this._disableSubmitButton();
+        } else {
+            this._disableSubmitButton();
+        }
 
         if (deadlineInput.value === '') return;
         this.validateDeadline();
@@ -142,18 +145,22 @@ export default class extends Controller {
         const endDateInput = this.element.querySelector('#end_date');
         const errorMessageElement = document.getElementById('deadline-error-message');
 
-        const startDate = new Date(startDateInput.value);
-        const deadline = new Date(deadlineInput.value);
+        const startDate = this._parseDate(startDateInput.value);
+        const deadline = this._parseDate(deadlineInput.value);
 
-        if (isNaN(deadline.getTime()) || deadline.getFullYear() < 2000) {
-            errorMessageElement.textContent = 'Пожалуйста, введите корректные даты';}
-        else if (deadline < startDate) {
+        if (!deadline || deadline.getFullYear() < 2000) {
+            errorMessageElement.textContent = 'Пожалуйста, введите корректные даты';
+        } else if (deadline < startDate) {
             errorMessageElement.textContent = 'Дата сдачи работ не может быть раньше даты начала';
-        } else { errorMessageElement.textContent = ''; }
+        } else {
+            errorMessageElement.textContent = '';
+        }
 
-        if (this._checkErrorMassage()){
+        if (this._checkErrorMassage()) {
             this._enableSubmitButton();
-        } else this._disableSubmitButton();
+        } else {
+            this._disableSubmitButton();
+        }
 
         if (endDateInput.value === '') return;
         this.validateEndDates();
@@ -164,18 +171,37 @@ export default class extends Controller {
         const endDateInput = this.element.querySelector('#end_date');
         const errorMessageElement = document.getElementById('end_date-error-message');
 
-        const deadline = new Date(deadlineInput.value);
-        const endDate = new Date(endDateInput.value);
+        const deadline = this._parseDate(deadlineInput.value);
+        const endDate = this._parseDate(endDateInput.value);
 
-        if (isNaN(endDate.getTime()) || endDate.getFullYear() < 2000) {
-            errorMessageElement.textContent = 'Пожалуйста, введите корректные даты';}
-        else if(endDate < deadline) {
+        if (!endDate || endDate.getFullYear() < 2000) {
+            errorMessageElement.textContent = 'Пожалуйста, введите корректные даты';
+        } else if (endDate < deadline) {
             errorMessageElement.textContent = 'Дата окончания джема не может быть раньше даты сдачи работ';
-        } else { errorMessageElement.textContent = ''; }
+        } else {
+            errorMessageElement.textContent = '';
+        }
 
-        if (this._checkErrorMassage()){
+        if (this._checkErrorMassage()) {
             this._enableSubmitButton();
-        } else this._disableSubmitButton();
+        } else {
+            this._disableSubmitButton();
+        }
+    }
+
+    // Функция для парсинга даты в формате DD.MM.YYYY
+    _parseDate(dateString) {
+        const parts = dateString.split('.');
+
+        if (parts.length === 3 && parts.every(part => !isNaN(part))) {
+            const day = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10) - 1; // Месяцы начинаются с 0
+            const year = parseInt(parts[2], 10);
+
+            return new Date(year, month, day);
+        }
+
+        return null;
     }
 
     _checkErrorMassage(){
