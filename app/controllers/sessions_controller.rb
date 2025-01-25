@@ -110,33 +110,35 @@ class SessionsController < ApplicationController
       unless Session.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).exists?
         Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
       end
-      flash[:success] = 'Вы успешно вошли через GitHub!'
+      flash[:success] = "Вы успешно вошли через #{auth['provider'].capitalize}!"
       redirect_to dashboard_path
     else
-      temp_password = SecureRandom.hex(16)
-      user.assign_attributes(
-        name: auth['info']['nickname'] || auth['info']['name'],
-        email: auth['info']['email'],
-        # Устанавливаем временный пароль
-        password: temp_password,
-        password_confirmation: temp_password
-      )
-      if user.save
-        session[:current_user] = user.id
-        unless Session.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).exists?
-          Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
-        end
-        flash[:success] = 'Вы успешно зарегистрировались через GitHub!'
-        redirect_to dashboard_path
-      else
-        flash[:failure] = user.errors.full_messages.to_sentence
-        redirect_to login_path
-      end
+      create_user_from_omniauth(user, auth)
+    end
+  end
+
+  def create_user_from_omniauth(user, auth)
+    temp_password = SecureRandom.hex(16)
+    user.assign_attributes(
+      name: auth['info']['name'] || auth['info']['nickname'],
+      email: auth['info']['email'],
+      password: temp_password,
+      password_confirmation: temp_password
+    )
+
+    if user.save
+      session[:current_user] = user.id
+      Session.create_session(user.id, session[:session_id], request.remote_ip, UserAgent.parse(request.user_agent).browser)
+      flash[:success] = "Вы успешно зарегистрировались через #{auth['provider'].capitalize}!"
+      redirect_to dashboard_path
+    else
+      flash[:failure] = user.errors.full_messages.to_sentence
+      redirect_to login_path
     end
   end
 
   def failure
-    flash[:failure] = 'Авторизация через GitHub не удалась. Попробуйте снова.'
+    flash[:failure] = "Авторизация через провайдера не удалась. Попробуйте снова."
     redirect_to login_path
   end
 

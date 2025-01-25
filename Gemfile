@@ -57,6 +57,7 @@ gem 'useragent'
 
 gem 'omniauth'
 gem 'omniauth-github'
+gem 'omniauth-google-oauth2'
 
 gem 'letter_opener', group: :development
 gem 'letter_opener_web', group: :development
