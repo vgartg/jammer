@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_22_174452) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_22_195805) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -57,7 +57,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_22_174452) do
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "friend_id", null: false
-    t.string "status", null: false
+    t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -100,10 +100,10 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_22_174452) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
+    t.integer "status", default: 0
     t.integer "games", default: [], array: true
     t.integer "participants", default: [], array: true
     t.boolean "users_can_votes", default: false
-    t.integer "status", default: 0
     t.index ["author_id"], name: "index_jams_on_author_id"
     t.index ["name"], name: "index_jams_on_name"
   end
@@ -184,14 +184,14 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_22_174452) do
     t.string "visibility", default: "All"
     t.string "background_image"
     t.string "theme", default: "Light"
-    t.string "auth_via"
-    t.string "social_id"
     t.string "password_reset_token"
     t.datetime "password_reset_token_sent_at"
     t.string "email_confirm_token"
     t.datetime "email_confirm_token_sent_at"
     t.boolean "email_confirmed", default: false
     t.integer "role", default: 0
+    t.string "provider"
+    t.string "uid"
     t.string "jams_participating_visibility", default: "All"
     t.string "jams_administrating_visibility", default: "All"
     t.index ["email"], name: "index_users_on_email", unique: true
