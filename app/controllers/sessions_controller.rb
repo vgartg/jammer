@@ -127,6 +127,7 @@ class SessionsController < ApplicationController
     )
 
     if user.save
+      TemporaryPasswordMailer.temporary_password_email(user, temp_password).deliver_later
       session[:current_user] = user.id
       Session.create_session(user.id, session[:session_id], request.remote_ip, UserAgent.parse(request.user_agent).browser)
       flash[:success] = "Вы успешно зарегистрировались через #{auth['provider'].capitalize}!"
