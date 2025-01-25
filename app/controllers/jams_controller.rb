@@ -1,4 +1,5 @@
 class JamsController < ApplicationController
+  include Contributor
   before_action :authenticate_user, only: [:new, :create, :edit, :update, :submit_game]
 
   def new
@@ -18,60 +19,27 @@ class JamsController < ApplicationController
     redirect_to jam_profile_path(params[:id])
   end
   def add_contributor
-    username_or_email = params[:search]
-    user = User.find_by("email_confirmed = true AND name = ? OR email = ?", username_or_email, username_or_email)
-
-    if user.nil?
-      flash[:failure] ||=[]
-      flash[:failure] << t('jams.setting_judges.no_user')
-      return
-    end
-    unless JamContributor.where(jam_id: params[:id]).find_by(user_id: user.id).present?
-      jcb = JamContributor.new(
-        jam_id: params[:id],
-        user_id: user.id,
-        status: true,
-        is_host: false,
-        is_admin: false,
-        is_judge: false  )
-      if jcb.save
-        flash[:success] ||=[]
-        flash[:success] << t('jams.setting_judges.success_added')
-
-      else
-        flash[:failure] ||=[]
-        flash[:failure] << t('jams.setting_judges.error')
-      end
-    else
-      flash[:failure] ||=[]
-      flash[:failure] << t('jams.setting_judges.user_exist')
-    end
-    #redirect_to jam_setting_judges_path(params[:id])
+    result = add_contributor_logic(params[:id], params[:search])
+    flash[result[:success] ? :success : :failure] ||= []
+    flash[result[:success] ? :success : :failure] << result[:message]
+    redirect_to jam_setting_judges_path(params[:id])
   end
+
+  def delete_contributor
+    result = delete_contributor_logic(params[:id], params[:user_id])
+    flash[result[:success] ? :success : :failure] ||= []
+    flash[result[:success] ? :success : :failure] << result[:message]
+    redirect_to jam_setting_judges_path(params[:id])
+  end
+
   def update_contributor
     contributor = JamContributor.find_by(jam_id: params[:id], user_id: params[:user_id])
     attribute = params[:attribute]
     value = ActiveModel::Type::Boolean.new.cast(params[:value])
-    if contributor.update(attribute => value)
-      render json: { success: true, message: 'Updated successfully' }, status: :ok
-    else
-      render json: { success: false, message: contributor.errors.full_messages.to_sentence }, status: :unprocessable_entity
-    end
+    contributor.update(attribute => value)
   end
 
-  def delete_contributor
-    contributor = JamContributor.find_by(jam_id: params[:id], user_id: params[:user_id])
-    if contributor&.destroy
-      flash[:success] ||=[]
-      flash[:success] << t('jams.setting_judges.success_delete')
-    else
-      flash[:failure] ||=[]
-      flash[:failure] << t('jams.setting_judges.error')
-    end
-    #redirect_to jam_setting_judges_path(params[:id])
-  end
   def setting_judges
-    @jam = current_user.jams.find_by_id(params[:id])
     @tags = Tag.all
     @contributors = @jam.jam_contributors
   end

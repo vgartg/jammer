@@ -26,12 +26,12 @@
       </ul>
     </div>
 
-    <%= form_with url: add_contributor_jam_path(@jam), method: :post, data: { action: "input->jams#search" }, class: "mb-8" do |f| %>
+    <%= form_with url: add_contributor_jam_path(@jam), method: :post, data: { action: "input->jams#search", turbo: false }, class: "mb-8" do |f| %>
       <div class="flex flex-wrap gap-4">
         <%= f.text_field :search,
                          value: params[:search],
                          placeholder: t('jams.participate.name_or_mail'),
-                         data: { games_target: "input" }, autocomplete: "off",
+                         data: { games_target: "input", turbo: false }, autocomplete: "off",
                          class: "block w-full max-w-lg sm:max-w-xs px-4 py-3 border
                            border-gray-300 rounded-md shadow-sm focus:outline-none
                            focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
@@ -88,7 +88,7 @@
                 <%= button_to t('.delete_jam_contributor'),
                               delete_contributor_jam_path(@jam, user_id: contributor.user_id),
                               method: :delete,
-                              data: { confirm: t('jams.setting_judges.success_delete') },
+                              data: { confirm: t('jams.setting_judges.success_delete'), turbo: false },
                               class: "text-red-500 hover:text-red-700" %>
               </td>
             </tr>
