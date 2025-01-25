@@ -94,7 +94,7 @@ export default class extends Controller {
 
     initFlatpickr() {
         flatpickr('.flatpickr', {
-            dateFormat: 'Y-m-d',
+            dateFormat: 'd.m.Y',
             theme: 'dark',
         });
     }
