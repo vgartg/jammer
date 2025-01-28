@@ -90,6 +90,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :reports, only: [:create]
+
   # Email (mailer)
   resource :password_reset, only: %i[new create edit update]
   resource :email_confirm, only: %i[new create edit update]

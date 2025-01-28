@@ -43,3 +43,6 @@ application.register("background-image", BackgroundImageController)
 // @ts-ignore
 import ModalController from "./modal_controller";
 application.register("modal", ModalController)
+// @ts-ignore
+import ReportController from "./report_controller";
+application.register("report", ReportController)
