@@ -171,8 +171,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_28_085412) do
     t.datetime "email_confirm_token_sent_at"
     t.boolean "email_confirmed", default: false
     t.integer "role", default: 0
-    t.string "provider"
-    t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["role"], name: "index_users_on_role"

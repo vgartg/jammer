@@ -1,3 +1,5 @@
+require 'test_helper'
+
 class GameTest < ActiveSupport::TestCase
   def setup
     @game = games(:tes3)

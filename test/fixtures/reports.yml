@@ -1,7 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  reporter_id: 1
+  reporter: todd
   reportable_type: MyString
   reportable_id: 1
   reason: MyString
@@ -9,7 +9,7 @@ one:
   status: 1
 
 two:
-  reporter_id: 1
+  reporter: todd
   reportable_type: MyString
   reportable_id: 1
   reason: MyString
