@@ -70,7 +70,7 @@
                         hover:bg-red-600 transition-colors duration-200" %>
             <% end %>
             <% if current_user %>
-              <%= render "helpers/report_form" %>
+              <%= render "helpers/report_form", report_item: @user %>
             <% end %>
           <% else %>
             <a href="/settings" class="inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold

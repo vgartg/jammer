@@ -100,7 +100,7 @@
                                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
           <% elsif current_user %>
             <div class="mt-4">
-              <%= render "helpers/report_form" %>
+              <%= render "helpers/report_form", report_item: @game %>
             </div>
           <% end %>
             </div>

@@ -8,7 +8,8 @@ class ReportsController < ApplicationController
       notify_admins(@report)
       render json: { message: 'Жалоба успешно отправлена' }, status: :ok
     else
-      render json: { error: @report.errors.full_messages.to_sentence }, status: :unprocessable_entity
+      render json: { error: @report.errors[:reportable_id].first || @report.errors.full_messages.to_sentence }, 
+             status: :unprocessable_entity
     end
   end
 
@@ -21,7 +22,8 @@ class ReportsController < ApplicationController
   def notify_admins(report)
     admins = User.where(role: [1, 2])
     admins.each do |admin|
-      current_user.create_notification(admin, current_user, "Новая жалоба на #{report.reportable_type}", report)
+      current_user.create_notification(admin, current_user,
+                                       "Новая жалоба на #{report.reportable_type} с id #{report.id}", report)
     end
   end
 end
