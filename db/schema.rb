@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_28_085412) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_15_144557) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -69,6 +69,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_28_085412) do
     t.datetime "updated_at", null: false
     t.integer "author_id"
     t.integer "status", default: 0
+    t.string "reason"
     t.index ["name"], name: "index_games_on_name", unique: true
   end
 
@@ -93,6 +94,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_28_085412) do
     t.binary "logo"
     t.string "description"
     t.integer "status", default: 0
+    t.string "reason"
     t.index ["author_id"], name: "index_jams_on_author_id"
     t.index ["name"], name: "index_jams_on_name"
   end
@@ -171,6 +173,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_28_085412) do
     t.datetime "email_confirm_token_sent_at"
     t.boolean "email_confirmed", default: false
     t.integer "role", default: 0
+    t.string "provider"
+    t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["role"], name: "index_users_on_role"
