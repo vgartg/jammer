@@ -10,6 +10,11 @@
         <%= current_user.unfreeze_at.present? ? current_user.unfreeze_at.strftime("%d-%m-%Y %H:%M") : "Бессрочно" %>
       </p>
       <p class="mt-4 text-gray-600">Если у вас есть вопросы, свяжитесь с нами по адресу: <a href="mailto:jammer.website@internet.ru" class="text-blue-500">jammer.website@internet.ru</a></p>
+
+      <div class="mt-6 flex justify-end">
+        <%= button_to "Выйти", logout_path, method: :delete,
+                      class:"bg-gray-300 text-black py-2 px-4 rounded hover:bg-gray-400" %>
+      </div>
     </div>
   </div>
 <% end %>
