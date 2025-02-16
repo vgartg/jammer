@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user
+  before_action :check_user_freeze
   helper_method :notifications
   helper_method :require_subdomain
   before_action :update_last_active_at
@@ -119,5 +120,10 @@ class ApplicationController < ActionController::Base
       @subdomain_owner = User.find_by_link_username(subdomain)
       render_404 unless @subdomain_owner
     end
+  end
+
+  def check_user_freeze
+    flash[:alert] = 'Ваш аккаунт заморожен' if current_user&.is_frozen?
+    redirect_to dashboard_path unless request.fullpath == dashboard_path
   end
 end

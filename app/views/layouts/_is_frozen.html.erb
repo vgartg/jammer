@@ -1,0 +1,15 @@
+<% if current_user && current_user.is_frozen? %>
+  <div data-controller="freeze-modal" data-freeze-modal-is-frozen="true"
+       class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 hidden"
+       data-freeze-modal-target="modal">
+    <div class="bg-white p-6 rounded-lg max-w-lg w-full">
+      <h2 class="text-xl font-bold text-red-500">Вы заморожены!</h2>
+      <p class="mt-4 text-gray-800">Причина: <%= current_user.frozen_reason %></p>
+      <p class="mt-2 text-gray-800">Заморозка была установлена: <%= current_user.frozen_at.strftime("%d-%m-%Y %H:%M") %></p>
+      <p class="mt-2 text-gray-800">Заморожено до:
+        <%= current_user.unfreeze_at.present? ? current_user.unfreeze_at.strftime("%d-%m-%Y %H:%M") : "Бессрочно" %>
+      </p>
+      <p class="mt-4 text-gray-600">Если у вас есть вопросы, свяжитесь с нами по адресу: <a href="mailto:jammer.website@internet.ru" class="text-blue-500">jammer.website@internet.ru</a></p>
+    </div>
+  </div>
+<% end %>

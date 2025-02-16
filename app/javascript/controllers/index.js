@@ -49,3 +49,6 @@ application.register("report", ReportController)
 // @ts-ignore
 import FreezeController from "./freeze_controller";
 application.register("freeze", FreezeController)
+// @ts-ignore
+import FreezeModalController from "./freeze_modal_controller";
+application.register("freeze-modal", FreezeModalController)
