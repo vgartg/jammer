@@ -124,8 +124,12 @@ class ApplicationController < ActionController::Base
 
   def check_user_freeze
     if current_user&.is_frozen?
-      flash[:alert] = 'Ваш аккаунт заморожен'
-      redirect_to dashboard_path unless request.fullpath == dashboard_path
+      if current_user&.unfreeze_at < Time.current
+        current_user.update(frozen_at: nil, unfreeze_at: nil, frozen_reason: nil, is_frozen: false)
+      else
+        flash[:alert] = 'Ваш аккаунт заморожен'
+        redirect_to dashboard_path unless request.fullpath == dashboard_path
+      end
     end
   end
 
