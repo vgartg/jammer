@@ -15,6 +15,9 @@ module Moderator
 
     def update
       old_jam = @jam.dup
+
+      params[:jam][:reason] = nil if params[:jam][:status].to_i != 2
+
       if @jam.update(jam_params)
         flash[:success] = 'Джем успешно обновлен'
         if old_jam.status != @jam.status
@@ -68,7 +71,7 @@ module Moderator
 
     def jam_params
       params.require(:jam)
-            .permit(:name, :description, :start_date, :deadline, :end_date, :status, :cover, :logo, tag_ids: []).merge(moderator_edit: true)
+            .permit(:name, :description, :start_date, :deadline, :end_date, :status, :reason, :cover, :logo, tag_ids: []).merge(moderator_edit: true)
     end
   end
 end

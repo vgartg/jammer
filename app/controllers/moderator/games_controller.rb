@@ -15,6 +15,9 @@ module Moderator
 
     def update
       old_game = @game.dup
+
+      params[:game][:reason] = nil if params[:game][:status].to_i != 2
+
       if @game.update(game_params)
         flash[:success] = 'Игра успешно обновлена'
         if old_game.status != @game.status
@@ -68,7 +71,7 @@ module Moderator
 
     def game_params
       params.require(:game)
-            .permit(:name, :description, :cover, :status, :game_file, tag_ids: []).merge(moderator_edit: true)
+            .permit(:name, :description, :cover, :status, :reason, :game_file, tag_ids: []).merge(moderator_edit: true)
     end
   end
 end

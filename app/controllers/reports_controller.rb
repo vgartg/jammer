@@ -23,7 +23,7 @@ class ReportsController < ApplicationController
     admins = User.where(role: [1, 2])
     admins.each do |admin|
       current_user.create_notification(admin, current_user,
-                                       "Новая жалоба на #{report.reportable_type} с id #{report.id}", report)
+                                       "Новая жалоба на #{report.reportable_type} с id #{report.reportable_id}", report)
     end
   end
 end

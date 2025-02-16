@@ -31,10 +31,34 @@
             </div>
             <div class="w-3/4">
               <%= f.select :status, options_for_select([['0', 0], ['1', 1], ['2', 2]], f.object.status),
-                           class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm
-                            focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+                           class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50',
+                           id: "game_status" %>
+              <div id="reason-field" style="<%= f.object.status == 2 ? '' : 'display: none;' %>">
+                <%= f.label :reason, "Причина отклонения", class: 'block text-sm font-medium text-gray-700 mt-2' %>
+                <%= f.select :reason, [['Непристойный контент', 'Непристойный контент'], ['Реклама', 'Реклама'], ['Плагиат', 'Плагиат']],
+                             { include_blank: true },
+                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+              </div>
             </div>
           </div>
+
+          <script>
+              document.addEventListener("DOMContentLoaded", function() {
+                  const statusSelect = document.getElementById('game_status');
+                  const reasonField = document.getElementById('reason-field');
+
+                  function toggleReasonField() {
+                      if (statusSelect.value === '2') {
+                          reasonField.style.display = 'block';
+                      } else {
+                          reasonField.style.display = 'none';
+                      }
+                  }
+
+                  toggleReasonField();
+                  statusSelect.addEventListener('change', toggleReasonField);
+              });
+          </script>
 
           <div class="flex items-center">
             <div class="w-1/4">
