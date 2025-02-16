@@ -142,4 +142,21 @@ class User < ActiveRecord::Base
 
     BCrypt::Password.new(email_confirm_token).is_password?(token)
   end
+
+  def frozen?
+    is_frozen
+  end
+
+  def freeze!(reason:, duration:)
+    update!(
+      is_frozen: true,
+      frozen_at: Time.current,
+      unfreeze_at: duration == "forever" ? nil : Time.current + duration.to_i,
+      frozen_reason: reason
+    )
+  end
+
+  def unfreeze!
+    update!(is_frozen: false, frozen_at: nil, unfreeze_at: nil, frozen_reason: nil)
+  end
 end

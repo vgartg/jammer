@@ -47,6 +47,19 @@
             <% end %>
           </p>
         </div>
+
+        <% if @user.is_frozen? %>
+          <div class="alert alert-danger text-red-500">
+            <strong>Пользователь заморожен!</strong>
+            <br>
+            <% if @user.unfreeze_at.present? %>
+              <span>Дата разморозки: <%= @user.unfreeze_at.strftime("%d-%m-%Y %H:%M") %></span>
+            <% else %>
+              <span>Бессрочно</span>
+            <% end %>
+          </div>
+        <% end %>
+
         <div class="flex justify-between items-center py-2 mt-6 gap-5">
           <% if @user.id != session[:current_user] %>
             <% if @friendship.nil? %>

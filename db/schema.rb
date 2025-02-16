@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_15_144557) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_16_081501) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -175,6 +175,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_15_144557) do
     t.integer "role", default: 0
     t.string "provider"
     t.string "uid"
+    t.boolean "is_frozen", default: false
+    t.datetime "frozen_at"
+    t.datetime "unfreeze_at"
+    t.string "frozen_reason"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["role"], name: "index_users_on_role"

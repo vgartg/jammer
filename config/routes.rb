@@ -80,6 +80,11 @@ Rails.application.routes.draw do
     %i[users games jams].each do |resource|
       resources resource, only: %i[index new create edit update destroy]
     end
+    resources :users do
+      member do
+        post :freeze
+      end
+    end
   end
 
   # Moderator
