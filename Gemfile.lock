@@ -201,9 +201,9 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.4)
-    nokogiri (1.16.8-x64-mingw-ucrt)
+    nokogiri (1.18.3-x64-mingw-ucrt)
       racc (~> 1.4)
-    nokogiri (1.16.8-x86_64-linux)
+    nokogiri (1.18.3-x86_64-linux-gnu)
       racc (~> 1.4)
     ostruct (0.6.1)
     pagy (9.3.3)
@@ -361,7 +361,7 @@ DEPENDENCIES
   letter_opener
   letter_opener_web
   mail
-  nokogiri (~> 1.16.7)
+  nokogiri (>= 1.18.3)
   ostruct
   pagy
   pg (~> 1.1)
