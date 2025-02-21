@@ -76,7 +76,9 @@ Rails.application.routes.draw do
   # Admin
   get '/admin', to: 'admins#index'
   namespace :admin do
-    resources :actions, only: [:index]
+    %i[actions visits].each do |resource|
+      resources resource, only: %i[index]
+    end
     %i[users games jams].each do |resource|
       resources resource, only: %i[index new create edit update destroy]
     end
@@ -85,6 +87,8 @@ Rails.application.routes.draw do
         post :freeze
       end
     end
+    get '/visits_data', to: 'visits#visits_data'
+    get '/registrations_data', to: 'visits#registrations_data'
   end
 
   # Moderator

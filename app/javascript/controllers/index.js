@@ -52,3 +52,6 @@ application.register("freeze", FreezeController)
 // @ts-ignore
 import FreezeModalController from "./freeze_modal_controller";
 application.register("freeze-modal", FreezeModalController)
+// @ts-ignore
+import VisitsController from "./visits_controller";
+application.register("visits", VisitsController)
