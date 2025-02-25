@@ -20,7 +20,7 @@ class Admin::VisitsController < ApplicationController
     (start_date..end_date).each do |date|
       user_count = daily_totals[date] || 0
       total_users += user_count
-      result[date] = total_users
+      result[date.iso8601] = total_users
     end
 
     render json: result
@@ -30,9 +30,9 @@ class Admin::VisitsController < ApplicationController
     end_date = Date.current
     start_date = end_date - 29.days
 
-    visits = User.where('last_active_at >= ?', 30.days.ago)
-                 .group("DATE(last_active_at)")
-                 .select("DATE(last_active_at) as visit_date, COUNT(*) as user_count")
+    visits = StatisticForDay.where(created_at: start_date..end_date)
+                            .group("DATE(created_at)")
+                            .select("DATE(created_at) as visit_date, SUM(count_online_users) as user_count")
 
     daily_totals = {}
     visits.each { |record| daily_totals[record.visit_date] = record.user_count }
@@ -41,7 +41,7 @@ class Admin::VisitsController < ApplicationController
 
     (start_date..end_date).each do |date|
       user_count = daily_totals[date] || 0
-      result[date] = user_count
+      result[date.iso8601] = user_count
     end
 
     render json: result
