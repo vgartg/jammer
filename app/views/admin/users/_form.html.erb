@@ -252,6 +252,13 @@
               <button type="button" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600" data-action="click->freeze#open">
                 Заморозить
               </button>
+              <div data-controller="unfreeze" data-user-id="<%= user.id %>">
+                <button type="button"
+                        class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                        data-action="click->unfreeze#unfreezeUser">
+                  Разморозить
+                </button>
+              </div>
             </div>
 
             <div id="freeze-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">

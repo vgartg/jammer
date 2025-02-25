@@ -50,6 +50,9 @@ application.register("report", ReportController)
 import FreezeController from "./freeze_controller";
 application.register("freeze", FreezeController)
 // @ts-ignore
+import UnfreezeController from "./unfreeze_controller";
+application.register("unfreeze", UnfreezeController)
+// @ts-ignore
 import FreezeModalController from "./freeze_modal_controller";
 application.register("freeze-modal", FreezeModalController)
 // @ts-ignore

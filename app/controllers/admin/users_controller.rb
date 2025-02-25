@@ -88,12 +88,16 @@ module Admin
         unfreeze_at: unfreeze_at,
         frozen_reason: params[:reason]
       )
+    end
 
-      render json: { success: "Пользователь заморожен" }, status: :ok
-    rescue ActiveRecord::RecordNotFound
-      render json: { error: "Пользователь не найден" }, status: :not_found
-    rescue ActiveRecord::RecordInvalid => e
-      render json: { error: e.record.errors.full_messages }, status: :unprocessable_entity
+    def unfreeze
+      user = User.find(params[:id])
+      user.update!(
+        is_frozen: false,
+        frozen_reason: nil,
+        frozen_at: nil,
+        unfreeze_at: nil
+      )
     end
 
     private

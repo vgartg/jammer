@@ -104,6 +104,8 @@ class ApplicationController < ActionController::Base
   def update_last_active_at
     return unless current_user
 
+    current_user.is_online_today = true unless current_user.is_online_today
+
     current_user.update(last_active_at: Time.current)
   end
 

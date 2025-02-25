@@ -85,6 +85,7 @@ Rails.application.routes.draw do
     resources :users do
       member do
         post :freeze
+        post :unfreeze
       end
     end
     get '/visits_data', to: 'visits#visits_data'
