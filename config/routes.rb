@@ -76,10 +76,20 @@ Rails.application.routes.draw do
   # Admin
   get '/admin', to: 'admins#index'
   namespace :admin do
-    resources :actions, only: [:index]
+    %i[actions visits].each do |resource|
+      resources resource, only: %i[index]
+    end
     %i[users games jams].each do |resource|
       resources resource, only: %i[index new create edit update destroy]
     end
+    resources :users do
+      member do
+        post :freeze
+        post :unfreeze
+      end
+    end
+    get '/visits_data', to: 'visits#visits_data'
+    get '/registrations_data', to: 'visits#registrations_data'
   end
 
   # Moderator
@@ -89,6 +99,8 @@ Rails.application.routes.draw do
       resources resource, only: %i[index edit update destroy]
     end
   end
+
+  resources :reports, only: [:create]
 
   # Email (mailer)
   resource :password_reset, only: %i[new create edit update]

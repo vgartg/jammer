@@ -10,4 +10,6 @@ class Jam < ActiveRecord::Base
   has_and_belongs_to_many :tags
 
   validates_length_of :tags, maximum: 10, message: 'Можно выбрать не более 10 тегов'
+
+  validates :reason, presence: true, if: -> { status == 2 }
 end

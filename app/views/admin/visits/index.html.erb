@@ -1,0 +1,10 @@
+<div data-controller="visits" class="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+  <h1 class="text-2xl font-bold text-center mb-4 text-gray-800">График активности пользователей</h1>
+
+  <select id="time-frame" data-action="change->visits#changeTimeFrame" class="mb-4">
+    <option value="30">За крайние 30 дней</option>
+    <option value="90">За крайние 90 дней</option>
+  </select>
+
+  <canvas data-visits-target="chart" class="w-full h-64 border border-gray-200 rounded-lg shadow-sm"></canvas>
+</div>

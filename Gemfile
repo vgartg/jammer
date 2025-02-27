@@ -59,7 +59,10 @@ gem 'letter_opener', group: :development
 gem 'letter_opener_web', group: :development
 gem 'mail'
 
-gem 'nokogiri', '~> 1.16.7'
+gem 'sidekiq'
+gem 'whenever', require: false
+
+gem 'nokogiri', '>= 1.18.3'
 gem 'pagy'
 
 group :development, :test do

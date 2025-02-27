@@ -47,12 +47,8 @@ module Admin
 
         changes = @user.previous_changes.except('updated_at')
 
-        puts 12_345
-        puts changes
-
         if changes.any?
           create_administration_record(current_user, @user, changes, 'edit')
-          puts 'goodd'
         end
       else
         flash[:failure] = @user.errors.full_messages
@@ -64,6 +60,44 @@ module Admin
       create_administration_record(current_user, @user, {}, 'delete') if @user.destroy
       flash[:success] = 'Пользователь успешно удален'
       redirect_to admin_users_path
+    end
+
+    def freeze
+      user = User.find(params[:id])
+      duration = params[:duration]
+
+      # Определяем дату разморозки
+      unfreeze_at = case duration
+                    when "1.hour" then 1.hour.from_now
+                    when "6.hours" then 6.hours.from_now
+                    when "12.hours" then 12.hours.from_now
+                    when "1.day" then 1.day.from_now
+                    when "3.days" then 3.days.from_now
+                    when "7.days" then 7.days.from_now
+                    when "1.month" then 1.month.from_now
+                    when "6.months" then 6.months.from_now
+                    when "1.year" then 1.year.from_now
+                    when "forever" then nil
+                    else
+                      return render json: { error: "Некорректный срок" }, status: :unprocessable_entity
+                    end
+
+      user.update!(
+        is_frozen: true,
+        frozen_at: Time.current,
+        unfreeze_at: unfreeze_at,
+        frozen_reason: params[:reason]
+      )
+    end
+
+    def unfreeze
+      user = User.find(params[:id])
+      user.update!(
+        is_frozen: false,
+        frozen_reason: nil,
+        frozen_at: nil,
+        unfreeze_at: nil
+      )
     end
 
     private
@@ -105,7 +139,7 @@ module Admin
       params.require(:user).permit(
         :email, :name, :email_confirmed, :password, :password_confirmation, :role, :avatar, :background_image,
         :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
-        :visibility, :jams_visibility, :theme
+        :visibility, :jams_visibility, :theme, :is_frozen, :frozen_at, :unfreeze_at, :frozen_reason
       ).merge(admin_edit: true)
     end
   end

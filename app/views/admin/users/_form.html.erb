@@ -246,10 +246,72 @@
             </div>
           </div>
 
-          <div class="flex items-center justify-end pb-10">
-            <%= f.submit 'Сохранить', class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
-          </div>
+          <div data-controller="freeze" data-user-id="<%= user.id %>">
+            <div class="flex items-center justify-end pb-10 space-x-2">
+              <%= f.submit 'Сохранить', class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
+              <button type="button" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600" data-action="click->freeze#open">
+                Заморозить
+              </button>
+              <div data-controller="unfreeze" data-user-id="<%= user.id %>">
+                <button type="button"
+                        class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                        data-action="click->unfreeze#unfreezeUser">
+                  Разморозить
+                </button>
+              </div>
+            </div>
 
+            <div id="freeze-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+              <div class="bg-white p-6 rounded-lg w-96">
+                <h2 class="text-lg font-semibold mb-4">Заморозка пользователя</h2>
+
+                <label for="freeze-reason" class="block text-sm font-medium text-gray-700">Причина:</label>
+                <textarea id="freeze-reason"
+                          class="w-full border rounded p-2 mb-4 resize-none"
+                          rows="3"
+                          data-freeze-target="reason"
+                          data-action="input->freeze#checkInput"
+                          placeholder="Введите причину заморозки"></textarea>
+
+                <label for="freeze-duration" class="block text-sm font-medium text-gray-700">На сколько:</label>
+                <select id="freeze-duration" class="w-full border rounded p-2 mb-4" data-freeze-target="duration">
+                  <option value="1.hour">1 час</option>
+                  <option value="6.hours">6 часов</option>
+                  <option value="12.hours">12 часов</option>
+                  <option value="1.day">1 сутки</option>
+                  <option value="3.days">3 суток</option>
+                  <option value="7.days">7 суток</option>
+                  <option value="1.month">1 месяц</option>
+                  <option value="6.months">6 месяцев</option>
+                  <option value="1.year">1 год</option>
+                  <option value="forever">Бессрочно</option>
+                </select>
+
+                <div class="flex justify-end space-x-2">
+                  <button class="bg-gray-300 text-black py-2 px-4 rounded hover:bg-gray-400"
+                          data-action="click->freeze#close">
+                    Отмена
+                  </button>
+                  <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 opacity-50 cursor-not-allowed"
+                          data-freeze-target="submit"
+                          data-action="click->freeze#submit"
+                          disabled>
+                    Заморозить
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @user.is_frozen? %>
+        <div class="alert alert-danger text-red-500">
+          <strong>Пользователь заморожен!</strong>
+          <br>
+          <span>Причина: <%= @user.frozen_reason %></span>
+          <br>
+          <span>Дата разморозки: <%= @user.unfreeze_at.present? ? @user.unfreeze_at.strftime("%d-%m-%Y %H:%M") : "Бессрочно" %></span>
         </div>
       <% end %>
     </div>

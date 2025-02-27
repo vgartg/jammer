@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user
+  before_action :check_user_freeze, unless: :logout_action?
   helper_method :notifications
   helper_method :require_subdomain
   before_action :update_last_active_at
@@ -103,6 +104,8 @@ class ApplicationController < ActionController::Base
   def update_last_active_at
     return unless current_user
 
+    current_user.is_online_today = true unless current_user.is_online_today
+
     current_user.update(last_active_at: Time.current)
   end
 
@@ -119,5 +122,20 @@ class ApplicationController < ActionController::Base
       @subdomain_owner = User.find_by_link_username(subdomain)
       render_404 unless @subdomain_owner
     end
+  end
+
+  def check_user_freeze
+    if current_user&.is_frozen?
+      if current_user&.unfreeze_at < Time.current
+        current_user.update(frozen_at: nil, unfreeze_at: nil, frozen_reason: nil, is_frozen: false)
+      else
+        flash[:alert] = 'Ваш аккаунт заморожен'
+        redirect_to dashboard_path unless request.fullpath == dashboard_path
+      end
+    end
+  end
+
+  def logout_action?
+    request.path == logout_path
   end
 end

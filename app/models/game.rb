@@ -14,6 +14,8 @@ class Game < ActiveRecord::Base
   validate :game_file_format
   validate :game_file_size
 
+  validates :reason, presence: true, if: -> { status == 2 }
+
   private
 
   def game_file_format

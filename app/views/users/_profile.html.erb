@@ -36,8 +36,10 @@
       <div class="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
         <div class="mt-6 min-w-0 flex-1 sm:hidden md:block">
           <h1 class="truncate text-2xl font-bold text-gray-900">
-            <% unless current_user.role == 'basic' || @user.role == 'basic' %>
-              <span class="<%= @user.role == 'moderator' ? 'text-green-500' : 'text-red-500' %>">[<%= @user.role[0].upcase %>]</span>
+            <% if current_user %>
+              <% unless current_user.role == 'basic' || @user.role == 'basic' %>
+                <span class="<%= @user.role == 'moderator' ? 'text-green-500' : 'text-red-500' %>">[<%= @user.role[0].upcase %>]</span>
+              <% end %>
             <% end %>
             <%= @user.name %>
           </h1>
@@ -47,6 +49,19 @@
             <% end %>
           </p>
         </div>
+
+        <% if @user.is_frozen? %>
+          <div class="alert alert-danger text-red-500">
+            <strong>Пользователь заморожен!</strong>
+            <br>
+            <% if @user.unfreeze_at.present? %>
+              <span>Дата разморозки: <%= @user.unfreeze_at.strftime("%d-%m-%Y %H:%M") %></span>
+            <% else %>
+              <span>Бессрочно</span>
+            <% end %>
+          </div>
+        <% end %>
+
         <div class="flex justify-between items-center py-2 mt-6 gap-5">
           <% if @user.id != session[:current_user] %>
             <% if @friendship.nil? %>
@@ -68,6 +83,9 @@
               <%= button_to "Cancel application", cancel_user_friendship_path(@current_user, @friendship), method: :delete,
                             class: "bg-red-500 text-white px-3 py-1 rounded-full
                         hover:bg-red-600 transition-colors duration-200" %>
+            <% end %>
+            <% if current_user %>
+              <%= render "helpers/report_form", report_item: @user %>
             <% end %>
           <% else %>
             <a href="/settings" class="inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold

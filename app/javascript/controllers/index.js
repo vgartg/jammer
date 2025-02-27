@@ -43,3 +43,18 @@ application.register("background-image", BackgroundImageController)
 // @ts-ignore
 import ModalController from "./modal_controller";
 application.register("modal", ModalController)
+// @ts-ignore
+import ReportController from "./report_controller";
+application.register("report", ReportController)
+// @ts-ignore
+import FreezeController from "./freeze_controller";
+application.register("freeze", FreezeController)
+// @ts-ignore
+import UnfreezeController from "./unfreeze_controller";
+application.register("unfreeze", UnfreezeController)
+// @ts-ignore
+import FreezeModalController from "./freeze_modal_controller";
+application.register("freeze-modal", FreezeModalController)
+// @ts-ignore
+import VisitsController from "./visits_controller";
+application.register("visits", VisitsController)
