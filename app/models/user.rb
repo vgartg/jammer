@@ -144,7 +144,7 @@ class User < ActiveRecord::Base
   end
 
   def frozen?
-    current_user.is_frozen
+    is_frozen?
   end
 
   def freeze!(reason:, duration:)
