@@ -5,12 +5,12 @@ export default class extends Controller {
     static targets = ["chart"];
 
     connect() {
-        this.fetchData();
+        this.fetchData(30);
     }
 
-    fetchData() {
-        const visitsPromise = fetch("/admin/visits_data").then(response => response.json());
-        const registrationsPromise = fetch("/admin/registrations_data").then(response => response.json());
+    fetchData(days) {
+        const visitsPromise = fetch(`/admin/visits_data?days=${days}`).then(response => response.json());
+        const registrationsPromise = fetch(`/admin/registrations_data?days=${days}`).then(response => response.json());
 
         Promise.all([visitsPromise, registrationsPromise])
             .then(([visitsData, registrationsData]) => {
@@ -31,7 +31,11 @@ export default class extends Controller {
             registrationCounts[index] = registrationsData[date] || 0;
         });
 
-        new Chart(this.chartTarget, {
+        if (this.chart) {
+            this.chart.destroy();
+        }
+
+        this.chart = new Chart(this.chartTarget, {
             type: "line",
             data: {
                 labels: dates,
@@ -76,5 +80,10 @@ export default class extends Controller {
                 }
             }
         });
+    }
+
+    changeTimeFrame(event) {
+        const selectedDays = event.target.value;
+        this.fetchData(selectedDays);
     }
 }
