@@ -82,22 +82,30 @@ module Admin
                       return render json: { error: "Некорректный срок" }, status: :unprocessable_entity
                     end
 
-      user.update!(
+      if user.update!(
         is_frozen: true,
         frozen_at: Time.current,
         unfreeze_at: unfreeze_at,
         frozen_reason: params[:reason]
       )
+        render json: { success: true }, status: :ok
+      else
+        render json: { error: "Не удалось заморозить пользователя" }, status: :unprocessable_entity
+      end
     end
 
     def unfreeze
       user = User.find(params[:id])
-      user.update!(
+      if user.update!(
         is_frozen: false,
         frozen_reason: nil,
         frozen_at: nil,
         unfreeze_at: nil
       )
+        render json: { success: true }, status: :ok
+      else
+        render json: { error: "Не удалось разморозить пользователя" }, status: :unprocessable_entity
+      end
     end
 
     private
