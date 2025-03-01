@@ -10,7 +10,7 @@ servers:
     - 95.164.6.174
   job:
     hosts:
-      - 192.168.0.1
+      - 95.164.6.174
     cmd: bundle exec sidekiq
 
 # Enable SSL auto certification via Let's Encrypt (and allow for multiple apps on one server).
