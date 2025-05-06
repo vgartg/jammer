@@ -178,8 +178,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
     t.datetime "email_confirm_token_sent_at"
     t.boolean "email_confirmed", default: false
     t.integer "role", default: 0
-    t.string "provider"
-    t.string "uid"
     t.boolean "is_frozen", default: false
     t.datetime "frozen_at"
     t.datetime "unfreeze_at"

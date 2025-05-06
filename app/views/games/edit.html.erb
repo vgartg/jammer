@@ -35,6 +35,20 @@
       </div>
 
       <div class="mb-4">
+        <%= form.label :html5_zip, "HTML5 версия игры (.zip)", class: "block text-sm font-medium text-gray-700" %>
+        <%= form.file_field :html5_zip, accept: ".zip", class: "block w-full appearance-none rounded-md border
+         border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500
+          focus:outline-none focus:ring-indigo-500 sm:text-sm" %>
+        <% if @game.html5_zip.attached? %>
+          <p class="mt-2 text-sm text-gray-500">
+            Текущий HTML5 архив:
+            <%= link_to "Скачать", url_for(@game.html5_zip), download: true, class: "text-indigo-600 hover:text-indigo-900" %>
+          </p>
+        <% end %>
+      </div>
+
+
+      <div class="mb-4">
         <%= form.label :tags, "Теги", class: "block text-sm font-medium text-gray-700" %>
         <div class="mt-1">
           <%= form.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>

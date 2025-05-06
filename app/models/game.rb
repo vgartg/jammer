@@ -2,6 +2,7 @@ class Game < ActiveRecord::Base
   validates :name, :description, presence: true
   has_one_attached :cover
   has_one_attached :game_file
+  has_one_attached :html5_zip
 
   attr_accessor :admin_edit, :moderator_edit
 

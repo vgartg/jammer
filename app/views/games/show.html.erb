@@ -72,7 +72,7 @@
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Файл игры:</h2>
+            <h2 class="text-sm font-medium text-gray-900">Файлы игры:</h2>
             <div class="mt-4">
               <% if @game.game_file.attached? %>
                 <p class="text-red-600">Внимание: мы не несем ответственности за содержимое архива.</p>
@@ -83,6 +83,16 @@
                 <p class="text-gray-500">Файл игры не прикреплён.</p>
               <% end %>
             </div>
+
+            <% if @game.html5_zip.attached? %>
+              <div class="mt-10">
+                <h2 class="text-sm font-medium text-gray-900">HTML5 версия:</h2>
+                <div class="mt-2">
+                  <%= link_to "Скачать HTML5 архив", url_for(@game.html5_zip), class: "text-indigo-600 hover:underline" %>
+                </div>
+              </div>
+            <% end %>
+
           </div>
 
 
