@@ -96,3 +96,6 @@ group :production do
 end
 
 gem 'thruster', require: false
+
+gem 'multipart-post'
+

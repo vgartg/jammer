@@ -1,3 +1,8 @@
+require 'net/http'
+require 'net/http/post/multipart'
+require 'uri'
+require 'tempfile'
+
 class GamesController < ApplicationController
   before_action :authenticate_user, only: %i[new create edit update]
   before_action :root_check, only: %i[edit update destroy]
@@ -51,6 +56,15 @@ class GamesController < ApplicationController
     @game = Game.new(game_params.merge(author: current_user))
     @tags = Tag.all
     if @game.save
+      if @game.html5_zip.attached?
+        sinatra_upload_response = upload_to_sinatra(@game.html5_zip, @game.name, current_user.name)
+        if sinatra_upload_response[:success]
+          @game.update(html5_id: sinatra_upload_response[:id])
+        else
+          flash[:failure] = "Файл загружен, но произошла ошибка на сервере игр: #{sinatra_upload_response[:error]}"
+        end
+      end
+
       admins = User.where(role: [1, 2])
       admins.each do |admin|
         current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
@@ -114,4 +128,35 @@ class GamesController < ApplicationController
   def should_search?
     params[:search].present? && !params[:search].empty?
   end
+
+  def upload_to_sinatra(file, game_name, username)
+    uri = URI.parse("http://localhost:4567/upload")
+
+    file_blob = file.blob
+    tempfile = Tempfile.new(file_blob.filename.to_s, binmode: true)
+    tempfile.write(file_blob.download)
+    tempfile.rewind
+
+    upload_io = UploadIO.new(tempfile, file_blob.content_type, file_blob.filename.to_s)
+
+    request = Net::HTTP::Post::Multipart.new uri.path,
+                                             "file" => upload_io,
+                                             "game_name" => game_name,
+                                             "username" => username
+
+    response = Net::HTTP.start(uri.host, uri.port) do |http|
+      http.request(request)
+    end
+
+    tempfile.close
+    tempfile.unlink # удалить временный файл
+
+    body = JSON.parse(response.body) rescue {}
+    if response.is_a?(Net::HTTPSuccess) && body["id"]
+      { success: true, id: body["id"] }
+    else
+      { success: false, error: body["error"] || "Unknown error" }
+    end
+  end
+
 end
