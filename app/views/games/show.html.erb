@@ -118,7 +118,7 @@
 
         <% if @game.html5_id.present? %>
           <div class="mt-4">
-            <iframe src="http://localhost:4567/game/w9PhodIAvC9eCkBl" width="800" height="600" frameborder="0"></iframe>
+            <iframe src="http://localhost:4567/game/<%= @game.html5_id %>" width="800" height="600" frameborder="0"></iframe>
           </div>
         <% end %>
 
