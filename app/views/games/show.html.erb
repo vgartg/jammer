@@ -1,25 +1,14 @@
 <div class="bg-white">
   <div class="pb-16 pt-6 sm:pb-24">
     <div class="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-      <div class="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
-        <div class="lg:col-span-5 lg:col-start-8">
-          <div class="flex justify-between">
-            <h1 class="text-xl font-medium text-gray-900 break-all"><%= @game.name %></h1>
-          </div>
-          <% if @game.status != 1 %>
-            <p class="mt-2 text-red-400 sm:text-sm">Данная игра
-              <%= @game.status == 0 ? 'находится на модерации' : 'отклонена модератором' %>
-            </p>
-          <% end %>
-        </div>
-
+      <div class="lg:grid lg:auto-rows-min lg:grid-cols-12">
         <!-- Image gallery -->
-        <div class="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
-          <div class="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
+        <div class="lg:col-span-12">
+          <div class="grid grid-cols-1 lg:grid-cols-2">
             <% if @game && @game.cover.attached? %>
               <%= image_tag url_for(@game.cover), alt: @game.name,
-                            class: "rounded-md bg-gray-200
-                            object-cover object-center group-hover:opacity-75" %>
+                            class: "max-w-md h-60 rounded-md bg-gray-200 object-cover
+                            object-center group-hover:opacity-75" %>
             <% else %>
               <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200
                           lg:aspect-none group-hover:opacity-75 lg:h-80">
@@ -27,10 +16,27 @@
                      class="object-cover object-center ">
               </div>
             <% end %>
+
+            <% if @game.html5_id.present? %>
+              <div class="relative w-full max-w-3xl aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden shadow-md">
+                <iframe src="http://localhost:4567/game/<%= @game.html5_id %>" width="600" height="450" frameborder="0"></iframe>
+              </div>
+            <% end %>
           </div>
         </div>
 
-        <div class="mt-8 lg:col-span-5">
+        <div class="lg:col-span-12 mt-10">
+          <div class="lg:col-span-5 lg:col-start-8">
+            <div class="flex justify-between">
+              <h1 class="text-xl font-medium text-gray-900 break-all"><%= @game.name %></h1>
+            </div>
+            <% if @game.status != 1 %>
+              <p class="mt-2 text-red-400 sm:text-sm">Данная игра
+                <%= @game.status == 0 ? 'находится на модерации' : 'отклонена модератором' %>
+              </p>
+            <% end %>
+          </div>
+
           <div class="mt-10">
             <h2 class="text-sm font-medium text-gray-900">Описание:</h2>
 
@@ -115,13 +121,6 @@
           <% end %>
             </div>
         </div>
-
-        <% if @game.html5_id.present? %>
-          <div class="mt-4">
-            <iframe src="http://localhost:4567/game/<%= @game.html5_id %>" width="800" height="600" frameborder="0"></iframe>
-          </div>
-        <% end %>
-
       </div>
     </div>
   </div>
