@@ -2,8 +2,8 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-// @ts-ignore
 import { application } from "./application"
+<<<<<<< HEAD
 // @ts-ignore
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
@@ -32,11 +32,39 @@ application.register("online", OnlineController)
 import SettingsController from "./settings_controller"
 application.register("settings", SettingsController)
 // @ts-ignore
+=======
+
+import BackgroundImageController from "./background_image_controller"
+application.register("background-image", BackgroundImageController)
+
+>>>>>>> issue_19
 import CropperController from "./cropper_controller"
 application.register("cropper", CropperController)
-// @ts-ignore
+
+import DashboardController from "./dashboard_controller"
+application.register("dashboard", DashboardController)
+
+import FriendsController from "./friends_controller"
+application.register("friends", FriendsController)
+
+import GamesController from "./games_controller"
+application.register("games", GamesController)
+
+import HeaderController from "./header_controller"
+application.register("header", HeaderController)
+
+import HelloController from "./hello_controller"
+application.register("hello", HelloController)
+
+import JamsController from "./jams_controller"
+application.register("jams", JamsController)
+
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
+
 import NotificationsController from "./notifications_controller"
 application.register("notifications", NotificationsController)
+<<<<<<< HEAD
 // @ts-ignore
 import BackgroundImageController from "./background_image_controller";
 application.register("background-image", BackgroundImageController)
@@ -61,3 +89,26 @@ application.register("visits", VisitsController)
 // @ts-ignore
 import StatusController from "./status_controller";
 application.register("status", StatusController)
+=======
+
+import OnlineController from "./online_controller"
+application.register("online", OnlineController)
+
+import ProfileController from "./profile_controller"
+application.register("profile", ProfileController)
+
+import SettingsController from "./settings_controller"
+application.register("settings", SettingsController)
+
+import StarRatingController from "./star_rating_controller"
+application.register("star-rating", StarRatingController)
+
+import ThemeController from "./theme_controller"
+application.register("theme", ThemeController)
+
+import ToggleTruncateController from "./toggle_truncate_controller"
+application.register("toggle-truncate", ToggleTruncateController)
+
+import UserController from "./user_controller"
+application.register("user", UserController)
+>>>>>>> issue_19

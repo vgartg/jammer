@@ -28,13 +28,15 @@ class SessionsController < ApplicationController
         else
           @token = user.set_email_confirm_token
           EmailConfirmMailer.with(user: user, token: @token).email_confirm.deliver_later
-          flash[:success] = 'Инструкции были отправлены на ваш адрес'
+          flash[:success] ||= []
+        flash[:success] << 'Инструкции были отправлены на ваш адрес'
         end
         redirect_to edit_email_confirm_url(user: { email_confirm_token: user.email_confirm_token,
                                                    email: user.email }).gsub('&amp;', '&')
       end
     else
-      flash[:failure] = ['Invalid email or password']
+      flash[:failure] ||= []
+      flash[:failure] << t('sessions.create.failure')
       render :new, status: :see_other
     end
   end
@@ -63,10 +65,12 @@ class SessionsController < ApplicationController
     if current_user && current_user.authenticate(params[:password])
       current_user.invalidate_other_sessions(session[:session_id])
       current_user.forget_me
-      flash[:success] = 'Successfully logged out of other sessions'
+      flash[:success] ||= []
+      flash[:success] << t('sessions.logout_other_sessions.success')
       redirect_to settings_path
     else
-      flash[:failure] = 'Invalid password'
+      flash[:failure] ||= []
+      flash[:failure] << t('sessions.logout_other_sessions.failure')
       redirect_to settings_path
     end
   end

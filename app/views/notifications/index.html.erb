@@ -1,7 +1,14 @@
 <div class="bg-white">
   <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+<<<<<<< HEAD
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-2xl font-bold tracking-tight text-gray-900">Уведомления</h2>
+=======
+    <div class="flex justify-between items-center px-4">
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900">
+        <%= t '.title' %>
+      </h2>
+>>>>>>> issue_19
     </div>
     <% if notifications&.any? %>
       <% notifications.order(created_at: :desc).first(8).each do |notification| %>
@@ -12,7 +19,11 @@
                 <% if notification.notifiable.cover.attached? %>
                   <%= image_tag url_for(notification.notifiable.cover), alt: notification.notifiable.name, class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover" %>
                 <% else %>
+<<<<<<< HEAD
                   <img src="https://via.placeholder.com/150" alt="<%= notification.notifiable.name %>" class="w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200">
+=======
+                  <%= image_tag 'empty-avatar.jpg', class: "w-16 text-gray-400" %>
+>>>>>>> issue_19
                 <% end %>
               </a>
               <% elsif notification.notifiable.is_a?(Jam) %>
@@ -23,11 +34,24 @@
                     <img src="https://via.placeholder.com/150" alt="<%= notification.notifiable.name %>" class="w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200">
                   <% end %>
                 </a>
+<<<<<<< HEAD
             <% else notification.actor %>
               <a href='<%= user_path(notification.actor) %>'>
                 <%= notification.actor.avatar.attached? ? image_tag(url_for(notification.actor.avatar), alt: "Profile Picture", class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover") : image_tag("https://via.placeholder.com/150", alt: "Profile Picture", class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200") %>
               </a>
             <% end %>
+=======
+                <% if notification.action == 'accepted_friendship' %>
+                  <%= t '.accept' %>
+                <% elsif notification.action == 'sent_friend_request' %>
+                  <%= t '.sent' %>
+                <% else %>
+                  <%= notification.action %>
+                <% end %>
+              </p>
+              <p class="text-xs text-gray-500"><%= notification.created_at.strftime("%d.%m.%Y, %H:%M") %></p>
+            </div>
+>>>>>>> issue_19
           </div>
 
           <div class="flex-1">
@@ -46,7 +70,13 @@
         </div>
       <% end %>
     <% else %>
+<<<<<<< HEAD
       <p class="px-4 py-2 text-sm text-gray-600 text-center">Нет уведомлений для отображения.</p>
+=======
+      <p>
+        <%= t 'helpers.no_notif' %>
+      </p>
+>>>>>>> issue_19
     <% end %>
   </div>
 </div>

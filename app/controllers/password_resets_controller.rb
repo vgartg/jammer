@@ -8,10 +8,12 @@ class PasswordResetsController < ApplicationController
     if @user.present?
       @user.set_password_reset_token
       PasswordResetMailer.with(user: @user).reset_email.deliver_later
-      flash[:success] = 'Инструкции были отправлены на ваш адрес'
+      flash[:success] ||= []
+      flash[:success] << 'Инструкции были отправлены на ваш адрес'
       redirect_to login_path
     else
-      flash[:failure] = 'Не найдена указанная почта'
+      flash[:failure] ||= []
+      flash[:failure] << 'Не найдена указанная почта'
       redirect_to password_reset_path
     end
   end
@@ -37,13 +39,15 @@ class PasswordResetsController < ApplicationController
       return
     end
 
-    if @user.update(user_params)
-      flash[:success] = 'Пароль успешно обновлен!'
-      redirect_to login_path
-    else
-      flash[:failure] = 'Что-то пошло не так!'
-      redirect_to login_path
-    end
+     if @user.update(user_params)
+       flash[:success] ||= []
+       flash[:success] << "Пароль успешно обновлен!"
+       redirect_to login_path
+     else
+       flash[:failure] ||= []
+       flash[:failure] << "Что-то пошло не так!"
+       redirect_to login_path
+     end
   end
 
   private
@@ -53,18 +57,20 @@ class PasswordResetsController < ApplicationController
   end
 
   def check_user_params
-    return unless params[:user].blank?
-
-    flash[:failure] = 'Что-то пошло не так!'
-    redirect_to(login_path)
+    if params[:user].blank?
+      flash[:failure] ||= []
+      flash[:failure] << "Что-то пошло не так!"
+      redirect_to(login_path)
+    end
   end
 
   def set_user
     @user = User.find_by(email: params[:user][:email])
     @user = nil unless @user.authenticate_password_reset_token(params[:user][:password_reset_token])
-    return if @user&.password_reset_period_valid?
-
-    flash[:failure] = 'Токен недействителен!'
-    redirect_to login_path
+    unless @user&.password_reset_period_valid?
+      flash[:failure] ||= []
+      flash[:failure] << "Токен недействителен!"
+      redirect_to login_path
+    end
   end
 end

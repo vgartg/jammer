@@ -1,31 +1,327 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  en: "English"
+  ru: "Русский"
+  activerecord:
+    models:
+      tag: "Tag"
+      game: "Game"
+    attributes:
+      game:
+        name: "Name"
+        description: "Description"
+  buttons:
+    save: "Save"
+    change_avatar: "Change avatar"
+    log_out_sessions: "Log out other sessions"
+    remove_friend: "Remove friend"
+    profile: "Profile"
+    sign_out: "Sign out"
+    add_friend: "Add friend"
+  search: "Search..."
+  home:
+    title: "Jammer service prototype"
+    description: "Online service for hosting, selling and downloading indie games"
+    read_mode: "Read more"
+  layouts:
+    header:
+      home: "Home"
+      users: "Users"
+      games: "Games"
+      jams: "Jams"
+      sign_up: "Sign up"
+      log_in: "Log in"
+      sign_out: "Sign out"
+      dashboard: "Dashboard"
+    footer:
+      copyright: "All rights reserved."
+    left-menu:
+      requests: "Requests"
+      settings: "Settings"
+      plug: "Empty yet"
+  dashboard:
+    index:
+      title: "Dashboard"
+      games_reviews: "Your games reviews: "
+      rating: "Rating: "
+      games_rating: "Average rating of your games: "
+      jams_games_rating: "Average rating of your games in jams: "
+      jams_reviews: "Your jams reviews: "
+      no_comment: "No comment"
+  games:
+    create:
+      success: "Game has been created successfully!"
+      failure: "A game with the same name already exists."
+    destroy:
+      success: "Game has been deleted successfully."
+      failure: "Something went wrong!"
+    update:
+      success: "The game has been updated successfully."
+    showcase:
+      title: "Games catalogue"
+      create: "Create game"
+      search_placeholder: "Search by game name or description"
+      search: "Search"
+      reset_filters: "Reset filters"
+      checkbox: "Search with at least one of the selected tags"
+      not_found: "Nothing found for the current request"
+      no_author: "Author not found"
+    show:
+      tags: "Tags"
+      tags_not_found: "Tags not found"
+      author: "Author"
+      game_file: "Game file:"
+      warning: "Attention: we are not responsible for the contents of the archive."
+      rate: "Rate the game:"
+      download: "Download archive (.zip, .rar, .7z)"
+      edit: "Edit game"
+      delete: "Delete game"
+      rating: "Average game rating:"
+      jam_rating: "Average game rating in this jam:"
+      rate_p: "Be the first to rate the game!"
+      delete_btn: "Delete review"
+      reviews: "Reviews:"
+      no_game: "The game file was not attached"
+      comment_placeholder: "Enter comment..."
+      save: "Save"
+      no_author: "Author not found"
+    form:
+      name: "Name"
+      desc: "Description"
+      image: "Image"
+      file: "Game file (.zip, .rar, .7z). Max 100MB"
+      tags: "Tags"
+      btn: "Create game"
+      hint1: "Drag file or press to choose file"
+      hint2: "(.zip, .rar, .7z, max size 100 MB)"
+      recommend: "(recommend 1920х1080px)"
+    edit:
+      current_file: "Current file: "
+      download: "Download archive"
+  friendships:
+    update:
+      notice: "Friend request accepted."
+      alert: "Failed to accept friend request."
+    cancel:
+      notice: "Friend request cancelled."
+    destroy:
+      notice: "Friendship is cancelled."
+    index:
+      title: "Friends"
+      empty: "No friends yet"
+      btn: "Remove friend"
+    requests:
+      sent: "Sent applications"
+      income: "Incoming applications"
+      sent_empt: "No outgoing requests yet"
+      inc_empt: "No incoming requests yet"
+      accept: "Accept"
+      cancel: "Cancel"
+  jams:
+    create:
+      failure: "Jam with that name already exists."
+      success: "Jam has been created successfully!"
+    destroy:
+      success: "Jam has been deleted successfully."
+      failure: "Something went wrong!"
+    showcase:
+      title: "Jams catalogue"
+      btn: "Create jam"
+      empty: "There are not jams yet"
+      search: "Search jams via name or description"
+      search_btn: "Search"
+      checkbox: "Search with at least one of chosen tags"
+      reset_options: "Reset filters"
+      no_result: "Nothing was found"
+    show:
+      description: "Description"
+      author: "Author"
+      edit: "Edit jam"
+      delete: "Delete jam"
+      edit_game: "Edit game"
+      add_game: "Add game"
+      delete_game: "Delete game"
+      participants: "Participants"
+      projects: "Projects"
+      participate: "Participate"
+      change_game: "Change game"
+      no_tags: "Tags not found"
+    form:
+      name: "Jam name"
+      desc: "Description"
+      start_date: "Start date"
+      deadline: "Deadline for submission"
+      end_date: "End date"
+      image: "Image"
+      logo: "Logo"
+      tags: "Tags"
+      btn: "Create jam"
+      hint1: "Drag 
+      image or press to choose file"
+      hint2: "(recommend 1920x1080px)"
+    edit:
+      name: "Jam name"
+      desc: "Description"
+      start_date: "Start date"
+      deadline: "Deadline for submission"
+      end_date: "End date"
+      image: "Image"
+      logo: "Logo"
+      tags: "Tags"
+      btn: "Save changes"
+    show_participants:
+      title: "All participants"
+      no_participants: "There are no participants yet"
+    show_projects:
+      title: "Projects"
+      no_projects: "No games have been downloaded yet"
+      not_found: "Nothing was found"
+      no_author: "Author not found"
+    modal_content:
+      title: "Choose"
+      your_games: "Your games"
+      your_games_hint: "Choose one of your games:"
+      add_new: "Add new game"
+      add_existing: "Add existing game"
+  users:
+    destroy:
+      success: "The account has been successfully deleted."
+      error: "Invalid password"
+    update_user:
+      failure1: "Entered password is incorrect."
+      failure2: "All fields must be filled in"
+      failure3: "New password is too short (minimum is 5 characters)."
+      failure4: "New passwords do not match."
+      failure5: "New password must be different from the old one."
+      failure6: "Something went wrong!"
+      success: "Successfully saved!"
+    index:
+      title: "All users"
+    profile:
+      full_name: "Full name"
+      email: "Email"
+      birthday: "Birthday"
+      location: "Location"
+      phone: "Phone number"
+      games: "Games"
+      adm_jams: "Administating jams"
+      no_info: "None"
+      edit: "Edit profile"
+      offline: "Offline"
+      part_jams: "Participating jams"
+      info_tab: "Information"
+      friends_tab: "Friends"
+      subscribers: "Subscribers"
+      remove: "Remove friend"
+      accept: "Accept invitation"
+      decline: "Decline invitation"
+      no_subscribers: "No subscribers yet"
+      no_friends: "No friends yet"
+    new:
+      title: "Sign up your account"
+      email: "Email address"
+      nickname: "Username"
+      password: "Password"
+      confirm: "Confirm your password"
+      btn: "Sign up"
+      alternative: "Or continue with"
+      hint: "Have a member?"
+      sign_in: "Sign in"
+  settings:
+    index:
+      options:
+        visibility_all: "All"
+        visibility_none: "None"
+        visibility_friends: "Friends"
+      header:
+        account: "Account"
+        security: "Security and privacy"
+        billing: "Billing"
+        teams: "Teams"
+        integrations: "Integrations"
+      account:
+        title: "Personal information"
+        image:
+          background_image: "Background image"
+          or: "or"
+          drag: "Drag an image here or click to select a file"
+          recommendation: "Recommended size: 1920x1080 pixels"
+        nickname: "Nickname"
+        real_name: "Full name"
+        email:
+          title: "Email"
+          hint: "To change your email, you will need to confirm it by receiving a letter with a code"
+        link: "Personal link"
+        time: "Time zone"
+        status: "Bio"
+        birthdate: "Date of birth"
+        location: "Location"
+        phone: "Phone number"
+      security:
+        online_visibility:
+          title: "Set online visibility"
+          label: "Who can see my online?"
+          hint: "Select who can see your online status."
+        jams_visibility:
+          title: "Set Jams Visibility"
+          label1: "Who can see jams I administrate?"
+          label2: "Who can see jams I participate?"
+          hint: "Select who can see jams you are administrating and participating."
+        password:
+          title: "Change password"
+          hint: "Update your password associated with your account."
+          current: "Current password"
+          new: "New password"
+          confirm: "Confirm password"
+        log_out_sessions:
+          title: "Log out other sessions"
+          pswd: "Your password"
+          hint1: "Please enter your password to confirm you would like to log out of your other sessions across all of your devices."
+          attention: "Attention!"
+          hint2: "After logging out of other sessions, your account will be forgotten on our platform, i.e. the \"Remember me\" button will be reset if you pressed it during authorization"
+        active_sessions:
+          title: "Active Sessions"
+          hint: "Here are your current active sessions:"
+          id: "Session ID: "
+          ip: "IP Address: "
+          browser: "Browser: "
+          created: "Created at: "
+        delete:
+          title: "Delete account"
+          hint: "No longer want to use our service? You can delete your account here. This action is not reversible. All information related to this account will be deleted permanently."
+          btn: "Delete account"
+          popup_title: "Enter your password to delete account:"
+          pswd: "Password"
+          cancel: "Cancel"
+  sessions:
+    create:
+      failure: "Invalid email or password"
+    logout_other_sessions:
+      success: "Successfully logged out of other sessions"
+      failure: "Invalid password"
+    new:
+      title: "Sign in to your account"
+      email: "Email address"
+      password: "Password"
+      remember: "Remember me"
+      recover: "Forgot password?"
+      btn: "Sign in"
+      alternative: "Or continue with"
+      hint: "Not a member?"
+      sign_up: "Sign up"
+  helpers:
+    no_notif: "No notifications to display."
+    show_all: "Show all"
+    sent: "want to be your friend"
+    accept: "accept your request"
+  notifications:
+    index:
+      title: "Notifications"
+      accept: "accepted your friend request"
+      sent: "sent a friend request"
+  email_confirms:
+    edit:
+      title: "Email confirmation"
+      code: "Code"
+      confirm: "Confirm"
+      back: "Back to"
+      login: "login page"

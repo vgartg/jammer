@@ -21,7 +21,12 @@ class User < ActiveRecord::Base
   validates :password, :password_confirmation, presence: true, on: :create
 
   validates :visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
+<<<<<<< HEAD
   # validates :jams_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
+=======
+  validates :jams_administrating_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
+  validates :jams_participating_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
+>>>>>>> issue_19
   validates :theme, inclusion: { in: [THEME_LIGHT, THEME_DARK] }
 
   validate :password_length, on: :create
@@ -33,7 +38,13 @@ class User < ActiveRecord::Base
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships, dependent: :destroy
 
+<<<<<<< HEAD
   has_many :inverse_friendships, class_name: 'Friendship', foreign_key: 'friend_id', dependent: :destroy
+=======
+  has_many :jam_submissions
+
+  has_many :inverse_friendships, class_name: "Friendship", foreign_key: "friend_id", dependent: :destroy
+>>>>>>> issue_19
   has_many :inverse_friends, through: :inverse_friendships, source: :user, dependent: :destroy
 
   has_many :sessions, dependent: :destroy
@@ -120,8 +131,13 @@ class User < ActiveRecord::Base
     Notification.where(recipient_id: id)
   end
 
+<<<<<<< HEAD
   def can_see_jams?(other_user)
     case jams_visibility
+=======
+  def can_see_administrating_jams?(other_user)
+    case self.jams_administrating_visibility
+>>>>>>> issue_19
     when VISIBILITY_ALL
       true
     when VISIBILITY_FRIENDS
@@ -131,6 +147,23 @@ class User < ActiveRecord::Base
     when VISIBILITY_NONE
       false
     end
+  end
+
+  def can_see_participating_jams?(other_user)
+    case self.jams_participating_visibility
+    when VISIBILITY_ALL
+      return true
+    when VISIBILITY_FRIENDS
+      active_friendships = self.friendships.where(status: 'accepted').pluck(:friend_id) +
+        self.inverse_friendships.where(status: 'accepted').pluck(:user_id)
+      return active_friendships.include?(other_user.id) if other_user
+    when VISIBILITY_NONE
+      return false
+    end
+  end
+
+  def get_all_participating_jams()
+    Jam.joins("JOIN jam_submissions ON (jams.id=jam_submissions.jam_id)").where('jam_submissions.user_id = ?', self.id)
   end
 
   def authenticate_password_reset_token(token)

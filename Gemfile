@@ -48,12 +48,18 @@ gem 'bootsnap', require: false
 gem 'app_version'
 gem 'browser'
 gem 'flatpickr'
+<<<<<<< HEAD
 gem 'image_processing', '~> 1.2'
 gem 'ostruct'
 gem 'rest-client'
 gem 'rexml', '>= 3.3.6'
 gem 'rubocop'
 gem 'useragent'
+=======
+gem 'useragent'
+gem 'rest-client'
+gem 'ostruct'
+>>>>>>> issue_19
 
 gem 'letter_opener', group: :development
 gem 'letter_opener_web', group: :development
@@ -95,4 +101,10 @@ group :production do
   gem 'aws-sdk-s3', '~> 1'
 end
 
+<<<<<<< HEAD
 gem 'thruster', require: false
+=======
+gem "thruster", require: false
+
+gem "rails-i18n"
+>>>>>>> issue_19

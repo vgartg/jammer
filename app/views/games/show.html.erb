@@ -1,10 +1,10 @@
-<div class="bg-white">
+<div id="page" class="bg-white">
   <div class="pb-16 pt-6 sm:pb-24">
     <div class="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-      <div class="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
+      <div class="lg:grid lg:grid-cols-12 lg:gap-x-8">
         <div class="lg:col-span-5 lg:col-start-8">
           <div class="flex justify-between">
-            <h1 class="text-xl font-medium text-gray-900 break-all"><%= @game.name %></h1>
+            <h1 class="text-2xl font-medium text-gray-900 break-all"><%= @game.name %></h1>
           </div>
           <% if @game.status != 1 %>
             <p class="mt-2 text-red-400 sm:text-sm">Данная игра
@@ -13,26 +13,169 @@
           <% end %>
         </div>
 
-        <!-- Image gallery -->
         <div class="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
-          <div class="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
+          <!-- Image gallery -->
+          <div class="flex justify-center mb-7">
             <% if @game && @game.cover.attached? %>
               <%= image_tag url_for(@game.cover), alt: @game.name,
-                            class: "rounded-md bg-gray-200
-                            object-cover object-center group-hover:opacity-75" %>
+                            class: "rounded-md bg-gray-200 object-cover object-center group-hover:opacity-75 lg:h-80 lg:w-130" %>
             <% else %>
-              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200
-                          lg:aspect-none group-hover:opacity-75 lg:h-80">
-                <img src="https://via.placeholder.com/300" alt="<%= @game.name %>"
-                     class="object-cover object-center ">
+              <div class="w-full max-w-lg aspect-w-1 aspect-h-1 overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-80">
+                <img src="https://via.placeholder.com/300" alt="<%= @game.name %>" class="object-cover object-center h-full w-full">
               </div>
             <% end %>
           </div>
+
+          <div class="mt-4 text-center">
+            <h2 class="text-lg font-semibold">
+              <%= @jam_id.present? ? t('.jam_rating') : t('.rating') %>
+            </h2>
+            <p class="text-xl font-bold text-gray-900 inline-flex items-center">
+              <%= @jam_id.present? ? @game.jam_rating(@jam_id) : @game.overall_rating %>
+              <!-- Star icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2"
+                   fill="<%= (@jam_id.present? && @game.jam_rating(@jam_id).to_f != 0.0) || @game.overall_rating.to_f > 0 ? 'yellow' : 'gray' %>"
+                   viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+              </svg>
+
+
+            </p>
+
+
+            <!-- Show message if average rating is 0 -->
+            <% if @game.overall_rating.to_f == 0 && @game.author != current_user %>
+              <p class="text-sm text-black-500 mt-2">
+                <%= t '.rate_p' %>
+              </p>
+            <% end %>
+          </div>
+
+
+          <% unless @game.author == current_user %>
+            <!-- Star Rating -->
+            <div class="mt-4 text-center">
+              <h2 class="text-lg font-semibold">
+                <%= t '.rate' %>
+              </h2>
+            </div>
+
+            <div class="mt-2 flex flex-col items-center" data-controller="star-rating">
+              <!-- Stars -->
+              <div class="flex space-x-2" id="star-rating">
+                <% 5.times do |i| %>
+                  <svg class="w-8 h-8 text-gray-300 cursor-pointer transition-all"
+                       data-rating="<%= i + 1 %>"
+                       data-star-rating-target="star"
+                       data-action="mouseenter->star-rating#hover mouseleave->star-rating#leave click->star-rating#setRating"
+                       xmlns="http://www.w3.org/2000/svg"
+                       viewBox="0 0 24 24"
+                       fill="gray">
+                    <polygon stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                             points="12 17.27 18.18 21 15.64 13.97 21 9.24 13.81 8.64 12 2 10.19 8.64 3 9.24 8.36 13.97 5.82 21 12 17.27"/>
+                  </svg>
+                <% end %>
+
+              </div>
+
+              <!-- Comment field -->
+              <div class="mt-4 w-full max-w-md mx-auto" style="<%= @review.user_mark == 0 ? 'display:none;' : '' %>">
+
+                <label for="comment"></label><textarea id="comment" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
+                                                       placeholder="<%= t '.comment_placeholder' %>" rows="4" data-action="input->star-rating#handleCommentInput"
+                                                       maxlength="1000"
+                                                       data-star-rating-target="commentField">
+        <%= @review.criterion %>
+      </textarea>
+              </div>
+
+              <%= form_with model: @rating || @game.ratings.new, url: game_ratings_path(@game), method: :post, id: "rating-form" do |f| %>
+                <%= f.hidden_field :user_mark, value: @review.present? ? @review.user_mark : 0, id: "user_mark" %>
+                <%= f.hidden_field :game_id, value: @game.id %>
+                <%= f.hidden_field :criterion, id: "rating-comment", value: @review.present? ? @review.criterion : '' %>
+                <%= f.hidden_field :jam_id, value: params[:jam_id] || nil %>
+              <% end %>
+
+
+
+
+              <button type="button" data-action="click->star-rating#submitRating"
+                      data-star-rating-target="submitButton" class="bg-indigo-600 text-white px-4 py-2 rounded-lg mt-4"
+                      style="display:none;">
+                <%= t '.save' %>
+              </button>
+              <% if @review && @review.user == current_user && @review.id.present? %>
+                <%= button_to t('.delete_btn'), game_review_path(@game, @review), method: :delete,
+                              class: 'bg-red-600 text-white px-4 py-2 rounded-lg mt-4' %>
+              <% end %>
+
+
+            </div>
+
+
+          <% end %>
+          <% if @reviews.present? %>
+            <div class="mt-8 text-center">
+              <h2 class="text-lg font-semibold">
+                <%= t '.reviews' %>
+              </h2>
+              <% @reviews.each do |review| %>
+                <div class="mt-4 flex items-start">
+                  <div class="flex flex-col items-start mr-4">
+                    <div class="flex items-center mb-2">
+                      <% if @current_user && @current_user.avatar.attached? %>
+                        <%= image_tag url_for(@current_user.avatar), alt: "Profile Picture",
+                                      class: "h-8 w-8 rounded-full bg-gray-50 mr-2" %>
+                      <% else %>
+                        <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full bg-gray-50 mr-2" %>
+                      <% end %>
+
+
+                      <p class="font-medium text-gray-900 mr-4">
+                        <%= review.user.name %>
+                      </p>
+
+
+                      <div class="flex items-center">
+                        <% (1..5).each do |star| %>
+                          <% if star <= review.user_mark.to_i %>
+                            <svg class="w-4 h-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                            </svg>
+                          <% else %>
+                            <svg class="w-4 h-4 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                            </svg>
+                          <% end %>
+                        <% end %>
+                      </div>
+                    </div>
+
+                    <p class="text-sm text-gray-500 break-all text-left">
+                      <%= review.criterion.presence || 'Комментарий не оставлен' %>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
         </div>
 
+<<<<<<< HEAD
         <div class="mt-8 lg:col-span-5">
           <div class="mt-10">
             <h2 class="text-sm font-medium text-gray-900">Описание:</h2>
+=======
+
+        <div class="mt-4 lg:col-span-5">
+
+          <div class="mt-5">
+            <h2 class="text-lg font-medium text-gray-900">
+              <%= t 'activerecord.attributes.game.description' %>
+            </h2>
+>>>>>>> issue_19
 
             <div class="prose prose-sm mt-4 text-gray-500">
               <p class="break-all">
@@ -42,68 +185,79 @@
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Теги:</h2>
+            <h2 class="text-lg font-medium text-gray-900">
+              <%= t '.tags' %>
+            </h2>
             <div class="mt-4 text-gray-500">
               <% if @game.tags.any? %>
                 <ul class="flex flex-wrap gap-2">
                   <% @game.tags.each do |tag| %>
-                    <li class="bg-gray-200 px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+                    <li class="bg-indigo-200 px-4 py-2 rounded-full text-sm font-medium text-indigo-700">
                       <%= tag.name %>
                     </li>
                   <% end %>
                 </ul>
               <% else %>
-                <p>Теги не найдены</p>
+                <p class="text-gray-500"><%= t '.tags_not_found' %></p>
               <% end %>
             </div>
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Автор:</h2>
-            <div class="prose prose-sm mt-4 text-gray-500">
+            <h2 class="text-lg font-medium text-gray-900">
+              <%= t '.author' %>
+            </h2>
+            <div class="prose prose-sm mt-2 text-gray-500">
               <% if @game.author.present? %>
-                <a class="break-all" href="<%= user_profile_path(@game.author) %>">
+                <a class="text-indigo-600 hover:text-indigo-900" href="<%= user_profile_path(@game.author) %>">
                   <%= @game.author.name %>
                 </a>
               <% else %>
-                <p>Автор не найден</p>
+                <p class="text-gray-500">
+                  <%= t '.no_author' %>
+                </p>
               <% end %>
             </div>
           </div>
 
           <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Файл игры:</h2>
+            <h2 class="text-sm font-medium text-gray-900">
+              <%= t '.game_file' %>
+            </h2>
             <div class="mt-4">
               <% if @game.game_file.attached? %>
-                <p class="text-red-600">Внимание: мы не несем ответственности за содержимое архива.</p>
+                <p class="text-red-600">
+                  <%= t '.warning' %>
+                </p>
                 <a href="<%= url_for(@game.game_file) %>" download class="text-indigo-600 hover:text-indigo-900">
-                  Скачать архив (.zip, .rar, .7z)
+                  <%= t '.download' %>
                 </a>
               <% else %>
-                <p class="text-gray-500">Файл игры не прикреплён.</p>
+                <p class="text-gray-500">
+                  <%= t '.no_game' %>
+                </p>
               <% end %>
             </div>
           </div>
 
-
           <% if @game.author.present? && session[:current_user] == @game.author.id %>
             <div>
-              <%= button_to "Редактировать игру", game_edit_path(@game), method: :get,
+              <%= button_to t('.edit'), game_edit_path(@game), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md border
                               border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
                               shadow-sm hover:bg-indigo-700 focus:outline-none
                                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
-              <%= button_to "Удалить игру", game_destroy_path(@game), method: :delete,
+              <%= button_to t('.delete'), game_destroy_path(@game), method: :delete,
                             class: "mt-4 flex w-50 justify-center rounded-md border
-                              border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                              shadow-sm hover:bg-indigo-700 focus:outline-none
+                              border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white
+                              shadow-sm hover:bg-red-700 focus:outline-none
                                focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
           <% elsif current_user %>
             <div class="mt-4">
               <%= render "helpers/report_form", report_item: @game %>
             </div>
           <% end %>
-            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,48 @@
+<div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+  <% games.each do |game| %>
+    <div>
+      <div class="group relative">
+        <%= link_to game_profile_path(game.id) do %>
+          <% if game && game.cover.attached? %>
+            <%= image_tag url_for(game.cover), alt: game.name,
+                          class: "rounded-md bg-gray-200 w-full h-full lg:h-80 lg:w-full object-cover
+                          object-center group-hover:opacity-75" %>
+          <% else %>
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200
+                        lg:aspect-none group-hover:opacity-75 lg:h-80">
+              <img src="https://via.placeholder.com/300" alt="<%= game.name %>" 4
+                   class="h-full w-full object-cover object-center lg:h-full lg:w-full">
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="mt-4 justify-between line-clamp-2">
+        <div class="flex-1">
+          <h3 class="text-sm text-gray-700 truncate">
+            <%= link_to game_profile_path(game.id) do %>
+              <%= game.name %>
+            <% end %>
+          </h3>
+          <p class="mt-1 text-sm text-gray-500 line-clamp-2">
+            <%= game.description %>
+          </p>
+        </div>
+        <div class="mt-4 text-gray-500 flex flex-wrap gap-2">
+          <% game.tags.each do |tag| %>
+            <span class="bg-gray-200 px-3 py-1 rounded-full text-sm font-medium text-gray-700"><%= tag.name %></span>
+          <% end %>
+        </div>
+        <% if game.author.present? %>
+          <a class="break-all" href="<%= user_profile_path(game.author) %>">
+            <%= game.author.name %>
+          </a>
+        <% else %>
+          <p>
+            <%= t 'games.showcase.no_author' %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

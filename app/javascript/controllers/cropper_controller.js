@@ -51,13 +51,14 @@ export default class extends Controller {
                 dataTransfer.items.add(new File([blob], 'avatar.jpg', { type: 'image/jpeg' }));
                 this.inputTarget.files = dataTransfer.files;
 
-                this.close();
+                this.close(false);
             }, 'image/jpeg');
         }
     }
 
-    close() {
+    close(clearInput = true) {
         this.modalTarget.classList.add('hidden');
+        if (clearInput) this.inputTarget.value = '';
         if (this.cropper) {
             this.cropper.destroy();
             this.cropper = null;

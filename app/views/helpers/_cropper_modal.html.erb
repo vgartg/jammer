@@ -1,10 +1,10 @@
 <div data-controller="cropper">
   <label for="avatar-upload"
          class="rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">
-    Change avatar
+    <%= t("buttons.change_avatar") %>
   </label>
   <input id="avatar-upload" accept=image/jpeg,image/png" data-cropper-target="input" type="file" name="user[avatar]"
-         class="hidden" />
+         class="hidden"/>
 
   <div id="cropperModal" data-cropper-target="modal" class="hidden fixed z-50 inset-0 overflow-y-auto">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">

@@ -3,7 +3,9 @@ class EmailConfirmsController < ApplicationController
   before_action :set_user_by_email, only: [:edit]
   before_action :set_user, only: [:update]
 
-  def edit; end
+  def edit
+
+  end
 
   def update
     if @user.update(email_confirmed: true)

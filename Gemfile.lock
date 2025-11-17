@@ -74,22 +74,36 @@ GEM
       uri (>= 0.13.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+<<<<<<< HEAD
     app_version (0.2.8)
       rails (>= 5.2.4.5)
     ast (2.4.2)
     aws-eventstream (1.3.2)
     aws-partitions (1.1063.0)
     aws-sdk-core (3.220.1)
+=======
+    aws-eventstream (1.3.0)
+    aws-partitions (1.1026.0)
+    aws-sdk-core (3.214.0)
+>>>>>>> issue_19
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
       base64
       jmespath (~> 1, >= 1.6.1)
+<<<<<<< HEAD
     aws-sdk-kms (1.99.0)
       aws-sdk-core (~> 3, >= 3.216.0)
       aws-sigv4 (~> 1.5)
     aws-sdk-s3 (1.182.0)
       aws-sdk-core (~> 3, >= 3.216.0)
+=======
+    aws-sdk-kms (1.96.0)
+      aws-sdk-core (~> 3, >= 3.210.0)
+      aws-sigv4 (~> 1.5)
+    aws-sdk-s3 (1.176.1)
+      aws-sdk-core (~> 3, >= 3.210.0)
+>>>>>>> issue_19
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.11.0)
@@ -97,7 +111,11 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.20)
     benchmark (0.4.0)
+<<<<<<< HEAD
     bigdecimal (3.1.9)
+=======
+    bigdecimal (3.1.8)
+>>>>>>> issue_19
     bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
@@ -136,6 +154,7 @@ GEM
       railties (>= 6.1)
     drb (2.2.1)
     erubi (1.13.1)
+<<<<<<< HEAD
     ffi (1.17.1-aarch64-linux-gnu)
     ffi (1.17.1-aarch64-linux-musl)
     ffi (1.17.1-arm-linux-gnu)
@@ -144,6 +163,9 @@ GEM
     ffi (1.17.1-x86_64-darwin)
     ffi (1.17.1-x86_64-linux-gnu)
     ffi (1.17.1-x86_64-linux-musl)
+=======
+    ffi (1.17.0-x86_64-linux-gnu)
+>>>>>>> issue_19
     flatpickr (4.6.13.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -156,8 +178,12 @@ GEM
       mini_magick (>= 4.9.5, < 6)
       ruby-vips (>= 2.0.17, < 3)
     io-console (0.8.0)
+<<<<<<< HEAD
     irb (1.15.1)
       pp (>= 0.6.0)
+=======
+    irb (1.14.3)
+>>>>>>> issue_19
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jbuilder (2.13.0)
@@ -179,9 +205,14 @@ GEM
       letter_opener (~> 1.9)
       railties (>= 6.1)
       rexml
+<<<<<<< HEAD
     lint_roller (1.1.0)
     logger (1.6.6)
     loofah (2.24.0)
+=======
+    logger (1.6.4)
+    loofah (2.23.1)
+>>>>>>> issue_19
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.8.1)
@@ -194,6 +225,7 @@ GEM
     mime-types (3.6.0)
       logger
       mime-types-data (~> 3.2015)
+<<<<<<< HEAD
     mime-types-data (3.2025.0304)
     mini_magick (5.2.0)
       benchmark
@@ -202,6 +234,14 @@ GEM
     minitest (5.25.4)
     msgpack (1.8.0)
     net-imap (0.5.6)
+=======
+    mime-types-data (3.2024.1203)
+    mini_magick (4.13.2)
+    mini_mime (1.1.5)
+    minitest (5.25.4)
+    msgpack (1.7.5)
+    net-imap (0.5.2)
+>>>>>>> issue_19
       date
       net-protocol
     net-pop (0.1.2)
@@ -212,6 +252,7 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.4)
+<<<<<<< HEAD
     nokogiri (1.18.3-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.3-aarch64-linux-musl)
@@ -248,6 +289,21 @@ GEM
     rack (3.1.11)
     rack-session (2.1.0)
       base64 (>= 0.1.0)
+=======
+    nokogiri (1.16.8-x86_64-linux)
+      racc (~> 1.4)
+    ostruct (0.6.1)
+    pg (1.5.9)
+    psych (5.2.2)
+      date
+      stringio
+    public_suffix (6.0.1)
+    puma (6.5.0)
+      nio4r (~> 2.0)
+    racc (1.8.1)
+    rack (3.1.8)
+    rack-session (2.0.0)
+>>>>>>> issue_19
       rack (>= 3.0.0)
     rack-test (2.2.0)
       rack (>= 1.3)
@@ -274,6 +330,12 @@ GEM
     rails-html-sanitizer (1.6.2)
       loofah (~> 2.21)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
+<<<<<<< HEAD
+=======
+    rails-i18n (8.0.1)
+      i18n (>= 0.7, < 2)
+      railties (>= 8.0.0, < 9)
+>>>>>>> issue_19
     railties (8.0.1)
       actionpack (= 8.0.1)
       activesupport (= 8.0.1)
@@ -284,11 +346,17 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.2.1)
+<<<<<<< HEAD
     rdoc (6.12.0)
       psych (>= 4.0.0)
     redis-client (0.24.0)
       connection_pool
     regexp_parser (2.10.0)
+=======
+    rdoc (6.10.0)
+      psych (>= 4.0.0)
+    regexp_parser (2.9.3)
+>>>>>>> issue_19
     reline (0.6.0)
       io-console (~> 0.5)
     rest-client (2.1.0)
@@ -296,6 +364,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+<<<<<<< HEAD
     rexml (3.4.1)
     rubocop (1.73.2)
       json (~> 2.3)
@@ -317,17 +386,29 @@ GEM
     rubyzip (2.4.1)
     securerandom (0.4.1)
     selenium-webdriver (4.29.1)
+=======
+    rexml (3.4.0)
+    ruby-vips (2.2.2)
+      ffi (~> 1.12)
+      logger
+    rubyzip (2.3.2)
+    securerandom (0.4.1)
+    selenium-webdriver (4.27.0)
+>>>>>>> issue_19
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+<<<<<<< HEAD
     sidekiq (8.0.1)
       connection_pool (>= 2.5.0)
       json (>= 2.9.0)
       logger (>= 1.6.2)
       rack (>= 3.1.0)
       redis-client (>= 0.23.2)
+=======
+>>>>>>> issue_19
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -337,6 +418,7 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
+<<<<<<< HEAD
     stringio (3.1.5)
     thor (1.3.2)
     thruster (0.1.11)
@@ -354,6 +436,18 @@ GEM
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
     uri (1.0.3)
+=======
+    stringio (3.1.2)
+    thor (1.3.2)
+    thruster (0.1.9-x86_64-linux)
+    timeout (0.4.3)
+    turbo-rails (2.0.11)
+      actionpack (>= 6.0.0)
+      railties (>= 6.0.0)
+    tzinfo (2.0.6)
+      concurrent-ruby (~> 1.0)
+    uri (1.0.2)
+>>>>>>> issue_19
     useragent (0.16.11)
     web-console (4.2.1)
       actionview (>= 6.0.0)
@@ -373,6 +467,7 @@ GEM
     zeitwerk (2.7.2)
 
 PLATFORMS
+<<<<<<< HEAD
   aarch64-linux
   aarch64-linux-gnu
   aarch64-linux-musl
@@ -382,6 +477,9 @@ PLATFORMS
   x86_64-darwin
   x86_64-linux-gnu
   x86_64-linux-musl
+=======
+  x86_64-linux
+>>>>>>> issue_19
 
 DEPENDENCIES
   app_version
@@ -402,17 +500,26 @@ DEPENDENCIES
   letter_opener
   letter_opener_web
   mail
+<<<<<<< HEAD
   nokogiri (>= 1.18.3)
   ostruct
   pagy
+=======
+  nokogiri (~> 1.16.7)
+  ostruct
+>>>>>>> issue_19
   pg (~> 1.1)
   puma (>= 6.4.3)
   rails (~> 8.0.0.beta1)
+  rails-i18n
   rest-client
   rexml (>= 3.3.6)
   rubocop
   selenium-webdriver
+<<<<<<< HEAD
   sidekiq
+=======
+>>>>>>> issue_19
   sprockets-rails
   stimulus-rails
   thruster

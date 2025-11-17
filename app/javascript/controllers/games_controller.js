@@ -1,8 +1,15 @@
 import {Controller} from "@hotwired/stimulus"
 
 export default class extends Controller {
+<<<<<<< HEAD
     static targets = ["input", "tagCheckbox", "tagMode", "toggleTagMode", "allGames", "myGames", "showAll",
         "showMine", "searchForm"]
+=======
+    static targets = ["input", "tagCheckbox", "tagMode", "toggleTagMode", "resetButton",
+        "coverInput", "coverPreviewImg", "coverText",
+        "fileInput", "fileNameDisplay", "fileText",
+        "checkbox", "label"]
+>>>>>>> issue_19
 
 
     connect() {
@@ -16,6 +23,7 @@ export default class extends Controller {
         this.timeout = setTimeout(() => {
             this.performSearch()
         }, 200)
+        this.updateResetButtonVisibility();
     }
 
     performSearch() {
@@ -25,10 +33,19 @@ export default class extends Controller {
         url.searchParams.delete('tag_ids[]')
 
         this.tagCheckboxTargets.forEach(checkbox => {
-            if (checkbox.checked) {
-                url.searchParams.append('tag_ids[]', checkbox.value)
+            const label = checkbox.closest("[data-games-target='label']");
+            const isChecked = checkbox.checked;
+
+            if (isChecked) {
+                url.searchParams.append('tag_ids[]', checkbox.value);
+
+                label.classList.add("bg-indigo-500", "border-indigo-500", "text-white");
+                label.classList.remove("bg-white", "border-gray-300", "text-gray-700");
+            } else {
+                label.classList.remove("bg-indigo-500", "border-indigo-500", "text-white");
+                label.classList.add("border-gray-300", "text-gray-700");
             }
-        })
+        });
 
         url.searchParams.set('tag_mode', this.tagModeTarget.value)
 
@@ -55,6 +72,7 @@ export default class extends Controller {
         this.search()
     }
 
+<<<<<<< HEAD
     displayAllGames() {
         this.allGamesTarget.classList.remove("hidden");
         this.searchFormTarget.classList.remove("hidden");
@@ -80,4 +98,64 @@ export default class extends Controller {
             this.displayMyGames();
         }
     }
+=======
+    resetTags() {
+        this.tagCheckboxTargets.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        this.toggleTagModeTarget.checked = false;
+        this.tagModeTarget.value = 'all';
+        this.search();
+    }
+
+    updateResetButtonVisibility() {
+        const anyTagSelected = this.tagCheckboxTargets.some(checkbox => checkbox.checked);
+        const isTagModeEnabled = this.toggleTagModeTarget.checked;
+
+        if (anyTagSelected || isTagModeEnabled) {
+            this.resetButtonTarget.classList.remove("hidden");
+        } else {
+            this.resetButtonTarget.classList.add("hidden");
+        }
+    }
+
+    updateCoverPreview(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.coverPreviewImgTarget.src = e.target.result;
+                this.coverPreviewImgTarget.classList.remove('hidden');
+                this.coverTextTarget.classList.remove('mt-0');
+                this.coverTextTarget.classList.add('mt-4');
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    updateFileName(event) {
+        const file = event.target.files[0];
+        if (file) {
+            this.fileNameDisplayTarget.textContent = file.name;
+            this.fileNameDisplayTarget.classList.remove('hidden');
+            this.fileTextTarget.classList.remove('mt-0');
+            this.fileTextTarget.classList.add('mt-4');
+        }
+    }
+
+    toggleSelection(event) {
+        const label = event.currentTarget;
+        const checkbox = label.querySelector("[data-games-target='checkbox']");
+        const isChecked = checkbox.checked;
+
+        if (isChecked) {
+            label.classList.remove("bg-indigo-500", "border-indigo-500", "text-white");
+            label.classList.add("border-gray-300", "text-gray-700");
+        } else {
+            label.classList.add("bg-indigo-500", "border-indigo-500", "text-white");
+            label.classList.remove("bg-white", "border-gray-300", "text-gray-700");
+        }
+
+        checkbox.checked = !isChecked;
+    }
+>>>>>>> issue_19
 }

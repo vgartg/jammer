@@ -1,8 +1,9 @@
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+<div class="flex bg-gray-900 min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="mt-10 mx-auto w-full max-w-sm lg:w-[60%] lg:max-w-none">
 
     <%= render partial: 'helpers/errors' %>
 
+<<<<<<< HEAD
     <%= form_for :game, url: games_url do |f| %>
       <div class="mt-4">
         <%= f.label :name, "Название игры", class: "block text-sm font-medium text-gray-700" %>
@@ -59,5 +60,8 @@
       <p class="mt-2 text-red-400 sm:text-sm">После создания данной игры она появится
         в общем доступе сразу после модерации<br/>Обычно это занимает менее суток</p>
     <% end %>
+=======
+    <%= render partial: 'games/form', locals: {path: games_url(@game)} %>
+>>>>>>> issue_19
   </div>
 </div>
