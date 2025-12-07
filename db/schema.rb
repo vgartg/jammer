@@ -14,6 +14,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -82,6 +92,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
     t.index ["tag_id"], name: "index_games_tags_on_tag_id"
   end
 
+  create_table "jam_submissions", force: :cascade do |t|
+    t.integer "jam_id"
+    t.integer "game_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+  end
+
   create_table "jams", force: :cascade do |t|
     t.string "name"
     t.integer "author_id"
@@ -93,8 +111,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
-    t.integer "status", default: 0
     t.string "reason"
+    t.integer "status", default: 0
+    t.integer "games", default: [], array: true
+    t.integer "participants", default: [], array: true
+    t.boolean "users_can_votes", default: false
     t.index ["author_id"], name: "index_jams_on_author_id"
     t.index ["name"], name: "index_jams_on_name"
   end
@@ -129,6 +150,27 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["reporter_id"], name: "index_reports_on_reporter_id"
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.integer "game_id", null: false
+    t.integer "jam_id"
+    t.float "average_rating", default: 0.0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_ratings_on_game_id"
+    t.index ["jam_id"], name: "index_ratings_on_jam_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.float "user_mark", null: false
+    t.string "criterion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "game_id"
+    t.integer "jam_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -172,6 +214,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
     t.string "background_image"
     t.string "theme", default: "Light"
     t.string "jams_visibility", default: "All"
+    t.string "auth_via"
+    t.string "social_id"
     t.string "password_reset_token"
     t.datetime "password_reset_token_sent_at"
     t.string "email_confirm_token"
@@ -185,6 +229,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
     t.datetime "unfreeze_at"
     t.string "frozen_reason"
     t.boolean "is_online_today", default: false
+    t.string "jams_participating_visibility", default: "All"
+    t.string "jams_administrating_visibility", default: "All"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["role"], name: "index_users_on_role"

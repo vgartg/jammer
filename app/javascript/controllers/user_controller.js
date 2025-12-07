@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
     static targets = ["avatarInput", "avatarImage", "editField", "displayInfo", "newValue", "oldValue", "avatarLabel"];
+    // , "gameItem", "toggleButton"
 
     connect() {
         this.avatarLabelTarget.addEventListener('click', (event) => {
@@ -19,6 +20,8 @@ export default class extends Controller {
                 reader.readAsDataURL(file);
             }
         });
+
+        this.updateButtonText();
     }
 
     toggleEditField(event) {
@@ -42,7 +45,6 @@ export default class extends Controller {
         if (event.target.dataset.action === "save") {
             newValue.classList.remove('hidden');
             oldValue.classList.add('hidden');
-            // Optionally you can also update the server here if needed
         }
     }
 
@@ -62,4 +64,30 @@ export default class extends Controller {
         }
         hiddenInput.value = value;
     }
+
+    // На будущее (смена <script> под stimulus из _profile.html.erb)
+
+    // toggleGames() {
+    //     const hiddenGames = this.gameItemTargets.filter(item => item.classList.contains('hidden'));
+    //     const isHidden = hiddenGames.length > 0;
+    //
+    //     if (isHidden) {
+    //         hiddenGames.forEach(game => {
+    //             game.classList.remove('hidden');
+    //         });
+    //         this.toggleButtonTarget.innerText = 'Скрыть игры';
+    //     } else {
+    //         this.gameItemTargets.forEach((game, index) => {
+    //             if (index >= 8) {
+    //                 game.classList.add('hidden');
+    //             }
+    //         });
+    //         this.toggleButtonTarget.innerText = 'Показать все игры';
+    //     }
+    // }
+    //
+    // updateButtonText() {
+    //     const hiddenGames = this.gameItemTargets.filter(item => item.classList.contains('hidden'));
+    //     this.toggleButtonTarget.innerText = hiddenGames.length > 0 ? 'Показать все игры' : 'Скрыть игры';
+    // }
 }

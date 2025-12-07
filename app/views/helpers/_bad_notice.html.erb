@@ -1,7 +1,9 @@
-<div aria-live="assertive" class="z-50 pointer-events-none fixed inset-0 flex px-4 py-6 sm:items-start sm:p-6"
+<div aria-live="assertive" class="flex flex-col gap-4 z-50 pointer-events-none fixed inset-0 px-4 py-6
+ sm:items-start sm:p-6"
      id="notification-area" data-controller="settings">
   <% if flash[:failure] %>
-    <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
+    <% flash[:failure].each do |problem| %>
+      <div class="problem-block flex w-full flex-col items-center space-y-4 sm:items-end">
       <div class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg
       ring-1 ring-black ring-opacity-5">
         <div class="p-4">
@@ -14,10 +16,10 @@
               </svg>
             </div>
             <div class="ml-3 w-0 flex-1 pt-0.5">
-              <p class="text-sm font-medium text-gray-900"><%= flash[:failure] %></p>
+              <p class="text-sm font-medium text-gray-900"><%= problem %></p>
             </div>
             <div class="ml-4 flex flex-shrink-0">
-              <button type="button" data-action="click->settings#close_notice"
+              <button type="button" data-action="click->settings#close_notice" data-settings-target="notice"
                       class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500
                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                 <span class="sr-only">Close</span>
@@ -32,5 +34,6 @@
         </div>
       </div>
     </div>
+    <% end %>
   <% end %>
 </div>

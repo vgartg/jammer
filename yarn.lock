@@ -230,9 +230,23 @@
   resolved "https://registry.npmjs.org/@rails/actioncable/-/actioncable-7.1.3.tgz"
   integrity sha512-ojNvnoZtPN0pYvVFtlO7dyEN9Oml1B6IDM+whGKVak69MMYW99lC2NOWXWeE3bmwEydbP/nn6ERcpfjHVjYQjA==
 
+"@rails/actiontext@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@rails/actiontext/-/actiontext-8.0.0.tgz#01133b7bbb2eb541890bf3a8bdc761fc27f9a649"
+  integrity sha512-8pvXDEHqlVHptzfYDUXmBpstHsfHAVacYxO47cWDRjRmp1zdVXusLcom8UvqkRdTcAPXpte+LkjcfpD9S4DSSQ==
+  dependencies:
+    "@rails/activestorage" ">= 8.0.0-alpha"
+
+"@rails/activestorage@>= 8.0.0-alpha":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-8.0.0.tgz#be5dd10acc141b95ffa2b3026e61790c36f1679c"
+  integrity sha512-qoA7U1gMcWXhDnImwDIyRQDXkQKzThT2lu2Xpim8CnTOCEeAgkQ5Co2kzodpAI2grF1JSDvwXSPYNWwVAswndA==
+  dependencies:
+    spark-md5 "^3.0.1"
+
 "@rails/ujs@^7.1.3-4":
   version "7.1.3-4"
-  resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-7.1.3-4.tgz#1dddea99d5c042e8513973ea709b2cb7e840dc2d"
+  resolved "https://registry.npmjs.org/@rails/ujs/-/ujs-7.1.3-4.tgz"
   integrity sha512-z0ckI5jrAJfImcObjMT1RBz2IxH6I5q6ZTMFex6AfxSQKZuuL8JxAXvg2CvBuodGCxKvybFVolDyMHXlBLeYAA==
 
 "@tailwindcss/aspect-ratio@^0.4.2":
@@ -246,6 +260,11 @@
   integrity sha512-QE7X69iQI+ZXwldE+rzasvbJiyV/ju1FGHH0Qn2W3FKbuYtqp8LKcy6iSw79fVUT5/Vvf+0XgLCeYVG+UV6hOw==
   dependencies:
     mini-svg-data-uri "^1.2.3"
+
+"@tailwindcss/line-clamp@^0.4.4":
+  version "0.4.4"
+  resolved "https://registry.npmjs.org/@tailwindcss/line-clamp/-/line-clamp-0.4.4.tgz"
+  integrity sha512-5U6SY5z8N42VtrCrKlsTAA35gy2VSyYtHWCsg1H87NU1SXnEfekTVlrga9fzUDrrHcGi2Lb5KenUWb4lRQT5/g==
 
 "@tailwindcss/typography@^0.5.13":
   version "0.5.13"
@@ -503,7 +522,7 @@ fill-range@^7.1.1:
 
 flatpickr@^4.6.13:
   version "4.6.13"
-  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.6.13.tgz#8a029548187fd6e0d670908471e43abe9ad18d94"
+  resolved "https://registry.npmjs.org/flatpickr/-/flatpickr-4.6.13.tgz"
   integrity sha512-97PMG/aywoYpB4IvbvUJi0RQi8vearvU0oov1WW3k0WZPBMrTQVqekSX5CjSG/M4Q3i6A/0FKXC7RyAoAUUSPw==
 
 foreground-child@^3.1.0:
@@ -887,6 +906,11 @@ source-map-js@^1.2.0:
   resolved "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.0.tgz"
   integrity sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==
 
+spark-md5@^3.0.1:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/spark-md5/-/spark-md5-3.0.2.tgz#7952c4a30784347abcee73268e473b9c0167e3fc"
+  integrity sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw==
+
 stimulus@^3.2.2:
   version "3.2.2"
   resolved "https://registry.npmjs.org/stimulus/-/stimulus-3.2.2.tgz"
@@ -1010,6 +1034,11 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
+trix@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/trix/-/trix-2.1.8.tgz#b9383af8cd9c1a0a0818d6b4e0c9e771bf7fd564"
+  integrity sha512-y1h5mKQcjMsZDsUOqOgyIUfw+Z31u4Fe9JqXtKGUzIC7FM9cTpxZFFWxQggwXBo18ccIKYx1Fn9toVO5mCpn9g==
+
 ts-interface-checker@^0.1.9:
   version "0.1.13"
   resolved "https://registry.npmjs.org/ts-interface-checker/-/ts-interface-checker-0.1.13.tgz"
@@ -1057,3 +1086,8 @@ yaml@^2.3.4:
   version "2.4.5"
   resolved "https://registry.npmjs.org/yaml/-/yaml-2.4.5.tgz"
   integrity sha512-aBx2bnqDzVOyNKfsysjA2ms5ZlnjSAW2eG3/L5G/CSujfjLJTJsEw1bGw8kCf04KodQWk1pxlGnZ56CRxiawmg==
+
+yarn@^1.22.22:
+  version "1.22.22"
+  resolved "https://registry.npmjs.org/yarn/-/yarn-1.22.22.tgz"
+  integrity sha512-prL3kGtyG7o9Z9Sv8IPfBNrWTDmXB4Qbes8A9rEzt6wkJV8mUvoirjU0Mp3GGAU06Y0XQyA3/2/RQFVuK7MTfg==

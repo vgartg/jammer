@@ -2,11 +2,15 @@ import { Controller } from "stimulus";
 import flatpickr from 'flatpickr';
 
 export default class extends Controller {
-    static targets = ["username", "fullLink", "section", "button"];
+    static targets = ["username", "fullLink", "section", "notice", "button"];
 
     connect() {
-        this.updateLink();
-        this.usernameTarget.addEventListener('input', () => this.updateLink());
+        if (this.hasUsernameTarget) {
+            this.updateLink();
+            this.usernameTarget.addEventListener('input', () => this.updateLink());
+        }
+        // this.updateLink();
+        // this.usernameTarget.addEventListener('input', () => this.updateLink());
         this.initFlatpickr();
 
         this.sectionTargets.forEach((section, index) => {
@@ -37,7 +41,14 @@ export default class extends Controller {
     }
 
     close_notice() {
-        this.element.remove();
+        const bad_notice = event.currentTarget.closest('.problem-block');
+        const good_notice = event.currentTarget.closest('.success-block');
+        if (bad_notice) {
+            bad_notice.remove();
+        }
+        else if (good_notice) {
+            good_notice.remove();
+        }
     }
 
     formatPhoneNumber() {
@@ -103,7 +114,7 @@ export default class extends Controller {
 
     initFlatpickr() {
         flatpickr('.flatpickr', {
-            dateFormat: 'Y-m-d',
+            dateFormat: 'd.m.Y',
             theme: 'dark',
         });
     }

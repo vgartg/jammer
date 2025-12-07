@@ -50,7 +50,9 @@ gem 'browser'
 gem 'flatpickr'
 gem 'image_processing', '~> 1.2'
 gem 'ostruct'
+gem 'useragent'
 gem 'rest-client'
+gem 'ostruct'
 gem 'rexml', '>= 3.3.6'
 gem 'rubocop'
 gem 'useragent'
@@ -70,6 +72,7 @@ group :development, :test do
   gem 'debug', platforms: %i[mri windows]
   gem 'dotenv-rails'
 
+  gem "bundler-audit", "~> 0.9.1", require: false
   gem 'brakeman', require: false
   gem 'bundler-audit', '~> 0.9.1', require: false
 end
@@ -95,4 +98,6 @@ group :production do
   gem 'aws-sdk-s3', '~> 1'
 end
 
-gem 'thruster', require: false
+gem "thruster", require: false
+
+gem "rails-i18n"

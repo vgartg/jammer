@@ -1,25 +1,199 @@
 <div class="bg-white">
   <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
     <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-bold tracking-tight text-gray-900">Active Sessions</h2>
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900">
+        <%= t 'layouts.header.dashboard' %>
+      </h2>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
-      <% if @sessions.any? %>
-        <ul class="divide-y divide-gray-200">
-          <% @sessions.each do |session| %>
-            <li class="py-4 flex">
-              <div>
-                <p class="text-sm font-medium text-gray-900">Session ID: <%= session.session_id %></p>
-                <p class="text-sm text-gray-500">IP Address: <%= session.ip_address %></p>
-                <p class="text-sm text-gray-500">Browser: <%= session.browser ? session.browser : 'Browser: Unknown'%></p>
-                <p class="text-sm text-gray-500">Created At: <%= session.created_at %></p>
-              </div>
-            </li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p class="text-sm text-gray-500">No active sessions found.</p>
+
+    <div class="grid grid-cols-1 gap-6 pt-4">
+
+      <% if @average_rating_no_jam.present? && @user.games.count > 0 %>
+        <div>
+          <p class="text-xl font-semibold">
+            <%= t '.games_rating' %>
+          </p>
+          <div class="flex items-center">
+            <span class="text-xl font-bold"><%= @average_rating_no_jam.round(1) %></span>
+            <% (1..5).each do |star| %>
+              <% full_star = star <= @average_rating_no_jam.floor %>
+              <% partial_star = star == (@average_rating_no_jam.floor + 1) && @average_rating_no_jam - @average_rating_no_jam.floor > 0 %>
+              <% empty_star = star > @average_rating_no_jam %>
+              <% if full_star %>
+                <!-- Полностью закрашенная звезда -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="yellow" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                </svg>
+              <% elsif partial_star %>
+                <!-- Частично закрашенная звезда -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" viewBox="0 0 24 24" stroke="currentColor">
+                  <defs>
+                    <clipPath id="partialStarClip<%= star %>">
+                      <rect x="0" y="0" width="<%= (@average_rating_no_jam - @average_rating_no_jam.floor) * 24 %>" height="24"/>
+                    </clipPath>
+                  </defs>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" fill="gray"
+                        d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" fill="yellow"
+                        d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"
+                        clip-path="url(#partialStarClip<%= star %>)"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="gray" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                </svg>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
       <% end %>
+
+      <% if @average_rating_in_jams.present? && @user.games.count > 0 %>
+        <div>
+          <p class="text-xl font-semibold">
+            <%= t '.jams_games_rating' %>
+          </p>
+          <div class="flex items-center">
+            <span class="text-xl font-bold"><%= @average_rating_in_jams.round(1) %></span>
+            <% (1..5).each do |star| %>
+              <% full_star = star <= @average_rating_in_jams.floor %>
+              <% partial_star = star == (@average_rating_in_jams.floor + 1) && @average_rating_in_jams - @average_rating_in_jams.floor > 0 %>
+              <% empty_star = star > @average_rating_in_jams %>
+              <% if full_star %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="yellow" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                </svg>
+              <% elsif partial_star %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" viewBox="0 0 24 24" stroke="currentColor">
+                  <defs>
+                    <clipPath id="partialStarClip<%= star %>">
+                      <rect x="0" y="0" width="<%= (@average_rating_in_jams - @average_rating_in_jams.floor) * 24 %>" height="24"/>
+                    </clipPath>
+                  </defs>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" fill="gray"
+                        d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" fill="yellow"
+                        d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"
+                        clip-path="url(#partialStarClip<%= star %>)"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="gray" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                </svg>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @reviews_in_jams.any? %>
+        <div>
+          <p class="text-xl font-semibold">
+            <%= t '.jams_reviews' %>
+          </p>
+          <% @reviews_in_jams.each do |review| %>
+            <div class="bg-gray-100 cursor-pointer p-4 mb-4 rounded-lg" data-controller="toggle-truncate" data-action="click->toggle-truncate#toggle">
+              <p class="font-medium text-gray-900">
+                <a href="<%= game_path(review.game) %>" class="text-blue-600 hover:underline"><%= review.game.name %></a>
+                <span class="text-sm text-gray-500">
+                  (<a href="<%= jam_path(review.jam) %>" class="text-blue-600 hover:underline"><%= review.jam.name %></a>)
+                </span>
+              </p>
+              <div class="flex items-center">
+                <p class="text-xl font-bold mr-4">
+                  <%= t '.rating' %><%= review.user_mark %>
+                </p>
+                <div class="flex items-center">
+                  <% (1..5).each do |star| %>
+                    <% if star <= review.user_mark.to_i %>
+                      <svg class="w-4 h-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                      </svg>
+                    <% else %>
+                      <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                      </svg>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+              <p data-toggle-truncate-target="text" class="text-gray-700 truncate ">
+                <%= review.criterion.presence || t('.no_comment') %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if @reviews_no_jam.any? %>
+        <div>
+          <p class="text-xl font-semibold">
+            <%= t '.games_reviews' %>
+          </p>
+          <% @reviews_no_jam.each do |review| %>
+            <div class="bg-gray-100 cursor-pointer p-4 mb-4 rounded-lg" data-controller="toggle-truncate" data-action="click->toggle-truncate#toggle">
+              <p class="font-medium text-gray-900">
+                <a href="<%= game_path(review.game) %>" class="text-blue-600 hover:underline"><%= review.game.name %></a>
+              </p>
+              <div class="flex items-center">
+                <p class="text-xl font-bold mr-4">
+                  <%= t '.rating' %> <%= review.user_mark %>
+                </p>
+                <div class="flex items-center">
+                  <% (1..5).each do |star| %>
+                    <% if star <= review.user_mark.to_i %>
+                      <svg class="w-4 h-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                      </svg>
+                    <% else %>
+                      <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                      </svg>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+              <p data-toggle-truncate-target="text" class="mt-2 text-gray-700 truncate">
+                <%= review.criterion.presence || t('.no_comment') %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
     </div>
+
+    <div class="mt-8">
+      <h3 class="text-2xl font-bold tracking-tight text-gray-900">
+        Active Sessions
+      </h3>
+      <div class="mt-4">
+        <% if @sessions.any? %>
+          <ul class="divide-y divide-gray-200">
+            <% @sessions.each do |session| %>
+              <li class="py-4 flex">
+                <div>
+                  <p class="text-sm font-medium text-gray-900">
+                    Session ID: <%= session.session_id %>
+                  </p>
+                  <p class="text-sm text-gray-500">
+                    IP Address: <%= session.ip_address %>
+                  </p>
+                  <p class="text-sm text-gray-500">
+                    Browser: <%= session.browser ? session.browser : 'Browser: Unknown' %>
+                  </p>
+                  <p class="text-sm text-gray-500">
+                    Created At: <%= session.created_at %>
+                  </p>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-sm text-gray-500">No active sessions found.</p>
+        <% end %>
+      </div>
+    </div>
+
   </div>
 </div>

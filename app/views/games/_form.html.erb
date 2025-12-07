@@ -1,0 +1,118 @@
+<div data-controller="games">
+  <%= form_with(model: @game, url: path, local: true) do |f| %>
+    <div class="mt-4">
+      <%= f.label :name, t('.name'), class: "block text-sm font-medium text-white" %>
+      <div class="mt-2">
+        <%= f.text_field :name,
+                         required: true,
+                         class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
+                     shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                     focus:ring-indigo-500 sm:text-sm sm:leading-6" %>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <%= f.label :description, t('.desc'), class: "block text-sm font-medium text-white" %>
+      <div class="mt-2">
+        <%= f.text_field :description,
+                         required: true,
+                         class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
+                     shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
+                     focus:ring-indigo-500 sm:text-sm sm:leading-6" %>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <%= f.label :cover, t('.image'), class: "block text-sm font-medium text-white" %>
+      <div class="relative mt-2">
+        <div class="text-gray-500 border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
+          <% if @game.persisted? && @game.cover.attached? %>
+            <img data-games-target="coverPreviewImg" src="<%= url_for(@game.cover) %>"
+                 alt="Предварительный просмотр обложки"
+                 class="mt-4 w-full h-auto object-cover rounded-md">
+          <% else %>
+            <img data-games-target="coverPreviewImg" src="#"
+                 alt="Предварительный просмотр обложки"
+                 class="mt-4 hidden w-full h-auto object-cover rounded-md">
+          <% end %>
+
+          <%= f.file_field :cover,
+                           id: "cover-input",
+                           data: { action: "change->games#updateCoverPreview" },
+                           required: !@game.persisted? ? true : false,
+                           accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif, .png",
+                           class: "absolute inset-0 opacity-0 cursor-pointer" %>
+          <p data-games-target="coverText" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">
+            <%= t '.hint1' %>
+          </p>
+          <p class="text-xs">
+            <%= t '.recommend' %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <%= f.label :game_file, t('.file'), class: "block text-sm font-medium text-white" %>
+      <div class="relative mt-2 text-gray-500">
+        <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
+          <% if @game && @game.game_file.attached? %>
+            <p data-games-target="fileNameDisplay" class="text-white"><%= @game.game_file.filename %></p>
+          <% else %>
+            <p data-games-target="fileNameDisplay" class="text-white hidden"></p>
+          <% end %>
+          <%= f.file_field :game_file,
+                           id: "game-file-input",
+                           data: { action: "change->games#updateFileName" },
+                           required: !@game.persisted? ? true : false,
+                           accept: ".zip,.rar,.7z",
+                           class: "absolute inset-0 opacity-0 cursor-pointer" %>
+          <p data-games-target="fileText" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">
+            <%= t '.hint1' %>
+          </p>
+          <p class="text-xs ">
+            <%= t '.hint2' %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <%= f.label :tags, t('.tags'), class: "block text-sm font-medium text-white" %>
+      <div class="mt-1 grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+        <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>
+          <label class="relative flex items-center justify-center rounded-lg border px-4 py-2 shadow-sm cursor-pointer
+            text-center break-words transition transform hover:scale-105
+            <%= 'bg-indigo-500 border-indigo-500 text-white' if f.object.tag_ids.include?(b.object.id) %>
+            <%= 'border-gray-300 text-gray-700' unless f.object.tag_ids.include?(b.object.id) %>"
+                 style="min-height: 50px; max-width: 150px;"
+                 data-controller="games"
+                 data-action="click->games#toggleSelection"
+                 data-games-target="label">
+            <%= b.check_box(class: "absolute inset-0 opacity-0 cursor-pointer", data: { games_target: "checkbox" }) %>
+            <span class="text-center text-sm font-medium" data-games-target="label"><%= b.text %></span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+
+
+
+    <%= submit_tag (@game.persisted? ? t('games.show.edit') : t('.btn')), class: "mt-4 flex w-full justify-center rounded-md border
+       border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
+        hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2",
+                   data: { turbo_submits_with: "Создаем...", turbo_track: "dynamic" } %>
+
+    <div class='blur-background hidden' id='blur'>
+      <div class="loading-spinner hidden" id="loading">
+        <div id="square1"></div>
+        <div id="square2"></div>
+        <div id="square3"></div>
+        <div id="square4"></div>
+        <div id="square5"></div>
+      </div>
+    </div>
+
+  <% end %>
+</div>

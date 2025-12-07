@@ -11,9 +11,12 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @current_user = User.find_by_id(session[:current_user])
-    return unless @current_user
-
-    @friendship = @current_user.friendship_with(@user)
+    if @current_user
+      @notifications = current_user.notifications
+      @friendship = @current_user.friendship_with(@user)
+    end
+    @friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
+    @received_requests = @user.inverse_friendships.where(status: 'pending')
   end
 
   def index
@@ -26,12 +29,14 @@ class UsersController < ApplicationController
     if @user.save
       @token = @user.set_email_confirm_token
       EmailConfirmMailer.with(user: @user, token: @token).email_confirm.deliver_later
-      flash[:success] = 'Инструкции были отправлены на ваш адрес'
+      flash[:success] ||= []
+      flash[:success] << 'Инструкции были отправлены на ваш адрес'
       redirect_to edit_email_confirm_url(user: { email_confirm_token: @user.email_confirm_token,
                                                  email: @user.email }).gsub('&amp;', '&')
     else
-      flash[:failure] = @user.errors.full_messages
-      render :new, status: :see_other
+      flash[:failure] ||= []
+      flash[:failure].concat(@user.errors.full_messages)
+      redirect_to register_path
     end
   end
 
@@ -39,10 +44,11 @@ class UsersController < ApplicationController
     @user = current_user
     if @user.authenticate(params[:user][:password])
       @user.destroy
-      flash[:success] = 'Аккаунт успешно удален.'
+      flash[:success] ||= []
+      flash[:success] << t('users.destroy.success')
       render json: { success: true }, status: :ok
     else
-      flash[:error] = 'Неверный пароль.'
+      flash[:error] = t 'users.destroy.error'
       render json: { success: false, error: 'Неверный пароль.' }, status: :unprocessable_entity
     end
   end
@@ -56,35 +62,42 @@ class UsersController < ApplicationController
 
     if user_params[:password].present? || user_params[:password_confirmation].present? || params[:user][:current_password].present?
       unless @user.authenticate(params[:user][:current_password])
-        flash[:failure] = 'Current password is incorrect.'
+        flash[:failure] ||= []
+        flash[:failure] << t('users.update_user.failure1')
         redirect_to settings_path
         return
       end
 
       if user_params[:password].blank? || user_params[:password_confirmation].blank? || params[:user][:current_password].blank?
-        flash[:failure] = 'All fields must be filled in'
+        flash[:failure] ||= []
+        flash[:failure] << t('users.update_user.failure2')
         redirect_to settings_path
         return
       elsif user_params[:password].length < 5
-        flash[:failure] = 'New password is too short (minimum is 5 characters).'
+        flash[:failure] ||= []
+        flash[:failure] << t('users.update_user.failure3')
         redirect_to settings_path
         return
       elsif user_params[:password] != user_params[:password_confirmation]
-        flash[:failure] = 'New passwords do not match.'
+        flash[:failure] ||= []
+        flash[:failure] << t('users.update_user.failure4')
         redirect_to settings_path
         return
       elsif user_params[:password] == params[:user][:current_password]
-        flash[:failure] = 'New password must be different from the old one.'
+        flash[:failure] ||= []
+        flash[:failure] << t('users.update_user.failure5')
         redirect_to settings_path
         return
       end
     end
 
     if @user.update(user_params)
-      flash[:success] = 'Successfully saved!'
+      flash[:success] ||= []
+      flash[:success] << t('users.update_user.success')
       redirect_to settings_path
     else
-      flash[:failure] = 'Something went wrong!'
+      flash[:failure] ||= []
+      flash[:failure] << t('users.update_user.failure6')
       redirect_to settings_path
     end
   end
@@ -102,6 +115,7 @@ class UsersController < ApplicationController
     subdomain = Subdomain.extract_subdomain(request)
     @user = User.find_by_link_username(subdomain)
     @current_user = current_user
+    @notifications = current_user.notifications
   end
 
   private
@@ -110,6 +124,6 @@ class UsersController < ApplicationController
     params.require(:user)
           .permit(:name, :email, :password, :password_confirmation, :avatar, :background_image,
                   :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
-                  :visibility, :jams_visibility, :theme, :is_online_today)
+                  :visibility, :jams_administrating_visibility, :jams_participating_visibility, :theme, :is_online_today)
   end
 end
