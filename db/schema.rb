@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_09_191916) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -80,6 +80,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
     t.integer "author_id"
     t.integer "status", default: 0
     t.string "reason"
+    t.string "html5_id"
     t.index ["name"], name: "index_games_on_name", unique: true
   end
 
@@ -111,8 +112,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
-    t.string "reason"
     t.integer "status", default: 0
+    t.string "reason"
     t.integer "games", default: [], array: true
     t.integer "participants", default: [], array: true
     t.boolean "users_can_votes", default: false
@@ -140,6 +141,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.integer "game_id", null: false
+    t.integer "jam_id"
+    t.float "average_rating", default: 0.0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_ratings_on_game_id"
+    t.index ["jam_id"], name: "index_ratings_on_jam_id"
+  end
+
   create_table "reports", force: :cascade do |t|
     t.bigint "reporter_id", null: false
     t.string "reportable_type", null: false
@@ -150,16 +161,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["reporter_id"], name: "index_reports_on_reporter_id"
-  end
-
-  create_table "ratings", force: :cascade do |t|
-    t.integer "game_id", null: false
-    t.integer "jam_id"
-    t.float "average_rating", default: 0.0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["game_id"], name: "index_ratings_on_game_id"
-    t.index ["jam_id"], name: "index_ratings_on_jam_id"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -213,17 +214,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_180248) do
     t.string "visibility", default: "All"
     t.string "background_image"
     t.string "theme", default: "Light"
-    t.string "jams_visibility", default: "All"
-    t.string "auth_via"
-    t.string "social_id"
     t.string "password_reset_token"
     t.datetime "password_reset_token_sent_at"
     t.string "email_confirm_token"
     t.datetime "email_confirm_token_sent_at"
     t.boolean "email_confirmed", default: false
     t.integer "role", default: 0
-    t.string "provider"
-    t.string "uid"
     t.boolean "is_frozen", default: false
     t.datetime "frozen_at"
     t.datetime "unfreeze_at"

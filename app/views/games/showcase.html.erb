@@ -11,9 +11,11 @@
     <% if current_user %>
       <div class="flex space-x-4 mb-8">
         <button data-action="click->games#toggleGames"
+                data-view="all"
                 data-games-target="showAll"
                 class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200">Все игры</button>
         <button data-action="click->games#toggleGames"
+                data-view="mine"
                 data-games-target="showMine"
                 class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200">Мои игры</button>
       </div>
@@ -84,7 +86,7 @@
                  locals: { results: @search_results } if @search_results %>
     </div>
 
-    <div data-games-target="allGames" class="hidden">
+    <div data-games-target="allGames">
       <h3 class="text-xl font-semibold my-4">Все игры</h3>
       <% if @games.present? %>
         <%= render partial: 'helpers/showcase_grid', locals: { items: @games } %>
@@ -94,7 +96,7 @@
       <% end %>
     </div>
 
-    <div data-games-target="myGames" class="mt-6">
+    <div data-games-target="myGames" class="mt-6 hidden">
       <h3 class="text-xl font-semibold my-4">Мои игры</h3>
       <% if @games_accepted.present? %>
         <%= render partial: 'helpers/showcase_grid', locals: { items: @games_accepted } %>

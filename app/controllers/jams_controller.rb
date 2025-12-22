@@ -1,5 +1,5 @@
 class JamsController < ApplicationController
-  before_action :authenticate_user, only: %i[new create edit update, :submit_game]
+  before_action :authenticate_user, only: %i[new create edit update submit_game]
   before_action :root_check, only: %i[edit update destroy]
 
   def new

@@ -1,8 +1,8 @@
 <div aria-live="assertive" class="z-50 pointer-events-none fixed inset-0 flex px-4 py-6
  sm:items-start sm:p-6"
      id="notification-area" data-controller="settings">
-  <% if flash[:success] %>
-    <% flash[:success].each do |message| %>
+  <% if flash[:success].present? %>
+    <% Array(flash[:success]).each do |message| %>
       <div id="notification-area" class="success-block z-50 pointer-events-none fixed inset-0 flex px-4 py-6 sm:items-start sm:p-6">
         <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
           <div class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">

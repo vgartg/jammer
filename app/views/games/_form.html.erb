@@ -1,5 +1,5 @@
 <div data-controller="games">
-  <%= form_with(model: @game, url: path, local: true) do |f| %>
+  <%= form_with(model: @game, url: path, local: true, html: { multipart: true }) do |f| %>
     <div class="mt-4">
       <%= f.label :name, t('.name'), class: "block text-sm font-medium text-white" %>
       <div class="mt-2">
@@ -86,7 +86,6 @@
             <%= 'bg-indigo-500 border-indigo-500 text-white' if f.object.tag_ids.include?(b.object.id) %>
             <%= 'border-gray-300 text-gray-700' unless f.object.tag_ids.include?(b.object.id) %>"
                  style="min-height: 50px; max-width: 150px;"
-                 data-controller="games"
                  data-action="click->games#toggleSelection"
                  data-games-target="label">
             <%= b.check_box(class: "absolute inset-0 opacity-0 cursor-pointer", data: { games_target: "checkbox" }) %>
