@@ -7,9 +7,6 @@ gem 'rails', '~> 8.0.0.beta1'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 
-# Use postgresql as the database for Active Record
-gem 'pg', '~> 1.1'
-
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '>= 6.4.3'
 # For tests
@@ -73,13 +70,17 @@ group :development, :test do
   gem 'dotenv-rails'
 
   gem "bundler-audit", "~> 0.9.1", require: false
+  # Use postgresql as the database for Active Record
+  gem 'pg', '~> 1.1'
+
   gem 'brakeman', require: false
-  gem 'bundler-audit', '~> 0.9.1', require: false
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'web-console'
+  gem "kamal", require: false
+
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
@@ -95,7 +96,7 @@ group :test do
 end
 
 group :production do
-  gem 'aws-sdk-s3', '~> 1'
+  gem 'sqlite3', '~> 2.0'
 end
 
 gem "thruster", require: false

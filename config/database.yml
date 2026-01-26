@@ -1,23 +1,23 @@
 default: &default
-  adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
+  adapter: postgresql
   <<: *default
   database: jammer_development
   username: <%= ENV["DATABASE_USER"] %>
   password: <%= ENV["DATABASE_PASSWORD"] %>
 
 test:
+  adapter: postgresql
   <<: *default
   database: jammer_test
   username: <%= ENV["DATABASE_USER"] %>
   password: <%= ENV["DATABASE_PASSWORD"] %>
 
 production:
-  <<: *default
-  host: <%= ENV["DB_HOST"] %>
-  database: jammer_production
-  username: <%= ENV["PRODUCTION_DATABASE_USER"] %>
-  password: <%= ENV["JAMMER_DATABASE_PROD_PASSWORD"] %>
+  adapter: sqlite3
+  database: /rails/db/production.sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000

@@ -43,3 +43,6 @@
 yarn-error.log
 
 /vendor
+
+# Kamal secrets
+.kamal/secrets*

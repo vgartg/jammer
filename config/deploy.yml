@@ -2,16 +2,17 @@
 service: jammer
 
 # Name of the container image.
-image: wolwer1ne/jammer
+image: fiitovec99/jammer
 
 # Deploy to these servers.
 servers:
   web:
-    - 95.164.6.174
+    - 2.56.178.151
   job:
     hosts:
-      - 95.164.6.174
+      - 2.56.178.151
     cmd: bundle exec sidekiq -q default -q mailers
+
 
 # Enable SSL auto certification via Let's Encrypt (and allow for multiple apps on one server).
 # If using something like Cloudflare, it is recommended to set encryption mode 
@@ -26,7 +27,7 @@ proxy:
 registry:
   # Specify the registry server, if you're not using Docker Hub
   # server: registry.digitalocean.com / ghcr.io / ...
-  username: wolwer1ne
+  username: fiitovec99
 
   # Always use an access token rather than real password (pulled from .kamal/secrets).
   password:
@@ -35,22 +36,27 @@ registry:
 # Configure builder setup.
 builder:
   arch: amd64
+  context: .
+  driver: docker
+
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 #
 env:
   clear:
-    DB_HOST: 45.67.231.191
+    SECRET_KEY_BASE: 4ee0b6a4d9fcd4e9a9f11aa363eec06a8eca5b98ec8b6e7df16eddd35c2d71a7ad511af1dc5afc106950d9a37e20edbda991c33e6ffa5e67d5c6107599cde367
+    RAILS_LOG_LEVEL: info
   secret:
     - RAILS_MASTER_KEY
-    - DB_HOST
-    - PRODUCTION_DATABASE_USER
-    - JAMMER_DATABASE_PROD_PASSWORD
-    - S3_KEY_ID
-    - S3_MASTER_KEY
     - MAIL_DOMAIN
     - MAIL_ADDRESS
     - MAIL_PASSWORD
+
+volumes:
+  - "jammer_db:/rails/db"
+  - "jammer_storage:/rails/storage"
+
+
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal logs -r job" will tail logs from the first server in the job section.
 #
