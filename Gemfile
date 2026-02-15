@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '> 3.3'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 8.0.0.beta1'
+gem 'rails', '~> 8.1.2'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 
@@ -49,10 +49,8 @@ gem 'image_processing', '~> 1.2'
 gem 'ostruct'
 gem 'useragent'
 gem 'rest-client'
-gem 'ostruct'
 gem 'rexml', '>= 3.3.6'
 gem 'rubocop'
-gem 'useragent'
 
 gem 'letter_opener', group: :development
 gem 'letter_opener_web', group: :development
@@ -61,7 +59,7 @@ gem 'mail'
 gem 'sidekiq'
 gem 'whenever', require: false
 
-gem 'nokogiri', '>= 1.18.3'
+gem 'nokogiri', '>= 1.18.9'
 gem 'pagy'
 
 group :development, :test do
