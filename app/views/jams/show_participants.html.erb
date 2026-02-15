@@ -9,39 +9,41 @@
         <h2 class="px-4 text-2xl font-bold tracking-tight text-gray-900">
           <%= t '.title' %>
         </h2>
+        <% if current_user && (current_user == @jam.author || current_user.role.in?([1,2])) %>
+          <span class="text-sm text-gray-500">(Нажмите "Удалить", чтобы исключить участника)</span>
+        <% end %>
       <% end %>
     </div>
     <div class="grid sm:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
       <% @users.each do |user| %>
-        <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
-      duration-200 flex items-center space-x-4">
+        <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 flex items-center space-x-4 relative">
           <a href='<%= '/users/' + user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
-          <span class="relative">
-            <% if user && user.avatar.attached? %>
-              <%= image_tag url_for(user.avatar), alt: "Profile Picture",
-                            class: "h-16 w-16 rounded-full" %>
-            <% else %>
-              <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                   class="h-16 w-16 rounded-full">
-            <% end %>
-            <% if user.can_see_online?(current_user) %>
-            <% if user.online? %>
-              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
-            <% elsif user.last_active_at %>
-              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
-            <% end %>
+            <span class="relative">
+              <% if user && user.avatar.attached? %>
+                <%= image_tag url_for(user.avatar), alt: "Profile Picture",
+                              class: "h-16 w-16 rounded-full" %>
+              <% else %>
+                <img src="https://via.placeholder.com/150" alt="Profile Picture"
+                     class="h-16 w-16 rounded-full">
               <% end %>
-          </span>
+              <% if user.can_see_online?(current_user) %>
+                <% if user.online? %>
+                  <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
+                <% elsif user.last_active_at %>
+                  <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
+                <% end %>
+              <% end %>
+            </span>
             <div>
               <h2 class="text-lg font-semibold text-gray-800"><%= user.name %></h2>
               <% if user.can_see_online?(current_user) %>
                 <p class="mt-6"
                    data-controller="online">
                   <% if user.last_active_at.present? %>
-      <span id="user-status" class="text-sm text-gray-600"
-            data-online-target="lastActiveAt"
-            data-last-active-at="<%= user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
-            data-action="load->online#updateStatus"></span>
+                    <span id="user-status" class="text-sm text-gray-600"
+                          data-online-target="lastActiveAt"
+                          data-last-active-at="<%= user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                          data-action="load->online#updateStatus"></span>
                   <% else %>
                     <span class="text-sm text-gray-600">
                       <%= t 'users.profile.offline' %>
@@ -51,6 +53,15 @@
               <% end %>
             </div>
           </a>
+
+          <% if current_user && (current_user == @jam.author || current_user.role.in?([1,2])) %>
+            <div class="ml-2">
+              <%= button_to "Удалить", remove_participant_jam_path(@jam, user_id: user.id),
+                            method: :delete,
+                            data: { confirm: "Вы уверены, что хотите удалить этого участника из джема?" },
+                            class: "text-sm text-red-600 hover:text-red-800 underline" %>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>

@@ -6,8 +6,14 @@
       <%= link_to t('layouts.header.games'), games_path, class: "text-sm font-semibold leading-6 text-white" %>
     </div>
   </nav>
+  <div class="flex-shrink-0 flex justify-center">
+    <a href="https://fasie.ru/"><%= image_tag 'fsi.jpg'%></a>
+  </div>
+  <div class="mx-auto flex max-w-7xl items-center justify-center p-6 lg:pl-72 lg:pr-32">
+    <p class="text-sm font-semibold leading-6 text-white"><%= t 'layouts.footer.fsi_text' %></p>
+  </div>
   <div class="mx-auto flex max-w-7xl items-center justify-center flex-col p-6 lg:px-8">
-    <p class="text-sm font-semibold leading-6 text-white">2024. Jammer <%= APP_VERSION.to_s %><br></p>
+    <p class="text-sm font-semibold leading-6 text-white">Est. 2024. Jammer <%= APP_VERSION.to_s %><br></p>
     <p class="text-sm font-semibold leading-6 text-white">
       Email:
       <a href="mailto:jammer.website@internet.ru" class="text-sm font-semibold leading-6 text-white">jammer.website@internet.ru</a>
