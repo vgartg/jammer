@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import {Controller} from "@hotwired/stimulus"
 
 export default class extends Controller {
     static targets = [
@@ -6,7 +6,8 @@ export default class extends Controller {
         "coverPreviewImg", "coverText",
         "fileNameDisplay", "fileText",
         "checkbox", "label",
-        "allGames", "myGames", "showAll", "showMine", "searchForm"
+        "allGames", "myGames", "showAll", "showMine", "searchForm", "myGamesFrame",
+
     ]
 
     connect() {
@@ -37,6 +38,11 @@ export default class extends Controller {
 
     displayMyGames() {
         if (!this.hasAllGamesTarget || !this.hasMyGamesTarget) return
+
+        if (this.hasMyGamesFrameTarget && !this.myGamesFrameTarget.getAttribute("src")) {
+            const src = this.myGamesFrameTarget.dataset.src
+            if (src) this.myGamesFrameTarget.setAttribute("src", src)
+        }
 
         this.myGamesTarget.classList.remove("hidden")
         this.allGamesTarget.classList.add("hidden")
@@ -80,10 +86,11 @@ export default class extends Controller {
 
         if (this.hasTagModeTarget) url.searchParams.set("tag_mode", this.tagModeTarget.value)
 
-        fetch(url.toString(), { headers: { Accept: "text/vnd.turbo-stream.html" } })
+        fetch(url.toString(), {headers: {Accept: "text/vnd.turbo-stream.html"}})
             .then((r) => (r.ok ? r.text() : Promise.reject()))
             .then((html) => Turbo.renderStreamMessage(html))
-            .catch(() => {})
+            .catch(() => {
+            })
     }
 
     toggleTagMode() {
