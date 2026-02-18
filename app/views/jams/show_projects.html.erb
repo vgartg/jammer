@@ -4,6 +4,9 @@
       <h2 class="text-2xl px-4 font-bold tracking-tight text-gray-900">
         <%= t '.title' %>
       </h2>
+      <% if current_user && (current_user == @jam.author || current_user.role.in?([1,2])) %>
+        <span class="text-sm text-gray-500">(Вы можете удалить проект, нажав на кнопку рядом с игрой)</span>
+      <% end %>
     </div>
     <% unless @games.empty? %>
       <%= form_with url: jam_show_projects_path, method: :get,
@@ -34,7 +37,7 @@
         <% if @games.present? %>
           <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             <% @games.each do |game| %>
-              <div>
+              <div class="relative">
                 <div class="group relative">
                   <a href="<%= game_profile_path(game, jam_id: params[:id]) %>">
                     <% if game && game.cover.attached? %>
@@ -50,7 +53,12 @@
                     <% end %>
                   </a>
 
-
+                  <div class="absolute top-2 right-2 bg-white rounded-full px-2 py-1 shadow flex items-center space-x-1">
+                    <span class="text-sm font-bold text-gray-800"><%= game.jam_rating(@jam.id) %></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  </div>
                 </div>
 
                 <div class="mt-4 justify-between line-clamp-2">
@@ -79,6 +87,15 @@
                     </p>
                   <% end %>
                 </div>
+
+                <% if current_user && (current_user == @jam.author || current_user.role.in?([1,2])) %>
+                  <div class="mt-2">
+                    <%= button_to "Удалить проект", remove_project_jam_path(@jam, game_id: game.id),
+                                  method: :delete,
+                                  data: { confirm: "Вы уверены, что хотите отвязать эту игру от джема?" },
+                                  class: "text-sm text-red-600 hover:text-red-800 underline" %>
+                  </div>
+                <% end %>
               </div>
             <% end %>
           </div>
@@ -97,5 +114,3 @@
     <% end %>
   </div>
 </div>
-
-

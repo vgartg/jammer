@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 class JamsController < ApplicationController
-  before_action :authenticate_user, only: %i[new create edit update submit_game]
+  before_action :authenticate_user, only: %i[new create edit update submit_game participate delete_project]
   before_action :root_check, only: %i[edit update destroy]
+  before_action :set_jam, only: %i[show_projects show_participants remove_participant remove_project]
+  before_action :author_or_admin, only: %i[remove_participant remove_project]
 
   def new
     @notifications = current_user.notifications
@@ -28,14 +32,15 @@ class JamsController < ApplicationController
   def show_projects
     @jam = Jam.find(params[:id])
     @tags = Tag.all
-    jams_games = @jam.jam_submissions.and(JamSubmission.where.not(game_id: nil))
-                              .map{|jsb| Game.find_by_id(jsb.game_id)}
+    submissions = @jam.jam_submissions
+                      .where.not(game_id: nil)
+                      .includes(game: :ratings)
+    @games = submissions.map(&:game)
+
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
       @games = Game.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
-                        lower_case_search, lower_case_search)
-    else
-      @games = jams_games
+                          lower_case_search, lower_case_search)
     end
 
     respond_to do |format|
@@ -46,7 +51,7 @@ class JamsController < ApplicationController
 
   def show_participants
     @jam = Jam.find(params[:id])
-    @users = @jam.jam_submissions.map{|jsb| User.find_by_id(jsb.user_id)}
+    @users = @jam.jam_submissions.includes(:user).map(&:user)
   end
 
   def showcase
@@ -138,8 +143,6 @@ class JamsController < ApplicationController
   def create_submission
     @game = Game.new(game_params.merge(author: current_user))
     if @game.save
-      #JamSubmission.new(game: @game, jam_id: params[:id], user: current_user).save
-
       submission = JamSubmission.where(jam_id: params[:id]).find_by(user_id: current_user.id)
       submission.update(game_id: @game.id)
       redirect_to jam_profile_path(params[:id])
@@ -157,7 +160,7 @@ class JamsController < ApplicationController
         flash[:failure] << problem
       end
       render :new, status: :see_other
-      elsif @jam.update(jam_params)
+    elsif @jam.update(jam_params)
       admins = User.where(role: [1, 2])
       admins.each do |admin|
         current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
@@ -184,7 +187,38 @@ class JamsController < ApplicationController
     redirect_to :dashboard
   end
 
+  def remove_participant
+    submission = @jam.jam_submissions.find_by(user_id: params[:user_id])
+    if submission&.destroy
+      flash[:notice] = "Участник удалён из джема."
+    else
+      flash[:alert] = "Не удалось удалить участника."
+    end
+    redirect_to jam_show_participants_path(@jam)
+  end
+
+  def remove_project
+    submission = @jam.jam_submissions.find_by(game_id: params[:game_id])
+    if submission&.update(game_id: nil)
+      flash[:notice] = "Проект отвязан от джема."
+    else
+      flash[:alert] = "Не удалось удалить проект."
+    end
+    redirect_to jam_show_projects_path(@jam)
+  end
+
   private
+
+  def set_jam
+    @jam = Jam.find(params[:id])
+  end
+
+  def author_or_admin
+    unless current_user && (current_user == @jam.author || current_user.role.in?([1, 2]))
+      flash[:failure] = "Недостаточно прав"
+      redirect_to dashboard_path
+    end
+  end
 
   def root_check
     return if current_user.jams.find_by_id(params[:id])

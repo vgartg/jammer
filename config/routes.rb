@@ -73,6 +73,8 @@ Rails.application.routes.draw do
       member do
         post 'participate'
         patch 'delete_project'
+        delete 'remove_participant', to: 'jams#remove_participant'
+        delete 'remove_project', to: 'jams#remove_project'
       end
     end
     resources :games do

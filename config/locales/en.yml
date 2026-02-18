@@ -34,6 +34,7 @@ en:
       dashboard: "Dashboard"
     footer:
       copyright: "All rights reserved."
+      fsi_text: 'The project was created with the support of the Federal State Budgetary Institution "Fund for Assistance to Small Innovative Enterprises in Science and Technology" as part of the "Student Startup" program of the federal project "University Technological Entrepreneurship Platform"'
     left-menu:
       requests: "Requests"
       settings: "Settings"
@@ -224,6 +225,7 @@ en:
       confirm: "Confirm your password"
       btn: "Sign up"
       alternative: "Or continue with"
+      will_soon: "Will Soon"
       hint: "Have a member?"
       sign_in: "Sign in"
   settings:
@@ -306,6 +308,7 @@ en:
       recover: "Forgot password?"
       btn: "Sign in"
       alternative: "Or continue with"
+      will_soon: "Will Soon"
       hint: "Not a member?"
       sign_up: "Sign up"
   helpers:
