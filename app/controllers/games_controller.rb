@@ -10,12 +10,6 @@ class GamesController < ApplicationController
   def showcase
     @search_results = nil
     @tags = Tag.all
-    if current_user
-      @my_games = Game.where(author: current_user)
-      @games_under_moderation = @my_games.where(status: 0)
-      @games_accepted = @my_games.where(status: 1)
-      @games_rejected = @my_games.where(status: 2)
-    end
 
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
@@ -40,6 +34,17 @@ class GamesController < ApplicationController
       format.html
       format.turbo_stream { @search_results = should_search? ? @games : nil }
     end
+  end
+
+  def my_games
+    authenticate_user
+
+    @my_games = current_user.games
+    @games_under_moderation = @my_games.where(status: 0)
+    @games_accepted         = @my_games.where(status: 1)
+    @games_rejected         = @my_games.where(status: 2)
+
+    render partial: 'games/my_games', layout: false
   end
 
   def show

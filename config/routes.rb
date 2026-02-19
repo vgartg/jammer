@@ -39,7 +39,7 @@ Rails.application.routes.draw do
     end
     get '/requests', to: 'friendships#requests'
 
-  # Sessions
+    # Sessions
     resources :sessions do
       post 'logout_other_sessions', on: :collection
       post 'logout_all_sessions', on: :collection
@@ -55,6 +55,7 @@ Rails.application.routes.draw do
     get '/games/:id', to: 'games#show', as: 'game_profile'
     get '/games_showcase', to: 'games#showcase'
     post '/games/:id/submit', to: 'games#submit', as: 'submit'
+    get '/games_showcase/my', to: 'games#my_games', as: 'games_my'
 
     # Jams
     get '/jams/new', to: 'jams#new'
@@ -91,37 +92,37 @@ Rails.application.routes.draw do
 
     get '/settings', to: 'settings#index'
 
-  # Admin
-  get '/admin', to: 'admins#index'
-  namespace :admin do
-    %i[actions visits].each do |resource|
-      resources resource, only: %i[index]
+    # Admin
+    get '/admin', to: 'admins#index'
+    namespace :admin do
+      %i[actions visits].each do |resource|
+        resources resource, only: %i[index]
+      end
+      %i[users games jams].each do |resource|
+        resources resource, only: %i[index new create edit update destroy]
+      end
+      resources :users do
+        member do
+          post :freeze
+          post :unfreeze
+        end
+      end
+      get '/visits_data', to: 'visits#visits_data'
+      get '/registrations_data', to: 'visits#registrations_data'
     end
-    %i[users games jams].each do |resource|
-      resources resource, only: %i[index new create edit update destroy]
-    end
-    resources :users do
-      member do
-        post :freeze
-        post :unfreeze
+
+    # Moderator
+    get '/moderator', to: 'moderators#index'
+    namespace :moderator do
+      %i[games jams].each do |resource|
+        resources resource, only: %i[index edit update destroy]
       end
     end
-    get '/visits_data', to: 'visits#visits_data'
-    get '/registrations_data', to: 'visits#registrations_data'
-  end
 
-  # Moderator
-  get '/moderator', to: 'moderators#index'
-  namespace :moderator do
-    %i[games jams].each do |resource|
-      resources resource, only: %i[index edit update destroy]
-    end
-  end
+    resources :reports, only: [:create]
 
-  resources :reports, only: [:create]
-
-  # Email (mailer)
-  resource :password_reset, only: %i[new create edit update]
-  resource :email_confirm, only: %i[new create edit update]
+    # Email (mailer)
+    resource :password_reset, only: %i[new create edit update]
+    resource :email_confirm, only: %i[new create edit update]
   end
 end
