@@ -1,4 +1,5 @@
 module ApplicationHelper
+  include Pagy::Frontend
 
   def toggle_direction(column)
     if params[:sort_by] == column

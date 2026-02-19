@@ -8,8 +8,8 @@
 
     <div class="grid grid-cols-1 gap-6 pt-4">
 
-      <% if @average_rating_no_jam.present? && @games_count.to_i > 0 %>
-    <div>
+      <% if @average_rating_no_jam.present? && @user.games.count > 0 %>
+        <div>
           <p class="text-xl font-semibold">
             <%= t '.games_rating' %>
           </p>
@@ -48,8 +48,8 @@
         </div>
       <% end %>
 
-      <% if @average_rating_in_jams.present? && @games_count.to_i > 0 %>
-    <div>
+      <% if @average_rating_in_jams.present? && @user.games.count > 0 %>
+        <div>
           <p class="text-xl font-semibold">
             <%= t '.jams_games_rating' %>
           </p>
