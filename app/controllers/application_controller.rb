@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   helper_method :notifications
   helper_method :require_subdomain
   before_action :update_last_active_at
-  include Pagy::Backend
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from ActionController::RoutingError, with: :render_404
 
