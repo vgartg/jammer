@@ -1,5 +1,6 @@
 class JamContributor < ApplicationRecord
   belongs_to :jam
+  belongs_to :user
 
   STATUSES = %w[pending accepted].freeze
   validates :status, inclusion: { in: STATUSES }
