@@ -12,6 +12,30 @@ class Jam < ActiveRecord::Base
 
   has_many :jam_submissions, dependent: :destroy
 
+  has_many :jam_contributors, dependent: :destroy
+  has_many :contributors, through: :jam_contributors, source: :user
+
+  has_one :jam_rating_setting, dependent: :destroy
+  has_many :jam_criteria, class_name: "JamCriterion", dependent: :destroy
+  has_many :jam_nominations, class_name: "JamNomination", dependent: :destroy
+
+  def rating_setting
+    jam_rating_setting || create_jam_rating_setting
+  end
+
+  def can_manage?(user)
+    return false unless user
+    return true if user == author
+    return true if user.role.in?([1, 2]) # moderator/admin system
+    jc = jam_contributors.find_by(user_id: user.id, status: "accepted")
+    jc.present? && (jc.admin? || jc.host?)
+  end
+
+  def judge?(user)
+    jc = jam_contributors.find_by(user_id: user.id, status: "accepted")
+    jc.present? && jc.judge?
+  end
+
   belongs_to :author, foreign_key: 'author_id', class_name: 'User'
 
   has_and_belongs_to_many :tags

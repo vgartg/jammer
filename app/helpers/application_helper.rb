@@ -31,6 +31,10 @@ module ApplicationHelper
       '- статус игры изменен после модерации'
     when 'jam change status after moderation'
       '- статус джема изменен после модерации'
+    when 'sent_jam_jury_invite'
+      'пригласил вас в жюри'
+    when 'accepted_jam_jury_invite'
+      'принял приглашение в жюри'
     else
       notification.action
     end

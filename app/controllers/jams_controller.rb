@@ -5,6 +5,16 @@ class JamsController < ApplicationController
   before_action :root_check, only: %i[edit update destroy]
   before_action :set_jam, only: %i[show_projects show_participants remove_participant remove_project]
   before_action :author_or_admin, only: %i[remove_participant remove_project]
+  before_action :set_jam, only: %i[
+  show_projects show_participants remove_participant remove_project
+  rating_settings update_rating_settings
+  jury_settings jury_invite update_contributor remove_contributor accept_contributor_invite
+]
+  before_action :jam_manage_check, only: %i[
+  rating_settings update_rating_settings
+  jury_settings jury_invite update_contributor remove_contributor
+]
+  before_action :invite_owner_check, only: %i[accept_contributor_invite]
 
   def new
     @notifications = current_user.notifications
@@ -207,6 +217,129 @@ class JamsController < ApplicationController
     redirect_to jam_show_projects_path(@jam)
   end
 
+  # ===== Rating settings =====
+  def rating_settings
+    @setting = @jam.rating_setting
+    @criteria = @jam.jam_criteria.order(:position, :id)
+    @nominations = @jam.jam_nominations.order(:position, :id)
+  end
+
+  def update_rating_settings
+    @setting = @jam.rating_setting
+
+    # 1) сохраняем тумблеры
+    if @setting.locked
+      flash[:failure] = "Настройки заблокированы"
+      return redirect_to rating_settings_jam_path(@jam)
+    end
+
+    @setting.assign_attributes(rating_setting_params)
+
+    # 2) критерии
+    if params[:criteria]
+      @jam.jam_criteria.destroy_all
+      params[:criteria].each_with_index do |c, idx|
+        title = c[:title].to_s.strip
+        next if title.blank?
+        kind = c[:kind].to_s
+        kind = "voted_on" unless %w[voted_on manually_ranked].include?(kind)
+        @jam.jam_criteria.create!(title: title, kind: kind, position: idx)
+      end
+    end
+
+    # 3) номинации
+    if params[:nominations]
+      @jam.jam_nominations.destroy_all
+      params[:nominations].each_with_index do |n, idx|
+        title = n[:title].to_s.strip
+        next if title.blank?
+        method = n[:method].to_s
+        method = "manual" unless %w[manual audience_based].include?(method)
+        @jam.jam_nominations.create!(title: title, method: method, position: idx)
+      end
+    end
+
+    if @setting.save
+      flash[:success] = "Настройки оценок сохранены"
+    else
+      flash[:failure] ||= []
+      flash[:failure] += @setting.errors.full_messages
+    end
+
+    redirect_to rating_settings_jam_path(@jam)
+  end
+
+  # ===== Jury settings =====
+  def jury_settings
+    @contributors = @jam.jam_contributors.includes(:user).order(:created_at)
+    @pending = @contributors.select { |c| c.status == "pending" }
+    @accepted = @contributors.select { |c| c.status == "accepted" }
+
+    @users = User.order(:name) # чтобы в форме выбирать (быстро и просто)
+  end
+
+  def jury_invite
+    user = User.find_by(id: params[:user_id])
+
+    unless user
+      flash[:failure] = "Пользователь не найден"
+      return redirect_to jury_settings_jam_path(@jam)
+    end
+
+    contributor = @jam.jam_contributors.find_or_initialize_by(user_id: user.id)
+    contributor.status ||= "pending"
+    contributor.judge = true if contributor.new_record? # по умолчанию как инвайт "в жюри"
+
+    if contributor.save
+      # нотификация как в Friendship
+      current_user.create_notification(user, current_user, "sent_jam_jury_invite", contributor)
+      flash[:success] = "Инвайт отправлен"
+    else
+      flash[:failure] ||= []
+      flash[:failure] += contributor.errors.full_messages
+    end
+
+    redirect_to jury_settings_jam_path(@jam)
+  end
+
+  def accept_contributor_invite
+    contributor = @jam.jam_contributors.find_by(id: params[:contributor_id], user_id: current_user.id)
+    unless contributor
+      flash[:failure] = "Инвайт не найден"
+      return redirect_to jam_profile_path(@jam)
+    end
+
+    if contributor.update(status: "accepted")
+      # нотифицируем автора джема
+      current_user.create_notification(@jam.author, current_user, "accepted_jam_jury_invite", contributor)
+      flash[:success] = "Вы приняли приглашение"
+    else
+      flash[:failure] = "Не удалось принять приглашение"
+    end
+
+    redirect_to jam_profile_path(@jam)
+  end
+
+  def update_contributor
+    contributor = @jam.jam_contributors.find(params[:contributor_id])
+
+    if contributor.update(contributor_params)
+      flash[:success] = "Роли обновлены"
+    else
+      flash[:failure] ||= []
+      flash[:failure] += contributor.errors.full_messages
+    end
+
+    redirect_to jury_settings_jam_path(@jam)
+  end
+
+  def remove_contributor
+    contributor = @jam.jam_contributors.find(params[:contributor_id])
+    contributor.destroy
+    flash[:success] = "Удалено"
+    redirect_to jury_settings_jam_path(@jam)
+  end
+
   private
 
   def set_jam
@@ -259,5 +392,26 @@ class JamsController < ApplicationController
     endDate.year < 2000 ? failures.push("Некорректная дата окончания джема") : failures
 
     failures
+  end
+
+  def jam_manage_check
+    unless @jam.can_manage?(current_user)
+      flash[:failure] = "Недостаточно прав"
+      redirect_to dashboard_path
+    end
+  end
+
+  def invite_owner_check
+    # принять инвайт может только залогиненный, но это у тебя already authenticate_user
+    # jam по before_action set_jam
+    true
+  end
+
+  def rating_setting_params
+    params.require(:jam_rating_setting).permit(:jury_enabled, :audience_enabled)
+  end
+
+  def contributor_params
+    params.require(:jam_contributor).permit(:host, :admin, :judge, :status)
   end
 end

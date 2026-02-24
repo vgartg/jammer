@@ -75,6 +75,16 @@ Rails.application.routes.draw do
         patch 'delete_project'
         delete 'remove_participant', to: 'jams#remove_participant'
         delete 'remove_project', to: 'jams#remove_project'
+
+        get  :rating_settings
+        patch :rating_settings, action: :update_rating_settings
+
+        get  :jury_settings
+        post :jury_invite
+        patch "jury_settings/:contributor_id", to: "jams#update_contributor", as: :update_contributor
+        delete "jury_settings/:contributor_id", to: "jams#remove_contributor", as: :remove_contributor
+
+        patch "jury_settings/:contributor_id/accept", to: "jams#accept_contributor_invite", as: :accept_contributor_invite
       end
     end
     resources :games do
