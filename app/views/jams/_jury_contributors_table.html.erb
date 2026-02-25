@@ -15,6 +15,8 @@
 
     <tbody>
     <% contributors.each do |c| %>
+      <% form_id = "contributor_form_#{c.id}" %>
+
       <tr class="border-b">
         <td class="py-2">
           <%= link_to c.user.name, user_profile_path(c.user), class: "text-indigo-600 hover:text-indigo-900" %>
@@ -23,29 +25,41 @@
         <td class="py-2"><%= c.status %></td>
 
         <td class="py-2">
-          <%= form_with model: c, url: update_contributor_jam_path(jam, contributor_id: c.id), method: :patch do |f| %>
-            <%= f.check_box :host %>
-            </td>
-            <td class="py-2">
-              <%= f.check_box :admin %>
-            </td>
-            <td class="py-2">
-              <%= f.check_box :judge %>
-            </td>
-            <td class="py-2 flex gap-2">
-              <%= f.submit "Save", class: "rounded bg-indigo-600 px-3 py-1 text-white hover:bg-indigo-700" %>
+          <input type="hidden" name="jam_contributor[host]" value="0" form="<%= form_id %>">
+          <input type="checkbox" name="jam_contributor[host]" value="1" form="<%= form_id %>" <%= "checked" if c.host %>>
+        </td>
+
+        <td class="py-2">
+          <input type="hidden" name="jam_contributor[admin]" value="0" form="<%= form_id %>">
+          <input type="checkbox" name="jam_contributor[admin]" value="1" form="<%= form_id %>" <%= "checked" if c.admin %>>
+        </td>
+
+        <td class="py-2">
+          <input type="hidden" name="jam_contributor[judge]" value="0" form="<%= form_id %>">
+          <input type="checkbox" name="jam_contributor[judge]" value="1" form="<%= form_id %>" <%= "checked" if c.judge %>>
+        </td>
+
+        <td class="py-2">
+          <%= form_with url: update_contributor_jam_path(jam, contributor_id: c.id),
+                        method: :patch,
+                        id: form_id do %>
+            <div class="flex gap-2">
+              <%= submit_tag "Save", class: "rounded bg-indigo-600 px-3 py-1 text-white hover:bg-indigo-700" %>
+            </div>
           <% end %>
 
-          <%= button_to "Remove",
-                        remove_contributor_jam_path(jam, contributor_id: c.id),
-                        method: :delete,
-                        class: "rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700" %>
+          <div class="mt-2">
+            <%= button_to "Remove",
+                          remove_contributor_jam_path(jam, contributor_id: c.id),
+                          method: :delete,
+                          class: "rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700" %>
 
-          <% if c.status == "pending" %>
-            <span class="text-gray-400">(pending)</span>
-          <% end %>
-          </td>
-          </tr>
+            <% if c.status == "pending" %>
+              <span class="text-gray-400 ml-2">(pending)</span>
+            <% end %>
+          </div>
+        </td>
+      </tr>
     <% end %>
     </tbody>
   </table>
