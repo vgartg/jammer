@@ -474,8 +474,10 @@
       <%= yield %>
     </main>
   <% end %>
-  <%= render partial: 'helpers/good_notice' %>
-  <%= render partial: 'helpers/bad_notice' %>
+  <turbo-frame id="flash_notices">
+    <%= render partial: 'helpers/good_notice' %>
+    <%= render partial: 'helpers/bad_notice' %>
+  </turbo-frame>
   <%= render partial: 'layouts/is_frozen' %>
   <%= render partial: 'layouts/footer' %>
   </body>

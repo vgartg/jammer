@@ -1,0 +1,52 @@
+<div class="p-4 rounded border bg-white">
+  <h2 class="text-lg font-medium mb-3">Участники (host/admin/judge)</h2>
+
+  <table class="w-full text-sm">
+    <thead>
+    <tr class="text-left border-b">
+      <th class="py-2">User</th>
+      <th class="py-2">Status</th>
+      <th class="py-2">Host</th>
+      <th class="py-2">Admin</th>
+      <th class="py-2">Judge</th>
+      <th class="py-2">Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% contributors.each do |c| %>
+      <tr class="border-b">
+        <td class="py-2">
+          <%= link_to c.user.name, user_profile_path(c.user), class: "text-indigo-600 hover:text-indigo-900" %>
+        </td>
+
+        <td class="py-2"><%= c.status %></td>
+
+        <td class="py-2">
+          <%= form_with model: c, url: update_contributor_jam_path(jam, contributor_id: c.id), method: :patch do |f| %>
+            <%= f.check_box :host %>
+            </td>
+            <td class="py-2">
+              <%= f.check_box :admin %>
+            </td>
+            <td class="py-2">
+              <%= f.check_box :judge %>
+            </td>
+            <td class="py-2 flex gap-2">
+              <%= f.submit "Save", class: "rounded bg-indigo-600 px-3 py-1 text-white hover:bg-indigo-700" %>
+          <% end %>
+
+          <%= button_to "Remove",
+                        remove_contributor_jam_path(jam, contributor_id: c.id),
+                        method: :delete,
+                        class: "rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700" %>
+
+          <% if c.status == "pending" %>
+            <span class="text-gray-400">(pending)</span>
+          <% end %>
+          </td>
+          </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

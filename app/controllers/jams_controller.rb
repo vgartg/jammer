@@ -282,24 +282,43 @@ class JamsController < ApplicationController
     user = User.find_by(id: params[:user_id])
 
     unless user
-      flash[:failure] = "Пользователь не найден"
+      flash[:failure] = ["Пользователь не найден"]
       return redirect_to jury_settings_jam_path(@jam)
     end
 
     contributor = @jam.jam_contributors.find_or_initialize_by(user_id: user.id)
     contributor.status ||= "pending"
-    contributor.judge = true if contributor.new_record? # по умолчанию как инвайт "в жюри"
+    contributor.judge = true if contributor.new_record?
 
     if contributor.save
-      # нотификация как в Friendship
       current_user.create_notification(user, current_user, "sent_jam_jury_invite", contributor)
-      flash[:success] = "Инвайт отправлен"
+      flash[:success] ||= []
+      flash[:success] << "Инвайт отправлен"
     else
       flash[:failure] ||= []
       flash[:failure] += contributor.errors.full_messages
     end
 
-    redirect_to jury_settings_jam_path(@jam)
+    @contributors = @jam.jam_contributors.includes(:user).order(:created_at)
+
+    respond_to do |format|
+      format.html { redirect_to jury_settings_jam_path(@jam) }
+
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace(
+            "jam_contributors_table",
+            partial: "jams/jury_contributors_table",
+            locals: { jam: @jam, contributors: @contributors }
+          ),
+          turbo_stream.replace(
+            "flash_notices",
+            partial: "helpers/flash_notices"
+          ),
+        turbo_stream.update("jury_search_results", "")
+        ]
+      end
+    end
   end
 
   def accept_contributor_invite
