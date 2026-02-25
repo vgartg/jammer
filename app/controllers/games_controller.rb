@@ -54,7 +54,6 @@ class GamesController < ApplicationController
     else
       @rating = @game.ratings.find_by(jam_id: @jam_id)
       @rating ||= @game.ratings.create(jam_id: @jam_id, average_rating: 0.0)
-      @review = @game.reviews.find_by(user: current_user, jam_id: @jam_id) || @game.reviews.build(user: current_user, jam_id: @jam_id)
       @reviews = @game.reviews.where(jam_id: @jam_id).where.not(user_id: current_user.id)
     end
 

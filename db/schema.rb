@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_24_162345) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_25_105142) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -217,7 +217,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_24_162345) do
     t.datetime "updated_at", null: false
     t.integer "game_id"
     t.integer "jam_id"
+    t.text "comment"
+    t.integer "vote_type", default: 0, null: false
+    t.index ["user_id", "game_id", "jam_id", "criterion", "vote_type"], name: "index_reviews_unique_per_criterion_vote_type", unique: true
     t.index ["user_id"], name: "index_reviews_on_user_id"
+    t.index ["vote_type"], name: "index_reviews_on_vote_type"
   end
 
   create_table "sessions", force: :cascade do |t|

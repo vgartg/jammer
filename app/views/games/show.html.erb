@@ -54,108 +54,171 @@
 
 
           <% unless @game.author == current_user %>
-            <!-- Star Rating -->
-            <div class="mt-4 text-center">
-              <h2 class="text-lg font-semibold">
-                <%= t '.rate' %>
-              </h2>
-            </div>
 
-            <div class="mt-2 flex flex-col items-center" data-controller="star-rating">
-              <!-- Stars -->
-              <div class="flex space-x-2" id="star-rating">
-                <% 5.times do |i| %>
-                  <svg class="w-8 h-8 text-gray-300 cursor-pointer transition-all"
-                       data-rating="<%= i + 1 %>"
-                       data-star-rating-target="star"
-                       data-action="mouseenter->star-rating#hover mouseleave->star-rating#leave click->star-rating#setRating"
-                       xmlns="http://www.w3.org/2000/svg"
-                       viewBox="0 0 24 24"
-                       fill="gray">
-                    <polygon stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                             points="12 17.27 18.18 21 15.64 13.97 21 9.24 13.81 8.64 12 2 10.19 8.64 3 9.24 8.36 13.97 5.82 21 12 17.27"/>
-                  </svg>
+            <%# ===================== ДЖЕМ: ОЦЕНКИ ПО КРИТЕРИЯМ ===================== %>
+            <% if @jam_id.present? %>
+              <% jam = Jam.find_by(id: @jam_id) %>
+
+              <%# fallback, если jam не найден %>
+              <% if jam.nil? %>
+                <p class="mt-4 text-center text-sm text-gray-500">Джем не найден.</p>
+              <% else %>
+                <% can_vote = jam.can_vote_as_jury?(current_user) || jam.can_vote_as_audience?(current_user) %>
+
+                <%# Считаем вашу общую оценку по критериям: среднее ваших оценок по всем критериям %>
+                <% my_reviews_scope = @game.reviews.where(user_id: current_user.id, jam_id: jam.id).where.not(user_mark: 0) %>
+                <% my_overall = my_reviews_scope.any? ? my_reviews_scope.average(:user_mark).to_f.round(1) : 0.0 %>
+
+                <div class="mt-6 text-center">
+                  <h2 class="text-lg font-semibold">Оценка по критериям</h2>
+
+                  <p class="text-xl font-bold text-gray-900 inline-flex items-center mt-2">
+                    <%= my_overall %>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2"
+                         fill="<%= my_overall.to_f > 0 ? 'yellow' : 'gray' %>"
+                         viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                    </svg>
+                  </p>
+
+                  <% if can_vote %>
+                    <%= button_to (my_overall > 0 ? "Изменить оценки по критериям" : "Оценить по критериям"),
+                                  new_jam_game_vote_path(jam, @game),
+                                  method: :get,
+                                  class: "bg-indigo-600 text-white px-4 py-2 rounded-lg mt-4" %>
+                  <% else %>
+                    <p class="mt-4 text-sm text-gray-500">
+                      Оценивание для вас недоступно (закрыто или нет прав).
+                    </p>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <%# ===================== НЕ ДЖЕМ: СТАРАЯ ОЦЕНКА 1 ЗВЕЗДА + КОММЕНТ ===================== %>
+            <% else %>
+              <!-- Star Rating -->
+              <div class="mt-4 text-center">
+                <h2 class="text-lg font-semibold">
+                  <%= t '.rate' %>
+                </h2>
+              </div>
+
+              <div class="mt-2 flex flex-col items-center" data-controller="star-rating">
+                <!-- Stars -->
+                <div class="flex space-x-2" id="star-rating">
+                  <% 5.times do |i| %>
+                    <svg class="w-8 h-8 text-gray-300 cursor-pointer transition-all"
+                         data-rating="<%= i + 1 %>"
+                         data-star-rating-target="star"
+                         data-action="mouseenter->star-rating#hover mouseleave->star-rating#leave click->star-rating#setRating"
+                         xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 24 24"
+                         fill="gray">
+                      <polygon stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                               points="12 17.27 18.18 21 15.64 13.97 21 9.24 13.81 8.64 12 2 10.19 8.64 3 9.24 8.36 13.97 5.82 21 12 17.27"/>
+                    </svg>
+                  <% end %>
+                </div>
+
+                <!-- Comment field -->
+                <div class="mt-4 w-full max-w-md mx-auto" style="<%= @review.user_mark == 0 ? 'display:none;' : '' %>">
+                  <label for="comment"></label>
+                  <textarea id="comment"
+                            class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
+                            placeholder="<%= t '.comment_placeholder' %>"
+                            rows="4"
+                            data-action="input->star-rating#handleCommentInput"
+                            maxlength="1000"
+                            data-star-rating-target="commentField"><%= @review.criterion %></textarea>
+                </div>
+
+                <%= form_with model: @rating || @game.ratings.new, url: game_ratings_path(@game), method: :post, id: "rating-form" do |f| %>
+                  <%= f.hidden_field :user_mark, value: @review.present? ? @review.user_mark : 0, id: "user_mark" %>
+                  <%= f.hidden_field :game_id, value: @game.id %>
+                  <%= f.hidden_field :criterion, id: "rating-comment", value: @review.present? ? @review.criterion : '' %>
+                  <%= f.hidden_field :jam_id, value: params[:jam_id] || nil %>
                 <% end %>
 
+                <button type="button"
+                        data-action="click->star-rating#submitRating"
+                        data-star-rating-target="submitButton"
+                        class="bg-indigo-600 text-white px-4 py-2 rounded-lg mt-4"
+                        style="display:none;">
+                  <%= t '.save' %>
+                </button>
+
+                <% if @review && @review.user == current_user && @review.id.present? %>
+                  <%= button_to t('.delete_btn'), game_review_path(@game, @review), method: :delete,
+                                class: 'bg-red-600 text-white px-4 py-2 rounded-lg mt-4' %>
+                <% end %>
               </div>
-
-              <!-- Comment field -->
-              <div class="mt-4 w-full max-w-md mx-auto" style="<%= @review.user_mark == 0 ? 'display:none;' : '' %>">
-
-                <label for="comment"></label><textarea id="comment" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
-                                                       placeholder="<%= t '.comment_placeholder' %>" rows="4" data-action="input->star-rating#handleCommentInput"
-                                                       maxlength="1000"
-                                                       data-star-rating-target="commentField">
-        <%= @review.criterion %>
-      </textarea>
-              </div>
-
-              <%= form_with model: @rating || @game.ratings.new, url: game_ratings_path(@game), method: :post, id: "rating-form" do |f| %>
-                <%= f.hidden_field :user_mark, value: @review.present? ? @review.user_mark : 0, id: "user_mark" %>
-                <%= f.hidden_field :game_id, value: @game.id %>
-                <%= f.hidden_field :criterion, id: "rating-comment", value: @review.present? ? @review.criterion : '' %>
-                <%= f.hidden_field :jam_id, value: params[:jam_id] || nil %>
-              <% end %>
-
-
-
-
-              <button type="button" data-action="click->star-rating#submitRating"
-                      data-star-rating-target="submitButton" class="bg-indigo-600 text-white px-4 py-2 rounded-lg mt-4"
-                      style="display:none;">
-                <%= t '.save' %>
-              </button>
-              <% if @review && @review.user == current_user && @review.id.present? %>
-                <%= button_to t('.delete_btn'), game_review_path(@game, @review), method: :delete,
-                              class: 'bg-red-600 text-white px-4 py-2 rounded-lg mt-4' %>
-              <% end %>
-
-
-            </div>
-
+            <% end %>
 
           <% end %>
-          <% if @reviews.present? %>
+          <% if @jam_id.present? && @reviews.present? %>
             <div class="mt-8 text-center">
               <h2 class="text-lg font-semibold">
-                <%= t '.reviews' %>
+                Оценки участников
               </h2>
-              <% @reviews.each do |review| %>
-                <div class="mt-4 flex items-start">
-                  <div class="flex flex-col items-start mr-4">
-                    <div class="flex items-center mb-2">
-                      <% if @current_user && @current_user.avatar.attached? %>
-                        <%= image_tag url_for(@current_user.avatar), alt: "Profile Picture",
-                                      class: "h-8 w-8 rounded-full bg-gray-50 mr-2" %>
-                      <% else %>
-                        <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full bg-gray-50 mr-2" %>
-                      <% end %>
 
+              <% grouped = @reviews.group_by(&:user) %>
 
-                      <p class="font-medium text-gray-900 mr-4">
-                        <%= review.user.name %>
+              <% grouped.each do |user, user_reviews| %>
+                <% overall = user_reviews.any? ? user_reviews.map(&:user_mark).sum / user_reviews.size.to_f : 0 %>
+
+                <div class="mt-6 p-4 border rounded-lg bg-white text-left">
+
+                  <div class="flex items-center mb-3">
+                    <% if user.avatar.attached? %>
+                      <%= image_tag url_for(user.avatar), class: "h-8 w-8 rounded-full mr-3" %>
+                    <% else %>
+                      <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full mr-3" %>
+                    <% end %>
+
+                    <div>
+                      <p class="font-medium text-gray-900">
+                        <%= user.name %>
                       </p>
 
+                      <p class="text-sm text-gray-500">
+                        Общая оценка: <%= overall.round(1) %>
+                      </p>
+                    </div>
+                  </div>
 
-                      <div class="flex items-center">
-                        <% (1..5).each do |star| %>
-                          <% if star <= review.user_mark.to_i %>
-                            <svg class="w-4 h-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
-                            </svg>
-                          <% else %>
-                            <svg class="w-4 h-4 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
-                            </svg>
-                          <% end %>
+                  <div class="space-y-3">
+                    <% user_reviews.each do |review| %>
+                      <div class="pl-4 border-l-2 border-gray-200">
+                        <div class="flex items-center justify-between">
+                          <p class="font-medium text-gray-800">
+                            <%= review.criterion %>
+                          </p>
+
+                          <div class="flex items-center">
+                            <% (1..5).each do |star| %>
+                              <% if star <= review.user_mark.to_i %>
+                                <svg class="w-4 h-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                                </svg>
+                              <% else %>
+                                <svg class="w-4 h-4 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                                </svg>
+                              <% end %>
+                            <% end %>
+                          </div>
+                        </div>
+
+                        <% if review.comment.present? %>
+                          <p class="text-sm text-gray-500 mt-1">
+                            <%= review.comment %>
+                          </p>
                         <% end %>
                       </div>
-                    </div>
-
-                    <p class="text-sm text-gray-500 break-all text-left">
-                      <%= review.criterion.presence || 'Комментарий не оставлен' %>
-                    </p>
+                    <% end %>
                   </div>
+
                 </div>
               <% end %>
             </div>

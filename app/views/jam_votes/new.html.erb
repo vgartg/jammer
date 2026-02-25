@@ -1,0 +1,84 @@
+<div class="bg-white">
+  <div class="pb-16 pt-6 sm:pb-24">
+    <div class="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-medium text-gray-900 break-all"><%= @game.name %></h1>
+          <p class="text-sm text-gray-500">Джем: <%= @jam.name %></p>
+        </div>
+
+        <div class="text-right">
+          <p class="text-sm text-gray-500">Общая оценка (по критериям)</p>
+          <p id="overall_preview" class="text-2xl font-bold text-gray-900">0.0</p>
+        </div>
+      </div>
+
+      <div class="mt-8" data-controller="criteria-rating">
+        <%= form_with url: jam_game_vote_path(@jam, @game), method: :post, data: { criteria_rating_target: "form" } do %>
+          <input type="hidden" name="vote_type" value="<%= @vote_type %>">
+
+          <div class="space-y-6">
+            <% @criteria.each do |criterion| %>
+              <% existing = @existing[criterion.title] %>
+
+              <div class="rounded-lg border p-4 bg-white"
+                   data-criteria-rating-target="criterionBlock"
+                   data-criterion-id="<%= criterion.id %>">
+                <div class="flex items-center justify-between">
+                  <h2 class="text-lg font-semibold text-gray-900"><%= criterion.title %></h2>
+                  <div class="text-sm text-gray-500">0..5</div>
+                </div>
+
+                <div class="mt-3 flex items-center space-x-2"
+                     data-criteria-rating-target="stars"
+                     data-criterion-id="<%= criterion.id %>">
+                  <% 5.times do |i| %>
+                    <svg class="w-8 h-8 cursor-pointer transition-all"
+                         data-action="mouseenter->criteria-rating#hover mouseleave->criteria-rating#leave click->criteria-rating#setRating"
+                         data-rating="<%= i + 1 %>"
+                         data-criterion-id="<%= criterion.id %>"
+                         xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 24 24"
+                         fill="gray">
+                      <polygon stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                               points="12 17.27 18.18 21 15.64 13.97 21 9.24 13.81 8.64 12 2 10.19 8.64 3 9.24 8.36 13.97 5.82 21 12 17.27"/>
+                    </svg>
+                  <% end %>
+                </div>
+
+                <div class="mt-4">
+                  <textarea
+                    class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
+                    placeholder="Комментарий (необязательно)"
+                    rows="3"
+                    maxlength="1000"
+                    name="comments[<%= criterion.id %>]"
+                    data-action="input->criteria-rating#recalcOverall"
+                  ><%= existing&.comment.to_s %></textarea>
+                </div>
+
+                <input type="hidden"
+                       name="marks[<%= criterion.id %>]"
+                       value="<%= existing&.user_mark.to_f %>"
+                       data-criteria-rating-target="markInput"
+                       data-criterion-id="<%= criterion.id %>">
+              </div>
+            <% end %>
+          </div>
+
+          <button type="submit"
+                  class="bg-indigo-600 text-white px-4 py-2 rounded-lg mt-6">
+            Сохранить
+          </button>
+        <% end %>
+      </div>
+
+      <div class="mt-8">
+        <%= button_to "Назад к игре", game_profile_path(@game, jam_id: @jam.id), method: :get,
+                      class: "text-indigo-600 hover:text-indigo-900" %>
+      </div>
+
+    </div>
+  </div>
+</div>

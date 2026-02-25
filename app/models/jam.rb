@@ -36,6 +36,26 @@ class Jam < ActiveRecord::Base
     jc.present? && jc.judge?
   end
 
+  def voting_open?
+    return false if start_date.blank? || end_date.blank?
+    today = Date.current
+    today >= start_date && today <= end_date
+  end
+
+  def can_vote_as_jury?(user)
+    return false unless user
+    return false unless rating_setting.jury_enabled
+    return false unless voting_open?
+    judge?(user)
+  end
+
+  def can_vote_as_audience?(user)
+    return false unless user
+    return false unless rating_setting.audience_enabled
+    return false unless voting_open?
+    true
+  end
+
   belongs_to :author, foreign_key: 'author_id', class_name: 'User'
 
   has_and_belongs_to_many :tags

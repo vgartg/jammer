@@ -19,12 +19,16 @@ class Game < ActiveRecord::Base
 
   validate :game_file_format
   validate :game_file_size
-  def overall_rating
-    ratings.find_by(jam_id: nil)&.average_rating || 0.0
+  def jam_rating(jam_id, vote_type: nil)
+    scope = reviews.where(jam_id: jam_id).where.not(user_mark: 0)
+    scope = scope.where(vote_type: vote_type) if vote_type.present?
+    scope.any? ? scope.average(:user_mark).to_f.round(1) : 0.0
   end
 
-  def jam_rating(jam_id)
-    ratings.find_by(jam_id: jam_id)&.average_rating || 0.0
+  def overall_rating(vote_type: nil)
+    scope = reviews.where(jam_id: nil).where.not(user_mark: 0)
+    scope = scope.where(vote_type: vote_type) if vote_type.present?
+    scope.any? ? scope.average(:user_mark).to_f.round(1) : 0.0
   end
 
   validates :reason, presence: true, if: -> { status == 2 }

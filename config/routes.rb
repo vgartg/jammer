@@ -69,6 +69,9 @@ Rails.application.routes.draw do
     get '/jams/:id/show_projects', to: 'jams#show_projects', as: 'jam_show_projects'
     get '/jams/:id/show_participants', to: 'jams#show_participants', as: 'jam_show_participants'
 
+    get  "/jams/:jam_id/games/:game_id/vote", to: "jam_votes#new", as: :new_jam_game_vote
+    post "/jams/:jam_id/games/:game_id/vote", to: "jam_votes#create", as: :jam_game_vote
+
     resources :jams do
       member do
         post 'participate'
