@@ -83,6 +83,7 @@ Rails.application.routes.draw do
         patch :rating_settings, action: :update_rating_settings
 
         get  :jury_settings
+        get :jury_search
         post :jury_invite
         patch "jury_settings/:contributor_id", to: "jams#update_contributor", as: :update_contributor
         delete "jury_settings/:contributor_id", to: "jams#remove_contributor", as: :remove_contributor

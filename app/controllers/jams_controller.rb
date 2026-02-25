@@ -340,6 +340,27 @@ class JamsController < ApplicationController
     redirect_to jury_settings_jam_path(@jam)
   end
 
+  def jury_search
+    @jam = Jam.find(params[:id])
+    jam_manage_check
+
+    q = params[:q].to_s.strip.downcase
+
+    return render html: "" if q.length < 2
+
+    # ID уже добавленных
+    excluded_ids = @jam.jam_contributors.pluck(:user_id)
+    excluded_ids << @jam.author_id
+
+    @users =
+      User.where("LOWER(name) LIKE :q OR LOWER(email) LIKE :q", q: "%#{q}%")
+          .where.not(id: excluded_ids)
+          .limit(10)
+
+    render partial: "jams/jury_search_results",
+           locals: { users: @users, jam: @jam }
+  end
+
   private
 
   def set_jam

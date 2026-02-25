@@ -4,20 +4,25 @@
   <div class="mb-8 p-4 rounded border bg-white">
     <h2 class="text-lg font-medium mb-3">Пригласить пользователя</h2>
 
-    <%= form_with url: jury_invite_jam_path(@jam), method: :post do %>
-      <div class="flex gap-3 items-center">
-        <select name="user_id" class="w-full rounded border px-3 py-2">
-          <% @users.each do |u| %>
-            <option value="<%= u.id %>"><%= u.name %> (<%= u.email %>)</option>
-          <% end %>
-        </select>
+    <label class="block text-sm font-medium text-gray-700">Поиск пользователя</label>
 
-        <button class="rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">
-          Отправить инвайт
-        </button>
-      </div>
-      <p class="text-sm text-gray-500 mt-2">По умолчанию приглашение даёт роль Judge и статус Pending</p>
+    <%= form_with url: jury_search_jam_path(@jam),
+                  method: :get,
+                  data: {
+                    controller: "autosubmit"
+                  } do |f| %>
+
+      <%= f.text_field :q,
+                       placeholder: "Имя или email",
+                       class: "mt-2 w-full rounded border px-3 py-2",
+                       data: { action: "input->autosubmit#submit" } %>
     <% end %>
+
+    <turbo-frame id="jury_search_results">
+      <div class="mt-3 text-sm text-gray-500">
+        Начните вводить имя или email…
+      </div>
+    </turbo-frame>
   </div>
 
   <div class="p-4 rounded border bg-white">

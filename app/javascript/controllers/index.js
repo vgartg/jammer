@@ -72,3 +72,6 @@ application.register("status", StatusController)
 
 import CriteriaRatingController from "./criteria_rating_controller"
 application.register("criteria-rating", CriteriaRatingController)
+
+import AutosubmitController from "./autosubmit_controller"
+application.register("autosubmit", AutosubmitController)
