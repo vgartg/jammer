@@ -1,0 +1,13 @@
+<%= turbo_stream.replace "jam_contributors_table" do %>
+  <turbo-frame id="jam_contributors_table">
+    <%= render partial: "jams/jury_contributors_table",
+               locals: { jam: @jam, contributors: @contributors } %>
+  </turbo-frame>
+<% end %>
+
+<%= turbo_stream.replace "notification-area" do %>
+  <div id="notification-area" data-controller="settings">
+    <%= render partial: "helpers/good_notice" %>
+    <%= render partial: "helpers/bad_notice" %>
+  </div>
+<% end %>

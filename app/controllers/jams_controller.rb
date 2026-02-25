@@ -343,13 +343,18 @@ class JamsController < ApplicationController
     contributor = @jam.jam_contributors.find(params[:contributor_id])
 
     if contributor.update(contributor_params)
-      flash[:success] = "Роли обновлены"
+      flash.now[:success] = "Роли обновлены"
     else
-      flash[:failure] ||= []
-      flash[:failure] += contributor.errors.full_messages
+      flash.now[:failure] ||= []
+      flash.now[:failure] += contributor.errors.full_messages
     end
 
-    redirect_to jury_settings_jam_path(@jam)
+    @contributors = @jam.jam_contributors.includes(:user).order(:created_at)
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to jury_settings_jam_path(@jam), status: :see_other }
+    end
   end
 
   def remove_contributor
