@@ -85,6 +85,7 @@ Rails.application.routes.draw do
         get  :jury_settings
         get :jury_search
         post :jury_invite
+        patch :bulk_update_contributors
         patch "jury_settings/:contributor_id", to: "jams#update_contributor", as: :update_contributor
         delete "jury_settings/:contributor_id", to: "jams#remove_contributor", as: :remove_contributor
 

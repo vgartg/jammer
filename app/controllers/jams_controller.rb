@@ -8,11 +8,11 @@ class JamsController < ApplicationController
   before_action :set_jam, only: %i[
   show_projects show_participants remove_participant remove_project
   rating_settings update_rating_settings
-  jury_settings jury_invite update_contributor remove_contributor accept_contributor_invite
+  jury_settings jury_invite update_contributor remove_contributor accept_contributor_invite bulk_update_contributors
 ]
   before_action :jam_manage_check, only: %i[
   rating_settings update_rating_settings
-  jury_settings jury_invite update_contributor remove_contributor
+  jury_settings jury_invite update_contributor remove_contributor bulk_update_contributors
 ]
   before_action :invite_owner_check, only: %i[accept_contributor_invite]
 
@@ -349,6 +349,39 @@ class JamsController < ApplicationController
       flash.now[:failure] += contributor.errors.full_messages
     end
 
+    @contributors = @jam.jam_contributors.includes(:user).order(:created_at)
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to jury_settings_jam_path(@jam), status: :see_other }
+    end
+  end
+
+  def bulk_update_contributors
+    jam_manage_check
+
+    payload = params.fetch(:contributors, {}) # { "3" => {"host"=>"0","admin"=>"1","judge"=>"1"}, ... }
+
+    ActiveRecord::Base.transaction do
+      payload.each do |id, attrs|
+        c = @jam.jam_contributors.find(id)
+        c.update!(
+          host: ActiveModel::Type::Boolean.new.cast(attrs[:host]),
+          admin: ActiveModel::Type::Boolean.new.cast(attrs[:admin]),
+          judge: ActiveModel::Type::Boolean.new.cast(attrs[:judge])
+        )
+      end
+    end
+
+    flash.now[:success] = "Роли обновлены"
+    @contributors = @jam.jam_contributors.includes(:user).order(:created_at)
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to jury_settings_jam_path(@jam), status: :see_other }
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    flash.now[:failure] = e.record.errors.full_messages
     @contributors = @jam.jam_contributors.includes(:user).order(:created_at)
 
     respond_to do |format|
