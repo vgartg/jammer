@@ -23,16 +23,35 @@ class Jam < ActiveRecord::Base
     jam_rating_setting || create_jam_rating_setting
   end
 
+  def contributor_record(user)
+    return nil unless user
+    jam_contributors.find_by(user_id: user.id, status: "accepted")
+  end
+
+  # Операционное управление джемом: edit/update/destroy, remove_participant/remove_project и т.п.
   def can_manage?(user)
     return false unless user
     return true if user == author
-    return true if user.role.in?([1, 2]) # moderator/admin system
-    jc = jam_contributors.find_by(user_id: user.id, status: "accepted")
-    jc.present? && (jc.admin? || jc.host?)
+
+    jc = contributor_record(user)
+    return false unless jc
+
+    jc.host? || jc.admin?
+  end
+
+  # "Глобальные настройки" джема: настройки оценок и жюри
+  def can_configure?(user)
+    return false unless user
+    return true if user == author
+
+    jc = contributor_record(user)
+    return false unless jc
+
+    jc.host? # только host (и автор)
   end
 
   def judge?(user)
-    jc = jam_contributors.find_by(user_id: user.id, status: "accepted")
+    jc = contributor_record(user)
     jc.present? && jc.judge?
   end
 

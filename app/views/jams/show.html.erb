@@ -79,7 +79,7 @@
               <% end %>
             </div>
           </div>
-          <% if @jam.author.present? && session[:current_user] == @jam.author.id %>
+          <% if current_user && @jam.can_manage?(current_user) %>
             <%= button_to t('.projects'), jam_show_projects_path(@jam), method: :get,
                           class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
 
@@ -92,12 +92,13 @@
             <%= button_to t('.delete'), jam_destroy_path(@jam), method: :delete,
                           class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
 
-            <%= button_to "Настройки оценок", rating_settings_jam_path(@jam), method: :get,
-                          class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700" %>
+            <% if current_user && @jam.can_configure?(current_user) %>
+              <%= button_to "Настройки оценок", rating_settings_jam_path(@jam), method: :get,
+                            class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700" %>
 
-            <%= button_to "Настройки жюри", jury_settings_jam_path(@jam), method: :get,
-                          class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700" %>
-
+              <%= button_to "Настройки жюри", jury_settings_jam_path(@jam), method: :get,
+                            class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700" %>
+            <% end %>
           <% elsif current_user.present? %>
             <%= button_to t('.projects'), jam_show_projects_path(@jam), method: :get,
                           class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>

@@ -4,7 +4,7 @@
       <h2 class="text-2xl px-4 font-bold tracking-tight text-gray-900">
         <%= t '.title' %>
       </h2>
-      <% if current_user && (current_user == @jam.author || current_user.role.in?([1,2])) %>
+      <% if current_user && @jam.can_manage?(current_user) %>
         <span class="text-sm text-gray-500">(Вы можете удалить проект, нажав на кнопку рядом с игрой)</span>
       <% end %>
     </div>
@@ -88,7 +88,7 @@
                   <% end %>
                 </div>
 
-                <% if current_user && (current_user == @jam.author || current_user.role.in?([1,2])) %>
+                <% if current_user && @jam.can_manage?(current_user) %>
                   <div class="mt-2">
                     <%= button_to "Удалить проект", remove_project_jam_path(@jam, game_id: game.id),
                                   method: :delete,

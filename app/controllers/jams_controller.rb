@@ -2,19 +2,22 @@
 
 class JamsController < ApplicationController
   before_action :authenticate_user, only: %i[new create edit update submit_game participate delete_project]
-  before_action :root_check, only: %i[edit update destroy]
-  before_action :set_jam, only: %i[show_projects show_participants remove_participant remove_project]
-  before_action :author_or_admin, only: %i[remove_participant remove_project]
-  before_action :set_jam, only: %i[
+  before_action :set_jam, only: %i[edit update destroy
   show_projects show_participants remove_participant remove_project
   rating_settings update_rating_settings
   jury_settings jury_invite update_contributor remove_contributor accept_contributor_invite bulk_update_contributors
 ]
   before_action :jam_manage_check, only: %i[
-  rating_settings update_rating_settings
-  jury_settings jury_invite update_contributor remove_contributor bulk_update_contributors
+  edit update destroy
+  remove_participant remove_project
+  show_participants show_projects
+  jury_invite update_contributor remove_contributor bulk_update_contributors
 ]
-  before_action :invite_owner_check, only: %i[accept_contributor_invite]
+
+  before_action :jam_configure_check, only: %i[
+  rating_settings update_rating_settings
+  jury_settings
+]
 
   def new
     @notifications = current_user.notifications
@@ -142,7 +145,6 @@ class JamsController < ApplicationController
   end
 
   def edit
-    @jam = current_user.jams.find_by_id(params[:id])
     @tags = Tag.all
   end
 
@@ -162,7 +164,6 @@ class JamsController < ApplicationController
   end
 
   def update
-    @jam = current_user.jams.find_by_id(params[:id])
     failures = invalid_date
     if failures.any?
       flash[:failure] ||= []
@@ -186,7 +187,6 @@ class JamsController < ApplicationController
   end
 
   def destroy
-    @jam = current_user.jams.find_by_id(params[:id])
     if @jam.destroy
       flash[:success] ||= []
       flash[:success] << t('jams.destroy.success')
@@ -479,10 +479,11 @@ class JamsController < ApplicationController
     end
   end
 
-  def invite_owner_check
-    # принять инвайт может только залогиненный, но это у тебя already authenticate_user
-    # jam по before_action set_jam
-    true
+  def jam_configure_check
+    unless @jam.can_configure?(current_user)
+      flash[:failure] = "Недостаточно прав"
+      redirect_to dashboard_path
+    end
   end
 
   def rating_setting_params
