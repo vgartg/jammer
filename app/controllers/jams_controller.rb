@@ -10,7 +10,6 @@ class JamsController < ApplicationController
   before_action :jam_manage_check, only: %i[
   edit update destroy
   remove_participant remove_project
-  show_participants show_projects
   jury_invite update_contributor remove_contributor bulk_update_contributors
 ]
 

@@ -12,7 +12,7 @@
     "autoprefixer": "^10.4.19",
     "chart.js": "^4.4.8",
     "cropperjs": "^1.6.2",
-    "esbuild": "^0.23.0",
+    "esbuild": "^0.27.3",
     "flatpickr": "^4.6.13",
     "postcss": "^8.4.39",
     "stimulus": "^3.2.2",
