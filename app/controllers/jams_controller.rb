@@ -219,7 +219,7 @@ class JamsController < ApplicationController
   # ===== Rating settings =====
   def rating_settings
     @setting = @jam.rating_setting
-    @criteria = @jam.jam_criteria.order(:position, :id)
+    @criteria = @jam.jam_criteria.active.order(:position, :id)
     @nominations = @jam.jam_nominations.order(:position, :id)
   end
 
@@ -234,15 +234,51 @@ class JamsController < ApplicationController
 
     @setting.assign_attributes(rating_setting_params)
 
-    # 2) критерии
-    if params[:criteria]
-      @jam.jam_criteria.destroy_all
-      params[:criteria].each_with_index do |c, idx|
-        title = c[:title].to_s.strip
-        next if title.blank?
-        kind = c[:kind].to_s
-        kind = "voted_on" unless %w[voted_on manually_ranked].include?(kind)
-        @jam.jam_criteria.create!(title: title, kind: kind, position: idx)
+    # 2) критерии (SYNC, без destroy_all)
+    criteria_params = Array(params[:criteria])
+
+    kept_ids = []
+    position = 0
+
+    criteria_params.each do |c|
+      cid  = c[:id].presence
+      title = c[:title].to_s.strip
+      kind  = c[:kind].to_s
+      kind  = "voted_on" unless %w[voted_on manually_ranked].include?(kind)
+
+      # Пустая строка в форме = “удалить/пропустить”
+      if title.blank?
+        next
+      end
+
+      if cid.present?
+        crit = @jam.jam_criteria.find(cid)
+        old_title = crit.title
+        crit.update!(title: title, kind: kind, position: position, archived: false)
+
+        if old_title != title
+          Review.where(jam_id: @jam.id, criterion: old_title).update_all(criterion: title)
+        end
+        kept_ids << crit.id
+      else
+        crit = @jam.jam_criteria.create!(title: title, kind: kind, position: position, archived: false)
+        kept_ids << crit.id
+      end
+
+      position += 1
+    end
+
+    # Всё, что не осталось в форме — либо архивируем, либо удаляем если нет данных
+    to_remove = @jam.jam_criteria.where(archived: false).where.not(id: kept_ids)
+
+    to_remove.find_each do |crit|
+      has_picks = JamCriterionPick.where(jam_criterion_id: crit.id).exists?
+      has_reviews = Review.where(jam_id: @jam.id, criterion: crit.title).exists?
+
+      if has_picks || has_reviews
+        crit.update!(archived: true)
+      else
+        crit.destroy!
       end
     end
 

@@ -4,7 +4,7 @@ class JamVotesController < ApplicationController
 
   def new
     authorize_vote!
-    @criteria = @jam.jam_criteria.order(:position, :id)
+    @criteria = @jam.jam_criteria.where(archived: false).order(:position, :id)
     @vote_type = default_vote_type
     @existing = existing_reviews_indexed(@vote_type)
 
@@ -16,7 +16,7 @@ class JamVotesController < ApplicationController
 
   def create
     authorize_vote!
-    criteria = @jam.jam_criteria.order(:position, :id)
+    criteria = @jam.jam_criteria.where(archived: false).order(:position, :id)
 
     vote_type = params[:vote_type].to_s
     vote_type = default_vote_type if vote_type.blank?
