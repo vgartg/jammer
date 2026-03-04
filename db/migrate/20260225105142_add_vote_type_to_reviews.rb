@@ -7,6 +7,7 @@ class AddVoteTypeToReviews < ActiveRecord::Migration[8.0]
     add_index :reviews,
               [:user_id, :game_id, :jam_id, :criterion, :vote_type],
               unique: true,
-              name: "index_reviews_unique_per_criterion_vote_type"
+              name: "index_reviews_unique_per_criterion_vote_type",
+              if_not_exists: true
   end
 end

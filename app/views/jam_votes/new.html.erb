@@ -25,44 +25,64 @@
               <div class="rounded-lg border p-4 bg-white"
                    data-criteria-rating-target="criterionBlock"
                    data-criterion-id="<%= criterion.id %>">
+
                 <div class="flex items-center justify-between">
                   <h2 class="text-lg font-semibold text-gray-900"><%= criterion.title %></h2>
-                  <div class="text-sm text-gray-500">0..5</div>
-                </div>
 
-                <div class="mt-3 flex items-center space-x-2"
-                     data-criteria-rating-target="stars"
-                     data-criterion-id="<%= criterion.id %>">
-                  <% 5.times do |i| %>
-                    <svg class="w-8 h-8 cursor-pointer transition-all"
-                         data-action="mouseenter->criteria-rating#hover mouseleave->criteria-rating#leave click->criteria-rating#setRating"
-                         data-rating="<%= i + 1 %>"
-                         data-criterion-id="<%= criterion.id %>"
-                         xmlns="http://www.w3.org/2000/svg"
-                         viewBox="0 0 24 24"
-                         fill="gray">
-                      <polygon stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                               points="12 17.27 18.18 21 15.64 13.97 21 9.24 13.81 8.64 12 2 10.19 8.64 3 9.24 8.36 13.97 5.82 21 12 17.27"/>
-                    </svg>
+                  <% if criterion.kind == "manually_ranked" %>
+                    <div class="text-sm text-gray-500">1 голос</div>
+                  <% else %>
+                    <div class="text-sm text-gray-500">0..5</div>
                   <% end %>
                 </div>
 
-                <div class="mt-4">
-                  <textarea
-                    class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
-                    placeholder="Комментарий (необязательно)"
-                    rows="3"
-                    maxlength="1000"
-                    name="comments[<%= criterion.id %>]"
-                    data-action="input->criteria-rating#recalcOverall"
-                  ><%= existing&.comment.to_s %></textarea>
-                </div>
+                <% if criterion.kind == "manually_ranked" %>
+                  <% current_pick = @picks_by_criterion_id[criterion.id] %>
 
-                <input type="hidden"
-                       name="marks[<%= criterion.id %>]"
-                       value="<%= existing&.user_mark.to_f %>"
-                       data-criteria-rating-target="markInput"
+                  <turbo-frame id="jam_criterion_<%= criterion.id %>_pick_block">
+                    <%= render partial: "jam_criterion_picks/pick_block",
+                               locals: { jam: @jam, game: @game, criterion: criterion, current_pick: current_pick, vote_type: @vote_type } %>
+                  </turbo-frame>
+
+                  <%# чтобы форма не пыталась сохранить “оценку” для этого критерия %>
+                  <input type="hidden" name="marks[<%= criterion.id %>]" value="0">
+                  <input type="hidden" name="comments[<%= criterion.id %>]" value="">
+                <% else %>
+                  <%# ===== старый блок звёзд + коммент оставляем ===== %>
+                  <div class="mt-3 flex items-center space-x-2"
+                       data-criteria-rating-target="stars"
                        data-criterion-id="<%= criterion.id %>">
+                    <% 5.times do |i| %>
+                      <svg class="w-8 h-8 cursor-pointer transition-all"
+                           data-action="mouseenter->criteria-rating#hover mouseleave->criteria-rating#leave click->criteria-rating#setRating"
+                           data-rating="<%= i + 1 %>"
+                           data-criterion-id="<%= criterion.id %>"
+                           xmlns="http://www.w3.org/2000/svg"
+                           viewBox="0 0 24 24"
+                           fill="gray">
+                        <polygon stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 points="12 17.27 18.18 21 15.64 13.97 21 9.24 13.81 8.64 12 2 10.19 8.64 3 9.24 8.36 13.97 5.82 21 12 17.27"/>
+                      </svg>
+                    <% end %>
+                  </div>
+
+                  <div class="mt-4">
+        <textarea
+          class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"
+          placeholder="Комментарий (необязательно)"
+          rows="3"
+          maxlength="1000"
+          name="comments[<%= criterion.id %>]"
+          data-action="input->criteria-rating#recalcOverall"
+        ><%= existing&.comment.to_s %></textarea>
+                  </div>
+
+                  <input type="hidden"
+                         name="marks[<%= criterion.id %>]"
+                         value="<%= existing&.user_mark.to_f %>"
+                         data-criteria-rating-target="markInput"
+                         data-criterion-id="<%= criterion.id %>">
+                <% end %>
               </div>
             <% end %>
           </div>
@@ -72,11 +92,6 @@
             Сохранить
           </button>
         <% end %>
-      </div>
-
-      <div class="mt-8">
-        <%= button_to "Назад к игре", game_profile_path(@game, jam_id: @jam.id), method: :get,
-                      class: "text-indigo-600 hover:text-indigo-900" %>
       </div>
 
     </div>

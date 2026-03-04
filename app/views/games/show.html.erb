@@ -43,9 +43,32 @@
 
             </p>
 
+            <% if @single_pick_criteria.present? %>
+              <div class="mt-8">
+                <h2 class="text-lg font-semibold text-gray-900 text-center">Голоса по критериям</h2>
+
+                <div class="mt-4 mx-auto max-w-lg rounded border bg-white overflow-hidden">
+                  <div class="grid grid-cols-2 border-b bg-gray-50 px-3 py-2 text-sm font-medium text-gray-700">
+                    <div>Критерий</div>
+                    <div>Голоса</div>
+                  </div>
+
+                  <div class="divide-y">
+                    <% @single_pick_criteria.each do |c| %>
+                      <% cnt = @single_pick_counts[c.id] || 0 %>
+                      <div class="grid grid-cols-2 px-3 py-2 text-sm">
+                        <div class="text-gray-900 font-medium"><%= c.title %></div>
+                        <div class="text-gray-900"><%= cnt %></div>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+
 
             <!-- Show message if average rating is 0 -->
-            <% if @game.overall_rating.to_f == 0 && @game.author != current_user %>
+            <% if @jam_id.blank? && @game.overall_rating.to_f == 0 && @game.author != current_user %>
               <p class="text-sm text-black-500 mt-2">
                 <%= t '.rate_p' %>
               </p>
@@ -67,7 +90,19 @@
 
                 <%# Считаем вашу общую оценку по критериям: среднее ваших оценок по всем критериям %>
                 <% my_reviews_scope = @game.reviews.where(user_id: current_user.id, jam_id: jam.id).where.not(user_mark: 0) %>
-                <% my_overall = my_reviews_scope.any? ? my_reviews_scope.average(:user_mark).to_f.round(1) : 0.0 %>
+                <% my_reviews_sum = my_reviews_scope.sum(:user_mark).to_f %>
+                <% my_reviews_cnt = my_reviews_scope.count %>
+
+                <% my_picks_cnt = JamCriterionPick.where(jam_id: jam.id, voter_id: current_user.id, game_id: @game.id).count %>
+                <% my_total_cnt = my_reviews_cnt + my_picks_cnt %>
+
+                <% my_overall =
+                     if my_total_cnt > 0
+                       ((my_reviews_sum + my_picks_cnt * 5.0) / my_total_cnt).round(1)
+                     else
+                       0.0
+                     end
+                %>
 
                 <div class="mt-6 text-center">
                   <h2 class="text-lg font-semibold">Оценка по критериям</h2>

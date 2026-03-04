@@ -73,6 +73,14 @@ Rails.application.routes.draw do
     post "/jams/:jam_id/games/:game_id/vote", to: "jam_votes#create", as: :jam_game_vote
 
     resources :jams do
+      resources :games do
+        resource :vote, only: %i[new create], controller: "jam_votes"
+      end
+
+      resources :jam_criterion_picks, only: %i[create destroy]
+    end
+
+    resources :jams do
       member do
         post 'participate'
         patch 'delete_project'

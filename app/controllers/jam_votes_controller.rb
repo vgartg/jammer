@@ -7,6 +7,11 @@ class JamVotesController < ApplicationController
     @criteria = @jam.jam_criteria.order(:position, :id)
     @vote_type = default_vote_type
     @existing = existing_reviews_indexed(@vote_type)
+
+    channel = (@vote_type == "audience" ? "audience" : "jury")
+    @picks_by_criterion_id = JamCriterionPick
+                               .where(jam_id: @jam.id, voter_id: current_user.id, channel: channel)
+                               .index_by(&:jam_criterion_id)
   end
 
   def create
@@ -28,6 +33,8 @@ class JamVotesController < ApplicationController
 
     Review.transaction do
       criteria.each do |criterion|
+        next if criterion.kind == "manually_ranked"
+
         mark_raw = params.dig(:marks, criterion.id.to_s)
         comment_raw = params.dig(:comments, criterion.id.to_s)
 

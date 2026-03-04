@@ -28,7 +28,7 @@
               <input name="criteria[][title]" value="<%= c&.title.to_s %>" class="w-full rounded border px-3 py-2" placeholder="Например: Геймплей" />
               <select name="criteria[][kind]" class="rounded border px-3 py-2">
                 <option value="voted_on" <%= "selected" if c&.kind == "voted_on" %>>Voted on</option>
-                <option value="manually_ranked" <%= "selected" if c&.kind == "manually_ranked" %>>Manually ranked</option>
+                <option value="manually_ranked" <%= "selected" if c&.kind == "manually_ranked" %>>1 vote per game</option>
               </select>
             </div>
           <% end %>

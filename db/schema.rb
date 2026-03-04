@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_25_105142) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_04_145916) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -80,6 +80,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_105142) do
     t.integer "author_id"
     t.integer "status", default: 0
     t.string "reason"
+    t.string "html5_id"
     t.index ["name"], name: "index_games_on_name", unique: true
   end
 
@@ -115,6 +116,21 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_105142) do
     t.datetime "updated_at", null: false
     t.index ["jam_id", "position"], name: "index_jam_criteria_on_jam_id_and_position"
     t.index ["jam_id"], name: "index_jam_criteria_on_jam_id"
+  end
+
+  create_table "jam_criterion_picks", force: :cascade do |t|
+    t.bigint "jam_id", null: false
+    t.bigint "jam_criterion_id", null: false
+    t.bigint "voter_id", null: false
+    t.bigint "game_id", null: false
+    t.string "channel", default: "jury", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_jam_criterion_picks_on_game_id"
+    t.index ["jam_criterion_id"], name: "index_jam_criterion_picks_on_jam_criterion_id"
+    t.index ["jam_id", "jam_criterion_id", "voter_id", "channel"], name: "idx_unique_pick_per_criterion", unique: true
+    t.index ["jam_id"], name: "index_jam_criterion_picks_on_jam_id"
+    t.index ["voter_id"], name: "index_jam_criterion_picks_on_voter_id"
   end
 
   create_table "jam_nominations", force: :cascade do |t|
@@ -157,11 +173,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_105142) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
+    t.integer "status", default: 0
+    t.string "reason"
     t.integer "games", default: [], array: true
     t.integer "participants", default: [], array: true
     t.boolean "users_can_votes", default: false
-    t.integer "status", default: 0
-    t.string "reason"
     t.index ["author_id"], name: "index_jams_on_author_id"
     t.index ["name"], name: "index_jams_on_name"
   end
@@ -268,15 +284,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_105142) do
     t.string "email_confirm_token"
     t.datetime "email_confirm_token_sent_at"
     t.boolean "email_confirmed", default: false
-    t.string "jams_participating_visibility", default: "All"
-    t.string "jams_administrating_visibility", default: "All"
-    t.string "jams_visibility", default: "All"
     t.integer "role", default: 0
     t.boolean "is_frozen", default: false
     t.datetime "frozen_at"
     t.datetime "unfreeze_at"
     t.string "frozen_reason"
     t.boolean "is_online_today", default: false
+    t.string "jams_participating_visibility", default: "All"
+    t.string "jams_administrating_visibility", default: "All"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["role"], name: "index_users_on_role"
@@ -291,6 +306,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_105142) do
   add_foreign_key "jam_contributors", "jams"
   add_foreign_key "jam_contributors", "users"
   add_foreign_key "jam_criteria", "jams"
+  add_foreign_key "jam_criterion_picks", "games"
+  add_foreign_key "jam_criterion_picks", "jam_criteria", column: "jam_criterion_id"
+  add_foreign_key "jam_criterion_picks", "jams"
+  add_foreign_key "jam_criterion_picks", "users", column: "voter_id"
   add_foreign_key "jam_nominations", "jams"
   add_foreign_key "jam_rating_settings", "jams"
   add_foreign_key "jams_tags", "jams"
