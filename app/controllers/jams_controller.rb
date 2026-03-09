@@ -49,6 +49,13 @@ class JamsController < ApplicationController
                       .includes(game: :ratings)
     @games = submissions.map(&:game)
 
+    winner_map = {}
+    @jam.jam_nominations.where.not(winner_game_id: nil).find_each do |n|
+      winner_map[n.winner_game_id] ||= []
+      winner_map[n.winner_game_id] << n.title
+    end
+    @winner_titles_by_game_id = winner_map
+
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
       @games = Game.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
@@ -221,6 +228,7 @@ class JamsController < ApplicationController
     @setting = @jam.rating_setting
     @criteria = @jam.jam_criteria.active.order(:position, :id)
     @nominations = @jam.jam_nominations.order(:position, :id)
+    @games = @jam.jam_submissions.where.not(game_id: nil).includes(:game).map(&:game)
   end
 
   def update_rating_settings
@@ -282,23 +290,50 @@ class JamsController < ApplicationController
       end
     end
 
-    # 3) номинации
-    if params[:nominations]
-      @jam.jam_nominations.destroy_all
-      params[:nominations].each_with_index do |n, idx|
-        title = n[:title].to_s.strip
-        next if title.blank?
-        method = n[:method].to_s
-        method = "manual" unless %w[manual audience_based].include?(method)
-        @jam.jam_nominations.create!(title: title, method: method, position: idx)
+    # 3) номинации (SYNC, без destroy_all)
+    noms_params = Array(params[:nominations])
+
+    kept_nom_ids = []
+    pos = 0
+
+    noms_params.each do |n|
+      nid   = n[:id].presence
+      title = n[:title].to_s.strip
+      next if title.blank?
+
+      if nid.present?
+        nom = @jam.jam_nominations.find(nid)
+        nom.update!(title: title, position: pos)
+        kept_nom_ids << nom.id
+      else
+        nom = @jam.jam_nominations.create!(title: title, position: pos)
+        kept_nom_ids << nom.id
       end
+
+      pos += 1
     end
 
-    if @setting.save
-      flash[:success] = "Настройки оценок сохранены"
-    else
-      flash[:failure] ||= []
-      flash[:failure] += @setting.errors.full_messages
+    # что не осталось в форме — удаляем (у номинаций нет FK на picks, можно удалять спокойно)
+    @jam.jam_nominations.where.not(id: kept_nom_ids).destroy_all
+
+    # 4) победители номинаций (из общей формы)
+    winners_params = Array(params[:nominations_winners])
+
+    winners_params.each do |row|
+      nid = row[:id].presence
+      next if nid.blank?
+
+      nomination = @jam.jam_nominations.find(nid)
+
+      winner_id = row[:winner_game_id].presence
+
+      # (опционально) проверка: игра должна быть из этого джема
+      if winner_id.present?
+        allowed_game_ids = @jam.jam_submissions.where.not(game_id: nil).pluck(:game_id)
+        next unless allowed_game_ids.include?(winner_id.to_i)
+      end
+
+      nomination.update!(winner_game_id: winner_id)
     end
 
     redirect_to rating_settings_jam_path(@jam)
@@ -451,6 +486,47 @@ class JamsController < ApplicationController
 
     render partial: "jams/jury_search_results",
            locals: { users: @users, jam: @jam }
+  end
+
+  def update_nomination_winner
+    set_jam
+    unless @jam.can_configure?(current_user)
+      flash[:failure] = ["Недостаточно прав"]
+      return redirect_to rating_settings_jam_path(@jam), status: :see_other
+    end
+
+    nomination = @jam.jam_nominations.find(params[:nomination_id])
+
+    winner_id = params[:winner_game_id].presence
+
+    # Проверяем что игра из этого джема (или пусто)
+    if winner_id.present?
+      allowed_game_ids = @jam.jam_submissions.where.not(game_id: nil).pluck(:game_id)
+      unless allowed_game_ids.include?(winner_id.to_i)
+        flash.now[:failure] = ["Игра не участвует в этом джеме"]
+        return respond_winner_update(nomination)
+      end
+    end
+
+    nomination.update!(winner_game_id: winner_id)
+    flash.now[:success] = "Победитель сохранён"
+
+    respond_winner_update(nomination)
+  rescue ActiveRecord::RecordInvalid => e
+    flash.now[:failure] = e.record.errors.full_messages
+    respond_winner_update(nomination)
+  end
+
+  private
+
+  def respond_winner_update(_nomination)
+    @nominations = @jam.jam_nominations.where(archived: false).order(:position, :id) rescue @jam.jam_nominations.order(:position, :id)
+    @games = @jam.jam_submissions.where.not(game_id: nil).includes(:game).map(&:game)
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to rating_settings_jam_path(@jam), status: :see_other }
+    end
   end
 
   private

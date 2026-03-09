@@ -65,6 +65,30 @@
             </div>
           </div>
 
+          <% winners = @jam.jam_nominations.where.not(winner_game_id: nil).order(:position, :id) %>
+
+          <% if winners.any? %>
+            <div class="mt-10 rounded-lg border bg-white p-4">
+              <h2 class="text-lg font-semibold text-gray-900">Победители по номинациям</h2>
+
+              <div class="mt-4 space-y-3">
+                <% winners.each do |n| %>
+                  <% game = Game.find_by(id: n.winner_game_id) %>
+                  <% next unless game %>
+
+                  <div class="flex items-center justify-between rounded border px-3 py-2">
+                    <div class="font-medium text-gray-900"><%= n.title %></div>
+                    <div>
+                      <%= link_to game.name,
+                                  game_profile_path(game, jam_id: @jam.id),
+                                  class: "text-indigo-600 hover:text-indigo-900" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
           <div class="mt-10">
             <h2 class="text-lg font-medium text-gray-900">
               <%= t '.author' %>

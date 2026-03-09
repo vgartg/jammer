@@ -38,20 +38,20 @@
         <hr class="my-6"/>
 
         <h2 class="text-xl font-medium">Номинации</h2>
-        <p class="text-sm text-gray-500 mb-2">Номинацию присваивает админ в конце или она выбирается по оценкам аудитории</p>
+        <p class="text-sm text-gray-500 mb-2">Номинацию присваивает админ в конце</p>
 
         <div class="space-y-3">
           <% 5.times do |i| %>
             <% n = @nominations[i] %>
             <div class="flex gap-3">
+              <input type="hidden" name="nominations[][id]" value="<%= n&.id %>">
               <input name="nominations[][title]" value="<%= n&.title.to_s %>" class="w-full rounded border px-3 py-2" placeholder="Например: Лучший арт" />
-              <select name="nominations[][method]" class="rounded border px-3 py-2">
-                <option value="manual" <%= "selected" if n&.method == "manual" %>>Manual</option>
-                <option value="audience_based" <%= "selected" if n&.method == "audience_based" %>>Audience based</option>
-              </select>
             </div>
           <% end %>
         </div>
+
+        <%= render partial: "jams/nominations_winners",
+                   locals: { jam: @jam, nominations: @nominations, games: @games } %>
 
         <div class="pt-6">
           <%= f.submit "Сохранить", class: "rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700" %>

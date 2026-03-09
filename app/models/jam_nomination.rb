@@ -1,7 +1,6 @@
 class JamNomination < ApplicationRecord
   belongs_to :jam
-
-  enum :method, manual: 0, audience_based: 1
+  belongs_to :winner_game, class_name: "Game", optional: true
 
   validates :title, presence: true
 end

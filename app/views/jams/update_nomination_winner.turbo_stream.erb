@@ -1,0 +1,5 @@
+<%= turbo_stream.replace "flash_notices", partial: "helpers/flash_notices" %>
+
+<%= turbo_stream.replace "jam_nominations_winners",
+                         partial: "jams/nominations_winners",
+                         locals: { jam: @jam, nominations: @nominations, games: @games } %>

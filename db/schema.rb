@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_04_161654) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_09_093124) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -138,12 +138,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_04_161654) do
   create_table "jam_nominations", force: :cascade do |t|
     t.bigint "jam_id", null: false
     t.string "title", null: false
-    t.integer "method", default: 0, null: false
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "winner_game_id"
     t.index ["jam_id", "position"], name: "index_jam_nominations_on_jam_id_and_position"
     t.index ["jam_id"], name: "index_jam_nominations_on_jam_id"
+    t.index ["winner_game_id"], name: "index_jam_nominations_on_winner_game_id"
   end
 
   create_table "jam_rating_settings", force: :cascade do |t|
@@ -312,6 +313,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_04_161654) do
   add_foreign_key "jam_criterion_picks", "jam_criteria", column: "jam_criterion_id"
   add_foreign_key "jam_criterion_picks", "jams"
   add_foreign_key "jam_criterion_picks", "users", column: "voter_id"
+  add_foreign_key "jam_nominations", "games", column: "winner_game_id"
   add_foreign_key "jam_nominations", "jams"
   add_foreign_key "jam_rating_settings", "jams"
   add_foreign_key "jams_tags", "jams"

@@ -72,6 +72,8 @@ Rails.application.routes.draw do
     get  "/jams/:jam_id/games/:game_id/vote", to: "jam_votes#new", as: :new_jam_game_vote
     post "/jams/:jam_id/games/:game_id/vote", to: "jam_votes#create", as: :jam_game_vote
 
+    patch "jams/:id/nominations/:nomination_id/winner", to: "jams#update_nomination_winner", as: :update_nomination_winner_jam
+
     resources :jams do
       resources :games do
         resource :vote, only: %i[new create], controller: "jam_votes"
