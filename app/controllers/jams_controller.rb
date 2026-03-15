@@ -131,7 +131,7 @@ class JamsController < ApplicationController
         flash[:failure] << problem
       end
       render :new, status: :see_other
-    elsif  @jam.save
+    elsif @jam.save
       admins = User.where(role: [1, 2])
       admins.each do |admin|
         current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
@@ -249,10 +249,10 @@ class JamsController < ApplicationController
     position = 0
 
     criteria_params.each do |c|
-      cid  = c[:id].presence
+      cid = c[:id].presence
       title = c[:title].to_s.strip
-      kind  = c[:kind].to_s
-      kind  = "voted_on" unless %w[voted_on manually_ranked].include?(kind)
+      kind = c[:kind].to_s
+      kind = "voted_on" unless %w[voted_on manually_ranked].include?(kind)
 
       # Пустая строка в форме = “удалить/пропустить”
       if title.blank?
@@ -297,7 +297,7 @@ class JamsController < ApplicationController
     pos = 0
 
     noms_params.each do |n|
-      nid   = n[:id].presence
+      nid = n[:id].presence
       title = n[:title].to_s.strip
       next if title.blank?
 
@@ -334,6 +334,13 @@ class JamsController < ApplicationController
       end
 
       nomination.update!(winner_game_id: winner_id)
+    end
+
+    if @setting.save
+      flash[:success] = "Настройки оценок сохранены"
+    else
+      flash[:failure] ||= []
+      flash[:failure] += @setting.errors.full_messages
     end
 
     redirect_to rating_settings_jam_path(@jam)
@@ -385,7 +392,7 @@ class JamsController < ApplicationController
             "flash_notices",
             partial: "helpers/flash_notices"
           ),
-        turbo_stream.update("jury_search_results", "")
+          turbo_stream.update("jury_search_results", "")
         ]
       end
     end
