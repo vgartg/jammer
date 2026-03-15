@@ -54,8 +54,17 @@ class GamesController < ApplicationController
     else
       @rating = @game.ratings.find_by(jam_id: @jam_id)
       @rating ||= @game.ratings.create(jam_id: @jam_id, average_rating: 0.0)
-      @review = @game.reviews.find_by(user: current_user, jam_id: @jam_id) || @game.reviews.build(user: current_user, jam_id: @jam_id)
       @reviews = @game.reviews.where(jam_id: @jam_id).where.not(user_id: current_user.id)
+
+      @jam = Jam.find(@jam_id)
+
+      @single_pick_criteria = @jam.jam_criteria.where(kind: "manually_ranked").order(:position, :id)
+      criterion_ids = @single_pick_criteria.pluck(:id)
+
+      @single_pick_counts = JamCriterionPick
+                              .where(jam_id: @jam.id, game_id: @game.id, jam_criterion_id: criterion_ids)
+                              .group(:jam_criterion_id)
+                              .count
     end
 
     if current_user

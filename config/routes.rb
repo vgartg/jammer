@@ -69,12 +69,37 @@ Rails.application.routes.draw do
     get '/jams/:id/show_projects', to: 'jams#show_projects', as: 'jam_show_projects'
     get '/jams/:id/show_participants', to: 'jams#show_participants', as: 'jam_show_participants'
 
+    get  "/jams/:jam_id/games/:game_id/vote", to: "jam_votes#new", as: :new_jam_game_vote
+    post "/jams/:jam_id/games/:game_id/vote", to: "jam_votes#create", as: :jam_game_vote
+
+    patch "jams/:id/nominations/:nomination_id/winner", to: "jams#update_nomination_winner", as: :update_nomination_winner_jam
+
+    resources :jams do
+      resources :games do
+        resource :vote, only: %i[new create], controller: "jam_votes"
+      end
+
+      resources :jam_criterion_picks, only: %i[create destroy]
+    end
+
     resources :jams do
       member do
         post 'participate'
         patch 'delete_project'
         delete 'remove_participant', to: 'jams#remove_participant'
         delete 'remove_project', to: 'jams#remove_project'
+
+        get  :rating_settings
+        patch :rating_settings, action: :update_rating_settings
+
+        get  :jury_settings
+        get :jury_search
+        post :jury_invite
+        patch :bulk_update_contributors
+        patch "jury_settings/:contributor_id", to: "jams#update_contributor", as: :update_contributor
+        delete "jury_settings/:contributor_id", to: "jams#remove_contributor", as: :remove_contributor
+
+        patch "jury_settings/:contributor_id/accept", to: "jams#accept_contributor_invite", as: :accept_contributor_invite
       end
     end
     resources :games do

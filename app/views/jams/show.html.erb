@@ -65,6 +65,30 @@
             </div>
           </div>
 
+          <% winners = @jam.jam_nominations.where.not(winner_game_id: nil).order(:position, :id) %>
+
+          <% if winners.any? %>
+            <div class="mt-10 rounded-lg border bg-white p-4">
+              <h2 class="text-lg font-semibold text-gray-900">Победители по номинациям</h2>
+
+              <div class="mt-4 space-y-3">
+                <% winners.each do |n| %>
+                  <% game = Game.find_by(id: n.winner_game_id) %>
+                  <% next unless game %>
+
+                  <div class="flex items-center justify-between rounded border px-3 py-2">
+                    <div class="font-medium text-gray-900"><%= n.title %></div>
+                    <div>
+                      <%= link_to game.name,
+                                  game_profile_path(game, jam_id: @jam.id),
+                                  class: "text-indigo-600 hover:text-indigo-900" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
           <div class="mt-10">
             <h2 class="text-lg font-medium text-gray-900">
               <%= t '.author' %>
@@ -79,7 +103,7 @@
               <% end %>
             </div>
           </div>
-          <% if @jam.author.present? && session[:current_user] == @jam.author.id %>
+          <% if current_user && @jam.can_manage?(current_user) %>
             <%= button_to t('.projects'), jam_show_projects_path(@jam), method: :get,
                           class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
 
@@ -92,6 +116,13 @@
             <%= button_to t('.delete'), jam_destroy_path(@jam), method: :delete,
                           class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
 
+            <% if current_user && @jam.can_configure?(current_user) %>
+              <%= button_to "Настройки оценок", rating_settings_jam_path(@jam), method: :get,
+                            class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700" %>
+
+              <%= button_to "Настройки жюри", jury_settings_jam_path(@jam), method: :get,
+                            class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700" %>
+            <% end %>
           <% elsif current_user.present? %>
             <%= button_to t('.projects'), jam_show_projects_path(@jam), method: :get,
                           class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>

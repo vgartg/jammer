@@ -9,7 +9,7 @@
         <h2 class="px-4 text-2xl font-bold tracking-tight text-gray-900">
           <%= t '.title' %>
         </h2>
-        <% if current_user && (current_user == @jam.author || current_user.role.in?([1,2])) %>
+        <% if current_user && @jam.can_manage?(current_user) %>
           <span class="text-sm text-gray-500">(Нажмите "Удалить", чтобы исключить участника)</span>
         <% end %>
       <% end %>
@@ -54,7 +54,7 @@
             </div>
           </a>
 
-          <% if current_user && (current_user == @jam.author || current_user.role.in?([1,2])) %>
+          <% if current_user && @jam.can_manage?(current_user) %>
             <div class="ml-2">
               <%= button_to "Удалить", remove_participant_jam_path(@jam, user_id: user.id),
                             method: :delete,

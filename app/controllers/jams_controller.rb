@@ -2,9 +2,21 @@
 
 class JamsController < ApplicationController
   before_action :authenticate_user, only: %i[new create edit update submit_game participate delete_project]
-  before_action :root_check, only: %i[edit update destroy]
-  before_action :set_jam, only: %i[show_projects show_participants remove_participant remove_project]
-  before_action :author_or_admin, only: %i[remove_participant remove_project]
+  before_action :set_jam, only: %i[edit update destroy
+  show_projects show_participants remove_participant remove_project
+  rating_settings update_rating_settings
+  jury_settings jury_invite update_contributor remove_contributor accept_contributor_invite bulk_update_contributors
+]
+  before_action :jam_manage_check, only: %i[
+  edit update destroy
+  remove_participant remove_project
+  jury_invite update_contributor remove_contributor bulk_update_contributors
+]
+
+  before_action :jam_configure_check, only: %i[
+  rating_settings update_rating_settings
+  jury_settings
+]
 
   def new
     @notifications = current_user.notifications
@@ -36,6 +48,13 @@ class JamsController < ApplicationController
                       .where.not(game_id: nil)
                       .includes(game: :ratings)
     @games = submissions.map(&:game)
+
+    winner_map = {}
+    @jam.jam_nominations.where.not(winner_game_id: nil).find_each do |n|
+      winner_map[n.winner_game_id] ||= []
+      winner_map[n.winner_game_id] << n.title
+    end
+    @winner_titles_by_game_id = winner_map
 
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
@@ -112,7 +131,7 @@ class JamsController < ApplicationController
         flash[:failure] << problem
       end
       render :new, status: :see_other
-    elsif  @jam.save
+    elsif @jam.save
       admins = User.where(role: [1, 2])
       admins.each do |admin|
         current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
@@ -132,7 +151,6 @@ class JamsController < ApplicationController
   end
 
   def edit
-    @jam = current_user.jams.find_by_id(params[:id])
     @tags = Tag.all
   end
 
@@ -152,7 +170,6 @@ class JamsController < ApplicationController
   end
 
   def update
-    @jam = current_user.jams.find_by_id(params[:id])
     failures = invalid_date
     if failures.any?
       flash[:failure] ||= []
@@ -176,7 +193,6 @@ class JamsController < ApplicationController
   end
 
   def destroy
-    @jam = current_user.jams.find_by_id(params[:id])
     if @jam.destroy
       flash[:success] ||= []
       flash[:success] << t('jams.destroy.success')
@@ -205,6 +221,319 @@ class JamsController < ApplicationController
       flash[:alert] = "Не удалось удалить проект."
     end
     redirect_to jam_show_projects_path(@jam)
+  end
+
+  # ===== Rating settings =====
+  def rating_settings
+    @setting = @jam.rating_setting
+    @criteria = @jam.jam_criteria.active.order(:position, :id)
+    @nominations = @jam.jam_nominations.order(:position, :id)
+    @games = @jam.jam_submissions.where.not(game_id: nil).includes(:game).map(&:game)
+  end
+
+  def update_rating_settings
+    @setting = @jam.rating_setting
+
+    # 1) сохраняем тумблеры
+    if @setting.locked
+      flash[:failure] = "Настройки заблокированы"
+      return redirect_to rating_settings_jam_path(@jam)
+    end
+
+    @setting.assign_attributes(rating_setting_params)
+
+    # 2) критерии (SYNC, без destroy_all)
+    criteria_params = Array(params[:criteria])
+
+    kept_ids = []
+    position = 0
+
+    criteria_params.each do |c|
+      cid = c[:id].presence
+      title = c[:title].to_s.strip
+      kind = c[:kind].to_s
+      kind = "voted_on" unless %w[voted_on manually_ranked].include?(kind)
+
+      # Пустая строка в форме = “удалить/пропустить”
+      if title.blank?
+        next
+      end
+
+      if cid.present?
+        crit = @jam.jam_criteria.find(cid)
+        old_title = crit.title
+        crit.update!(title: title, kind: kind, position: position, archived: false)
+
+        if old_title != title
+          Review.where(jam_id: @jam.id, criterion: old_title).update_all(criterion: title)
+        end
+        kept_ids << crit.id
+      else
+        crit = @jam.jam_criteria.create!(title: title, kind: kind, position: position, archived: false)
+        kept_ids << crit.id
+      end
+
+      position += 1
+    end
+
+    # Всё, что не осталось в форме — либо архивируем, либо удаляем если нет данных
+    to_remove = @jam.jam_criteria.where(archived: false).where.not(id: kept_ids)
+
+    to_remove.find_each do |crit|
+      has_picks = JamCriterionPick.where(jam_criterion_id: crit.id).exists?
+      has_reviews = Review.where(jam_id: @jam.id, criterion: crit.title).exists?
+
+      if has_picks || has_reviews
+        crit.update!(archived: true)
+      else
+        crit.destroy!
+      end
+    end
+
+    # 3) номинации (SYNC, без destroy_all)
+    noms_params = Array(params[:nominations])
+
+    kept_nom_ids = []
+    pos = 0
+
+    noms_params.each do |n|
+      nid = n[:id].presence
+      title = n[:title].to_s.strip
+      next if title.blank?
+
+      if nid.present?
+        nom = @jam.jam_nominations.find(nid)
+        nom.update!(title: title, position: pos)
+        kept_nom_ids << nom.id
+      else
+        nom = @jam.jam_nominations.create!(title: title, position: pos)
+        kept_nom_ids << nom.id
+      end
+
+      pos += 1
+    end
+
+    # что не осталось в форме — удаляем (у номинаций нет FK на picks, можно удалять спокойно)
+    @jam.jam_nominations.where.not(id: kept_nom_ids).destroy_all
+
+    # 4) победители номинаций (из общей формы)
+    winners_params = Array(params[:nominations_winners])
+
+    winners_params.each do |row|
+      nid = row[:id].presence
+      next if nid.blank?
+
+      nomination = @jam.jam_nominations.find(nid)
+
+      winner_id = row[:winner_game_id].presence
+
+      # (опционально) проверка: игра должна быть из этого джема
+      if winner_id.present?
+        allowed_game_ids = @jam.jam_submissions.where.not(game_id: nil).pluck(:game_id)
+        next unless allowed_game_ids.include?(winner_id.to_i)
+      end
+
+      nomination.update!(winner_game_id: winner_id)
+    end
+
+    if @setting.save
+      flash[:success] = "Настройки оценок сохранены"
+    else
+      flash[:failure] ||= []
+      flash[:failure] += @setting.errors.full_messages
+    end
+
+    redirect_to rating_settings_jam_path(@jam)
+  end
+
+  # ===== Jury settings =====
+  def jury_settings
+    @contributors = @jam.jam_contributors.includes(:user).order(:created_at)
+    @pending = @contributors.select { |c| c.status == "pending" }
+    @accepted = @contributors.select { |c| c.status == "accepted" }
+
+    @users = User.order(:name) # чтобы в форме выбирать (быстро и просто)
+  end
+
+  def jury_invite
+    user = User.find_by(id: params[:user_id])
+
+    unless user
+      flash[:failure] = ["Пользователь не найден"]
+      return redirect_to jury_settings_jam_path(@jam)
+    end
+
+    contributor = @jam.jam_contributors.find_or_initialize_by(user_id: user.id)
+    contributor.status ||= "pending"
+    contributor.judge = true if contributor.new_record?
+
+    if contributor.save
+      current_user.create_notification(user, current_user, "sent_jam_jury_invite", contributor)
+      flash[:success] ||= []
+      flash[:success] << "Инвайт отправлен"
+    else
+      flash[:failure] ||= []
+      flash[:failure] += contributor.errors.full_messages
+    end
+
+    @contributors = @jam.jam_contributors.includes(:user).order(:created_at)
+
+    respond_to do |format|
+      format.html { redirect_to jury_settings_jam_path(@jam) }
+
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace(
+            "jam_contributors_table",
+            partial: "jams/jury_contributors_table",
+            locals: { jam: @jam, contributors: @contributors }
+          ),
+          turbo_stream.replace(
+            "flash_notices",
+            partial: "helpers/flash_notices"
+          ),
+          turbo_stream.update("jury_search_results", "")
+        ]
+      end
+    end
+  end
+
+  def accept_contributor_invite
+    contributor = @jam.jam_contributors.find_by(id: params[:contributor_id], user_id: current_user.id)
+    unless contributor
+      flash[:failure] = "Инвайт не найден"
+      return redirect_to jam_profile_path(@jam)
+    end
+
+    if contributor.update(status: "accepted")
+      # нотифицируем автора джема
+      current_user.create_notification(@jam.author, current_user, "accepted_jam_jury_invite", contributor)
+      flash[:success] = "Вы приняли приглашение"
+    else
+      flash[:failure] = "Не удалось принять приглашение"
+    end
+
+    redirect_to jam_profile_path(@jam)
+  end
+
+  def update_contributor
+    contributor = @jam.jam_contributors.find(params[:contributor_id])
+
+    if contributor.update(contributor_params)
+      flash.now[:success] = "Роли обновлены"
+    else
+      flash.now[:failure] ||= []
+      flash.now[:failure] += contributor.errors.full_messages
+    end
+
+    @contributors = @jam.jam_contributors.includes(:user).order(:created_at)
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to jury_settings_jam_path(@jam), status: :see_other }
+    end
+  end
+
+  def bulk_update_contributors
+    jam_manage_check
+
+    payload = params.fetch(:contributors, {}) # { "3" => {"host"=>"0","admin"=>"1","judge"=>"1"}, ... }
+
+    ActiveRecord::Base.transaction do
+      payload.each do |id, attrs|
+        c = @jam.jam_contributors.find(id)
+        c.update!(
+          host: ActiveModel::Type::Boolean.new.cast(attrs[:host]),
+          admin: ActiveModel::Type::Boolean.new.cast(attrs[:admin]),
+          judge: ActiveModel::Type::Boolean.new.cast(attrs[:judge])
+        )
+      end
+    end
+
+    flash.now[:success] = "Роли обновлены"
+    @contributors = @jam.jam_contributors.includes(:user).order(:created_at)
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to jury_settings_jam_path(@jam), status: :see_other }
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    flash.now[:failure] = e.record.errors.full_messages
+    @contributors = @jam.jam_contributors.includes(:user).order(:created_at)
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to jury_settings_jam_path(@jam), status: :see_other }
+    end
+  end
+
+  def remove_contributor
+    contributor = @jam.jam_contributors.find(params[:contributor_id])
+    contributor.destroy
+    flash[:success] = "Удалено"
+    redirect_to jury_settings_jam_path(@jam)
+  end
+
+  def jury_search
+    @jam = Jam.find(params[:id])
+    jam_manage_check
+
+    q = params[:q].to_s.strip.downcase
+
+    return render html: "" if q.length < 2
+
+    # ID уже добавленных
+    excluded_ids = @jam.jam_contributors.pluck(:user_id)
+    excluded_ids << @jam.author_id
+
+    @users =
+      User.where("LOWER(name) LIKE :q OR LOWER(email) LIKE :q", q: "%#{q}%")
+          .where.not(id: excluded_ids)
+          .limit(10)
+
+    render partial: "jams/jury_search_results",
+           locals: { users: @users, jam: @jam }
+  end
+
+  def update_nomination_winner
+    set_jam
+    unless @jam.can_configure?(current_user)
+      flash[:failure] = ["Недостаточно прав"]
+      return redirect_to rating_settings_jam_path(@jam), status: :see_other
+    end
+
+    nomination = @jam.jam_nominations.find(params[:nomination_id])
+
+    winner_id = params[:winner_game_id].presence
+
+    # Проверяем что игра из этого джема (или пусто)
+    if winner_id.present?
+      allowed_game_ids = @jam.jam_submissions.where.not(game_id: nil).pluck(:game_id)
+      unless allowed_game_ids.include?(winner_id.to_i)
+        flash.now[:failure] = ["Игра не участвует в этом джеме"]
+        return respond_winner_update(nomination)
+      end
+    end
+
+    nomination.update!(winner_game_id: winner_id)
+    flash.now[:success] = "Победитель сохранён"
+
+    respond_winner_update(nomination)
+  rescue ActiveRecord::RecordInvalid => e
+    flash.now[:failure] = e.record.errors.full_messages
+    respond_winner_update(nomination)
+  end
+
+  private
+
+  def respond_winner_update(_nomination)
+    @nominations = @jam.jam_nominations.where(archived: false).order(:position, :id) rescue @jam.jam_nominations.order(:position, :id)
+    @games = @jam.jam_submissions.where.not(game_id: nil).includes(:game).map(&:game)
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to rating_settings_jam_path(@jam), status: :see_other }
+    end
   end
 
   private
@@ -259,5 +588,27 @@ class JamsController < ApplicationController
     endDate.year < 2000 ? failures.push("Некорректная дата окончания джема") : failures
 
     failures
+  end
+
+  def jam_manage_check
+    unless @jam.can_manage?(current_user)
+      flash[:failure] = "Недостаточно прав"
+      redirect_to dashboard_path
+    end
+  end
+
+  def jam_configure_check
+    unless @jam.can_configure?(current_user)
+      flash[:failure] = "Недостаточно прав"
+      redirect_to dashboard_path
+    end
+  end
+
+  def rating_setting_params
+    params.require(:jam_rating_setting).permit(:jury_enabled, :audience_enabled)
+  end
+
+  def contributor_params
+    params.require(:jam_contributor).permit(:host, :admin, :judge, :status)
   end
 end
