@@ -193,14 +193,32 @@ export default class extends Controller {
 
     // Функция для парсинга даты в формате DD.MM.YYYY
     _parseDate(dateString) {
-        const parts = dateString.split('.');
+        if (!dateString) return null;
 
-        if (parts.length === 3 && parts.every(part => !isNaN(part))) {
-            const day = parseInt(parts[0], 10);
-            const month = parseInt(parts[1], 10) - 1; // Месяцы начинаются с 0
-            const year = parseInt(parts[2], 10);
+        // Формат YYYY-MM-DD
+        if (dateString.includes('-')) {
+            const parts = dateString.split('-');
 
-            return new Date(year, month, day);
+            if (parts.length === 3 && parts.every(part => !isNaN(part))) {
+                const year = parseInt(parts[0], 10);
+                const month = parseInt(parts[1], 10) - 1;
+                const day = parseInt(parts[2], 10);
+
+                return new Date(year, month, day);
+            }
+        }
+
+        // Формат DD.MM.YYYY
+        if (dateString.includes('.')) {
+            const parts = dateString.split('.');
+
+            if (parts.length === 3 && parts.every(part => !isNaN(part))) {
+                const day = parseInt(parts[0], 10);
+                const month = parseInt(parts[1], 10) - 1;
+                const year = parseInt(parts[2], 10);
+
+                return new Date(year, month, day);
+            }
         }
 
         return null;
