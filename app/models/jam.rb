@@ -85,6 +85,10 @@ class Jam < ActiveRecord::Base
     !submission_open?
   end
 
+  def hosts
+    jam_contributors.includes(:user).where(status: "accepted", host: true).map(&:user)
+  end
+
   belongs_to :author, foreign_key: 'author_id', class_name: 'User'
 
   has_and_belongs_to_many :tags
