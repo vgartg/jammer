@@ -75,6 +75,16 @@ class Jam < ActiveRecord::Base
     true
   end
 
+  def submission_open?
+    return false if start_date.blank? || deadline.blank?
+    today = Date.current
+    today >= start_date && today <= deadline
+  end
+
+  def submission_closed?
+    !submission_open?
+  end
+
   belongs_to :author, foreign_key: 'author_id', class_name: 'User'
 
   has_and_belongs_to_many :tags

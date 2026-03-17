@@ -134,23 +134,8 @@
               <%= render "helpers/report_form", report_item: @jam %>
             </div>
 
-            <% if @jsb.present? %>
-              <script>
-                  function showWindow(doc, part_id) {
-                      doc.getElementById(part_id).showModal();
-                      doc.getElementById('modalContent')?.focus();
-                  }
-
-                  document.addEventListener('turbo:visit', function () {
-                      document.getElementById('favDialog')?.close();
-                  });
-              </script>
-
-              <dialog id="favDialog">
-                <%= render partial: 'jams/modal_content' %>
-              </dialog>
-
-              <% if @jsb.game_id.present? %>
+            <% if @jsb.game_id.present? %>
+              <% if @submission_open %>
                 <%= button_to t('.edit_game'), game_edit_path(@game), method: :get,
                               class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
 
@@ -159,20 +144,26 @@
                         onclick="showWindow(document, 'favDialog')">
                   <%= t '.change_game' %>
                 </button>
-
-                <%= button_to t('.delete_game'), delete_project_jam_path(@jam), method: :patch,
-                              class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
               <% else %>
+                <p class="mt-4 text-sm text-gray-500">
+                  Приём работ завершён. Редактирование и замена игры недоступны.
+                </p>
+              <% end %>
+
+              <%= button_to t('.delete_game'), delete_project_jam_path(@jam), method: :patch,
+                            class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
+            <% else %>
+              <% if @submission_open %>
                 <button type="button"
                         class="mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         onclick="showWindow(document, 'favDialog')">
                   <%= t '.add_game' %>
                 </button>
+              <% else %>
+                <p class="mt-4 text-sm text-gray-500">
+                  Приём работ завершён
+                </p>
               <% end %>
-
-            <% else %>
-              <%= button_to t('.participate'), participate_jam_path(@jam), method: :post,
-                            class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
             <% end %>
           <% end %>
 
