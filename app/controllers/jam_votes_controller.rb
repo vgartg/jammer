@@ -72,6 +72,16 @@ class JamVotesController < ApplicationController
   end
 
   def authorize_vote!
+    unless @jam.jam_submissions.where(game_id: @game.id).exists?
+      flash[:failure] = "Эта игра не участвует в данном джеме"
+      redirect_to jam_profile_path(@jam) and return
+    end
+
+    if @game.author == current_user
+      flash[:failure] = "Нельзя оценивать собственную игру"
+      redirect_to game_profile_path(@game, jam_id: @jam.id) and return
+    end
+
     unless @jam.voting_open?
       flash[:failure] = "Голосование сейчас закрыто"
       redirect_to jam_profile_path(@jam) and return

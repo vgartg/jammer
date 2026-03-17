@@ -72,6 +72,7 @@ class Jam < ActiveRecord::Base
     return false unless user
     return false unless rating_setting.audience_enabled
     return false unless voting_open?
+    return false if judge?(user)
     true
   end
 
