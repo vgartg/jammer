@@ -19,12 +19,39 @@ class Game < ActiveRecord::Base
 
   validate :game_file_format
   validate :game_file_size
-  def overall_rating
-    ratings.find_by(jam_id: nil)&.average_rating || 0.0
+  def jam_rating(jam_id, vote_type: nil)
+    # 1) Оценки звёздами (voted_on)
+    reviews_scope = reviews.where(jam_id: jam_id).where.not(user_mark: 0)
+
+    if vote_type.present?
+      vt = Review.vote_types[vote_type.to_s] # "jury"/"audience" -> int
+      reviews_scope = reviews_scope.where(vote_type: vt) if vt
+    end
+
+    reviews_sum = reviews_scope.sum(:user_mark)
+    reviews_cnt = reviews_scope.count
+
+    # 2) “1 голос за игру” (manually_ranked) -> считаем как 5 звёзд
+    picks_scope = JamCriterionPick.where(jam_id: jam_id, game_id: id)
+
+    # если хочешь учитывать только конкретный канал (jury/audience) — фильтруем
+    if vote_type.present? && %w[jury audience].include?(vote_type.to_s)
+      picks_scope = picks_scope.where(channel: vote_type.to_s)
+    end
+
+    picks_cnt = picks_scope.count
+    picks_sum = picks_cnt * 5.0
+
+    total_cnt = reviews_cnt + picks_cnt
+    return 0.0 if total_cnt == 0
+
+    ((reviews_sum + picks_sum) / total_cnt.to_f).round(1)
   end
 
-  def jam_rating(jam_id)
-    ratings.find_by(jam_id: jam_id)&.average_rating || 0.0
+  def overall_rating(vote_type: nil)
+    scope = reviews.where(jam_id: nil).where.not(user_mark: 0)
+    scope = scope.where(vote_type: vote_type) if vote_type.present?
+    scope.any? ? scope.average(:user_mark).to_f.round(1) : 0.0
   end
 
   validates :reason, presence: true, if: -> { status == 2 }

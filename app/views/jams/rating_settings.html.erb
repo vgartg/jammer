@@ -1,0 +1,62 @@
+<div class="mx-auto max-w-3xl px-4 py-8">
+  <h1 class="text-2xl font-semibold mb-6">Настройки оценок</h1>
+
+  <div class="mb-6">
+    <%= form_with model: @setting, url: rating_settings_jam_path(@jam), method: :patch do |f| %>
+      <div class="space-y-4">
+        <div class="flex items-center gap-3">
+          <%= f.check_box :jury_enabled %>
+          <%= f.label :jury_enabled, "Жюри (да/нет)" %>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <%= f.check_box :audience_enabled %>
+          <%= f.label :audience_enabled, "Аудитория (да/нет)" %>
+        </div>
+
+        <p class="text-sm text-cyan-500">Нельзя выбрать два раза “нет”</p>
+
+        <hr class="my-6"/>
+
+        <h2 class="text-xl font-medium">Критерии оценивания</h2>
+        <p class="text-sm text-gray-500 mb-2">Название критерия (оценка всегда 0..5)</p>
+
+        <div class="space-y-3">
+          <% 5.times do |i| %>
+            <% c = @criteria[i] %>
+            <div class="flex gap-3">
+              <input type="hidden" name="criteria[][id]" value="<%= c&.id %>">
+              <input name="criteria[][title]" value="<%= c&.title.to_s %>" class="w-full rounded border px-3 py-2" placeholder="Например: Геймплей" />
+              <select name="criteria[][kind]" class="rounded border px-3 py-2">
+                <option value="voted_on" <%= "selected" if c&.kind == "voted_on" %>>Voted on</option>
+                <option value="manually_ranked" <%= "selected" if c&.kind == "manually_ranked" %>>1 vote per game</option>
+              </select>
+            </div>
+          <% end %>
+        </div>
+
+        <hr class="my-6"/>
+
+        <h2 class="text-xl font-medium">Номинации</h2>
+        <p class="text-sm text-gray-500 mb-2">Номинацию присваивает админ в конце</p>
+
+        <div class="space-y-3">
+          <% 5.times do |i| %>
+            <% n = @nominations[i] %>
+            <div class="flex gap-3">
+              <input type="hidden" name="nominations[][id]" value="<%= n&.id %>">
+              <input name="nominations[][title]" value="<%= n&.title.to_s %>" class="w-full rounded border px-3 py-2" placeholder="Например: Лучший арт" />
+            </div>
+          <% end %>
+        </div>
+
+        <%= render partial: "jams/nominations_winners",
+                   locals: { jam: @jam, nominations: @nominations, games: @games } %>
+
+        <div class="pt-6">
+          <%= f.submit "Сохранить", class: "rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

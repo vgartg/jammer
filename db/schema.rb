@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_09_191916) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_09_093124) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -93,6 +93,70 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_09_191916) do
     t.index ["tag_id"], name: "index_games_tags_on_tag_id"
   end
 
+  create_table "jam_contributors", force: :cascade do |t|
+    t.bigint "jam_id", null: false
+    t.bigint "user_id", null: false
+    t.string "status", default: "pending", null: false
+    t.boolean "host", default: false, null: false
+    t.boolean "admin", default: false, null: false
+    t.boolean "judge", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["jam_id", "user_id"], name: "index_jam_contributors_on_jam_id_and_user_id", unique: true
+    t.index ["jam_id"], name: "index_jam_contributors_on_jam_id"
+    t.index ["user_id"], name: "index_jam_contributors_on_user_id"
+  end
+
+  create_table "jam_criteria", force: :cascade do |t|
+    t.bigint "jam_id", null: false
+    t.string "title", null: false
+    t.integer "kind", default: 0, null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "archived", default: false, null: false
+    t.index ["jam_id", "archived"], name: "index_jam_criteria_on_jam_id_and_archived"
+    t.index ["jam_id", "position"], name: "index_jam_criteria_on_jam_id_and_position"
+    t.index ["jam_id"], name: "index_jam_criteria_on_jam_id"
+  end
+
+  create_table "jam_criterion_picks", force: :cascade do |t|
+    t.bigint "jam_id", null: false
+    t.bigint "jam_criterion_id", null: false
+    t.bigint "voter_id", null: false
+    t.bigint "game_id", null: false
+    t.string "channel", default: "jury", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_jam_criterion_picks_on_game_id"
+    t.index ["jam_criterion_id"], name: "index_jam_criterion_picks_on_jam_criterion_id"
+    t.index ["jam_id", "jam_criterion_id", "voter_id", "channel"], name: "idx_unique_pick_per_criterion", unique: true
+    t.index ["jam_id"], name: "index_jam_criterion_picks_on_jam_id"
+    t.index ["voter_id"], name: "index_jam_criterion_picks_on_voter_id"
+  end
+
+  create_table "jam_nominations", force: :cascade do |t|
+    t.bigint "jam_id", null: false
+    t.string "title", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "winner_game_id"
+    t.index ["jam_id", "position"], name: "index_jam_nominations_on_jam_id_and_position"
+    t.index ["jam_id"], name: "index_jam_nominations_on_jam_id"
+    t.index ["winner_game_id"], name: "index_jam_nominations_on_winner_game_id"
+  end
+
+  create_table "jam_rating_settings", force: :cascade do |t|
+    t.bigint "jam_id", null: false
+    t.boolean "jury_enabled", default: true, null: false
+    t.boolean "audience_enabled", default: true, null: false
+    t.boolean "locked", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["jam_id"], name: "index_jam_rating_settings_on_jam_id"
+  end
+
   create_table "jam_submissions", force: :cascade do |t|
     t.integer "jam_id"
     t.integer "game_id"
@@ -171,7 +235,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_09_191916) do
     t.datetime "updated_at", null: false
     t.integer "game_id"
     t.integer "jam_id"
+    t.text "comment"
+    t.integer "vote_type", default: 0, null: false
+    t.index ["user_id", "game_id", "jam_id", "criterion", "vote_type"], name: "index_reviews_unique_per_criterion_vote_type", unique: true
     t.index ["user_id"], name: "index_reviews_on_user_id"
+    t.index ["vote_type"], name: "index_reviews_on_vote_type"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -238,6 +306,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_09_191916) do
   add_foreign_key "games", "users", column: "author_id"
   add_foreign_key "games_tags", "games"
   add_foreign_key "games_tags", "tags"
+  add_foreign_key "jam_contributors", "jams"
+  add_foreign_key "jam_contributors", "users"
+  add_foreign_key "jam_criteria", "jams"
+  add_foreign_key "jam_criterion_picks", "games"
+  add_foreign_key "jam_criterion_picks", "jam_criteria", column: "jam_criterion_id"
+  add_foreign_key "jam_criterion_picks", "jams"
+  add_foreign_key "jam_criterion_picks", "users", column: "voter_id"
+  add_foreign_key "jam_nominations", "games", column: "winner_game_id"
+  add_foreign_key "jam_nominations", "jams"
+  add_foreign_key "jam_rating_settings", "jams"
   add_foreign_key "jams_tags", "jams"
   add_foreign_key "jams_tags", "tags"
   add_foreign_key "reports", "users", column: "reporter_id"

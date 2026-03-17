@@ -74,6 +74,8 @@ group :development, :test do
   gem 'pg', '~> 1.1'
 
   gem 'brakeman', require: false
+
+  gem "rdoc", "~> 7.2"
 end
 
 group :development do
@@ -87,6 +89,7 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem "rdoc", "~> 7.2"
 end
 
 group :test do

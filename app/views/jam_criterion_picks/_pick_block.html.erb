@@ -1,0 +1,30 @@
+<%# locals: jam, game, criterion, current_pick, vote_type %>
+<% channel = (vote_type == "audience" ? "audience" : "jury") %>
+
+<div class="mt-4 flex items-center justify-between">
+  <% if current_pick&.game_id == game.id %>
+    <span class="text-sm text-green-600 font-medium">Вы выбрали эту игру</span>
+
+    <%= link_to "Отменить",
+                jam_jam_criterion_pick_path(jam, current_pick, game_id: game.id),
+                data: { turbo_method: :delete, turbo_frame: dom_id(criterion, :pick_block) },
+                class: "text-sm text-red-600 hover:text-red-800 underline" %>
+  <% else %>
+    <% if current_pick.present? %>
+      <span class="text-sm text-gray-500">
+        Сейчас выбрано: <%= current_pick.game.name rescue "другая игра" %>
+      </span>
+    <% else %>
+      <span class="text-sm text-gray-500">Выбор не сделан</span>
+    <% end %>
+
+    <%= link_to (current_pick.present? ? "Выбрать вместо" : "Выбрать игру"),
+                jam_jam_criterion_picks_path(jam,
+                                             jam_criterion_id: criterion.id,
+                                             game_id: game.id,
+                                             channel: channel
+                ),
+                data: { turbo_method: :post, turbo_frame: dom_id(criterion, :pick_block) },
+                class: "rounded bg-indigo-600 px-3 py-1 text-white hover:bg-indigo-700" %>
+  <% end %>
+</div>

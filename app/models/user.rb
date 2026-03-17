@@ -46,6 +46,9 @@ class User < ActiveRecord::Base
   },
            class_name: 'Notification', dependent: :destroy
 
+  has_many :jam_contributors, dependent: :destroy
+  has_many :contributed_jams, through: :jam_contributors, source: :jam
+
   attr_accessor :current_password
 
   def password_length
