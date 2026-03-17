@@ -237,16 +237,20 @@
               <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.adm_jams' %></dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <% if @user.can_see_administrating_jams?(current_user) || current_user == @user %>
-                  <% if @user.jams.any? %>
-                    <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3
-                sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-                      <% @user.jams.each do |jam| %>
+                  <% administrated_jams = @user.administrated_jams_with_roles %>
+
+                  <% if administrated_jams.any? %>
+                    <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                      <% administrated_jams.each do |item| %>
+                        <% jam = item[:jam] %>
+                        <% roles = item[:roles] %>
+
                         <li class="relative">
                           <%= link_to jams_url + '/' + jam.id.to_s do %>
                             <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
-                        focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
-                         focus-within:ring-offset-gray-100">
-                              <% if jam && jam.cover.attached? %>
+                    focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
+                    focus-within:ring-offset-gray-100">
+                              <% if jam&.cover&.attached? %>
                                 <%= image_tag url_for(jam.cover), alt: jam.name,
                                               class: "pointer-events-none object-cover group-hover:opacity-75" %>
                               <% else %>
@@ -254,12 +258,33 @@
                                      class="pointer-events-none object-cover group-hover:opacity-75">
                               <% end %>
                             </div>
+
                             <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
                               <%= jam.name %>
                             </p>
+
                             <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
                               <%= jam.description %>
                             </p>
+
+                            <div class="mt-2 flex flex-wrap gap-2">
+                              <% roles.each do |role| %>
+                                <% label, classes =
+                                     case role
+                                     when :author
+                                       ["Автор", "bg-purple-100 text-purple-800"]
+                                     when :host
+                                       ["Хост", "bg-indigo-100 text-indigo-800"]
+                                     when :admin
+                                       ["Админ", "bg-amber-100 text-amber-800"]
+                                     end
+                                %>
+
+                                <span class="px-2 py-1 rounded-full text-xs font-medium <%= classes %>">
+                      <%= label %>
+                    </span>
+                              <% end %>
+                            </div>
                           <% end %>
                         </li>
                       <% end %>
