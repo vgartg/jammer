@@ -75,8 +75,6 @@ USER rails:rails
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-CMD ["bundle exec rake db:migrate RAILS_ENV=production"]
-
-# Start the server by default, this can be overwritten at runtime
+# Start the server by default
 EXPOSE 3000
 CMD ["./bin/thrust", "./bin/rails", "server"]
