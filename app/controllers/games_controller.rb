@@ -1,6 +1,7 @@
 class GamesController < ApplicationController
   before_action :authenticate_user, only: %i[new create edit update]
   before_action :root_check, only: %i[edit update destroy]
+  before_action :jam_submission_edit_check, only: %i[edit update]
 
   def new
     @notifications = current_user.notifications
@@ -167,5 +168,16 @@ class GamesController < ApplicationController
 
   def should_search?
     params[:search].present? && !params[:search].empty?
+  end
+
+  def jam_submission_edit_check
+    submission = JamSubmission.find_by(game_id: params[:id], user_id: current_user.id)
+    return unless submission
+
+    jam = submission.jam
+    return if jam.submission_open?
+
+    flash[:failure] = "Приём работ завершён. Редактирование игры недоступно"
+    redirect_to game_profile_path(params[:id], jam_id: jam.id)
   end
 end

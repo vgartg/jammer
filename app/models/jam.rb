@@ -72,7 +72,22 @@ class Jam < ActiveRecord::Base
     return false unless user
     return false unless rating_setting.audience_enabled
     return false unless voting_open?
+    return false if judge?(user)
     true
+  end
+
+  def submission_open?
+    return false if start_date.blank? || deadline.blank?
+    today = Date.current
+    today >= start_date && today <= deadline
+  end
+
+  def submission_closed?
+    !submission_open?
+  end
+
+  def hosts
+    jam_contributors.includes(:user).where(status: "accepted", host: true).map(&:user)
   end
 
   belongs_to :author, foreign_key: 'author_id', class_name: 'User'
