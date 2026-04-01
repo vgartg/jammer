@@ -184,4 +184,25 @@ class User < ActiveRecord::Base
   def unfreeze!
     update!(is_frozen: false, frozen_at: nil, unfreeze_at: nil, frozen_reason: nil)
   end
+
+  def administrated_jams_with_roles
+    result = {}
+
+    # Автор
+    jams.find_each do |jam|
+      result[jam.id] ||= { jam:, roles: [] }
+      result[jam.id][:roles] << :author
+    end
+
+    # Host/Admin
+    jam_contributors.includes(:jam).where(status: "accepted").find_each do |contributor|
+      next unless contributor.host? || contributor.admin?
+
+      result[contributor.jam_id] ||= { jam: contributor.jam, roles: [] }
+      result[contributor.jam_id][:roles] << :host if contributor.host?
+      result[contributor.jam_id][:roles] << :admin if contributor.admin?
+    end
+
+    result.values
+  end
 end

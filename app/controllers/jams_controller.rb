@@ -18,6 +18,8 @@ class JamsController < ApplicationController
   jury_settings
 ]
 
+  before_action :submission_open_check, only: %i[participate delete_project create_submission submit_game]
+
   def new
     @notifications = current_user.notifications
     @jam = Jam.new
@@ -110,6 +112,7 @@ class JamsController < ApplicationController
 
   def show
     @jam = Jam.find(params[:id])
+    @submission_open = @jam.submission_open?
     @jsb = @jam && current_user ? @jam.jam_submissions.find_by(user_id: current_user.id) : nil
     @game = @jsb && @jsb.game_id ? Game.find_by_id(@jsb.game_id) : nil
     if current_user
@@ -610,5 +613,14 @@ class JamsController < ApplicationController
 
   def contributor_params
     params.require(:jam_contributor).permit(:host, :admin, :judge, :status)
+  end
+
+  def submission_open_check
+    jam = @jam || Jam.find(params[:id] || params[:jam_id])
+
+    return if jam.submission_open?
+
+    flash[:failure] = "Приём работ завершён"
+    redirect_to jam_profile_path(jam)
   end
 end
