@@ -46,10 +46,7 @@ class JamsController < ApplicationController
   def show_projects
     @jam = Jam.find(params[:id])
     @tags = Tag.all
-    submissions = @jam.jam_submissions
-                      .where.not(game_id: nil)
-                      .includes(game: :ratings)
-    @games = submissions.map(&:game)
+    @games = @jam.submitted_games.includes(:ratings)
 
     winner_map = {}
     @jam.jam_nominations.where.not(winner_game_id: nil).find_each do |n|
@@ -72,7 +69,7 @@ class JamsController < ApplicationController
 
   def show_participants
     @jam = Jam.find(params[:id])
-    @users = @jam.jam_submissions.includes(:user).map(&:user)
+    @users = @jam.participants
   end
 
   def showcase
@@ -231,7 +228,7 @@ class JamsController < ApplicationController
     @setting = @jam.rating_setting
     @criteria = @jam.jam_criteria.active.order(:position, :id)
     @nominations = @jam.jam_nominations.order(:position, :id)
-    @games = @jam.jam_submissions.where.not(game_id: nil).includes(:game).map(&:game)
+    @games = @jam.submitted_games
   end
 
   def update_rating_settings
@@ -332,7 +329,7 @@ class JamsController < ApplicationController
 
       # (опционально) проверка: игра должна быть из этого джема
       if winner_id.present?
-        allowed_game_ids = @jam.jam_submissions.where.not(game_id: nil).pluck(:game_id)
+        allowed_game_ids = @jam.submitted_game_ids
         next unless allowed_game_ids.include?(winner_id.to_i)
       end
 
@@ -511,7 +508,7 @@ class JamsController < ApplicationController
 
     # Проверяем что игра из этого джема (или пусто)
     if winner_id.present?
-      allowed_game_ids = @jam.jam_submissions.where.not(game_id: nil).pluck(:game_id)
+      allowed_game_ids = @jam.submitted_game_ids
       unless allowed_game_ids.include?(winner_id.to_i)
         flash.now[:failure] = ["Игра не участвует в этом джеме"]
         return respond_winner_update(nomination)
@@ -531,7 +528,7 @@ class JamsController < ApplicationController
 
   def respond_winner_update(_nomination)
     @nominations = @jam.jam_nominations.where(archived: false).order(:position, :id) rescue @jam.jam_nominations.order(:position, :id)
-    @games = @jam.jam_submissions.where.not(game_id: nil).includes(:game).map(&:game)
+    @games = @jam.submitted_games
 
     respond_to do |format|
       format.turbo_stream
