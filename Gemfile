@@ -49,10 +49,8 @@ gem 'image_processing', '~> 1.2'
 gem 'ostruct'
 gem 'useragent'
 gem 'rest-client'
-gem 'ostruct'
 gem 'rexml', '>= 3.4.2'
 gem 'rubocop'
-gem 'useragent'
 
 gem 'letter_opener', group: :development
 gem 'letter_opener_web', group: :development
@@ -95,7 +93,6 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-  gem "rdoc", "~> 7.2"
 end
 
 group :test do
