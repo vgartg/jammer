@@ -10,10 +10,9 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @current_user = User.find_by_id(session[:current_user])
-    if @current_user
+    if current_user
       @notifications = current_user.notifications
-      @friendship = @current_user.friendship_with(@user)
+      @friendship = current_user.friendship_with(@user)
     end
     @friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
     @received_requests = @user.inverse_friendships.where(status: 'pending')
