@@ -1,4 +1,7 @@
 class SessionsController < ApplicationController
+  before_action :authenticate_user, only: %i[logout_other_sessions logout_all_sessions logout_one_session]
+  before_action :admin?, only: %i[logout_all_sessions logout_one_session]
+
   def new
     return unless current_user
 
@@ -92,11 +95,11 @@ class SessionsController < ApplicationController
 
   def logout_one_session
     user = User.find(params[:user])
-    session = Session.find(params[:session_id])
-    user_session = user.sessions.find_by(id: session.id)
+    user_session = user.sessions.find_by(id: params[:session_id])
+
     if user_session&.destroy
       flash[:success] = 'Сессия успешно удалена'
-      create_administration_record(current_user, user, { 'session_id' => session.id }, 'delete') if user != current_user
+      create_administration_record(current_user, user, { 'session_id' => user_session.id }, 'delete') if user != current_user
     else
       flash[:failure] = 'Не удалось удалить сессию'
     end
