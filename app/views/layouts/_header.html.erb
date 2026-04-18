@@ -151,6 +151,22 @@
               <% end %>
             </div>
           <% end %>
+
+          <div class="py-6">
+            <p class="-mx-3 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+              <%= t('.language', default: t(I18n.locale)) %>
+            </p>
+            <% I18n.available_locales.each do |locale| %>
+              <% if I18n.locale == locale %>
+                <span class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white bg-gray-800">
+                  <%= t(locale) %>
+                </span>
+              <% else %>
+                <%= link_to t(locale), url_for(only_path: false, locale: locale),
+                            class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800" %>
+              <% end %>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>

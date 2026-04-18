@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_09_093124) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_17_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -80,7 +80,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_093124) do
     t.integer "author_id"
     t.integer "status", default: 0
     t.string "reason"
-    t.string "html5_id"
     t.index ["name"], name: "index_games_on_name", unique: true
   end
 
@@ -176,11 +175,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_093124) do
     t.binary "cover"
     t.binary "logo"
     t.string "description"
+    t.boolean "users_can_votes", default: false
     t.integer "status", default: 0
     t.string "reason"
-    t.integer "games", default: [], array: true
-    t.integer "participants", default: [], array: true
-    t.boolean "users_can_votes", default: false
     t.index ["author_id"], name: "index_jams_on_author_id"
     t.index ["name"], name: "index_jams_on_name"
   end
@@ -287,14 +284,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_09_093124) do
     t.string "email_confirm_token"
     t.datetime "email_confirm_token_sent_at"
     t.boolean "email_confirmed", default: false
+    t.string "jams_participating_visibility", default: "All"
+    t.string "jams_administrating_visibility", default: "All"
+    t.string "jams_visibility", default: "All"
     t.integer "role", default: 0
     t.boolean "is_frozen", default: false
     t.datetime "frozen_at"
     t.datetime "unfreeze_at"
     t.string "frozen_reason"
     t.boolean "is_online_today", default: false
-    t.string "jams_participating_visibility", default: "All"
-    t.string "jams_administrating_visibility", default: "All"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["role"], name: "index_users_on_role"
