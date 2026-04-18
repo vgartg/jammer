@@ -50,12 +50,16 @@ class GamesController < ApplicationController
     if @jam_id.blank?
       @rating = @game.ratings.find_by(jam_id: nil)
       @rating ||= @game.ratings.create(jam_id: nil, average_rating: 0.0)
-      @review = @game.reviews.find_by(user: current_user, jam_id: nil) || @game.reviews.build(user: current_user, jam_id: nil)
-      @reviews = @game.reviews.where(jam_id: nil).where.not(user_id: current_user.id)
+      if current_user
+        @review = @game.reviews.find_by(user: current_user, jam_id: nil) || @game.reviews.build(user: current_user, jam_id: nil)
+      end
+      reviews = @game.reviews.where(jam_id: nil)
+      @reviews = current_user ? reviews.where.not(user_id: current_user.id) : reviews
     else
       @rating = @game.ratings.find_by(jam_id: @jam_id)
       @rating ||= @game.ratings.create(jam_id: @jam_id, average_rating: 0.0)
-      @reviews = @game.reviews.where(jam_id: @jam_id).where.not(user_id: current_user.id)
+      reviews = @game.reviews.where(jam_id: @jam_id)
+      @reviews = current_user ? reviews.where.not(user_id: current_user.id) : reviews
 
       @jam = Jam.find(@jam_id)
 
