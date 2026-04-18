@@ -32,6 +32,7 @@ en:
       log_in: "Log in"
       sign_out: "Sign out"
       dashboard: "Dashboard"
+      language: "Language"
     footer:
       copyright: "All rights reserved."
       fsi_text: 'The project was implemented with the support of the Foundation for Assistance to Small Innovative Enterprises (FASIE) within the framework of the Student Startup program of the University Technological Entrepreneurship Platform event of the Technologies federal project.'
