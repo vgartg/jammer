@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user, only: %i[new create edit update]
+  before_action :authenticate_user, only: %i[new create edit update submit]
   before_action :root_check, only: %i[edit update destroy]
   before_action :jam_submission_edit_check, only: %i[edit update]
 
@@ -82,15 +82,20 @@ class GamesController < ApplicationController
   end
 
   def submit
-    # Check if the submission already exists
-    # existing_submission = JamSubmission.find_by(game_id: params[:game_id], jam_id: params[:jam_id])
+    submission = JamSubmission.find_by(jam_id: params[:jam_id], user_id: current_user.id)
+    unless submission
+      flash[:failure] = "Вы не участвуете в этом джеме"
+      return redirect_to jam_profile_path(params[:jam_id])
+    end
 
-    # unless existing_submission
-    #  @submission = JamSubmission.create(submission_params)
-    # end
-    submission = JamSubmission.where(jam_id: params[:jam_id]).find_by(user_id: current_user.id)
-    submission.update(game_id: params[:game_id])
-    redirect_to
+    game = current_user.games.find_by(id: params[:id])
+    unless game
+      flash[:failure] = "Игра не найдена"
+      return redirect_to jam_profile_path(params[:jam_id])
+    end
+
+    submission.update(game_id: game.id)
+    redirect_to jam_profile_path(params[:jam_id])
   end
 
   def create
@@ -118,7 +123,6 @@ class GamesController < ApplicationController
   def edit
     @game = current_user.games.find_by_id(params[:id])
     @tags = Tag.all
-    @game = Game.find(params[:id])
   end
 
   def update

@@ -171,12 +171,13 @@ class JamsController < ApplicationController
 
   def update
     failures = invalid_date
+    @tags = Tag.all
     if failures.any?
       flash[:failure] ||= []
       failures.each do |problem|
         flash[:failure] << problem
       end
-      render :new, status: :see_other
+      render :edit, status: :see_other
     elsif @jam.update(jam_params)
       admins = User.where(role: [1, 2])
       admins.each do |admin|
