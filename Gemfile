@@ -66,7 +66,7 @@ gem 'json', '>= 2.10.2'
 gem 'net-imap', '>= 0.5.7'
 gem 'uri', '>= 1.0.4'
 gem 'thor', '>= 1.4.0'
-gem 'pagy'
+gem 'pagy', '~> 9.3'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

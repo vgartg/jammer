@@ -609,7 +609,7 @@ class JamsController < ApplicationController
   end
 
   def contributor_params
-    params.require(:jam_contributor).permit(:host, :admin, :judge, :status)
+    params.require(:jam_contributor).permit(:host, :admin, :judge)
   end
 
   def submission_open_check
