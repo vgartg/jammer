@@ -46,6 +46,7 @@ env:
   clear:
     SECRET_KEY_BASE: 4ee0b6a4d9fcd4e9a9f11aa363eec06a8eca5b98ec8b6e7df16eddd35c2d71a7ad511af1dc5afc106950d9a37e20edbda991c33e6ffa5e67d5c6107599cde367
     RAILS_LOG_LEVEL: info
+    REDIS_URL: redis://jammer-redis:6379/0
   secret:
     - RAILS_MASTER_KEY
     - MAIL_DOMAIN
@@ -53,7 +54,6 @@ env:
     - MAIL_PASSWORD
 
 volumes:
-  - "jammer_db:/rails/db"
   - "jammer_storage:/rails/storage"
 
 
