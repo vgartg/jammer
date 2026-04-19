@@ -32,6 +32,7 @@ en:
       log_in: "Log in"
       sign_out: "Sign out"
       dashboard: "Dashboard"
+      language: "Language"
     footer:
       copyright: "All rights reserved."
       fsi_text: 'The project was created with the support of the Federal State Budgetary Institution "Fund for Assistance to Small Innovative Enterprises in Science and Technology" as part of the "Student Startup" program of the federal project "University Technological Entrepreneurship Platform"'

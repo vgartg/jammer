@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  prepend_around_action :switch_locale
+
   helper_method :current_user
   before_action :check_user_freeze, unless: :logout_action?
   helper_method :notifications
@@ -7,8 +9,6 @@ class ApplicationController < ActionController::Base
   include Pagy::Backend
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from ActionController::RoutingError, with: :render_404
-
-  around_action :switch_locale
 
   protected
 
@@ -128,13 +128,14 @@ class ApplicationController < ActionController::Base
 
   def switch_locale(&action)
     locale = locale_from_url || locale_from_headers || I18n.default_locale
+    session[:locale] = locale.to_s
     response.set_header "Content-Language", locale
     I18n.with_locale locale, &action
   end
 
   def locale_from_url
     locale = params[:locale] || session[:locale]
-    locale if I18n.available_locales.map(&:to_s).include?(locale)
+    locale if I18n.available_locales.map(&:to_s).include?(locale.to_s)
   end
 
   def default_url_options
@@ -174,13 +175,13 @@ class ApplicationController < ActionController::Base
   end
 
   def check_user_freeze
-    if current_user&.is_frozen?
-      if current_user&.unfreeze_at < Time.current
-        current_user.update(frozen_at: nil, unfreeze_at: nil, frozen_reason: nil, is_frozen: false)
-      else
-        flash[:alert] = 'Ваш аккаунт заморожен'
-        redirect_to dashboard_path unless request.fullpath == dashboard_path
-      end
+    return unless current_user&.is_frozen?
+
+    if current_user.unfreeze_at && current_user.unfreeze_at < Time.current
+      current_user.update(frozen_at: nil, unfreeze_at: nil, frozen_reason: nil, is_frozen: false)
+    else
+      flash[:alert] = 'Ваш аккаунт заморожен'
+      redirect_to dashboard_path unless request.fullpath == dashboard_path
     end
   end
 

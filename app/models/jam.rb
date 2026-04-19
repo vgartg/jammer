@@ -11,6 +11,11 @@ class Jam < ActiveRecord::Base
   attr_accessor :admin_edit, :moderator_edit
 
   has_many :jam_submissions, dependent: :destroy
+  has_many :participants, -> { distinct }, through: :jam_submissions, source: :user
+  has_many :submitted_games,
+           -> { where.not(jam_submissions: { game_id: nil }).distinct },
+           through: :jam_submissions,
+           source: :game
 
   has_many :jam_contributors, dependent: :destroy
   has_many :contributors, through: :jam_contributors, source: :user

@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '> 3.3'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 8.0.0.beta1'
+gem 'rails', '~> 8.0.4', '>= 8.0.4.1'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 
@@ -33,7 +33,7 @@ gem 'jbuilder'
 # gem "kredis"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7', '>= 3.1.22'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[windows jruby]
@@ -49,10 +49,8 @@ gem 'image_processing', '~> 1.2'
 gem 'ostruct'
 gem 'useragent'
 gem 'rest-client'
-gem 'ostruct'
-gem 'rexml', '>= 3.3.6'
+gem 'rexml', '>= 3.4.2'
 gem 'rubocop'
-gem 'useragent'
 
 gem 'letter_opener', group: :development
 gem 'letter_opener_web', group: :development
@@ -61,8 +59,14 @@ gem 'mail'
 gem 'sidekiq'
 gem 'whenever', require: false
 
-gem 'nokogiri', '>= 1.18.3'
-gem 'pagy'
+gem 'nokogiri', '>= 1.19.1'
+gem 'rack', '>= 3.1.20'
+gem 'rack-session', '>= 2.1.1'
+gem 'json', '>= 2.10.2'
+gem 'net-imap', '>= 0.5.7'
+gem 'uri', '>= 1.0.4'
+gem 'thor', '>= 1.4.0'
+gem 'pagy', '~> 9.3'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -89,7 +93,6 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-  gem "rdoc", "~> 7.2"
 end
 
 group :test do

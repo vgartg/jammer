@@ -76,7 +76,7 @@
           </div>
 
 
-          <% unless @game.author == current_user %>
+          <% if current_user && @game.author != current_user %>
 
             <%# ===================== ДЖЕМ: ОЦЕНКИ ПО КРИТЕРИЯМ ===================== %>
             <% if @jam_id.present? %>
@@ -331,7 +331,7 @@
             </div>
           </div>
 
-          <% if @game.author.present? && session[:current_user] == @game.author.id %>
+          <% if current_user && current_user == @game.author %>
             <div>
               <%= button_to t('.edit'), game_edit_path(@game), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md border
