@@ -35,7 +35,7 @@ en:
       language: "Language"
     footer:
       copyright: "All rights reserved."
-      fsi_text: 'The project was created with the support of the Federal State Budgetary Institution "Fund for Assistance to Small Innovative Enterprises in Science and Technology" as part of the "Student Startup" program of the federal project "University Technological Entrepreneurship Platform"'
+      fsi_text: 'The project was implemented with the support of the Foundation for Assistance to Small Innovative Enterprises (FASIE) within the framework of the Student Startup program of the University Technological Entrepreneurship Platform event of the Technologies federal project.'
     left-menu:
       requests: "Requests"
       settings: "Settings"
