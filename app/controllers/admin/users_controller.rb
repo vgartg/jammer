@@ -129,8 +129,10 @@ module Admin
           users.where(id: query.to_i)
         else
           role_query = User.roles[query]
-          users.where('name ILIKE :query OR email ILIKE :query OR created_at::TEXT ILIKE :query OR role = :role_query',
-                      query: "%#{query}%", role_query: role_query)
+          users.where(
+            'LOWER(name) LIKE :query OR LOWER(email) LIKE :query OR CAST(created_at AS TEXT) LIKE :query OR role = :role_query',
+            query: "%#{query}%", role_query: role_query
+          )
         end
       else
         users

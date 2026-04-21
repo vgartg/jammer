@@ -33,7 +33,10 @@ class GamesController < ApplicationController
       @games = if params[:tag_mode] == 'any'
                  @games.joins(:tags).where(tags: { id: tag_ids }).distinct
                else
-                 @games.joins(:tags).group('games.id').having('array_agg(tags.id) @> ARRAY[?]::bigint[]', tag_ids)
+                 @games.joins(:tags)
+                       .where(tags: { id: tag_ids })
+                       .group('games.id')
+                       .having('COUNT(DISTINCT tags.id) = ?', tag_ids.size)
                end
     end
 

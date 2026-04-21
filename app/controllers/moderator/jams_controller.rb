@@ -61,7 +61,8 @@ module Moderator
           jams = jams.where('jams.id = :query OR jams.status = :query', query: query.to_i)
         else
           jams = jams.joins(:author).where(
-            'jams.name ILIKE :query OR jams.created_at::TEXT ILIKE :query OR users.name ILIKE :query', query: "%#{query}%"
+            'LOWER(jams.name) LIKE :query OR CAST(jams.created_at AS TEXT) LIKE :query OR LOWER(users.name) LIKE :query',
+            query: "%#{query}%"
           )
         end
       end

@@ -97,7 +97,10 @@ class JamsController < ApplicationController
       @jams = if params[:tag_mode] == 'any'
                 @jams.joins(:tags).where(tags: { id: tag_ids }).distinct
               else
-                @jams.joins(:tags).group('jams.id').having('array_agg(tags.id) @> ARRAY[?]::bigint[]', tag_ids)
+                @jams.joins(:tags)
+                     .where(tags: { id: tag_ids })
+                     .group('jams.id')
+                     .having('COUNT(DISTINCT tags.id) = ?', tag_ids.size)
               end
     end
 

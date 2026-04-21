@@ -61,7 +61,8 @@ module Moderator
           games = games.where('games.id = :query OR games.status = :query', query: query.to_i)
         else
           games = games.joins(:author).where(
-            'games.name ILIKE :query OR games.created_at::TEXT ILIKE :query OR users.name ILIKE :query', query: "%#{query}%"
+            'LOWER(games.name) LIKE :query OR CAST(games.created_at AS TEXT) LIKE :query OR LOWER(users.name) LIKE :query',
+            query: "%#{query}%"
           )
         end
       end
