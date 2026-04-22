@@ -21,3 +21,5 @@ production:
   database: /rails/storage/production.sqlite3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
+  extensions:
+    - /rails/lib/sqlite_icu/icu
