@@ -60,7 +60,7 @@ COPY . .
 # Build SQLite ICU extension
 RUN mkdir -p /rails/lib/sqlite_icu && \
     curl -fsSL https://sqlite.org/src/raw/ext/icu/icu.c?ci=tip -o /tmp/icu.c && \
-    gcc -fPIC -shared /tmp/icu.c $(pkg-config --libs --cflags icu-io) -o /rails/lib/sqlite_icu/libSqliteIcu.so
+    gcc -fPIC -shared /tmp/icu.c $(pkg-config --libs --cflags icu-uc icu-io) -o /rails/lib/sqlite_icu/icu.so
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
