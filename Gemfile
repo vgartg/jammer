@@ -102,7 +102,7 @@ group :test do
 end
 
 group :production do
-  gem 'sqlite3', '~> 2.0'
+  gem 'sqlite3', '~> 2.0', force_ruby_platform: true
 end
 
 gem "thruster", require: false

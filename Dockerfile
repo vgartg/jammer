@@ -13,13 +13,27 @@ ENV RAILS_ENV="production" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
 
-
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
-# Install packages needed to build gems and node modules
+# sqlite3 gem should use system sqlite
+ENV BUNDLE_BUILD__SQLITE3="--enable-system-libraries"
+
+# Install packages needed to build gems, node modules, and SQLite ICU extension
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential curl git libvips node-gyp pkg-config python-is-python3 libsqlite3-dev libpq-dev
+    apt-get install --no-install-recommends -y \
+      build-essential \
+      curl \
+      git \
+      libvips \
+      node-gyp \
+      pkg-config \
+      python-is-python3 \
+      libsqlite3-dev \
+      libpq-dev \
+      libicu-dev \
+      ca-certificates && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install JavaScript dependencies
 ARG NODE_VERSION=20.11.0
@@ -43,6 +57,11 @@ RUN yarn install --frozen-lockfile
 # Copy application code
 COPY . .
 
+# Build SQLite ICU extension
+RUN mkdir -p /rails/lib/sqlite_icu && \
+    curl -fsSL https://sqlite.org/src/raw/ext/icu/icu.c?ci=tip -o /tmp/icu.c && \
+    gcc -fPIC -shared /tmp/icu.c $(pkg-config --libs --cflags icu-io) -o /rails/lib/sqlite_icu/libSqliteIcu.so
+
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
@@ -54,13 +73,17 @@ RUN chmod +x bin/* && \
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
-
 # Final stage for app image
 FROM base
 
-# Install packages needed for deployment
+# Install packages needed for deployment and ICU runtime
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libvips sqlite3 && \
+    apt-get install --no-install-recommends -y \
+      curl \
+      libvips \
+      sqlite3 \
+      libsqlite3-0 \
+      libicu-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built artifacts: gems, application
@@ -69,7 +92,7 @@ COPY --from=build /rails /rails
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
+    chown -R rails:rails db log storage tmp lib
 USER rails:rails
 
 # Entrypoint prepares the database.
