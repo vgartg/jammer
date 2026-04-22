@@ -4,6 +4,8 @@ service: jammer
 # Name of the container image.
 image: fiitovec99/jammer
 
+deploy_timeout: 90
+
 # Deploy to these servers.
 servers:
   web:
