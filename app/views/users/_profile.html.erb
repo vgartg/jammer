@@ -33,7 +33,7 @@
           <% end %>
           </span>
       <div class="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
-        <div class="mt-6 min-w-0 flex-1 sm:hidden md:block">
+        <div class="mt-6 min-w-0 flex-1">
           <h1 class="truncate text-2xl font-bold text-gray-900">
             <% if current_user %>
               <% unless current_user.role == 'basic' || @user.role == 'basic' %>
@@ -61,50 +61,54 @@
           </div>
         <% end %>
 
-        <div class="flex justify-between items-center py-2 mt-6 gap-5">
-          <button id="btnUserInfo" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
-                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 bg-gray-100"
-                  data-action="click->profile#openTab" data-tab-name="user_info">
-            <%= t '.info_tab' %>
-          </button>
-          <button id="btnUserFriends" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
-                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  data-action="click->profile#openTab" data-tab-name="user_friends">
-            <%= t '.friends_tab' %>
-          </button>
-          <button id="btnUserFollowers" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
-                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  data-action="click->profile#openTab" data-tab-name="user_followers">
-            <%= t '.subscribers' %>
-          </button>
-          <% if @user.id != session[:current_user] %>
-            <% if @friendship.nil? %>
-              <%= button_to t('buttons.add_friend'), user_friendships_path(@user), method: :post,
-                            class: "bg-green-500 text-white px-3 py-1 rounded-full
-                        hover:bg-green-600 transition-colors duration-200" %>
-            <% elsif @friendship.status == 'pending' && @friendship.user == @current_user %>
-              <%= button_to "Cancel application", cancel_user_friendship_path(@user, @friendship),
-                            method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full
-                        hover:bg-red-600 transition-colors duration-200" %>
-            <% elsif @friendship.status == 'accepted' %>
-              <%= button_to t("buttons.remove_friend"), user_friendship_path(@user, @friendship), method: :delete,
-                            class: "bg-red-500 text-white px-3 py-1 rounded-full
-                        hover:bg-red-600 transition-colors duration-200" %>
-            <% elsif @friendship.status == 'pending' && @friendship.user != @current_user %>
-              <%= button_to "Accept application", user_friendship_path(@current_user, @friendship), method: :put,
-                            class: "bg-green-500 text-white px-3 py-1 rounded-full
-                        hover:bg-green-600 transition-colors duration-200" %>
-              <%= button_to "Cancel application", cancel_user_friendship_path(@current_user, @friendship), method: :delete,
-                            class: "bg-red-500 text-white px-3 py-1 rounded-full
-                        hover:bg-red-600 transition-colors duration-200" %>
+        <div class="mt-6 py-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="btnUserInfo" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
+                            text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 bg-gray-100"
+                    data-action="click->profile#openTab" data-tab-name="user_info">
+              <%= t '.info_tab' %>
+            </button>
+            <button id="btnUserFriends" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
+                            text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    data-action="click->profile#openTab" data-tab-name="user_friends">
+              <%= t '.friends_tab' %>
+            </button>
+            <button id="btnUserFollowers" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
+                            text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    data-action="click->profile#openTab" data-tab-name="user_followers">
+              <%= t '.subscribers' %>
+            </button>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <% if @user.id != session[:current_user] %>
+              <% if @friendship.nil? %>
+                <%= button_to t('buttons.add_friend'), user_friendships_path(@user), method: :post,
+                              class: "bg-green-500 text-white px-3 py-1 rounded-full
+                          hover:bg-green-600 transition-colors duration-200" %>
+              <% elsif @friendship.status == 'pending' && @friendship.user == @current_user %>
+                <%= button_to "Cancel application", cancel_user_friendship_path(@user, @friendship),
+                              method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded-full
+                          hover:bg-red-600 transition-colors duration-200" %>
+              <% elsif @friendship.status == 'accepted' %>
+                <%= button_to t("buttons.remove_friend"), user_friendship_path(@user, @friendship), method: :delete,
+                              class: "bg-red-500 text-white px-3 py-1 rounded-full
+                          hover:bg-red-600 transition-colors duration-200" %>
+              <% elsif @friendship.status == 'pending' && @friendship.user != @current_user %>
+                <%= button_to "Accept application", user_friendship_path(@current_user, @friendship), method: :put,
+                              class: "bg-green-500 text-white px-3 py-1 rounded-full
+                          hover:bg-green-600 transition-colors duration-200" %>
+                <%= button_to "Cancel application", cancel_user_friendship_path(@current_user, @friendship), method: :delete,
+                              class: "bg-red-500 text-white px-3 py-1 rounded-full
+                          hover:bg-red-600 transition-colors duration-200" %>
+              <% end %>
+              <% if current_user %>
+                <%= render "helpers/report_form", report_item: @user %>
+              <% end %>
+            <% else %>
+              <%= link_to t('.edit'), settings_path, class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
+                            text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
             <% end %>
-            <% if current_user %>
-              <%= render "helpers/report_form", report_item: @user %>
-            <% end %>
-          <% else %>
-            <%= link_to t('.edit'), settings_path, class: "inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold
-                          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
-          <% end %>
+          </div>
         </div>
       </div>
     </div>
