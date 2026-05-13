@@ -165,32 +165,13 @@
 
     <div class="mt-8">
       <h3 class="text-2xl font-bold tracking-tight text-gray-900">
-        Active Sessions
+        Мои джемы
       </h3>
       <div class="mt-4">
-        <% if @sessions.any? %>
-          <ul class="divide-y divide-gray-200">
-            <% @sessions.each do |session| %>
-              <li class="py-4 flex">
-                <div>
-                  <p class="text-sm font-medium text-gray-900">
-                    Session ID: <%= session.session_id %>
-                  </p>
-                  <p class="text-sm text-gray-500">
-                    IP Address: <%= session.ip_address %>
-                  </p>
-                  <p class="text-sm text-gray-500">
-                    Browser: <%= session.browser ? session.browser : 'Browser: Unknown' %>
-                  </p>
-                  <p class="text-sm text-gray-500">
-                    Created At: <%= session.created_at %>
-                  </p>
-                </div>
-              </li>
-            <% end %>
-          </ul>
+        <% if @user_jams.any? %>
+          <%= render partial: 'jams/showcase_grid', locals: { jams: @user_jams } %>
         <% else %>
-          <p class="text-sm text-gray-500">No active sessions found.</p>
+          <p class="text-sm text-gray-500">Вы пока не участвуете и не администрируете ни в одном джеме.</p>
         <% end %>
       </div>
     </div>

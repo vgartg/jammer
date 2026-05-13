@@ -23,9 +23,12 @@
             <% end %>
           </h3>
 
-          <p class="mt-1 text-sm text-gray-500 line-clamp-2">
-            <%= jam.description %>
-          </p>
+          <% description_text = jam.description.to_plain_text.strip %>
+          <% if description_text.present? %>
+            <p class="mt-1 text-sm text-gray-500 line-clamp-2">
+              <%= truncate(description_text, length: 140) %>
+            </p>
+          <% end %>
         </div>
 
         <div class="mt-4 text-gray-500 flex flex-wrap gap-2">
