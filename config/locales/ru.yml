@@ -83,7 +83,7 @@ ru:
       delete_btn: "Удалить отзыв"
       reviews: "Отзывы пользователей:"
       no_game: "Файл игры не прикреплён"
-      comment_placeholder: "Введите комментарий..."
+      comment_placeholder: "Введите комментарий... (необязательно)"
       save: "Сохранить"
       no_author: "Автор не найден"
     form:

@@ -6,6 +6,9 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
+  <link rel="icon" type="image/png" href="<%= asset_path('whitewithouttitle.png') %>">
+  <link rel="apple-touch-icon" href="<%= asset_path('whitewithouttitle.png') %>">
+
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 </head>

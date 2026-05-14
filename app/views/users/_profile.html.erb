@@ -267,9 +267,12 @@
                               <%= jam.name %>
                             </p>
 
-                            <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
-                              <%= jam.description %>
-                            </p>
+                            <% description_text = jam.description.to_plain_text.strip %>
+                            <% if description_text.present? %>
+                              <p class="pointer-events-none mt-1 text-sm font-medium text-gray-500 line-clamp-2">
+                                <%= truncate(description_text, length: 140) %>
+                              </p>
+                            <% end %>
 
                             <div class="mt-2 flex flex-wrap gap-2">
                               <% roles.each do |role| %>
@@ -326,9 +329,12 @@
                             <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
                               <%= jam.name %>
                             </p>
-                            <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
-                              <%= jam.description %>
-                            </p>
+                            <% description_text = jam.description.to_plain_text.strip %>
+                            <% if description_text.present? %>
+                              <p class="pointer-events-none mt-1 text-sm font-medium text-gray-500 line-clamp-2">
+                                <%= truncate(description_text, length: 140) %>
+                              </p>
+                            <% end %>
                           <% end %>
                         </li>
                       <% end %>

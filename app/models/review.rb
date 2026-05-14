@@ -5,7 +5,7 @@ class Review < ApplicationRecord
 
   enum :vote_type, audience: 0, jury: 1
 
-  validates :criterion, presence: true
+  validates :criterion, presence: true, if: -> { jam_id.present? }
   validates :user_mark, inclusion: { in: 0.0..5.0 }
   validates :comment, length: { maximum: 1000 }, allow_nil: true
 

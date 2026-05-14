@@ -83,7 +83,7 @@ en:
       delete_btn: "Delete review"
       reviews: "Reviews:"
       no_game: "The game file was not attached"
-      comment_placeholder: "Enter comment..."
+      comment_placeholder: "Enter comment... (optional)"
       save: "Save"
       no_author: "Author not found"
     form:
