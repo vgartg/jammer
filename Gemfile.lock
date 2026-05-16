@@ -196,7 +196,7 @@ GEM
       drb (~> 2.0)
       prism (~> 1.5)
     msgpack (1.8.0)
-    net-imap (0.6.3)
+    net-imap (0.6.4)
       date
       net-protocol
     net-pop (0.1.2)
@@ -402,7 +402,7 @@ DEPENDENCIES
   letter_opener
   letter_opener_web
   mail
-  net-imap (>= 0.5.7)
+  net-imap (>= 0.6.4)
   nokogiri (>= 1.19.3)
   ostruct
   pagy (~> 9.3)
