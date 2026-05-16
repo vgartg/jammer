@@ -11,6 +11,12 @@ A platform for hosting game jams and distributing assets and games
 - Winner of the **SFedU SBS Creative 2024** accelerator
 - Recipient of a grant from the **Foundation for Assistance to Small Innovative Enterprises** (Innovation Promotion Fund)
 
+---
+
+<img width="1424" height="735" alt="image" src="https://github.com/user-attachments/assets/eb324acf-299d-411e-85f0-3e5ce506488c" />
+
+---
+
 ## Requirements
 
 - Ruby **3.3.5**
