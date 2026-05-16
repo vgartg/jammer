@@ -1,12 +1,21 @@
 # Jammer
 
-Проект по созданию сервиса для проведения гейм-джемов и дистрибуции ассетов и игр.
+[![CI](https://github.com/vgartg/jammer/actions/workflows/ci.yml/badge.svg)](https://github.com/vgartg/jammer/actions/workflows/ci.yml)
 
-## Инструкции по установке
+A platform for hosting game jams and distributing assets and games
 
-* Версия Ruby - 3.3.5
+## Awards & Recognition
 
-Чтобы подготовить проект к запуску локально, нужно сделать следующее:
+- Winner of the **SFedU SBS Creative 2024** accelerator
+- Recipient of a grant from the **Foundation for Assistance to Small Innovative Enterprises** (Innovation Promotion Fund)
+
+## Requirements
+
+- Ruby **3.3.5**
+
+## Getting Started
+
+Clone the repository and install dependencies:
 
 ```bash
 bundle install
@@ -15,12 +24,14 @@ bundle exec rake db:create
 bundle exec rake db:migrate
 ```
 
-Для запуска web-сервера и сборки клиента нужно выполнить:
+Start the web server together with the client build:
+
 ```bash
 foreman start -f Procfile.dev
 ```
 
-Для cборки клиента без запуска сервера нужно выполнить:
+Or build the client without starting the server:
+
 ```bash
 foreman start -f Procfile.front
 ```

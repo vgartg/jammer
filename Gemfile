@@ -59,7 +59,7 @@ gem 'mail'
 gem 'sidekiq'
 gem 'whenever', require: false
 
-gem 'nokogiri', '>= 1.19.1'
+gem 'nokogiri', '>= 1.19.3'
 gem 'rack', '>= 3.1.20'
 gem 'rack-session', '>= 2.1.1'
 gem 'json', '>= 2.10.2'
