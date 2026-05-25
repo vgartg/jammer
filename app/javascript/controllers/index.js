@@ -75,3 +75,6 @@ application.register("criteria-rating", CriteriaRatingController)
 
 import AutosubmitController from "./autosubmit_controller"
 application.register("autosubmit", AutosubmitController)
+
+import ExpandableController from "./expandable_controller"
+application.register("expandable", ExpandableController)

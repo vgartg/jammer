@@ -58,15 +58,7 @@ class Game < ActiveRecord::Base
 
   validates :reason, presence: true, if: -> { status == 2 }
 
-  validate :description_presence
-
   private
-
-  def description_presence
-    if description.blank? || description.body.blank?
-      errors.add(:description, "Описание обязательно для заполнения")
-    end
-  end
 
   def game_file_format
     if game_file.attached?
