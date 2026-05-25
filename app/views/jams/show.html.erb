@@ -33,14 +33,10 @@
                 <%= t '.description' %>
               </h2>
 
-              <div class="prose prose-sm mt-4 text-gray-500" data-controller="expandable">
-                <div data-expandable-target="text" class="trix-content line-clamp-6">
+              <div class="prose prose-sm mt-4 text-gray-500">
+                <p class="trix-content">
                   <%= @jam.description %>
-                </div>
-                <button type="button" data-expandable-target="button" data-action="click->expandable#toggle"
-                        class="hidden mt-2 text-sm text-indigo-600 hover:underline">
-                  Показать полностью
-                </button>
+                </p>
               </div>
             </div>
           </div>
