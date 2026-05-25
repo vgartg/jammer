@@ -6,7 +6,7 @@
           <%= image_tag(result.cover, alt: result.name, class: "w-20 h-20 object-cover rounded-md mr-4") %>
           <div>
             <span class="text-sm font-medium text-gray-800"><%= result.name %></span>
-            <p class="text-xs text-gray-500 mt-1 line-clamp-2"><%= result.description %></p>
+            <div class="text-xs text-gray-500 mt-1 line-clamp-2"><%= result.description %></div>
           </div>
         <% end %>
       </div>

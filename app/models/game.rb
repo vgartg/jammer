@@ -1,7 +1,9 @@
 class Game < ActiveRecord::Base
-  validates :name, :description, presence: true
+  validates :name, presence: true
   validates :cover, presence: { message: "Обложка обязательна для загрузки" }
   validates :game_file, presence: { message: "Файл игры обязателен для загрузки" }
+
+  has_rich_text :description
 
   has_one_attached :cover
   has_one_attached :game_file

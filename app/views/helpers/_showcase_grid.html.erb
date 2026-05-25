@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6">
   <% items.each do |item| %>
-    <div class="bg-white shadow-md rounded-lg overflow-hidden transition-transform transform hover:scale-105">
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
       <a href="/games/<%= item.id %>">
         <% if item && item.cover.attached? %>
           <%= image_tag url_for(item.cover), alt: item.name,
@@ -17,7 +17,7 @@
         <h3 class="text-lg font-medium text-gray-800 truncate">
           <a href="/games/<%= item.id %>"><%= item.name %></a>
         </h3>
-        <p class="mt-1 text-sm text-gray-500 line-clamp-2"><%= item.description %></p>
+        <div class="mt-1 text-sm text-gray-500 line-clamp-2"><%= item.description %></div>
 
         <div class="mt-2 text-gray-500 flex flex-wrap gap-2">
           <% item.tags.each do |tag| %>
