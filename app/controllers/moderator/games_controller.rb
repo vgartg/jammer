@@ -22,7 +22,7 @@ module Moderator
         flash[:success] = t('controllers.moderator.games.updated')
         if old_game.status != @game.status
           @author = @game.author
-          @author.create_notification(@author, current_user, 'game change status after moderation', @game)
+          @author.create_notification(@author, current_user, 'game_status_changed', @game)
         end
 
         changes = @game.previous_changes.except('updated_at')

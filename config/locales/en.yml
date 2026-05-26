@@ -5,38 +5,65 @@ en:
     models:
       tag: "Tag"
       game: "Game"
+      jam: "Jam"
+      report: "Report"
+      user: "User"
     attributes:
       game:
         name: "Name"
         description: "Description"
+        cover: "Cover"
+        game_file: "Game file"
+        tags: "Tags"
+        author: "Author"
+        reason: "Reason"
+      jam:
+        name: "Name"
+        description: "Description"
+        cover: "Cover"
+        logo: "Logo"
+        tags: "Tags"
+        author: "Author"
+        start_date: "Start date"
+        deadline: "Deadline"
+        end_date: "End date"
+        reason: "Reason"
+      user:
+        name: "Username"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+      report:
+        reason: "Reason"
+        comment: "Comment"
     errors:
       models:
         game:
           attributes:
             cover:
-              blank: "Cover image is required"
+              blank: "is required"
             game_file:
-              blank: "Game file is required"
-              wrong_format: "File must be in .zip, .rar or .7z format"
-              too_large: "Archive size must not exceed 100 MB"
+              blank: "is required"
+              wrong_format: "must be .zip, .rar or .7z"
+              too_large: "size must not exceed 100 MB"
             tags:
-              too_long: "No more than %{count} tags can be selected"
+              too_long: "may not contain more than %{count} items"
         jam:
           attributes:
             cover:
-              blank: "Cover image is required"
+              blank: "is required"
             logo:
-              blank: "Logo image is required"
+              blank: "is required"
             description:
-              blank: "Description is required"
+              blank: "is required"
             tags:
-              too_long: "No more than %{count} tags can be selected"
+              too_long: "may not contain more than %{count} items"
         report:
           attributes:
             reportable_id:
-              taken: "You have already filed a report on this entity"
+              taken: "you have already filed a report on this entity"
         jam_rating_setting:
-          both_disabled: "You cannot disable both jury and audience at the same time"
+          both_disabled: "you cannot disable both jury and audience at the same time"
   buttons:
     save: "Save"
     change_avatar: "Change avatar"
@@ -503,6 +530,17 @@ en:
       accept: "accepted your friend request"
       sent: "sent a friend request"
       accept_jury_invite: "Accept invitation"
+    actions:
+      accepted_friendship: "accepted your friend request"
+      accepted_friend_request: "accepted your friend request"
+      sent_friend_request: "sent you a friend request"
+      awaiting_game_moderation: "— game awaits moderation"
+      awaiting_jam_moderation: "— jam awaits moderation"
+      game_status_changed: "— game status changed after moderation"
+      jam_status_changed: "— jam status changed after moderation"
+      sent_jam_jury_invite: "invited you to the jury"
+      accepted_jam_jury_invite: "accepted the jury invitation"
+      new_report: "filed a new report on %{type} (id %{id})"
   email_confirms:
     edit:
       title: "Email confirmation"
@@ -609,7 +647,6 @@ en:
         deleted: "Jam successfully deleted"
     reports:
       sent: "Report successfully submitted"
-      notification: "New report on %{type} with id %{id}"
   mailers:
     email_confirm:
       subject: "Confirm email | Jammer"

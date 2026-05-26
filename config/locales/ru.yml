@@ -5,38 +5,65 @@ ru:
     models:
       tag: "Тег"
       game: "Игра"
+      jam: "Джем"
+      report: "Жалоба"
+      user: "Пользователь"
     attributes:
       game:
         name: "Название"
         description: "Описание"
+        cover: "Обложка"
+        game_file: "Файл игры"
+        tags: "Теги"
+        author: "Автор"
+        reason: "Причина"
+      jam:
+        name: "Название"
+        description: "Описание"
+        cover: "Обложка"
+        logo: "Логотип"
+        tags: "Теги"
+        author: "Автор"
+        start_date: "Дата начала"
+        deadline: "Дедлайн сдачи работ"
+        end_date: "Дата окончания"
+        reason: "Причина"
+      user:
+        name: "Имя пользователя"
+        email: "Электронная почта"
+        password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
+      report:
+        reason: "Причина"
+        comment: "Комментарий"
     errors:
       models:
         game:
           attributes:
             cover:
-              blank: "Обложка обязательна для загрузки"
+              blank: "обязательна для загрузки"
             game_file:
-              blank: "Файл игры обязателен для загрузки"
-              wrong_format: "Файл должен быть в формате .zip, .rar или .7z"
-              too_large: "Размер архива не должен превышать 100 MB"
+              blank: "обязателен для загрузки"
+              wrong_format: "должен быть в формате .zip, .rar или .7z"
+              too_large: "размер не должен превышать 100 MB"
             tags:
-              too_long: "Можно выбрать не более %{count} тегов"
+              too_long: "может содержать не более %{count} элементов"
         jam:
           attributes:
             cover:
-              blank: "Обложка обязательна для загрузки"
+              blank: "обязательна для загрузки"
             logo:
-              blank: "Логотип обязателен для загрузки"
+              blank: "обязателен для загрузки"
             description:
-              blank: "Описание обязательно для заполнения"
+              blank: "обязательно для заполнения"
             tags:
-              too_long: "Можно выбрать не более %{count} тегов"
+              too_long: "может содержать не более %{count} элементов"
         report:
           attributes:
             reportable_id:
-              taken: "Вы уже отправили жалобу на эту сущность"
+              taken: "вы уже отправили жалобу на эту сущность"
         jam_rating_setting:
-          both_disabled: "Нельзя выключить и жюри, и аудиторию одновременно"
+          both_disabled: "нельзя выключить и жюри, и аудиторию одновременно"
   buttons:
     save: "Сохранить"
     change_avatar: "Сменить аватарку"
@@ -503,6 +530,17 @@ ru:
       accept: "принял заявку в друзья"
       sent: "отправил запрос в друзья"
       accept_jury_invite: "Принять приглашение"
+    actions:
+      accepted_friendship: "принял вашу заявку в друзья"
+      accepted_friend_request: "принял вашу заявку в друзья"
+      sent_friend_request: "отправил вам заявку в друзья"
+      awaiting_game_moderation: "— игра ожидает модерацию"
+      awaiting_jam_moderation: "— джем ожидает модерацию"
+      game_status_changed: "— статус игры изменён после модерации"
+      jam_status_changed: "— статус джема изменён после модерации"
+      sent_jam_jury_invite: "пригласил вас в жюри"
+      accepted_jam_jury_invite: "принял приглашение в жюри"
+      new_report: "оставил новую жалобу на %{type} (id %{id})"
   email_confirms:
     edit:
       title: "Подтверждение почты"
@@ -609,7 +647,6 @@ ru:
         deleted: "Джем успешно удалён"
     reports:
       sent: "Жалоба успешно отправлена"
-      notification: "Новая жалоба на %{type} с id %{id}"
   mailers:
     email_confirm:
       subject: "Подтверждение email | Jammer"

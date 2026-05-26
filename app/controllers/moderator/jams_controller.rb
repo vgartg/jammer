@@ -22,7 +22,7 @@ module Moderator
         flash[:success] = t('controllers.moderator.jams.updated')
         if old_jam.status != @jam.status
           @author = @jam.author
-          @author.create_notification(@author, current_user, 'jam change status after moderation', @jam)
+          @author.create_notification(@author, current_user, 'jam_status_changed', @jam)
         end
 
         changes = @jam.previous_changes.except('updated_at')

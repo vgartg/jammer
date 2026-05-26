@@ -18,25 +18,15 @@ module ApplicationHelper
   end
 
   def notification_message(notification)
-    case notification.action
-    when 'accepted_friendship'
-      'принял заявку в друзья'
-    when 'sent_friend_request'
-      'отправил запрос в друзья'
-    when 'awaiting game moderation'
-      '- игра ожидает модерацию'
-    when 'awaiting jam moderation'
-      '- джем ожидает модерацию'
-    when 'game change status after moderation'
-      '- статус игры изменен после модерации'
-    when 'jam change status after moderation'
-      '- статус джема изменен после модерации'
-    when 'sent_jam_jury_invite'
-      'пригласил вас в жюри'
-    when 'accepted_jam_jury_invite'
-      'принял приглашение в жюри'
-    else
-      notification.action
-    end
+    return '' if notification.blank? || notification.action.blank?
+
+    key = notification.action.to_s.strip.downcase.tr(' ', '_')
+
+    I18n.t(
+      "notifications.actions.#{key}",
+      type: notification.notifiable_type,
+      id: notification.notifiable_id,
+      default: notification.action
+    )
   end
 end

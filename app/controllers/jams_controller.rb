@@ -137,7 +137,7 @@ class JamsController < ApplicationController
     elsif @jam.save
       admins = User.where(role: [1, 2])
       admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
+        current_user.create_notification(admin, current_user, 'awaiting_jam_moderation', @jam)
       end
       flash[:success] ||= []
       flash[:success] << t('jams.create.success')
@@ -184,7 +184,7 @@ class JamsController < ApplicationController
     elsif @jam.update(jam_params)
       admins = User.where(role: [1, 2])
       admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
+        current_user.create_notification(admin, current_user, 'awaiting_jam_moderation', @jam)
       end
       @jam.update(status: 0)
       flash[:success] = t('controllers.jams.update_resubmitted')
