@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="<%= I18n.locale %>">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Сброс пароля</title>
+  <title><%= t('mailers.password_reset.title') %></title>
   <style>
       body {
           font-family: Arial, sans-serif;
@@ -44,13 +44,13 @@
 <body>
 
 <div class="container">
-  <h1>Сброс пароля</h1>
-  <p>Кто-то запросил сброс пароля для вашей учетной записи.</p>
-  <p>Если это были вы, нажмите на кнопку ниже, чтобы установить новый пароль:</p>
+  <h1><%= t('mailers.password_reset.title') %></h1>
+  <p><%= t('mailers.password_reset.body_intro') %></p>
+  <p><%= t('mailers.password_reset.body_action') %></p>
   <p>
-    <%= link_to 'Сбросить мой пароль', edit_password_reset_url(user: { password_reset_token: @user.password_reset_token, email: @user.email }).gsub("&amp;", "&").html_safe, class: 'button', target: '_blank' %>
+    <%= link_to t('mailers.password_reset.button'), edit_password_reset_url(user: { password_reset_token: @user.password_reset_token, email: @user.email }).gsub("&amp;", "&").html_safe, class: 'button', target: '_blank' %>
   </p>
-  <p>Если вы не запрашивали сброс пароля, просто проигнорируйте это сообщение.</p>
+  <p><%= t('mailers.password_reset.body_ignore') %></p>
 </div>
 
 </body>

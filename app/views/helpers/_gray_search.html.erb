@@ -157,7 +157,7 @@
 
                       <% if current_user && contributor.user_id == current_user.id && contributor.status == "pending" %>
                         <div class="mt-2">
-                          <%= button_to "Принять приглашение",
+                          <%= button_to t('helpers.gray_search.accept_jury_invite'),
                                         accept_contributor_invite_jam_path(jam, contributor_id: contributor.id),
                                         method: :patch,
                                         class: "rounded bg-indigo-600 px-3 py-1 text-white hover:bg-indigo-700" %>

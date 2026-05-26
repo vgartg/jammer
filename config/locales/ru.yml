@@ -9,6 +9,34 @@ ru:
       game:
         name: "Название"
         description: "Описание"
+    errors:
+      models:
+        game:
+          attributes:
+            cover:
+              blank: "Обложка обязательна для загрузки"
+            game_file:
+              blank: "Файл игры обязателен для загрузки"
+              wrong_format: "Файл должен быть в формате .zip, .rar или .7z"
+              too_large: "Размер архива не должен превышать 100 MB"
+            tags:
+              too_long: "Можно выбрать не более %{count} тегов"
+        jam:
+          attributes:
+            cover:
+              blank: "Обложка обязательна для загрузки"
+            logo:
+              blank: "Логотип обязателен для загрузки"
+            description:
+              blank: "Описание обязательно для заполнения"
+            tags:
+              too_long: "Можно выбрать не более %{count} тегов"
+        report:
+          attributes:
+            reportable_id:
+              taken: "Вы уже отправили жалобу на эту сущность"
+        jam_rating_setting:
+          both_disabled: "Нельзя выключить и жюри, и аудиторию одновременно"
   buttons:
     save: "Сохранить"
     change_avatar: "Сменить аватарку"
@@ -17,6 +45,8 @@ ru:
     profile: "Профиль"
     sign_out: "Выйти"
     add_friend: "Добавить в друзья"
+    cancel: "Отмена"
+    close: "Закрыть"
   search: "Поиск..."
   home:
     title: "Прототип сервиса Jammer"
@@ -40,6 +70,18 @@ ru:
       requests: "Запросы"
       settings: "Настройки"
       plug: "Заглушка"
+    application:
+      logo_alt: "Логотип"
+      admin_panel: "Панель администратора"
+      moderator_panel: "Панель модератора"
+      team_initial: "П"
+    is_frozen:
+      title: "Вы заморожены!"
+      reason: "Причина:"
+      frozen_at: "Заморозка была установлена:"
+      frozen_until: "Заморожено до:"
+      indefinitely: "Бессрочно"
+      contact: "Если у вас есть вопросы, свяжитесь с нами по адресу:"
   dashboard:
     index:
       title: "Панель управления"
@@ -49,6 +91,8 @@ ru:
       jams_games_rating: "Средняя оценка ваших игр в Джемах: "
       jams_reviews: "Ваши отзывы в джемах: "
       no_comment: "Комментарий не оставлен"
+      my_jams: "Мои джемы"
+      no_jams: "Вы пока не участвуете и не администрируете ни в одном джеме."
   games:
     create:
       success: "Игра успешно создана!"
@@ -67,6 +111,14 @@ ru:
       checkbox: "Искать хотя бы с одним из выбранных тегов"
       not_found: "По текущему запросу ничего не найдено"
       no_author: "Автор не найден"
+      all_games: "Все игры"
+      my_games: "Мои игры"
+      no_accepted: "У вас нет принятых игр."
+      no_games_available: "Нет доступных игр."
+      no_rejected: "У вас нет отклонённых игр."
+      no_under_moderation: "У вас нет игр на модерации."
+      rejected: "Отклонённые игры"
+      under_moderation: "Игры на модерации"
     show:
       tags: "Теги"
       tags_not_found: "Теги не найдены"
@@ -86,6 +138,19 @@ ru:
       comment_placeholder: "Введите комментарий... (необязательно)"
       save: "Сохранить"
       no_author: "Автор не найден"
+      this_game: "Данная игра"
+      status_pending: "находится на модерации"
+      status_rejected: "отклонена модератором"
+      criterion_votes_title: "Голоса по критериям"
+      criterion_header: "Критерий"
+      votes_header: "Голоса"
+      jam_not_found: "Джем не найден."
+      your_criteria_score: "Оценка по критериям"
+      edit_criteria_scores: "Изменить оценки по критериям"
+      rate_by_criteria: "Оценить по критериям"
+      voting_unavailable: "Оценивание для вас недоступно (закрыто или нет прав)."
+      participant_scores: "Оценки участников"
+      overall_score: "Общая оценка:"
     form:
       name: "Название"
       desc: "Описание"
@@ -96,6 +161,8 @@ ru:
       hint1: "Перетащите сюда файл или нажмите, чтобы выбрать файл"
       hint2: "(.zip, .rar, .7z, размер до 100 MБ)"
       recommend: "(рекомендуем разрешение 1920х1080)"
+      cover_preview_alt: "Предварительный просмотр обложки"
+      submitting: "Создаем..."
     edit:
       current_file: "Текущий файл: "
       download: "Скачать архив"
@@ -135,6 +202,15 @@ ru:
       checkbox: "Искать с хотя бы одним из выбранных тегов"
       reset_options: "Сбросить фильтры"
       no_result: "По текущему запросу ничего не найдено"
+      no_author: "Автор не найден"
+      all_jams: "Все джемы"
+      my_jams: "Мои джемы"
+      accepted: "Принятые джемы"
+      no_accepted: "У вас нет принятых джемов."
+      under_moderation: "Джемы на модерации"
+      no_under_moderation: "У вас нет джемов на модерации."
+      rejected: "Отклонённые джемы"
+      no_rejected: "У вас нет отклонённых джемов."
     show:
       description: "Описание"
       author: "Автор"
@@ -148,6 +224,22 @@ ru:
       participate: "Участвовать"
       change_game: "Заменить игру"
       no_tags: "Теги не найдены"
+      this_jam: "Данный джем"
+      status_pending: "находится на модерации"
+      status_rejected: "отклонен модератором"
+      jam_info: "Информация о джеме"
+      start_date: "Дата начала:"
+      deadline: "Окончание приёма работ:"
+      end_date: "Окончание оценивания:"
+      creator: "Создатель:"
+      no_author: "Автор не найден"
+      hosts: "Хосты:"
+      no_hosts: "Хосты не назначены"
+      nominations_winners: "Победители по номинациям"
+      rating_settings: "Настройки оценок"
+      jury_settings: "Настройки жюри"
+      submission_closed: "Приём работ завершён"
+      submission_closed_edit: "Приём работ завершён. Редактирование и замена игры недоступны."
     form:
       name: "Название джема"
       desc: "Описание"
@@ -158,9 +250,12 @@ ru:
       logo: "Логотип"
       tags: "Теги"
       btn: "Создать джем"
-      hint1: "Перетащите 
+      hint1: "Перетащите
       сюда изображение или нажмите, чтобы выбрать файл"
       hint2: "(рекомендуем 1920x1080px)"
+      cover_preview_alt: "Предварительный просмотр обложки"
+      logo_preview_alt: "Предварительный просмотр логотипа"
+      submitting: "Создаем..."
     edit:
       name: "Название джема"
       desc: "Описание"
@@ -174,17 +269,67 @@ ru:
     show_participants:
       title: "Все участники"
       no_participants: "Пока в данном джеме никто не участвует"
+      remove: "Удалить"
+      remove_confirm: "Вы уверены, что хотите удалить этого участника из джема?"
+      remove_hint: '(Нажмите "Удалить", чтобы исключить участника)'
     show_projects:
       title: "Список проектов"
       no_projects: "Ни одна игра еще не была загружена"
       not_found: "По текущему запросу ничего не найдено"
       no_author: "Автор не найден"
+      remove_project: "Удалить проект"
+      remove_project_confirm: "Вы уверены, что хотите отвязать эту игру от джема?"
+      remove_hint: "(Вы можете удалить проект, нажав на кнопку рядом с игрой)"
     modal_content:
       title: "Выберите"
       your_games: "Ваши игры"
       your_games_hint: "Выберите одну из ваших игр:"
       add_new: "Добавить новую игру"
       add_existing: "Добавить существующую игру"
+    rating_settings:
+      title: "Настройки оценок"
+      jury_enabled_label: "Жюри (да/нет)"
+      audience_enabled_label: "Аудитория (да/нет)"
+      both_disabled_hint: "Нельзя выбрать два раза \"нет\""
+      criteria_title: "Критерии оценивания"
+      criteria_hint: "Название критерия (оценка всегда 0..5)"
+      criterion_placeholder: "Например: Геймплей"
+      kind_voted_on: "Балльная оценка"
+      kind_manually_ranked: "1 голос за игру"
+      nominations_title: "Номинации"
+      nominations_hint: "Номинацию присваивает админ в конце"
+      nomination_placeholder: "Например: Лучший арт"
+    jury_settings:
+      title: "Настройки жюри"
+      invite_title: "Пригласить пользователя"
+      search_user_label: "Поиск пользователя"
+      search_placeholder: "Имя или email"
+      search_prompt: "Начните вводить имя или email…"
+      search_too_short: "Введите минимум 2 символа"
+    jury_contributors_table:
+      title: "Участники (host/admin/judge)"
+      user: "Пользователь"
+      status: "Статус"
+      host: "Хост"
+      admin: "Админ"
+      judge: "Жюри"
+      actions: "Действия"
+      remove: "Удалить"
+      pending: "(ожидает)"
+      save_all: "Сохранить всё"
+    jury_search_results:
+      empty: "Ничего не найдено"
+      invite: "Пригласить"
+    nominations_winners:
+      title: "Победители по номинациям"
+      empty: "Номинаций нет"
+      not_selected: "— не выбрано —"
+    showcase_grid:
+      start: "Начало:"
+      deadline: "Приём работ до:"
+      creator: "Создатель:"
+      no_author: "Автор не найден"
+      hosts: "Хосты:"
   users:
     destroy:
       success: "Аккаунт успешно удален."
@@ -219,6 +364,16 @@ ru:
       decline: "Отклонить заявку"
       no_subscribers: "Подписчиков пока нет"
       no_friends: "Друзей пока нет"
+      user_frozen: "Пользователь заморожен!"
+      unfreeze_at: "Дата разморозки:"
+      frozen_indefinitely: "Бессрочно"
+      cancel_application: "Отменить заявку"
+      accept_application: "Принять заявку"
+      show_all_games: "Показать все игры"
+      hide_games: "Скрыть игры"
+      role_author: "Автор"
+      role_host: "Хост"
+      role_admin: "Админ"
     new:
       title: "Зарегистрируйте свой аккаунт"
       email: "Адрес электронной почты"
@@ -242,6 +397,11 @@ ru:
         billing: "Счета"
         teams: "Команды"
         integrations: "Интеграции"
+      placeholders:
+        field: "Какое-то поле"
+        billing_title: "Какое-то поле (billing)"
+        teams_title: "Какое-то поле (teams)"
+        integrations_title: "Какое-то поле (integrations)"
       account:
         title: "Персональная информация"
         image:
@@ -249,6 +409,7 @@ ru:
           or: "или"
           drag: "Перетащите сюда изображение или нажмите, чтобы выбрать файл"
           recommendation: "Рекомендуемый размер: 1920x1080 пикселей"
+          preview_alt: "Предварительный просмотр изображения"
         nickname: "Отображаемое имя"
         real_name: "Настоящее имя"
         email:
@@ -289,6 +450,9 @@ ru:
           ip: "IP Адрес: "
           browser: "Браузер: "
           created: "Дата создания: "
+          view_all: "Показать все сессии"
+          hide_all: "Скрыть все сессии"
+          none: "Активных сессий не найдено."
         delete:
           title: "Удалить аккаунт"
           hint: "Больше не хотите пользоваться нашим сервисом? Вы можете удалить свою учетную запись здесь. Это действие необратимо. Вся информация, связанная с этой учетной записью, будет удалена навсегда."
@@ -318,11 +482,27 @@ ru:
     show_all: "Показать все"
     sent: "отправил запрос в друзья"
     accept: "принял вашу заявку"
+    gray_search:
+      accept_jury_invite: "Принять приглашение"
+    report_form:
+      open_btn: "Пожаловаться"
+      title: "Оставить жалобу"
+      reason_label: "Причина жалобы"
+      reason_placeholder: "Опишите вашу жалобу"
+      max_length: "Максимум 300 символов!"
+      submit: "Отправить"
+      submitting: "Отправка..."
+      other_reason: "Другая причина"
+      generic_error: "Произошла ошибка при отправке жалобы"
+      success_title: "Жалоба отправлена!"
+      success_body: "Спасибо за вашу жалобу. Мы рассмотрим её в ближайшее время."
+      error_title: "Ошибка"
   notifications:
     index:
       title: "Уведомления"
       accept: "принял заявку в друзья"
       sent: "отправил запрос в друзья"
+      accept_jury_invite: "Принять приглашение"
   email_confirms:
     edit:
       title: "Подтверждение почты"
@@ -330,3 +510,347 @@ ru:
       confirm: "Подтвердить"
       back: "Вернуться ко "
       login: "входу"
+      warning: "Внимание: Почту необходимо подтвердить в течение часа после регистрации, иначе ваш аккаунт будет удален"
+    update:
+      success: "Почта успешно подтверждена."
+      failure: "Что-то пошло не так."
+      code_blank: "Код не может быть пуст"
+      user_not_found: "Пользователь не найден."
+      invalid_code: "Код недействителен!"
+  controllers:
+    application:
+      insufficient_rights: "Недостаточно прав"
+      account_frozen: "Ваш аккаунт заморожен"
+    jams:
+      participate_success: "Вы успешно присоединились к джему!"
+      participate_failure: "Произошла ошибка. Попробуйте еще раз."
+      moderation_pending: "Джем находится на модерации"
+      update_resubmitted: "Джем обновлен и отправлен на повторную модерацию!"
+      participant_removed: "Участник удалён из джема."
+      participant_remove_failed: "Не удалось удалить участника."
+      project_unlinked: "Проект отвязан от джема."
+      project_unlink_failed: "Не удалось удалить проект."
+      settings_locked: "Настройки заблокированы"
+      ratings_saved: "Настройки оценок сохранены"
+      user_not_found: "Пользователь не найден"
+      invite_sent: "Инвайт отправлен"
+      invite_not_found: "Инвайт не найден"
+      invite_accepted: "Вы приняли приглашение"
+      invite_accept_failed: "Не удалось принять приглашение"
+      roles_updated: "Роли обновлены"
+      contributor_removed: "Удалено"
+      winner_saved: "Победитель сохранён"
+      game_not_in_jam: "Игра не участвует в этом джеме"
+      submission_closed: "Приём работ завершён"
+      date_deadline_before_start: "Дата сдачи работ не может быть раньше даты начала"
+      date_end_before_deadline: "Дата окончания джема не может быть раньше даты сдачи работ"
+      date_invalid_start: "Некорректная дата начала джема"
+      date_invalid_deadline: "Некорректная дата сдачи работ"
+      date_invalid_end: "Некорректная дата окончания джема"
+      invalid_dates: "Пожалуйста, введите корректные даты"
+    games:
+      moderation_pending: "Игра находится на модерации"
+      not_participating: "Вы не участвуете в этом джеме"
+      not_found: "Игра не найдена"
+      edit_locked: "Приём работ завершён. Редактирование игры недоступно"
+    jam_votes:
+      insufficient_rights_jury: "Недостаточно прав для голосования жюри"
+      insufficient_rights_audience: "Недостаточно прав для голосования аудитории"
+      scores_saved: "Оценки сохранены"
+      not_in_jam: "Эта игра не участвует в данном джеме"
+      own_game: "Нельзя оценивать собственную игру"
+      voting_closed: "Голосование сейчас закрыто"
+      voting_disabled: "Голосование отключено"
+      insufficient_rights: "Недостаточно прав для голосования"
+    jam_criterion_picks:
+      pick_saved: "Выбор сохранён"
+      pick_cleared: "Выбор сброшен"
+    sessions:
+      account_token_expired: "Ваш аккаунт был удален из-за истечения срока действия токена. Пожалуйста, зарегистрируйтесь снова."
+      email_letter_sent: "Письмо с кодом для входа уже было отправлено на вашу почту"
+      instructions_sent: "Инструкции были отправлены на ваш адрес"
+      all_sessions_logged_out: "Все сессии успешно удалены"
+      sessions_logout_failed: "Не удалось удалить сессии"
+      session_logged_out: "Сессия успешно удалена"
+      session_logout_failed: "Не удалось удалить сессию"
+    password_resets:
+      instructions_sent: "Инструкции были отправлены на ваш адрес"
+      email_not_found: "Не найдена указанная почта"
+      success: "Пароль успешно обновлен!"
+      failure: "Что-то пошло не так!"
+      fields_blank: "Все поля должны быть заполнены."
+      too_short: "Новый пароль слишком короткий (минимум 5 символов)."
+      no_match: "Новые пароли не совпадают."
+      same_as_old: "Новый пароль должен отличаться от старого."
+      invalid_token: "Токен недействителен!"
+    users:
+      instructions_sent: "Инструкции были отправлены на ваш адрес"
+      invalid_password: "Неверный пароль."
+    admin:
+      games:
+        updated: "Игра успешно обновлена"
+        deleted: "Игра успешно удалена"
+      jams:
+        updated: "Джем успешно обновлен"
+        deleted: "Джем успешно удалён"
+      users:
+        created: "Пользователь успешно создан"
+        updated: "Пользователь успешно обновлен"
+        deleted: "Пользователь успешно удален"
+        invalid_duration: "Некорректный срок"
+        freeze_failed: "Не удалось заморозить пользователя"
+        unfreeze_failed: "Не удалось разморозить пользователя"
+    moderator:
+      games:
+        updated: "Игра успешно обновлена"
+        deleted: "Игра успешно удалена"
+      jams:
+        updated: "Джем успешно обновлен"
+        deleted: "Джем успешно удалён"
+    reports:
+      sent: "Жалоба успешно отправлена"
+      notification: "Новая жалоба на %{type} с id %{id}"
+  mailers:
+    email_confirm:
+      subject: "Подтверждение email | Jammer"
+      title: "Подтверждение электронной почты"
+      body: "Вам необходимо подтвердить адрес электронной почты для регистрации на Jammer. Пожалуйста, скопируйте этот код для подтверждения:"
+    password_reset:
+      subject: "Сброс пароля | Jammer"
+      title: "Сброс пароля"
+      body_intro: "Кто-то запросил сброс пароля для вашей учетной записи."
+      body_action: "Если это были вы, нажмите на кнопку ниже, чтобы установить новый пароль:"
+      button: "Сбросить мой пароль"
+      body_ignore: "Если вы не запрашивали сброс пароля, просто проигнорируйте это сообщение."
+  password_resets:
+    new:
+      title: "Сброс пароля"
+      email_label: "Введите ваш email"
+      submit: "Отправить"
+      back: "Назад"
+    edit:
+      title: "Сброс пароля"
+      password_label: "Новый пароль"
+      password_confirmation_label: "Подтверждение пароля"
+      back: "Вернуться ко"
+      login: "входу"
+  jam_votes:
+    new:
+      jam_label: "Джем:"
+      overall_score: "Общая оценка (по критериям)"
+      one_vote: "1 голос"
+      comment_placeholder: "Комментарий (необязательно)"
+  jam_criterion_picks:
+    pick_block:
+      you_picked: "Вы выбрали эту игру"
+      cancel: "Отменить"
+      currently_picked: "Сейчас выбрано:"
+      other_game: "другая игра"
+      no_pick: "Выбор не сделан"
+      pick_instead: "Выбрать вместо"
+      pick_game: "Выбрать игру"
+  admin:
+    shared:
+      back: "Назад"
+      save: "Сохранить"
+      search: "Поиск"
+      reset: "Сбросить"
+      edit: "Редактировать"
+      delete: "Удалить"
+      confirm: "Вы уверены?"
+      tags: "Теги"
+      author_unknown: "Автор неизвестен"
+      status_hint: "0 - Модерация; 1 - Одобрено; 2 - Отклонено"
+      rejection_reason: "Причина отклонения"
+      rejection_reasons:
+        indecent_content: "Непристойный контент"
+        advertising: "Реклама"
+        plagiarism: "Плагиат"
+    actions:
+      index:
+        title: "Действия администраторов"
+        admin: "Администратор"
+        record_type: "Тип записи"
+        record_id: "ID записи"
+        action: "Действие"
+        changes: "Изменения"
+        date: "Дата"
+        old_values: "Старые значения:"
+        new_values: "Новые значения:"
+        no_changes: "Изменений нет"
+    games:
+      index:
+        search_label: "Поиск игр"
+        not_found: 'Игры не найдены по запросу "%{query}".'
+      form:
+        cover: "Обложка"
+        game_file: "Файл игры"
+        current_file: "Текущий файл:"
+        download_archive: "Скачать архив"
+    jams:
+      index:
+        search_label: "Поиск джемов"
+        not_found: 'Джемы не найдены по запросу "%{query}".'
+      form:
+        start_date: "Дата начала"
+        deadline: "Дедлайн сдачи работ"
+        end_date: "Дата окончания джема"
+        cover: "Обложка"
+        logo: "Логотип"
+    users:
+      index:
+        search_label: "Поиск пользователей"
+        not_found: 'Пользователи не найдены по запросу "%{query}".'
+        create_user: "Создать пользователя"
+      new:
+        title: "Создание пользователя"
+        name: "Имя"
+        email: "Email"
+        password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
+        role: "Роль"
+        submit: "Создать"
+      form:
+        tabs:
+          profile: "Профиль"
+          user_experience: "Пользовательский опыт"
+          games: "Игры"
+          jams: "Джемы"
+          sessions: "Сессии"
+          notifications: "Уведомления"
+        avatar: "Аватар"
+        background_image: "Фоновое изображение"
+        background_preview_alt: "Предпросмотр фона"
+        upload_new_background: "Загрузить новый фон"
+        personal_link: "Персональная ссылка"
+        phone_number: "Номер телефона"
+        birthday: "Дата рождения"
+        no_info: "Информации нет"
+        freeze:
+          freeze: "Заморозить"
+          unfreeze: "Разморозить"
+          cancel: "Отмена"
+          modal_title: "Заморозка аккаунта"
+          reason: "Причина"
+          reason_placeholder: "Укажите причину..."
+          reason_required: "Укажите причину"
+          freezing: "Заморозка..."
+          error: "Не удалось заморозить пользователя"
+          unfreeze_error: "Не удалось разморозить пользователя"
+          duration: "Срок"
+          durations:
+            hour_1: "1 час"
+            hours_6: "6 часов"
+            hours_12: "12 часов"
+            day_1: "1 день"
+            days_3: "3 дня"
+            days_7: "7 дней"
+            month_1: "1 месяц"
+            months_6: "6 месяцев"
+            year_1: "1 год"
+            forever: "Навсегда"
+        frozen:
+          title: "Аккаунт заморожен"
+          reason: "Причина:"
+          unfreeze_at: "Разморозка:"
+        friends:
+          title: "Друзья"
+          empty: "Друзей пока нет"
+        requests:
+          title: "Исходящие заявки"
+          empty_outgoing: "Исходящих заявок пока нет"
+        subscribers:
+          title: "Подписчики"
+          empty_incoming: "Входящих заявок пока нет"
+        games_section:
+          title: "Игры"
+        jams_section:
+          title: "Джемы"
+        sessions_section:
+          title: "Сессии"
+          empty: "Активных сессий нет"
+        notifications_section:
+          title: "Уведомления"
+          empty: "Уведомлений нет"
+          accepted_friendship: "принял вашу заявку в друзья"
+          sent_friend_request: "отправил вам заявку в друзья"
+    visits:
+      index:
+        title: "Статистика посещений"
+        last_30_days: "Последние 30 дней"
+        last_90_days: "Последние 90 дней"
+        active_users: "Активные пользователи"
+        registered_users: "Зарегистрированные пользователи"
+        user_count: "Количество пользователей"
+        date: "Дата"
+  admins:
+    index:
+      title: "Панель администратора"
+      go: "Перейти"
+      users:
+        title: "Пользователи"
+        description: "Управление пользователями"
+      games:
+        title: "Игры"
+        description: "Редактирование игр"
+      jams:
+        title: "Джемы"
+        description: "Редактирование джемов"
+      stats:
+        title: "Статистика"
+        description: "Статистика посещений сайта"
+      settings:
+        title: "Настройки"
+        description: "Настройки сайта"
+      support:
+        title: "Поддержка"
+        description: "Поддержка пользователей"
+      actions:
+        title: "Журнал действий"
+        description: "История действий администраторов"
+  moderator:
+    shared:
+      back: "Назад"
+      save: "Сохранить"
+      search: "Поиск"
+      reset: "Сбросить"
+      edit: "Редактировать"
+      delete: "Удалить"
+      confirm: "Вы уверены?"
+      tags: "Теги"
+      author_unknown: "Автор неизвестен"
+      status_hint: "0 - Модерация; 1 - Одобрено; 2 - Отклонено"
+      rejection_reason: "Причина отклонения"
+      rejection_reasons:
+        indecent_content: "Непристойный контент"
+        advertising: "Реклама"
+        plagiarism: "Плагиат"
+    games:
+      index:
+        search_label: "Поиск игр"
+        not_found: 'Игры не найдены по запросу "%{query}".'
+      form:
+        cover: "Обложка"
+        game_file: "Файл игры"
+        current_file: "Текущий файл:"
+        download_archive: "Скачать архив"
+    jams:
+      index:
+        search_label: "Поиск джемов"
+        not_found: 'Джемы не найдены по запросу "%{query}".'
+      form:
+        start_date: "Дата начала"
+        deadline: "Дедлайн сдачи работ"
+        end_date: "Дата окончания джема"
+        cover: "Обложка"
+        logo: "Логотип"
+  moderators:
+    index:
+      title: "Панель модератора"
+      go: "Перейти"
+      games:
+        title: "Игры"
+        description: "Редактирование игр"
+      jams:
+        title: "Джемы"
+        description: "Редактирование джемов"

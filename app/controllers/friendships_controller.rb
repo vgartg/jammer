@@ -68,7 +68,7 @@ class FriendshipsController < ApplicationController
     existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action)
 
     if existing_notifications.any?
-      # Удаляем старые уведомления из БД
+      # Remove old notifications from DB
       existing_notifications.destroy_all
     end
 

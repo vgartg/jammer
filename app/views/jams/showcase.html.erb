@@ -12,11 +12,11 @@
         <button data-action="click->jams#toggleJams"
                 data-view="all"
                 data-jams-target="showAll"
-                class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200">Все джемы</button>
+                class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200"><%= t('.all_jams') %></button>
         <button data-action="click->jams#toggleJams"
                 data-view="mine"
                 data-jams-target="showMine"
-                class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200">Мои джемы</button>
+                class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200"><%= t('.my_jams') %></button>
       </div>
     <% end %>
     <%= form_with url: jams_showcase_path, method: :get,
@@ -38,7 +38,7 @@
       </div>
 
       <div class="mt-4">
-        <label class="block text-sm font-medium text-white">Теги</label>
+        <label class="block text-sm font-medium text-white"><%= t('jams.form.tags') %></label>
         <div class="mt-1 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-10">
           <% @tags.each do |tag| %>
             <label data-jams-target="label"
@@ -101,25 +101,25 @@
     </div>
 
     <div class="mt-6 hidden" data-jams-target="myJams">
-      <h3 class="text-xl font-semibold my-4">Принятые джемы</h3>
+      <h3 class="text-xl font-semibold my-4"><%= t('.accepted') %></h3>
       <% if @jams_accepted.present? %>
         <%= render partial: 'showcase_grid', locals: { jams: @jams_accepted } %>
       <% else %>
-        <p class="text-gray-600 mt-2">У вас нет принятых джемов.</p>
+        <p class="text-gray-600 mt-2"><%= t('.no_accepted') %></p>
       <% end %>
 
-      <h3 class="text-xl font-semibold my-4">Джемы на модерации</h3>
+      <h3 class="text-xl font-semibold my-4"><%= t('.under_moderation') %></h3>
       <% if @jams_under_moderation.present? %>
         <%= render partial: 'showcase_grid', locals: { jams: @jams_under_moderation } %>
       <% else %>
-        <p class="text-gray-600 mt-2">У вас нет джемов на модерации.</p>
+        <p class="text-gray-600 mt-2"><%= t('.no_under_moderation') %></p>
       <% end %>
 
-      <h3 class="text-xl font-semibold my-4">Отклонённые джемы</h3>
+      <h3 class="text-xl font-semibold my-4"><%= t('.rejected') %></h3>
       <% if @jams_rejected.present? %>
         <%= render partial: 'showcase_grid', locals: { jams: @jams_rejected } %>
       <% else %>
-        <p class="text-gray-600 mt-2">У вас нет отклонённых джемов.</p>
+        <p class="text-gray-600 mt-2"><%= t('.no_rejected') %></p>
       <% end %>
     </div>
 

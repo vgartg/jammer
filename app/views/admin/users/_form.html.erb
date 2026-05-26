@@ -1,15 +1,15 @@
 <div class="p-6" data-controller="settings">
   <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mb-4">
-    <button data-target="settings.button" data-action="click->settings#showSection" data-section="profile" class="button bg-blue-700 text-white py-2 px-4 rounded">Профиль</button>
-    <button data-target="settings.button" data-action="click->settings#showSection" data-section="user_experience" class="button bg-blue-500 text-white py-2 px-4 rounded">Пользовательский опыт</button>
-    <button data-target="settings.button" data-action="click->settings#showSection" data-section="games" class="button bg-blue-500 text-white py-2 px-4 rounded">Игры</button>
-    <button data-target="settings.button" data-action="click->settings#showSection" data-section="jams" class="button bg-blue-500 text-white py-2 px-4 rounded">Джемы</button>
-    <button data-target="settings.button" data-action="click->settings#showSection" data-section="sessions" class="button bg-blue-500 text-white py-2 px-4 rounded">Сессии</button>
-    <button data-target="settings.button" data-action="click->settings#showSection" data-section="notifications" class="button bg-blue-500 text-white py-2 px-4 rounded">Уведомления</button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="profile" class="button bg-blue-700 text-white py-2 px-4 rounded"><%= t('.tabs.profile') %></button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="user_experience" class="button bg-blue-500 text-white py-2 px-4 rounded"><%= t('.tabs.user_experience') %></button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="games" class="button bg-blue-500 text-white py-2 px-4 rounded"><%= t('.tabs.games') %></button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="jams" class="button bg-blue-500 text-white py-2 px-4 rounded"><%= t('.tabs.jams') %></button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="sessions" class="button bg-blue-500 text-white py-2 px-4 rounded"><%= t('.tabs.sessions') %></button>
+    <button data-target="settings.button" data-action="click->settings#showSection" data-section="notifications" class="button bg-blue-500 text-white py-2 px-4 rounded"><%= t('.tabs.notifications') %></button>
   </div>
 
   <div class="mt-4">
-    <%= link_to 'Назад', request.referer && URI(request.referer).path != request.fullpath ? URI(request.referer).path : admin_users_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
+    <%= link_to t('admin.shared.back'), request.referer && URI(request.referer).path != request.fullpath ? URI(request.referer).path : admin_users_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
   </div>
 
   <div>
@@ -63,7 +63,7 @@
           <div id="hidden-section" class="space-y-4 mt-4 hidden">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label for="avatar" class="block text-sm font-medium text-gray-800">Аватар</label>
+                <label for="avatar" class="block text-sm font-medium text-gray-800"><%= t('.avatar') %></label>
                 <div class="flex items-center gap-x-4 bg-white p-4 rounded-md border border-gray-300 shadow-sm">
                   <% if user && user.avatar.attached? %>
                     <%= image_tag url_for(user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24 w-24 object-cover" %>
@@ -78,7 +78,7 @@
               </div>
 
               <div>
-                <label for="background_image" class="block text-sm font-medium text-gray-800">Заставка</label>
+                <label for="background_image" class="block text-sm font-medium text-gray-800"><%= t('.background_image') %></label>
                 <div data-controller="background-image">
                   <div class="relative">
                     <div class="max-w-full border-dashed border-2 border-gray-400 p-4 text-center rounded-md bg-white shadow-md">
@@ -88,12 +88,12 @@
                              alt="Current Background Image" class="max-h-56 mb-4 object-cover rounded-md shadow-sm" />
                       <% end %>
                       <img data-background-image-target="previewImg" id="preview-img" src="#"
-                           alt="Предварительный просмотр изображения"
+                           alt="<%= t('.background_preview_alt') %>"
                            class="mt-4 hidden w-full h-auto object-cover rounded-md shadow-sm">
                       <input data-background-image-target="input" type="file" name="user[background_image]"
                              id="background_image"
                              class="absolute inset-0 opacity-0 cursor-pointer max-h-56" accept="image/*">
-                      <label for="background_image" class="mt-2 text-xs text-gray-500 cursor-pointer hover:text-gray-700">Загрузить новую заставку</label>
+                      <label for="background_image" class="mt-2 text-xs text-gray-500 cursor-pointer hover:text-gray-700"><%= t('.upload_new_background') %></label>
                     </div>
                   </div>
                 </div>
@@ -118,7 +118,7 @@
 
               <div>
                 <label for="link_username" class="block text-sm font-medium text-gray-700">
-                  Персональная ссылка
+                  <%= t('.personal_link') %>
                 </label>
                 <%= f.text_field :link_username, id: 'link_username',
                                  class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50', placeholder: 'Username',
@@ -138,7 +138,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label for="phone_number" class="block text-sm font-medium text-gray-700">Номер телефона</label>
+                <label for="phone_number" class="block text-sm font-medium text-gray-700"><%= t('.phone_number') %></label>
                 <%= f.text_field :phone_number, id: 'phone_number',
                                  value: user.phone_number,
                                  autocomplete: 'tel',
@@ -148,7 +148,7 @@
               </div>
 
               <div>
-                <label for="birthday" class="block text-sm font-medium text-gray-700">День рождения</label>
+                <label for="birthday" class="block text-sm font-medium text-gray-700"><%= t('.birthday') %></label>
                 <%= f.text_field :birthday, id: 'birthday',
                                  value: user.birthday,
                                  autocomplete: 'birthday',
@@ -246,57 +246,64 @@
             </div>
           </div>
 
-          <div data-controller="freeze" data-user-id="<%= user.id %>">
+          <div data-controller="freeze"
+               data-user-id="<%= user.id %>"
+               data-freeze-reason-required-value="<%= t('.freeze.reason_required') %>"
+               data-freeze-freezing-value="<%= t('.freeze.freezing') %>"
+               data-freeze-error-value="<%= t('.freeze.error') %>"
+               data-freeze-freeze-label-value="<%= t('.freeze.freeze') %>">
             <div class="flex items-center justify-end pb-10 space-x-2">
-              <%= f.submit 'Сохранить', class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
+              <%= f.submit t('admin.shared.save'), class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
               <button type="button" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600" data-action="click->freeze#open">
-                Заморозить
+                <%= t('.freeze.freeze') %>
               </button>
-              <div data-controller="unfreeze" data-user-id="<%= user.id %>">
+              <div data-controller="unfreeze"
+                   data-user-id="<%= user.id %>"
+                   data-unfreeze-error-value="<%= t('.freeze.unfreeze_error') %>">
                 <button type="button"
                         class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
                         data-action="click->unfreeze#unfreezeUser">
-                  Разморозить
+                  <%= t('.freeze.unfreeze') %>
                 </button>
               </div>
             </div>
 
             <div id="freeze-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
               <div class="bg-white p-6 rounded-lg w-96">
-                <h2 class="text-lg font-semibold mb-4">Заморозка пользователя</h2>
+                <h2 class="text-lg font-semibold mb-4"><%= t('.freeze.modal_title') %></h2>
 
-                <label for="freeze-reason" class="block text-sm font-medium text-gray-700">Причина:</label>
+                <label for="freeze-reason" class="block text-sm font-medium text-gray-700"><%= t('.freeze.reason') %></label>
                 <textarea id="freeze-reason"
                           class="w-full border rounded p-2 mb-4 resize-none"
                           rows="3"
                           data-freeze-target="reason"
                           data-action="input->freeze#checkInput"
-                          placeholder="Введите причину заморозки"></textarea>
+                          placeholder="<%= t('.freeze.reason_placeholder') %>"></textarea>
 
-                <label for="freeze-duration" class="block text-sm font-medium text-gray-700">На сколько:</label>
+                <label for="freeze-duration" class="block text-sm font-medium text-gray-700"><%= t('.freeze.duration') %></label>
                 <select id="freeze-duration" class="w-full border rounded p-2 mb-4" data-freeze-target="duration">
-                  <option value="1.hour">1 час</option>
-                  <option value="6.hours">6 часов</option>
-                  <option value="12.hours">12 часов</option>
-                  <option value="1.day">1 сутки</option>
-                  <option value="3.days">3 суток</option>
-                  <option value="7.days">7 суток</option>
-                  <option value="1.month">1 месяц</option>
-                  <option value="6.months">6 месяцев</option>
-                  <option value="1.year">1 год</option>
-                  <option value="forever">Бессрочно</option>
+                  <option value="1.hour"><%= t('.freeze.durations.hour_1') %></option>
+                  <option value="6.hours"><%= t('.freeze.durations.hours_6') %></option>
+                  <option value="12.hours"><%= t('.freeze.durations.hours_12') %></option>
+                  <option value="1.day"><%= t('.freeze.durations.day_1') %></option>
+                  <option value="3.days"><%= t('.freeze.durations.days_3') %></option>
+                  <option value="7.days"><%= t('.freeze.durations.days_7') %></option>
+                  <option value="1.month"><%= t('.freeze.durations.month_1') %></option>
+                  <option value="6.months"><%= t('.freeze.durations.months_6') %></option>
+                  <option value="1.year"><%= t('.freeze.durations.year_1') %></option>
+                  <option value="forever"><%= t('.freeze.durations.forever') %></option>
                 </select>
 
                 <div class="flex justify-end space-x-2">
                   <button class="bg-gray-300 text-black py-2 px-4 rounded hover:bg-gray-400"
                           data-action="click->freeze#close">
-                    Отмена
+                    <%= t('.freeze.cancel') %>
                   </button>
                   <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 opacity-50 cursor-not-allowed"
                           data-freeze-target="submit"
                           data-action="click->freeze#submit"
                           disabled>
-                    Заморозить
+                    <%= t('.freeze.freeze') %>
                   </button>
                 </div>
               </div>
@@ -307,11 +314,11 @@
 
       <% if @user.is_frozen? %>
         <div class="alert alert-danger text-red-500">
-          <strong>Пользователь заморожен!</strong>
+          <strong><%= t('.frozen.title') %></strong>
           <br>
-          <span>Причина: <%= @user.frozen_reason %></span>
+          <span><%= t('.frozen.reason') %> <%= @user.frozen_reason %></span>
           <br>
-          <span>Дата разморозки: <%= @user.unfreeze_at.present? ? @user.unfreeze_at.strftime("%d-%m-%Y %H:%M") : "Бессрочно" %></span>
+          <span><%= t('.frozen.unfreeze_at') %> <%= @user.unfreeze_at.present? ? @user.unfreeze_at.strftime("%d-%m-%Y %H:%M") : t('.freeze.durations.forever') %></span>
         </div>
       <% end %>
     </div>
@@ -320,7 +327,7 @@
     <div data-settings-target="section" data-section="user_experience" class="hidden">
       <div class="container mx-auto px-4 pt-4">
         <div class="section pb-16">
-          <h2 class="text-2xl font-bold tracking-tight text-gray-900">Друзья</h2>
+          <h2 class="text-2xl font-bold tracking-tight text-gray-900"><%= t('.friends.title') %></h2>
           <div class="friend-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <% if @user_friendships.count > 0 %>
               <% @user_friendships.each do |user_friendship| %>
@@ -360,14 +367,14 @@
                 <% end %>
               <% end %>
             <% else %>
-              <p class="text-xl font-bold tracking-tight text-gray-600">Друзей пока нет</p>
+              <p class="text-xl font-bold tracking-tight text-gray-600"><%= t('.friends.empty') %></p>
             <% end %>
           </div>
         </div>
 
         <!-- Заявки -->
         <div class="section pb-16">
-          <h2 class="text-2xl font-bold tracking-tight text-gray-900">Заявки</h2>
+          <h2 class="text-2xl font-bold tracking-tight text-gray-900"><%= t('.requests.title') %></h2>
           <div class="request-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <% if @user_sent_requests.count > 0 %>
               <% @user_sent_requests.each do |user_request| %>
@@ -407,14 +414,14 @@
                 <% end %>
               <% end %>
             <% else %>
-              <p class="text-xl font-bold tracking-tight text-gray-600">Исходящие запросы пока пусты</p>
+              <p class="text-xl font-bold tracking-tight text-gray-600"><%= t('.requests.empty_outgoing') %></p>
             <% end %>
           </div>
         </div>
 
         <!-- Подписчики -->
         <div class="section pb-16">
-          <h2 class="text-2xl font-bold tracking-tight text-gray-900">Подписчики</h2>
+          <h2 class="text-2xl font-bold tracking-tight text-gray-900"><%= t('.subscribers.title') %></h2>
           <div class="followers-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <% if @user_received_requests.count > 0 %>
               <% @user_received_requests.each do |user_request| %>
@@ -454,7 +461,7 @@
                 <% end %>
               <% end %>
             <% else %>
-              <p class="text-xl font-bold tracking-tight text-gray-600">Входящие запросы пока пусты</p>
+              <p class="text-xl font-bold tracking-tight text-gray-600"><%= t('.subscribers.empty_incoming') %></p>
             <% end %>
           </div>
         </div>
@@ -466,7 +473,7 @@
       <div class="space-y-4 p-4 md:p-16">
         <div class="flex flex-col md:flex-row items-start">
           <div class="w-full md:w-1/4 mb-4 md:mb-0">
-            <p class="block text-sm font-medium text-gray-700">Игры</p>
+            <p class="block text-sm font-medium text-gray-700"><%= t('.games_section.title') %></p>
           </div>
           <div class="w-full md:w-3/4">
             <% if @user.games.any? %>
@@ -495,17 +502,17 @@
                     </a>
 
                     <div class="pt-2">
-                      <%= link_to 'Edit', edit_admin_game_path(game),
+                      <%= link_to t('admin.shared.edit'), edit_admin_game_path(game),
                                   class: 'bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600' %>
-                      <%= link_to 'Delete', admin_game_path(game),
+                      <%= link_to t('admin.shared.delete'), admin_game_path(game),
                                   class: 'bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600',
-                                  data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %>
+                                  data: { turbo_method: :delete, turbo_confirm: t('admin.shared.confirm') } %>
                     </div>
                   </li>
                 <% end %>
               </ul>
             <% else %>
-              <span class="text-sm text-gray-500">Информации нет</span>
+              <span class="text-sm text-gray-500"><%= t('.no_info') %></span>
             <% end %>
           </div>
         </div>
@@ -517,7 +524,7 @@
       <div class="space-y-4 p-4 md:p-16">
         <div class="flex flex-col md:flex-row items-start">
           <div class="w-full md:w-1/4 mb-4 md:mb-0">
-            <p class="block text-sm font-medium text-gray-700">Джемы</p>
+            <p class="block text-sm font-medium text-gray-700"><%= t('.jams_section.title') %></p>
           </div>
           <div class="w-full md:w-3/4">
             <% if @user.jams.any? %>
@@ -546,17 +553,17 @@
                     </a>
 
                     <div class="pt-2">
-                      <%= link_to 'Edit', edit_admin_jam_path(jam),
+                      <%= link_to t('admin.shared.edit'), edit_admin_jam_path(jam),
                                   class: 'bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600' %>
-                      <%= link_to 'Delete', admin_jam_path(jam),
+                      <%= link_to t('admin.shared.delete'), admin_jam_path(jam),
                                   class: 'bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600',
-                                  data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %>
+                                  data: { turbo_method: :delete, turbo_confirm: t('admin.shared.confirm') } %>
                     </div>
                   </li>
                 <% end %>
               </ul>
             <% else %>
-              <span class="text-sm text-gray-500">Информации нет</span>
+              <span class="text-sm text-gray-500"><%= t('.no_info') %></span>
             <% end %>
           </div>
         </div>
@@ -568,7 +575,7 @@
       <div class="space-y-4 p-4 md:p-16">
         <div class="flex flex-col md:flex-row items-start">
           <div class="w-full md:w-1/4 mb-4 md:mb-0">
-            <p class="block text-sm font-medium text-gray-700">Активные сессии</p>
+            <p class="block text-sm font-medium text-gray-700"><%= t('.sessions_section.title') %></p>
           </div>
           <div class="w-full md:w-3/4">
             <% if @user_sessions.any? %>
@@ -591,7 +598,7 @@
                 <%= submit_tag 'Log out all', class: 'mt-4 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600' %>
               <% end %>
             <% else %>
-              <p class="text-sm text-gray-500">Не найдено активных сессий</p>
+              <p class="text-sm text-gray-500"><%= t('.sessions_section.empty') %></p>
             <% end %>
           </div>
         </div>
@@ -603,7 +610,7 @@
       <div class="space-y-4 p-4 md:p-16">
         <div class="flex flex-col md:flex-row items-start">
           <div class="w-full md:w-1/4 mb-4 md:mb-0">
-            <p class="block text-sm font-medium text-gray-700">Уведомления</p>
+            <p class="block text-sm font-medium text-gray-700"><%= t('.notifications_section.title') %></p>
           </div>
           <div class="w-full md:w-3/4">
             <% if @user_notifications.any? %>
@@ -627,9 +634,9 @@
                           <%= notification.actor.name %>
                         </a>
                         <% if notification.action == 'accepted_friendship' %>
-                          принял заявку в друзья
+                          <%= t('.notifications_section.accepted_friendship') %>
                         <% elsif notification.action == 'sent_friend_request' %>
-                          отправил запрос в друзья
+                          <%= t('.notifications_section.sent_friend_request') %>
                         <% else %>
                           <%= notification.action %>
                         <% end %>
@@ -640,7 +647,7 @@
                 <% end %>
               <% end %>
             <% else %>
-              <p class="text-sm text-gray-500">У пользователя не было ни одного уведомления</p>
+              <p class="text-sm text-gray-500"><%= t('.notifications_section.empty') %></p>
             <% end %>
           </div>
         </div>

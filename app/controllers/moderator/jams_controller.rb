@@ -19,7 +19,7 @@ module Moderator
       params[:jam][:reason] = nil if params[:jam][:status].to_i != 2
 
       if @jam.update(jam_params)
-        flash[:success] = 'Джем успешно обновлен'
+        flash[:success] = t('controllers.moderator.jams.updated')
         if old_jam.status != @jam.status
           @author = @jam.author
           @author.create_notification(@author, current_user, 'jam change status after moderation', @jam)
@@ -36,7 +36,7 @@ module Moderator
 
     def destroy
       create_administration_record(current_user, @jam, {}, 'delete') if @jam.destroy
-      flash[:success] = 'Джем успешно удален'
+      flash[:success] = t('controllers.moderator.jams.deleted')
       redirect_to moderator_jams_path
     end
 

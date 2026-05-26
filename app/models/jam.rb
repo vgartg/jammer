@@ -1,7 +1,7 @@
 class Jam < ActiveRecord::Base
   validates :name, :start_date, :deadline, :end_date, presence: true
-  validates :cover, presence: { message: "Обложка обязательна для загрузки" }
-  validates :logo, presence: { message: "Логотип обязателен для загрузки" }
+  validates :cover, presence: true
+  validates :logo, presence: true
 
   has_rich_text :description
 
@@ -33,7 +33,6 @@ class Jam < ActiveRecord::Base
     jam_contributors.find_by(user_id: user.id, status: "accepted")
   end
 
-  # Операционное управление джемом: edit/update/destroy, remove_participant/remove_project и т.п.
   def can_manage?(user)
     return false unless user
     return true if user == author
@@ -44,7 +43,6 @@ class Jam < ActiveRecord::Base
     jc.host? || jc.admin?
   end
 
-  # "Глобальные настройки" джема: настройки оценок и жюри
   def can_configure?(user)
     return false unless user
     return true if user == author
@@ -52,7 +50,7 @@ class Jam < ActiveRecord::Base
     jc = contributor_record(user)
     return false unless jc
 
-    jc.host? # только host (и автор)
+    jc.host?
   end
 
   def judge?(user)
@@ -102,17 +100,16 @@ class Jam < ActiveRecord::Base
 
   has_and_belongs_to_many :tags
 
-  validates_length_of :tags, maximum: 10, message: 'Можно выбрать не более 10 тегов'
+  validates_length_of :tags, maximum: 10
 
   validates :reason, presence: true, if: -> { status == 2 }
-  validates_length_of :tags, maximum: 10, message: "Можно выбрать не более 10 тегов"
 
   validate :description_presence
 
   private
   def description_presence
     if description.blank? || description.body.blank?
-      errors.add(:description, "Описание обязательно для заполнения")
+      errors.add(:description, :blank)
     end
   end
 end

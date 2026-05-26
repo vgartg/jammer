@@ -19,7 +19,7 @@ module Moderator
       params[:game][:reason] = nil if params[:game][:status].to_i != 2
 
       if @game.update(game_params)
-        flash[:success] = 'Игра успешно обновлена'
+        flash[:success] = t('controllers.moderator.games.updated')
         if old_game.status != @game.status
           @author = @game.author
           @author.create_notification(@author, current_user, 'game change status after moderation', @game)
@@ -36,7 +36,7 @@ module Moderator
 
     def destroy
       create_administration_record(current_user, @game, {}, 'delete') if @game.destroy
-      flash[:success] = 'Игра успешно удалена'
+      flash[:success] = t('controllers.moderator.games.deleted')
       redirect_to moderator_games_path
     end
 

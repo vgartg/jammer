@@ -68,7 +68,7 @@
                          id="current-background-img" src="<%= url_for(@user.background_image) %>"
                          alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md"/>
                   <% end %>
-                  <img data-background-image-target="previewImg" id="preview-img" src="#" alt="Предварительный просмотр изображения" class="mt-4 hidden w-full h-auto object-cover rounded-md">
+                  <img data-background-image-target="previewImg" id="preview-img" src="#" alt="<%= t '.account.image.preview_alt' %>" class="mt-4 hidden w-full h-auto object-cover rounded-md">
                   <input data-background-image-target="input" type="file" name="user[background_image]"
                          id="background_image"
                          class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
@@ -638,18 +638,21 @@
                         <p class="text-sm text-gray-500"><%= t 'settings.index.security.active_sessions.browser' %>
                           Unknown</p>
                       <% end %>
-                      <p class="text-sm text-gray-500"><%= t 'settings.index.security.active_sessions.browserid' %> <%= session.created_at %></p>
+                      <p class="text-sm text-gray-500"><%= t 'settings.index.security.active_sessions.created' %> <%= session.created_at %></p>
                     </div>
                   </li>
                 <% end %>
               </div>
               <li class="py-4">
-                <button id="toggle-more-sessions" class="text-indigo-600 hover:underline">View all sessions</button>
+                <button id="toggle-more-sessions"
+                        class="text-indigo-600 hover:underline"
+                        data-show-text="<%= t '.security.active_sessions.view_all' %>"
+                        data-hide-text="<%= t '.security.active_sessions.hide_all' %>"><%= t '.security.active_sessions.view_all' %></button>
               </li>
             <% end %>
           </ul>
         <% else %>
-          <p class="text-sm text-gray-500">No active sessions found.</p>
+          <p class="text-sm text-gray-500"><%= t '.security.active_sessions.none' %></p>
         <% end %>
       </div>
     </div>
@@ -659,10 +662,10 @@
             const moreSessions = document.getElementById('more-sessions');
             if (moreSessions.classList.contains('hidden')) {
                 moreSessions.classList.remove('hidden');
-                this.textContent = 'Hide all sessions';
+                this.textContent = this.dataset.hideText;
             } else {
                 moreSessions.classList.add('hidden');
-                this.textContent = 'View all sessions';
+                this.textContent = this.dataset.showText;
             }
         });
     </script>
@@ -670,7 +673,7 @@
     <div data-controller="modal">
       <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
         <div>
-          <h2 class="text-base font-semibold leading-7 text-white">Delete account</h2>
+          <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.delete.title' %></h2>
           <p class="mt-1 text-sm leading-6 text-gray-400">
             <%= t '.security.delete.hint' %>
           </p>
@@ -718,8 +721,8 @@
   <div id="billing-section" class="section divide-y set-menuitem hidden">
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Какое-то поле (billing)</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">Какое-то поле</p>
+        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.placeholders.billing_title' %></h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.placeholders.field' %></p>
       </div>
 
       <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
@@ -727,7 +730,7 @@
 
           <% 16.times do %>
             <div class="field col-span-full">
-              <label class="block text-sm font-medium text-white">Какое-то поле (billing)</label>
+              <label class="block text-sm font-medium text-white"><%= t '.placeholders.billing_title' %></label>
             </div>
           <% end %>
         </div>
@@ -738,8 +741,8 @@
   <div id="teams-section" class="section divide-y set-menuitem hidden">
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Какое-то поле (teams)</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">Какое-то поле</p>
+        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.placeholders.teams_title' %></h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.placeholders.field' %></p>
       </div>
 
       <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
@@ -747,7 +750,7 @@
 
           <% 16.times do %>
             <div class="field col-span-full">
-              <label class="block text-sm font-medium text-white">Какое-то поле (teams)</label>
+              <label class="block text-sm font-medium text-white"><%= t '.placeholders.teams_title' %></label>
             </div>
           <% end %>
         </div>
@@ -758,8 +761,8 @@
   <div id="integrations-section" class="section divide-y set-menuitem hidden">
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Какое-то поле (integrations)</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">Какое-то поле</p>
+        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.placeholders.integrations_title' %></h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.placeholders.field' %></p>
       </div>
 
       <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
@@ -767,7 +770,7 @@
 
           <% 16.times do %>
             <div class="field col-span-full">
-              <label class="block text-sm font-medium text-white">Какое-то поле (integrations)</label>
+              <label class="block text-sm font-medium text-white"><%= t '.placeholders.integrations_title' %></label>
             </div>
           <% end %>
         </div>

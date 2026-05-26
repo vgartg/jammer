@@ -51,12 +51,12 @@
 
         <% if @user.is_frozen? %>
           <div class="alert alert-danger text-red-500">
-            <strong>Пользователь заморожен!</strong>
+            <strong><%= t '.user_frozen' %></strong>
             <br>
             <% if @user.unfreeze_at.present? %>
-              <span>Дата разморозки: <%= @user.unfreeze_at.strftime("%d-%m-%Y %H:%M") %></span>
+              <span><%= t '.unfreeze_at' %> <%= @user.unfreeze_at.strftime("%d-%m-%Y %H:%M") %></span>
             <% else %>
-              <span>Бессрочно</span>
+              <span><%= t '.frozen_indefinitely' %></span>
             <% end %>
           </div>
         <% end %>
@@ -87,15 +87,15 @@
                 <%= button_to t('buttons.add_friend'), user_friendships_path(@user), method: :post,
                               class: friend_btn_green %>
               <% elsif @friendship.status == 'pending' && @friendship.user == @current_user %>
-                <%= button_to "Cancel application", cancel_user_friendship_path(@user, @friendship),
+                <%= button_to t('.cancel_application'), cancel_user_friendship_path(@user, @friendship),
                               method: :delete, class: friend_btn_red %>
               <% elsif @friendship.status == 'accepted' %>
                 <%= button_to t("buttons.remove_friend"), user_friendship_path(@user, @friendship), method: :delete,
                               class: friend_btn_red %>
               <% elsif @friendship.status == 'pending' && @friendship.user != @current_user %>
-                <%= button_to "Accept application", user_friendship_path(@current_user, @friendship), method: :put,
+                <%= button_to t('.accept_application'), user_friendship_path(@current_user, @friendship), method: :put,
                               class: friend_btn_green %>
-                <%= button_to "Cancel application", cancel_user_friendship_path(@current_user, @friendship), method: :delete,
+                <%= button_to t('.cancel_application'), cancel_user_friendship_path(@current_user, @friendship), method: :delete,
                               class: friend_btn_red %>
               <% end %>
               <% if current_user %>
@@ -198,8 +198,11 @@
                     <% end %>
                   </ul>
                   <% if @user.games.count >= 8 %>
-                    <button id="toggle-button" class="mt-4 text-gray-400 hover:underline">
-                      Показать все игры
+                    <button id="toggle-button"
+                            class="mt-4 text-gray-400 hover:underline"
+                            data-show-text="<%= t '.show_all_games' %>"
+                            data-hide-text="<%= t '.hide_games' %>">
+                      <%= t '.show_all_games' %>
                     </button>
                   <% end %>
                 <% else %>
@@ -221,14 +224,14 @@
                             games.forEach(game => {
                                 game.classList.remove('hidden');
                             });
-                            this.innerText = 'Скрыть игры';
+                            this.innerText = this.dataset.hideText;
                         } else {
                             allGames.forEach((game, index) => {
                                 if (index >= 8) {
                                     game.classList.add('hidden');
                                 }
                             });
-                            this.innerText = 'Показать все игры';
+                            this.innerText = this.dataset.showText;
                         }
                     });
                 }
@@ -275,11 +278,11 @@
                                 <% label, classes =
                                      case role
                                      when :author
-                                       ["Автор", "bg-purple-100 text-purple-800"]
+                                       [t('.role_author'), "bg-purple-100 text-purple-800"]
                                      when :host
-                                       ["Хост", "bg-indigo-100 text-indigo-800"]
+                                       [t('.role_host'), "bg-indigo-100 text-indigo-800"]
                                      when :admin
-                                       ["Админ", "bg-amber-100 text-amber-800"]
+                                       [t('.role_admin'), "bg-amber-100 text-amber-800"]
                                      end
                                 %>
 
@@ -444,7 +447,7 @@
             data-last-active-at="<%= request.user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
             data-action="load->online#updateStatus"></span>
                             <% else %>
-                              <span class="text-sm text-gray-600">Offline</span>
+                              <span class="text-sm text-gray-600"><%= t '.offline' %></span>
                             <% end %>
                           </p>
                         <% end %>

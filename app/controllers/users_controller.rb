@@ -28,9 +28,9 @@ class UsersController < ApplicationController
 
     if @user.save
       @token = @user.set_email_confirm_token
-      EmailConfirmMailer.with(user: @user, token: @token).email_confirm.deliver_later
+      EmailConfirmMailer.with(user: @user, token: @token, locale: I18n.locale).email_confirm.deliver_later
       flash[:success] ||= []
-      flash[:success] << 'Инструкции были отправлены на ваш адрес'
+      flash[:success] << t('controllers.users.instructions_sent')
       redirect_to edit_email_confirm_url(user: { email_confirm_token: @user.email_confirm_token,
                                                  email: @user.email }).gsub('&amp;', '&')
     else
@@ -49,7 +49,7 @@ class UsersController < ApplicationController
       render json: { success: true }, status: :ok
     else
       flash[:error] = t 'users.destroy.error'
-      render json: { success: false, error: 'Неверный пароль.' }, status: :unprocessable_entity
+      render json: { success: false, error: t('controllers.users.invalid_password') }, status: :unprocessable_entity
     end
   end
 

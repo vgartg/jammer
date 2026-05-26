@@ -2,6 +2,7 @@ import { Controller } from "stimulus";
 
 export default class extends Controller {
     static targets = ["submit"];
+    static values = { error: String };
 
     async unfreezeUser() {
         const response = await fetch(`/admin/users/${this.element.dataset.userId}/unfreeze`, {
@@ -15,7 +16,7 @@ export default class extends Controller {
         if (response.ok) {
             location.reload();
         } else {
-            alert("Ошибка при разморозке пользователя.");
+            alert(this.errorValue);
         }
     }
 }

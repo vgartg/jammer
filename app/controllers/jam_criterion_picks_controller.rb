@@ -21,7 +21,7 @@ class JamCriterionPicksController < ApplicationController
     pick.game_id = game.id
     pick.save!
 
-    flash.now[:success] = "Выбор сохранён"
+    flash.now[:success] = t('controllers.jam_criterion_picks.pick_saved')
 
     respond_to do |format|
       format.turbo_stream do
@@ -51,7 +51,7 @@ class JamCriterionPicksController < ApplicationController
     criterion = @jam.jam_criteria.find(pick.jam_criterion_id)
 
     pick.destroy!
-    flash.now[:success] = "Выбор сброшен"
+    flash.now[:success] = t('controllers.jam_criterion_picks.pick_cleared')
 
     respond_to do |format|
       format.turbo_stream do
@@ -78,18 +78,18 @@ class JamCriterionPicksController < ApplicationController
   # Можно использовать твою же authorize_vote! логику (voting_open? + rights)
   def authorize_vote_like!
     unless @jam.voting_open?
-      flash[:failure] = "Голосование сейчас закрыто"
+      flash[:failure] = t('controllers.jam_votes.voting_closed')
       redirect_to jam_profile_path(@jam) and return
     end
 
     setting = @jam.rating_setting
     unless setting.jury_enabled || setting.audience_enabled
-      flash[:failure] = "Голосование отключено"
+      flash[:failure] = t('controllers.jam_votes.voting_disabled')
       redirect_to jam_profile_path(@jam) and return
     end
 
     unless @jam.can_vote_as_jury?(current_user) || @jam.can_vote_as_audience?(current_user)
-      flash[:failure] = "Недостаточно прав для голосования"
+      flash[:failure] = t('controllers.jam_votes.insufficient_rights')
       redirect_to jam_profile_path(@jam) and return
     end
   end

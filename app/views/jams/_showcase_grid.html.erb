@@ -39,26 +39,26 @@
 
         <div class="mt-4 space-y-2 text-sm text-gray-700">
           <div>
-            <span class="font-medium text-gray-900">Начало:</span>
+            <span class="font-medium text-gray-900"><%= t('jams.showcase_grid.start') %></span>
             <%= jam.start_date&.strftime("%d.%m.%Y") %>
           </div>
 
           <div>
-            <span class="font-medium text-gray-900">Приём работ до:</span>
+            <span class="font-medium text-gray-900"><%= t('jams.showcase_grid.deadline') %></span>
             <%= jam.deadline&.strftime("%d.%m.%Y") %>
           </div>
 
           <div>
-            <span class="font-medium text-gray-900">Создатель:</span>
+            <span class="font-medium text-gray-900"><%= t('jams.showcase_grid.creator') %></span>
             <% if jam.author.present? %>
               <%= link_to jam.author.name, user_profile_path(jam.author), class: "text-indigo-600 hover:text-indigo-900 break-all" %>
             <% else %>
-              <span>Автор не найден</span>
+              <span><%= t('jams.showcase_grid.no_author') %></span>
             <% end %>
           </div>
 
           <div>
-            <span class="font-medium text-gray-900">Хосты:</span>
+            <span class="font-medium text-gray-900"><%= t('jams.showcase_grid.hosts') %></span>
             <% hosts = jam.hosts %>
             <% if hosts.any? %>
               <div class="mt-1 flex flex-wrap gap-2">

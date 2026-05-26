@@ -1,14 +1,14 @@
-<h1 class="text-2xl font-bold mb-6 text-center">Журнал действий администраторов</h1>
+<h1 class="text-2xl font-bold mb-6 text-center"><%= t('.title') %></h1>
 <div class="overflow-x-auto px-4">
   <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
     <thead>
     <tr class="bg-gray-200 text-gray-600 uppercase text-xs md:text-sm">
-      <th class="py-3 px-6 text-left">Администратор</th>
-      <th class="py-3 px-6 text-left">Тип записи</th>
-      <th class="py-3 px-6 text-left">ID объекта записи</th>
-      <th class="py-3 px-6 text-left">Действие</th>
-      <th class="py-3 px-6 text-left">Изменения</th>
-      <th class="py-3 px-6 text-left">Дата</th>
+      <th class="py-3 px-6 text-left"><%= t('.admin') %></th>
+      <th class="py-3 px-6 text-left"><%= t('.record_type') %></th>
+      <th class="py-3 px-6 text-left"><%= t('.record_id') %></th>
+      <th class="py-3 px-6 text-left"><%= t('.action') %></th>
+      <th class="py-3 px-6 text-left"><%= t('.changes') %></th>
+      <th class="py-3 px-6 text-left"><%= t('.date') %></th>
     </tr>
     </thead>
     <tbody>
@@ -22,7 +22,7 @@
           <% changes = action.changed_fields %>
           <% if changes.present? && changes.is_a?(Hash) %>
             <div>
-              <strong>Старые значения:</strong>
+              <strong><%= t('.old_values') %></strong>
               <ul>
                 <% changes['old_attributes'].each do |key, value| %>
                   <li><%= "#{key}: #{value}" %></li>
@@ -30,7 +30,7 @@
               </ul>
             </div>
             <div>
-              <strong>Новые значения:</strong>
+              <strong><%= t('.new_values') %></strong>
               <ul>
                 <% changes['new_attributes'].each do |key, value| %>
                   <li><%= "#{key}: #{value}" %></li>
@@ -38,7 +38,7 @@
               </ul>
             </div>
           <% else %>
-            <span>Нет изменений</span>
+            <span><%= t('.no_changes') %></span>
           <% end %>
         </td>
         <td class="py-3 px-6 text-sm md:text-base"><%= action.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>

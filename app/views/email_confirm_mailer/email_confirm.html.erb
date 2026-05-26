@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="<%= I18n.locale %>">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Подтверждение электронной почты</title>
+  <title><%= t('mailers.email_confirm.title') %></title>
   <style>
       body {
           font-family: Arial, sans-serif;
@@ -41,8 +41,8 @@
 <body>
 
 <div class="container">
-  <h1>Подтверждение электронной почты</h1>
-  <p>Вам необходимо подтвердить адрес электронной почты для регистрации на Jammer. Пожалуйста, скопируйте этот код для подтверждения:</p>
+  <h1><%= t('mailers.email_confirm.title') %></h1>
+  <p><%= t('mailers.email_confirm.body') %></p>
   <p class="code">
     <% if @user && @token && @user.email_confirm_token %>
       <%= @token %>

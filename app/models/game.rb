@@ -1,7 +1,7 @@
 class Game < ActiveRecord::Base
   validates :name, :description, presence: true
-  validates :cover, presence: { message: "Обложка обязательна для загрузки" }
-  validates :game_file, presence: { message: "Файл игры обязателен для загрузки" }
+  validates :cover, presence: true
+  validates :game_file, presence: true
 
   has_one_attached :cover
   has_one_attached :game_file
@@ -15,26 +15,23 @@ class Game < ActiveRecord::Base
 
   has_and_belongs_to_many :tags
 
-  validates_length_of :tags, maximum: 10, message: 'Можно выбрать не более 10 тегов'
+  validates_length_of :tags, maximum: 10
 
   validate :game_file_format
   validate :game_file_size
   def jam_rating(jam_id, vote_type: nil)
-    # 1) Оценки звёздами (voted_on)
     reviews_scope = reviews.where(jam_id: jam_id).where.not(user_mark: 0)
 
     if vote_type.present?
-      vt = Review.vote_types[vote_type.to_s] # "jury"/"audience" -> int
+      vt = Review.vote_types[vote_type.to_s]
       reviews_scope = reviews_scope.where(vote_type: vt) if vt
     end
 
     reviews_sum = reviews_scope.sum(:user_mark)
     reviews_cnt = reviews_scope.count
 
-    # 2) “1 голос за игру” (manually_ranked) -> считаем как 5 звёзд
     picks_scope = JamCriterionPick.where(jam_id: jam_id, game_id: id)
 
-    # если хочешь учитывать только конкретный канал (jury/audience) — фильтруем
     if vote_type.present? && %w[jury audience].include?(vote_type.to_s)
       picks_scope = picks_scope.where(channel: vote_type.to_s)
     end
@@ -62,7 +59,7 @@ class Game < ActiveRecord::Base
     if game_file.attached?
       acceptable_types = %w[application/zip application/x-rar-compressed application/x-7z-compressed]
       unless acceptable_types.include?(game_file.content_type)
-        errors.add(:game_file, "Файл должен быть в формате .zip, .rar или .7z")
+        errors.add(:game_file, :wrong_format)
       end
     end
   end
@@ -70,7 +67,7 @@ class Game < ActiveRecord::Base
 
   def game_file_size
     if game_file.attached? && game_file.byte_size > 100.megabytes
-      errors.add(:game_file, "Размер архива не должен превышать 100 MB")
+      errors.add(:game_file, :too_large)
     end
   end
 end

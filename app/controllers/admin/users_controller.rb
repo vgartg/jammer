@@ -14,7 +14,7 @@ module Admin
       @user = User.new(user_params)
 
       if @user.save
-        flash[:success] = 'Пользователь успешно создан'
+        flash[:success] = t('controllers.admin.users.created')
 
         create_administration_record(current_user, @user, {}, 'create')
 
@@ -43,7 +43,7 @@ module Admin
 
     def update
       if @user.update(user_params)
-        flash[:success] = 'Пользователь успешно обновлен'
+        flash[:success] = t('controllers.admin.users.updated')
 
         changes = @user.previous_changes.except('updated_at')
 
@@ -58,7 +58,7 @@ module Admin
 
     def destroy
       create_administration_record(current_user, @user, {}, 'delete') if @user.destroy
-      flash[:success] = 'Пользователь успешно удален'
+      flash[:success] = t('controllers.admin.users.deleted')
       redirect_to admin_users_path
     end
 
@@ -79,7 +79,7 @@ module Admin
                     when "1.year" then 1.year.from_now
                     when "forever" then nil
                     else
-                      return render json: { error: "Некорректный срок" }, status: :unprocessable_entity
+                      return render json: { error: t('controllers.admin.users.invalid_duration') }, status: :unprocessable_entity
                     end
 
       if user.update!(
@@ -90,7 +90,7 @@ module Admin
       )
         render json: { success: true }, status: :ok
       else
-        render json: { error: "Не удалось заморозить пользователя" }, status: :unprocessable_entity
+        render json: { error: t('controllers.admin.users.freeze_failed') }, status: :unprocessable_entity
       end
     end
 
@@ -104,7 +104,7 @@ module Admin
       )
         render json: { success: true }, status: :ok
       else
-        render json: { error: "Не удалось разморозить пользователя" }, status: :unprocessable_entity
+        render json: { error: t('controllers.admin.users.unfreeze_failed') }, status: :unprocessable_entity
       end
     end
 
