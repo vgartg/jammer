@@ -14,7 +14,7 @@ export default class extends Controller {
 
     close() {
         this.modalTarget.classList.add('hidden')
-        this.passwordTarget.value = ''
+        if (this.hasPasswordTarget) this.passwordTarget.value = ''
     }
 
     async submitForm(event) {

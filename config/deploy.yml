@@ -55,6 +55,10 @@ env:
     - MAIL_DOMAIN
     - MAIL_ADDRESS
     - MAIL_PASSWORD
+    - GITHUB_CLIENT_ID
+    - GITHUB_CLIENT_SECRET
+    - GOOGLE_CLIENT_ID
+    - GOOGLE_CLIENT_SECRET
 
 volumes:
   - "jammer_storage:/rails/storage"

@@ -487,6 +487,10 @@ en:
           popup_title: "Enter your password to delete account:"
           pswd: "Password"
           cancel: "Cancel"
+  oauth:
+    failure: "Authentication failed: %{message}"
+    no_email: "Could not retrieve email from provider. Please make sure your email is public."
+    username_taken: "The username \"%{requested}\" was already taken, so we assigned you \"%{assigned}\". You can change it below."
   sessions:
     create:
       failure: "Invalid email or password"
