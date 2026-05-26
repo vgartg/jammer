@@ -488,7 +488,6 @@ class JamsController < ApplicationController
 
     # ID уже добавленных
     excluded_ids = @jam.jam_contributors.pluck(:user_id)
-    excluded_ids << @jam.author_id
 
     @users =
       User.where("LOWER(name) LIKE :q OR LOWER(email) LIKE :q", q: "%#{q}%")

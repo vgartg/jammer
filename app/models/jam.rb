@@ -56,6 +56,9 @@ class Jam < ActiveRecord::Base
   end
 
   def judge?(user)
+    return false unless user
+    return true if user == author
+
     jc = contributor_record(user)
     jc.present? && jc.judge?
   end
