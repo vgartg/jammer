@@ -31,6 +31,9 @@ class ApplicationController < ActionController::Base
     elsif cookies.encrypted[:current_user].present?
       user = User.find_by_id(cookies.encrypted[:current_user])
       if user&.remember_token_authenticated?(cookies.encrypted[:remember_token])
+        locale = session[:locale]
+        reset_session
+        session[:locale] = locale if locale.present?
         sign_in(user)
         Session.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).destroy_all
         Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
