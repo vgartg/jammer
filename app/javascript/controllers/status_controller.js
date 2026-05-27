@@ -24,4 +24,9 @@ export default class extends Controller {
             this.customReasonTarget.value = '';
         }
     }
+
+    pick(event) {
+        const value = event.currentTarget.dataset.statusValueParam ?? '';
+        this.customReasonTarget.value = value;
+    }
 }

@@ -605,6 +605,8 @@ en:
       not_participating: "You are not participating in this jam"
       not_found: "Game not found"
       edit_locked: "Submissions are closed. Game editing is unavailable"
+    reviews:
+      deleted: "Review deleted"
     jam_votes:
       insufficient_rights_jury: "Insufficient rights to vote as jury"
       insufficient_rights_audience: "Insufficient rights to vote as audience"
@@ -890,6 +892,7 @@ en:
         game_file: "Game file"
         current_file: "Current file:"
         download_archive: "Download archive"
+        reviews_title: "Game reviews"
     jams:
       index:
         search_label: "Search jams"

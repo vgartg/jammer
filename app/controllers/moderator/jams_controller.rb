@@ -16,7 +16,6 @@ module Moderator
     def update
       old_jam = @jam.dup
 
-      params[:jam][:reason] = params[:jam][:reason].presence
       params[:jam][:reason] = nil if params[:jam][:status].to_i != 2
 
       if @jam.update(jam_params)

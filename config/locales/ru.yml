@@ -605,6 +605,8 @@ ru:
       not_participating: "Вы не участвуете в этом джеме"
       not_found: "Игра не найдена"
       edit_locked: "Приём работ завершён. Редактирование игры недоступно"
+    reviews:
+      deleted: "Отзыв удалён"
     jam_votes:
       insufficient_rights_jury: "Недостаточно прав для голосования жюри"
       insufficient_rights_audience: "Недостаточно прав для голосования аудитории"
@@ -890,6 +892,7 @@ ru:
         game_file: "Файл игры"
         current_file: "Текущий файл:"
         download_archive: "Скачать архив"
+        reviews_title: "Отзывы игры"
     jams:
       index:
         search_label: "Поиск джемов"
