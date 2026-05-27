@@ -80,7 +80,7 @@ class GamesController < ApplicationController
     end
     return unless @game.status != 1 && current_user != @game.author
 
-    flash[:failure] = t('controllers.games.moderation_pending')
+    flash[:failure] = @game.status == 2 ? t('controllers.games.rejected') : t('controllers.games.moderation_pending')
     redirect_to dashboard_path
   end
 

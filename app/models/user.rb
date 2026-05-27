@@ -218,8 +218,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def get_all_participating_jams()
-    Jam.joins("JOIN jam_submissions ON (jams.id=jam_submissions.jam_id)").where('jam_submissions.user_id = ?', self.id)
+  def get_all_participating_jams
+    Jam.joins("JOIN jam_submissions ON (jams.id=jam_submissions.jam_id)").where('jam_submissions.user_id = ? AND jams.status = 1', self.id)
   end
 
   def authenticate_password_reset_token(token)
@@ -253,7 +253,7 @@ class User < ActiveRecord::Base
     result = {}
 
     # Автор
-    jams.find_each do |jam|
+    jams.where(status: 1).find_each do |jam|
       result[jam.id] ||= { jam:, roles: [] }
       result[jam.id][:roles] << :author
     end
@@ -261,6 +261,7 @@ class User < ActiveRecord::Base
     # Host/Admin
     jam_contributors.includes(:jam).where(status: "accepted").find_each do |contributor|
       next unless contributor.host? || contributor.admin?
+      next unless contributor.jam&.status == 1
 
       result[contributor.jam_id] ||= { jam: contributor.jam, roles: [] }
       result[contributor.jam_id][:roles] << :host if contributor.host?

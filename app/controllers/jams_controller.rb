@@ -120,7 +120,7 @@ class JamsController < ApplicationController
     end
     return unless @jam.status != 1 && current_user != @jam.author
 
-    flash[:failure] = t('controllers.jams.moderation_pending')
+    flash[:failure] = @jam.status == 2 ? t('controllers.jams.rejected') : t('controllers.jams.moderation_pending')
     redirect_to dashboard_path
   end
 

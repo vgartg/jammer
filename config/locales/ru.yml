@@ -573,6 +573,7 @@ ru:
       participate_success: "Вы успешно присоединились к джему!"
       participate_failure: "Произошла ошибка. Попробуйте еще раз."
       moderation_pending: "Джем находится на модерации"
+      rejected: "Джем был отклонён модератором"
       update_resubmitted: "Джем обновлен и отправлен на повторную модерацию!"
       participant_removed: "Участник удалён из джема."
       participant_remove_failed: "Не удалось удалить участника."
@@ -598,6 +599,7 @@ ru:
       invalid_dates: "Пожалуйста, введите корректные даты"
     games:
       moderation_pending: "Игра находится на модерации"
+      rejected: "Игра была отклонена модератором"
       not_participating: "Вы не участвуете в этом джеме"
       not_found: "Игра не найдена"
       edit_locked: "Приём работ завершён. Редактирование игры недоступно"

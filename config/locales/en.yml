@@ -573,6 +573,7 @@ en:
       participate_success: "You have successfully joined the jam!"
       participate_failure: "An error occurred. Please try again."
       moderation_pending: "Jam is under moderation"
+      rejected: "This jam was rejected by a moderator"
       update_resubmitted: "Jam updated and resubmitted for moderation!"
       participant_removed: "Participant removed from the jam."
       participant_remove_failed: "Failed to remove participant."
@@ -598,6 +599,7 @@ en:
       invalid_dates: "Please enter valid dates"
     games:
       moderation_pending: "Game is under moderation"
+      rejected: "This game was rejected by a moderator"
       not_participating: "You are not participating in this jam"
       not_found: "Game not found"
       edit_locked: "Submissions are closed. Game editing is unavailable"
