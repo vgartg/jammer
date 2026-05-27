@@ -251,7 +251,11 @@
           <% if @jam_id.present? && @reviews.present? %>
             <div class="mt-8 text-center">
               <h2 class="text-lg font-semibold">
-                <%= t('.participant_scores') %>
+                <% rs = @jam.rating_setting %>
+                <% scores_key = if rs.jury_enabled && rs.audience_enabled then '.all_scores'
+                                elsif rs.jury_enabled then '.jury_scores'
+                                else '.participant_scores' end %>
+                <%= t(scores_key) %>
               </h2>
 
               <% grouped = @reviews.group_by(&:user) %>
