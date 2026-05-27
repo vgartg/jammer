@@ -223,7 +223,11 @@ class User < ActiveRecord::Base
   end
 
   def authenticate_password_reset_token(token)
-    digest(password_reset_token) == token
+    return false if password_reset_token.blank? || token.blank?
+
+    BCrypt::Password.new(password_reset_token).is_password?(token)
+  rescue BCrypt::Errors::InvalidHash
+    false
   end
 
   def authenticate_email_confirm_token(token)

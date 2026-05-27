@@ -30,7 +30,8 @@ class FriendshipsController < ApplicationController
   end
 
   def update
-    @friendship = Friendship.find(params[:id])
+    @friendship = find_own_friendship(params[:id])
+    return unless @friendship
 
     if @friendship.update(status: 'accepted')
       create_notification(@friendship.user, current_user, 'accepted_friendship', @friendship)
@@ -42,21 +43,37 @@ class FriendshipsController < ApplicationController
   end
 
   def cancel
-    @friendship = Friendship.find(params[:id])
+    @friendship = find_own_friendship(params[:id])
+    return unless @friendship
+
     @friendship.destroy
     flash[:notice] = t 'friendships.update.notice'
     redirect_to user_profile_path(@friendship.friend)
   end
 
   def destroy
-    @friendship = Friendship.find(params[:id])
+    @friendship = find_own_friendship(params[:id])
+    return unless @friendship
+
     @friendship.destroy
     flash[:notice] = t 'friendships.update.notice'
-    @friendship.friend.id != current_user.id ? friend = @friendship.friend : friend = @friendship.user
+    friend = @friendship.friend.id != current_user.id ? @friendship.friend : @friendship.user
     redirect_to user_profile_path(friend)
   end
 
   private
+
+  def find_own_friendship(id)
+    friendship = Friendship.where(id: id)
+                           .where('user_id = :uid OR friend_id = :uid', uid: current_user.id)
+                           .first
+    unless friendship
+      flash[:alert] = t 'friendships.update.alert'
+      redirect_to user_profile_path(current_user)
+      return nil
+    end
+    friendship
+  end
 
   def find_friend(friendship)
     return unless friendship.friend

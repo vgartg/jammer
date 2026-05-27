@@ -3,6 +3,7 @@ class PasswordResetMailer < ActionMailer::Base
 
   def reset_email
     @user = params[:user]
+    @token = params[:token]
     locale = params[:locale] || I18n.locale
     I18n.with_locale(locale) do
       mail to: @user.email, subject: t('mailers.password_reset.subject')

@@ -10,44 +10,45 @@ class SessionsController < ApplicationController
 
   def create
     user = User.find_by_email(auth_params[:email])
-    browser_string = request.user_agent
-    browser = UserAgent.parse(browser_string).browser
-    if user.present? && user.authenticate(auth_params[:password])
-      if user.email_confirmed
-        session[:current_user] = user.id
-        unless Session.all.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).exists?
-          Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
-        end
-        remember(user) if params[:remember_me] == '1'
-        redirect_to dashboard_path
-      elsif !user.email_confirm_period_valid? && user.last_active_at.nil? && user.last_seen_at.nil?
-        user.destroy
-        flash[:failure] = t('controllers.sessions.account_token_expired')
-        redirect_to login_path
-      else
-        if user.email_confirm_period_valid?
-          flash[:success] = t('controllers.sessions.email_letter_sent')
-        else
-          @token = user.set_email_confirm_token
-          EmailConfirmMailer.with(user: user, token: @token, locale: I18n.locale).email_confirm.deliver_later
-          flash[:success] ||= []
-        flash[:success] << t('controllers.sessions.instructions_sent')
-        end
-        redirect_to edit_email_confirm_url(user: { email_confirm_token: user.email_confirm_token,
-                                                   email: user.email }).gsub('&amp;', '&')
-      end
-    else
+    browser = UserAgent.parse(request.user_agent).browser
+
+    unless user.present? && user.authenticate(auth_params[:password])
       flash[:failure] ||= []
       flash[:failure] << t('sessions.create.failure')
       redirect_to login_path
+      return
     end
+
+    unless user.email_confirmed
+      if user.email_confirm_period_valid?
+        flash[:success] = t('controllers.sessions.email_letter_sent')
+      else
+        token = user.set_email_confirm_token
+        EmailConfirmMailer.with(user: user, token: token, locale: I18n.locale).email_confirm.deliver_later
+        flash[:success] ||= []
+        flash[:success] << t('controllers.sessions.instructions_sent')
+      end
+      redirect_to edit_email_confirm_path(user: { email: user.email })
+      return
+    end
+
+    locale = session[:locale]
+    reset_session
+    session[:locale] = locale if locale.present?
+    session[:current_user] = user.id
+
+    Session.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).destroy_all
+    Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
+
+    remember(user) if params[:remember_me] == '1'
+    redirect_to dashboard_path
   end
 
   def destroy
-    forget(current_user)
+    forget(current_user) if current_user
     current_session = Session.find_by(session_id: session[:session_id])
-    current_session.destroy if current_session
-    session[:current_user] = nil
+    current_session&.destroy
+    reset_session
     redirect_to root_path
   end
 

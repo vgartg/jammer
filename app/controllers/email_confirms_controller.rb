@@ -7,10 +7,16 @@ class EmailConfirmsController < ApplicationController
 
   def update
     if @user.update(email_confirmed: true)
+      browser = UserAgent.parse(request.user_agent).browser
+
+      locale = session[:locale]
+      reset_session
+      session[:locale] = locale if locale.present?
       session[:current_user] = @user.id
-      unless Session.all.where(ip_address: request.remote_ip, browser: browser).exists?
-        Session.create_session(@user.id, session[:session_id], request.remote_ip, browser)
-      end
+
+      Session.where(user_id: @user.id, ip_address: request.remote_ip, browser: browser).destroy_all
+      Session.create_session(@user.id, session[:session_id], request.remote_ip, browser)
+
       remember(@user) if params[:remember_me] == '1'
       flash[:success] ||= []
       flash[:success] << t('email_confirms.update.success')
@@ -25,29 +31,34 @@ class EmailConfirmsController < ApplicationController
   private
 
   def check_params
-    if params[:user][:code].blank?
-      flash[:failure] ||= []
-      flash[:failure] << t('email_confirms.update.code_blank')
-      redirect_to request.fullpath
-    end
+    return if params.dig(:user, :code).present?
+
+    flash[:failure] ||= []
+    flash[:failure] << t('email_confirms.update.code_blank')
+    redirect_to edit_email_confirm_path(user: { email: params.dig(:user, :email) })
   end
 
   def set_user_by_email
-    @user = User.find_by(email: params[:user][:email])
-    unless @user
-      flash[:failure] ||= []
-      flash[:failure] << t('email_confirms.update.user_not_found')
+    email = params.dig(:user, :email)
+    if email.blank?
       redirect_to register_path
+      return
     end
+
+    @user = User.find_by(email: email) || User.new(email: email)
   end
 
   def set_user
-    @user = User.find_by(email: params[:user][:email])
-    @user = nil unless @user.authenticate_email_confirm_token(params[:user][:code])
-    unless @user&.email_confirm_period_valid?
+    email = params.dig(:user, :email)
+    code = params.dig(:user, :code)
+    user = User.find_by(email: email) if email.present?
+
+    if user && user.authenticate_email_confirm_token(code) && user.email_confirm_period_valid?
+      @user = user
+    else
       flash[:failure] ||= []
       flash[:failure] << t('email_confirms.update.invalid_code')
-      redirect_to request.fullpath
+      redirect_to edit_email_confirm_path(user: { email: email })
     end
   end
 end
