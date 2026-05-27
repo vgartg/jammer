@@ -1,6 +1,6 @@
 # Contributing to Jammer
 
-Thanks for your interest in contributing! This document covers the basics for getting a development environment running and getting your changes merged
+Glad you want to contribute. Here's everything you need to get set up and get your changes into `master`.
 
 ## Local setup
 
@@ -11,41 +11,38 @@ bundle install
 yarn install
 bundle exec rake db:create
 bundle exec rake db:migrate
-```
-
-Start the dev server with the client build in watch mode:
-
-```bash
 foreman start -f Procfile.dev
 ```
 
+This starts the Rails server alongside the asset build in watch mode. The app should be at [localhost:3000](http://localhost:3000).
+
 ## Workflow
 
-1. Fork the repository and create a feature branch off `master`:
+1. Fork the repo and create a branch off `master`:
    ```bash
-   git checkout -b feat/short-description
+   git checkout -b short-description
    ```
-2. Make focused commits with descriptive messages
-3. Before opening a pull request, run the same checks CI runs:
+2. Make focused commits with clear messages - one logical change per commit.
+3. Before opening a PR, run what CI runs:
    ```bash
    bundle exec rails test
    bundle exec bundler-audit --update
    bundle exec brakeman -q
    bundle exec rubocop
    ```
-4. Push your branch and open a pull request against `master`. Fill out the PR template
+4. Push and open a pull request against `master`. Fill in the PR description.
 
-## Style & conventions
+## Conventions
 
-- Ruby code is linted with [RuboCop](https://github.com/rubocop/rubocop); please keep the working tree clean
-- Follow standard Rails conventions for naming, file layout, and migrations
-- Keep migrations reversible
-- Add or update tests for any behavior change
+- RuboCop handles Ruby style. Keep the working tree clean - CI will reject a linting failure.
+- Follow standard Rails conventions for naming, file layout, and migrations.
+- Migrations should be reversible.
+- Add or update tests for any behavior change. We don't merge untested logic.
 
-## Reporting bugs / requesting features
+## Bugs and feature requests
 
-Use the [issue tracker](https://github.com/vgartg/jammer/issues) and pick the appropriate template. For security issues, see [SECURITY.md](SECURITY.md) — do **not** open a public issue
+Use the [issue tracker](https://github.com/vgartg/jammer/issues) and pick the right template. If it's a security issue, check [SECURITY.md](SECURITY.md) first - those should not be public issues.
 
 ## Code of Conduct
 
-Participation in this project is governed by the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you agree to abide by its terms
+This project follows the [Contributor Covenant](CODE_OF_CONDUCT.md). By participating, you agree to abide by its terms.
