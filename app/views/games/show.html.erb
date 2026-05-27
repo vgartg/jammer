@@ -26,6 +26,18 @@
             <% end %>
           </div>
 
+          <% if current_user && @game.author != current_user %>
+            <% if @jam_id.present? && @jam %>
+              <div class="mt-4 rounded-md border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm text-indigo-900">
+                <%= t('.context_jam_html', jam: @jam.name).html_safe %>
+              </div>
+            <% else %>
+              <div class="mt-4 rounded-md border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+                <%= t('.context_overall') %>
+              </div>
+            <% end %>
+          <% end %>
+
           <div class="mt-4 text-center">
             <h2 class="text-lg font-semibold">
               <%= @jam_id.present? ? t('.jam_rating') : t('.rating') %>
@@ -108,13 +120,17 @@
                   <h2 class="text-lg font-semibold"><%= t('.your_criteria_score') %></h2>
 
                   <p class="text-xl font-bold text-gray-900 inline-flex items-center mt-2">
-                    <%= my_overall %>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2"
-                         fill="<%= my_overall.to_f > 0 ? 'yellow' : 'gray' %>"
-                         viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
-                    </svg>
+                    <% if my_total_cnt > 0 %>
+                      <%= my_overall %>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ml-2"
+                           fill="yellow"
+                           viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                      </svg>
+                    <% else %>
+                      <span class="text-sm font-normal text-gray-500"><%= t('.not_rated') %></span>
+                    <% end %>
                   </p>
 
                   <% if can_vote %>
@@ -191,6 +207,47 @@
             <% end %>
 
           <% end %>
+          <% if @jam_id.blank? && @reviews.present? %>
+            <% non_jam_with_comment = @reviews.select { |r| r.criterion.present? || r.comment.present? } %>
+            <% if non_jam_with_comment.any? %>
+              <div class="mt-8">
+                <h2 class="text-lg font-semibold text-center">
+                  <%= t('.user_comments') %>
+                </h2>
+
+                <div class="mt-4 space-y-3">
+                  <% non_jam_with_comment.each do |review| %>
+                    <div class="p-4 border rounded-lg bg-white text-left">
+                      <div class="flex items-center mb-2">
+                        <% if review.user.avatar.attached? %>
+                          <%= image_tag url_for(review.user.avatar), class: "h-8 w-8 rounded-full mr-3" %>
+                        <% else %>
+                          <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full mr-3" %>
+                        <% end %>
+
+                        <div>
+                          <p class="font-medium text-gray-900"><%= review.user.name %></p>
+                          <div class="flex items-center">
+                            <% (1..5).each do |star| %>
+                              <% filled = star <= review.user_mark.to_i %>
+                              <svg class="w-4 h-4 <%= filled ? 'text-yellow-500' : 'text-gray-300' %>" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
+                              </svg>
+                            <% end %>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p class="text-sm text-gray-700 whitespace-pre-line break-words">
+                        <%= review.comment.presence || review.criterion %>
+                      </p>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+
           <% if @jam_id.present? && @reviews.present? %>
             <div class="mt-8 text-center">
               <h2 class="text-lg font-semibold">

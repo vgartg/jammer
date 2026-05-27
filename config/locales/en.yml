@@ -178,6 +178,10 @@ en:
       voting_unavailable: "Voting is not available for you (closed or no rights)."
       participant_scores: "Participant scores"
       overall_score: "Overall score:"
+      context_jam_html: "You are rating this game within the jam <strong>%{jam}</strong>. Criteria-based rating is available here."
+      context_overall: "You are rating this game in the overall games section (not within a jam). No criteria rating here — just an overall score and a comment."
+      not_rated: "Not rated"
+      user_comments: "Comments on overall rating"
     form:
       name: "Name"
       desc: "Description"
