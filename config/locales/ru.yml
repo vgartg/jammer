@@ -168,6 +168,7 @@ ru:
       this_game: "Данная игра"
       status_pending: "находится на модерации"
       status_rejected: "отклонена модератором"
+      rejection_reason: "Причина: %{reason}"
       criterion_votes_title: "Голоса по критериям"
       criterion_header: "Критерий"
       votes_header: "Голоса"
@@ -260,6 +261,7 @@ ru:
       this_jam: "Данный джем"
       status_pending: "находится на модерации"
       status_rejected: "отклонен модератором"
+      rejection_reason: "Причина: %{reason}"
       jam_info: "Информация о джеме"
       start_date: "Дата начала:"
       deadline: "Окончание приёма работ:"
@@ -712,9 +714,11 @@ ru:
       status_hint: "0 - Модерация; 1 - Одобрено; 2 - Отклонено"
       rejection_reason: "Причина отклонения"
       rejection_reasons:
+        no_reason: "Без указания причины"
         indecent_content: "Непристойный контент"
         advertising: "Реклама"
         plagiarism: "Плагиат"
+      rejection_reason_placeholder: "Введите причину или выберите готовую выше"
     actions:
       index:
         title: "Действия администраторов"
@@ -736,6 +740,7 @@ ru:
         game_file: "Файл игры"
         current_file: "Текущий файл:"
         download_archive: "Скачать архив"
+        reviews_title: "Отзывы игры"
     jams:
       index:
         search_label: "Поиск джемов"
@@ -871,9 +876,11 @@ ru:
       status_hint: "0 - Модерация; 1 - Одобрено; 2 - Отклонено"
       rejection_reason: "Причина отклонения"
       rejection_reasons:
+        no_reason: "Без указания причины"
         indecent_content: "Непристойный контент"
         advertising: "Реклама"
         plagiarism: "Плагиат"
+      rejection_reason_placeholder: "Введите причину или выберите готовую выше"
     games:
       index:
         search_label: "Поиск игр"

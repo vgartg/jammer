@@ -10,6 +10,9 @@
             <p class="mt-2 text-red-400 sm:text-sm"><%= t('.this_game') %>
               <%= @game.status == 0 ? t('.status_pending') : t('.status_rejected') %>
             </p>
+            <% if @game.status == 2 && @game.reason.present? %>
+              <p class="mt-1 text-red-400 sm:text-sm"><%= t('.rejection_reason', reason: @game.reason) %></p>
+            <% end %>
           <% end %>
         </div>
 

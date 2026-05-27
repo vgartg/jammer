@@ -81,8 +81,8 @@
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <% if @user.id != session[:current_user] %>
-              <% friend_btn_green = "mt-4 flex justify-center rounded-md border border-transparent bg-green-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" %>
-              <% friend_btn_red   = "mt-4 flex justify-center rounded-md border border-transparent bg-red-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
+              <% friend_btn_green = "mt-4 inline-flex items-center justify-center rounded-md border border-transparent bg-green-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" %>
+              <% friend_btn_red   = "mt-4 inline-flex items-center justify-center rounded-md border border-transparent bg-red-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
               <% if @friendship.nil? %>
                 <%= button_to t('buttons.add_friend'), user_friendships_path(@user), method: :post,
                               class: friend_btn_green %>
@@ -102,7 +102,7 @@
                 <%= render "helpers/report_form", report_item: @user %>
               <% end %>
             <% else %>
-              <%= link_to t('.edit'), settings_path, class: "mt-4 inline-flex justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+              <%= link_to t('.edit'), settings_path, class: "mt-4 inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-50" %>
             <% end %>
           </div>
         </div>

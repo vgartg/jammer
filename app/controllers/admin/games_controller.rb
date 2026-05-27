@@ -16,6 +16,7 @@ module Admin
     def update
       old_game = @game.dup
 
+      params[:game][:reason] = params[:game][:reason].presence
       params[:game][:reason] = nil if params[:game][:status].to_i != 2
 
       if @game.update(game_params)

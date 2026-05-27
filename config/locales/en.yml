@@ -168,6 +168,7 @@ en:
       this_game: "This game"
       status_pending: "is under moderation"
       status_rejected: "was rejected by a moderator"
+      rejection_reason: "Reason: %{reason}"
       criterion_votes_title: "Votes by criteria"
       criterion_header: "Criterion"
       votes_header: "Votes"
@@ -260,6 +261,7 @@ en:
       this_jam: "This jam"
       status_pending: "is under moderation"
       status_rejected: "was rejected by a moderator"
+      rejection_reason: "Reason: %{reason}"
       jam_info: "Jam information"
       start_date: "Start date:"
       deadline: "Submission deadline:"
@@ -712,9 +714,11 @@ en:
       status_hint: "0 - Moderation; 1 - Approved; 2 - Rejected"
       rejection_reason: "Rejection reason"
       rejection_reasons:
+        no_reason: "No reason specified"
         indecent_content: "Indecent content"
         advertising: "Advertising"
         plagiarism: "Plagiarism"
+      rejection_reason_placeholder: "Enter a reason or pick one above"
     actions:
       index:
         title: "Admin actions"
@@ -736,6 +740,7 @@ en:
         game_file: "Game file"
         current_file: "Current file:"
         download_archive: "Download archive"
+        reviews_title: "Game reviews"
     jams:
       index:
         search_label: "Search jams"
@@ -871,9 +876,11 @@ en:
       status_hint: "0 - Moderation; 1 - Approved; 2 - Rejected"
       rejection_reason: "Rejection reason"
       rejection_reasons:
+        no_reason: "No reason specified"
         indecent_content: "Indecent content"
         advertising: "Advertising"
         plagiarism: "Plagiarism"
+      rejection_reason_placeholder: "Enter a reason or pick one above"
     games:
       index:
         search_label: "Search games"

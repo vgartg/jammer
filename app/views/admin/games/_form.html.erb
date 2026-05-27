@@ -39,9 +39,12 @@
                              data: { action: 'change->status#updateReasonField', status_target: 'status' } %>
                 <div data-status-target="reasonField" style="<%= f.object.status == 2 ? '' : 'display: none;' %>">
                   <%= f.label :reason, t('admin.shared.rejection_reason'), class: 'block text-sm font-medium text-gray-700 mt-2' %>
-                  <%= f.select :reason, [[t('admin.shared.rejection_reasons.indecent_content'), 'Непристойный контент'], [t('admin.shared.rejection_reasons.advertising'), 'Реклама'], [t('admin.shared.rejection_reasons.plagiarism'), 'Плагиат']],
-                               { include_blank: true },
-                               class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
+                  <div class="flex flex-wrap gap-2 mt-1 mb-1">
+                    <% [['admin.shared.rejection_reasons.no_reason', ''], ['admin.shared.rejection_reasons.indecent_content', 'Непристойный контент'], ['admin.shared.rejection_reasons.advertising', 'Реклама'], ['admin.shared.rejection_reasons.plagiarism', 'Плагиат']].each do |key, val| %>
+                      <button type="button" onclick="document.getElementById('admin_game_reason').value='<%= val %>'" class="text-xs px-2 py-1 bg-gray-100 rounded hover:bg-gray-200 border border-gray-300"><%= t(key) %></button>
+                    <% end %>
+                  </div>
+                  <%= f.text_field :reason, id: 'admin_game_reason', placeholder: t('admin.shared.rejection_reason_placeholder'), class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
                 </div>
               </div>
             </div>
@@ -122,4 +125,34 @@
       <% end %>
     </div>
   </div>
+
+  <% reviews = game.reviews.includes(:user).order(created_at: :desc) %>
+  <% if reviews.any? %>
+    <div class="mt-8 px-16">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4"><%= t('admin.games.form.reviews_title') %></h2>
+      <div class="space-y-3">
+        <% reviews.each do |review| %>
+          <div class="flex items-start justify-between p-3 border rounded bg-gray-50">
+            <div class="text-sm text-gray-700">
+              <span class="font-medium"><%= review.user&.name || t('admin.shared.author_unknown') %></span>
+              <span class="ml-2 text-gray-500"><%= review.created_at.strftime('%Y-%m-%d') %></span>
+              <% if review.jam_id.present? %>
+                <span class="ml-2 text-indigo-600">[jam #<%= review.jam_id %>]</span>
+              <% end %>
+              <span class="ml-2">★ <%= review.user_mark %></span>
+              <% if review.criterion.present? %>
+                <p class="mt-1 text-gray-600"><%= review.criterion %></p>
+              <% end %>
+              <% if review.comment.present? %>
+                <p class="mt-1 text-gray-600 italic"><%= review.comment %></p>
+              <% end %>
+            </div>
+            <%= button_to t('admin.shared.delete'), game_review_path(game, review), method: :delete,
+                          data: { confirm: t('admin.shared.confirm') },
+                          class: 'ml-4 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 text-sm shrink-0' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>

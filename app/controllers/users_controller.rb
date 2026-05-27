@@ -20,7 +20,8 @@ class UsersController < ApplicationController
   end
 
   def index
-    @pagy, @users = pagy(User.all, limit: 16)
+    scope = current_user ? User.where.not(id: current_user.id) : User.all
+    @pagy, @users = pagy(scope, limit: 16)
   end
 
   def create
