@@ -8,6 +8,12 @@ export default class extends Controller {
         "checkbox", "label", "allJams", "myJams", "showAll", "showMine", "searchForm"
     ]
 
+    static values = {
+        invalidDates: String,
+        deadlineBeforeStart: String,
+        endBeforeDeadline: String
+    }
+
     connect() {
         this.timeout = null;
         this.displayAllJams();
@@ -126,7 +132,7 @@ export default class extends Controller {
         const startDate = this._parseDate(startDateInput.value);
 
         if (!startDate || startDate.getFullYear() < 2000) {
-            errorMessageElement.textContent = 'Пожалуйста, введите корректные даты';
+            errorMessageElement.textContent = this.invalidDatesValue;
         } else {
             errorMessageElement.textContent = '';
         }
@@ -151,9 +157,9 @@ export default class extends Controller {
         const deadline = this._parseDate(deadlineInput.value);
 
         if (!deadline || deadline.getFullYear() < 2000) {
-            errorMessageElement.textContent = 'Пожалуйста, введите корректные даты';
+            errorMessageElement.textContent = this.invalidDatesValue;
         } else if (deadline < startDate) {
-            errorMessageElement.textContent = 'Дата сдачи работ не может быть раньше даты начала';
+            errorMessageElement.textContent = this.deadlineBeforeStartValue;
         } else {
             errorMessageElement.textContent = '';
         }
@@ -177,9 +183,9 @@ export default class extends Controller {
         const endDate = this._parseDate(endDateInput.value);
 
         if (!endDate || endDate.getFullYear() < 2000) {
-            errorMessageElement.textContent = 'Пожалуйста, введите корректные даты';
+            errorMessageElement.textContent = this.invalidDatesValue;
         } else if (endDate < deadline) {
-            errorMessageElement.textContent = 'Дата окончания джема не может быть раньше даты сдачи работ';
+            errorMessageElement.textContent = this.endBeforeDeadlineValue;
         } else {
             errorMessageElement.textContent = '';
         }

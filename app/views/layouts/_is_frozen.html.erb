@@ -3,16 +3,16 @@
        class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 hidden"
        data-freeze-modal-target="modal">
     <div class="bg-white p-6 rounded-lg max-w-lg w-full">
-      <h2 class="text-xl font-bold text-red-500">Вы заморожены!</h2>
-      <p class="mt-4 text-gray-800">Причина: <%= current_user.frozen_reason %></p>
-      <p class="mt-2 text-gray-800">Заморозка была установлена: <%= current_user.frozen_at.strftime("%d-%m-%Y %H:%M") %></p>
-      <p class="mt-2 text-gray-800">Заморожено до:
-        <%= current_user.unfreeze_at.present? ? current_user.unfreeze_at.strftime("%d-%m-%Y %H:%M") : "Бессрочно" %>
+      <h2 class="text-xl font-bold text-red-500"><%= t 'layouts.is_frozen.title' %></h2>
+      <p class="mt-4 text-gray-800"><%= t 'layouts.is_frozen.reason' %> <%= current_user.frozen_reason %></p>
+      <p class="mt-2 text-gray-800"><%= t 'layouts.is_frozen.frozen_at' %> <%= current_user.frozen_at.strftime("%d-%m-%Y %H:%M") %></p>
+      <p class="mt-2 text-gray-800"><%= t 'layouts.is_frozen.frozen_until' %>
+        <%= current_user.unfreeze_at.present? ? current_user.unfreeze_at.strftime("%d-%m-%Y %H:%M") : t('layouts.is_frozen.indefinitely') %>
       </p>
-      <p class="mt-4 text-gray-600">Если у вас есть вопросы, свяжитесь с нами по адресу: <a href="mailto:jammer.website@internet.ru" class="text-blue-500">jammer.website@internet.ru</a></p>
+      <p class="mt-4 text-gray-600"><%= t 'layouts.is_frozen.contact' %> <a href="mailto:jammer.website@internet.ru" class="text-blue-500">jammer.website@internet.ru</a></p>
 
       <div class="mt-6 flex justify-end">
-        <%= button_to "Выйти", logout_path, method: :delete,
+        <%= button_to t('buttons.sign_out'), logout_path, method: :delete,
                       class:"bg-gray-300 text-black py-2 px-4 rounded hover:bg-gray-400" %>
       </div>
     </div>

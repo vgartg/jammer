@@ -15,18 +15,19 @@ class User < ActiveRecord::Base
   THEME_LIGHT = 'Light'
   THEME_DARK = 'Dark'
 
-  attr_accessor :admin_edit, :current_password
+  attr_accessor :admin_edit, :current_password, :oauth_requested_name
 
   validates :name, :email, presence: true, uniqueness: true
-  validates :password, :password_confirmation, presence: true, on: :create
+  validates :password, :password_confirmation, presence: true, on: :create, unless: :oauth_user?
+  validates :password, confirmation: true, unless: :oauth_user?
 
   validates :visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
   # validates :jams_administrating_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
   validates :jams_participating_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
   validates :theme, inclusion: { in: [THEME_LIGHT, THEME_DARK] }
 
-  validate :password_length, on: :create
-  has_secure_password
+  validate :password_length, on: :create, unless: :oauth_user?
+  has_secure_password validations: false
   has_one_attached :avatar
   has_one_attached :background_image
   has_many :games, foreign_key: 'author_id', dependent: :destroy
@@ -50,6 +51,69 @@ class User < ActiveRecord::Base
   has_many :contributed_jams, through: :jam_contributors, source: :jam
 
   attr_accessor :current_password
+
+  def oauth_user?
+    provider.present?
+  end
+
+  def oauth_name_changed?
+    oauth_requested_name.present? && oauth_requested_name != name
+  end
+
+  def self.from_omniauth(auth)
+    user = find_by(provider: auth.provider, uid: auth.uid.to_s)
+    return user if user
+
+    user = find_by(email: auth.info.email)
+    if user
+      user.update!(provider: auth.provider, uid: auth.uid.to_s)
+      return user
+    end
+
+    requested_name = oauth_name_from(auth)
+    unique_name = generate_unique_name(requested_name)
+
+    user = new(
+      name: unique_name,
+      email: auth.info.email,
+      provider: auth.provider,
+      uid: auth.uid.to_s,
+      email_confirmed: true,
+      visibility: VISIBILITY_ALL,
+      jams_participating_visibility: VISIBILITY_ALL,
+      jams_administrating_visibility: VISIBILITY_ALL,
+      theme: THEME_LIGHT
+    )
+    user.oauth_requested_name = requested_name
+    user.save!
+    user
+  end
+
+  def self.oauth_name_from(auth)
+    candidates = [
+      auth.info.try(:nickname),
+      auth.info.name&.gsub(/\s+/, '_')&.downcase,
+      auth.info.email&.split('@')&.first
+    ]
+    candidates.lazy.filter_map { |raw| sanitize_oauth_name(raw) }.first || 'user'
+  end
+
+  def self.sanitize_oauth_name(raw)
+    name = raw.to_s.gsub(/[^a-zA-Z0-9_]/, '_').gsub(/__+/, '_').gsub(/\A_+|_+\z/, '')
+    name.presence&.slice(0, 30)
+  end
+
+  def self.generate_unique_name(base)
+    return base unless exists?(name: base)
+
+    n = 1
+    loop do
+      candidate = "#{base[0..26]}_#{n}"
+      return candidate unless exists?(name: candidate)
+
+      n += 1
+    end
+  end
 
   def password_length
     return unless password.nil? || password.length < 5

@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
     @user = current_user
     return if @user && @user.role == 'admin'
 
-    flash[:failure] = 'Недостаточно прав'
+    flash[:failure] = t('controllers.application.insufficient_rights')
     redirect_to dashboard_path
   end
 
@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
     # Права администратора включают в себя права модератора и выше, поэтому такая проверка
     return unless @user && @user.role == 'basic'
 
-    flash[:failure] = 'Недостаточно прав'
+    flash[:failure] = t('controllers.application.insufficient_rights')
     redirect_to dashboard_path
   end
 
@@ -97,9 +97,9 @@ class ApplicationController < ActionController::Base
     )
 
     if administration_record.save
-      Rails.logger.info("Запись успешно сохранена: #{administration_record.inspect}")
+      Rails.logger.info("Administration record saved: #{administration_record.inspect}")
     else
-      Rails.logger.error("Ошибка при сохранении записи: #{administration_record.errors.full_messages.join(', ')}")
+      Rails.logger.error("Failed to save administration record: #{administration_record.errors.full_messages.join(', ')}")
     end
   end
 
@@ -180,7 +180,7 @@ class ApplicationController < ActionController::Base
     if current_user.unfreeze_at && current_user.unfreeze_at < Time.current
       current_user.update(frozen_at: nil, unfreeze_at: nil, frozen_reason: nil, is_frozen: false)
     else
-      flash[:alert] = 'Ваш аккаунт заморожен'
+      flash[:alert] = t('controllers.application.account_frozen')
       redirect_to dashboard_path unless request.fullpath == dashboard_path
     end
   end

@@ -19,6 +19,10 @@ Rails.application.routes.draw do
     delete '/logout', to: 'sessions#destroy'
     delete '/destroy', to: 'users#destroy', as: 'user_destroy'
 
+    # OAuth
+    get '/auth/:provider/callback', to: 'oauth#callback', as: 'oauth_callback'
+    get '/auth/failure', to: 'oauth#failure', as: 'oauth_failure'
+
     # Auth Zone
     get '/dashboard', to: 'dashboard#index'
     get '/users/:id', to: 'users#show', as: 'user_profile'

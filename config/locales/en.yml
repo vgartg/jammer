@@ -5,10 +5,65 @@ en:
     models:
       tag: "Tag"
       game: "Game"
+      jam: "Jam"
+      report: "Report"
+      user: "User"
     attributes:
       game:
         name: "Name"
         description: "Description"
+        cover: "Cover"
+        game_file: "Game file"
+        tags: "Tags"
+        author: "Author"
+        reason: "Reason"
+      jam:
+        name: "Name"
+        description: "Description"
+        cover: "Cover"
+        logo: "Logo"
+        tags: "Tags"
+        author: "Author"
+        start_date: "Start date"
+        deadline: "Deadline"
+        end_date: "End date"
+        reason: "Reason"
+      user:
+        name: "Username"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+      report:
+        reason: "Reason"
+        comment: "Comment"
+    errors:
+      models:
+        game:
+          attributes:
+            cover:
+              blank: "is required"
+            game_file:
+              blank: "is required"
+              wrong_format: "must be .zip, .rar or .7z"
+              too_large: "size must not exceed 100 MB"
+            tags:
+              too_long: "may not contain more than %{count} items"
+        jam:
+          attributes:
+            cover:
+              blank: "is required"
+            logo:
+              blank: "is required"
+            description:
+              blank: "is required"
+            tags:
+              too_long: "may not contain more than %{count} items"
+        report:
+          attributes:
+            reportable_id:
+              taken: "you have already filed a report on this entity"
+        jam_rating_setting:
+          both_disabled: "you cannot disable both jury and audience at the same time"
   buttons:
     save: "Save"
     change_avatar: "Change avatar"
@@ -17,6 +72,8 @@ en:
     profile: "Profile"
     sign_out: "Sign out"
     add_friend: "Add friend"
+    cancel: "Cancel"
+    close: "Close"
   search: "Search..."
   home:
     title: "Jammer service prototype"
@@ -40,6 +97,18 @@ en:
       requests: "Requests"
       settings: "Settings"
       plug: "Empty yet"
+    application:
+      logo_alt: "Logo"
+      admin_panel: "Admin panel"
+      moderator_panel: "Moderator panel"
+      team_initial: "T"
+    is_frozen:
+      title: "You are frozen!"
+      reason: "Reason:"
+      frozen_at: "Frozen at:"
+      frozen_until: "Frozen until:"
+      indefinitely: "Indefinitely"
+      contact: "If you have any questions, contact us at:"
   dashboard:
     index:
       title: "Dashboard"
@@ -49,6 +118,8 @@ en:
       jams_games_rating: "Average rating of your games in jams: "
       jams_reviews: "Your jams reviews: "
       no_comment: "No comment"
+      my_jams: "My jams"
+      no_jams: "You are not participating in or administrating any jam yet."
   games:
     create:
       success: "Game has been created successfully!"
@@ -67,6 +138,14 @@ en:
       checkbox: "Search with at least one of the selected tags"
       not_found: "Nothing found for the current request"
       no_author: "Author not found"
+      all_games: "All games"
+      my_games: "My games"
+      no_accepted: "You have no accepted games."
+      no_games_available: "No games available."
+      no_rejected: "You have no rejected games."
+      no_under_moderation: "You have no games under moderation."
+      rejected: "Rejected games"
+      under_moderation: "Games under moderation"
     show:
       tags: "Tags"
       tags_not_found: "Tags not found"
@@ -86,6 +165,19 @@ en:
       comment_placeholder: "Enter comment... (optional)"
       save: "Save"
       no_author: "Author not found"
+      this_game: "This game"
+      status_pending: "is under moderation"
+      status_rejected: "was rejected by a moderator"
+      criterion_votes_title: "Votes by criteria"
+      criterion_header: "Criterion"
+      votes_header: "Votes"
+      jam_not_found: "Jam not found."
+      your_criteria_score: "Your score by criteria"
+      edit_criteria_scores: "Edit criteria scores"
+      rate_by_criteria: "Rate by criteria"
+      voting_unavailable: "Voting is not available for you (closed or no rights)."
+      participant_scores: "Participant scores"
+      overall_score: "Overall score:"
     form:
       name: "Name"
       desc: "Description"
@@ -96,6 +188,8 @@ en:
       hint1: "Drag file or press to choose file"
       hint2: "(.zip, .rar, .7z, max size 100 MB)"
       recommend: "(recommend 1920х1080px)"
+      cover_preview_alt: "Cover preview"
+      submitting: "Submitting..."
     edit:
       current_file: "Current file: "
       download: "Download archive"
@@ -118,6 +212,7 @@ en:
       inc_empt: "No incoming requests yet"
       accept: "Accept"
       cancel: "Cancel"
+      cancel_inv: "Cancel"
   jams:
     create:
       failure: "Jam with that name already exists."
@@ -134,6 +229,15 @@ en:
       checkbox: "Search with at least one of chosen tags"
       reset_options: "Reset filters"
       no_result: "Nothing was found"
+      no_author: "Author not found"
+      all_jams: "All jams"
+      my_jams: "My jams"
+      accepted: "Accepted jams"
+      no_accepted: "You have no accepted jams."
+      under_moderation: "Jams under moderation"
+      no_under_moderation: "You have no jams under moderation."
+      rejected: "Rejected jams"
+      no_rejected: "You have no rejected jams."
     show:
       description: "Description"
       author: "Author"
@@ -147,6 +251,22 @@ en:
       participate: "Participate"
       change_game: "Change game"
       no_tags: "Tags not found"
+      this_jam: "This jam"
+      status_pending: "is under moderation"
+      status_rejected: "was rejected by a moderator"
+      jam_info: "Jam information"
+      start_date: "Start date:"
+      deadline: "Submission deadline:"
+      end_date: "Voting end:"
+      creator: "Creator:"
+      no_author: "Author not found"
+      hosts: "Hosts:"
+      no_hosts: "No hosts assigned"
+      nominations_winners: "Nomination winners"
+      rating_settings: "Rating settings"
+      jury_settings: "Jury settings"
+      submission_closed: "Submissions are closed"
+      submission_closed_edit: "Submissions are closed. Editing and replacing a game are unavailable."
     form:
       name: "Jam name"
       desc: "Description"
@@ -157,9 +277,12 @@ en:
       logo: "Logo"
       tags: "Tags"
       btn: "Create jam"
-      hint1: "Drag 
+      hint1: "Drag
       image or press to choose file"
       hint2: "(recommend 1920x1080px)"
+      cover_preview_alt: "Cover preview"
+      logo_preview_alt: "Logo preview"
+      submitting: "Submitting..."
     edit:
       name: "Jam name"
       desc: "Description"
@@ -173,17 +296,67 @@ en:
     show_participants:
       title: "All participants"
       no_participants: "There are no participants yet"
+      remove: "Remove"
+      remove_confirm: "Are you sure you want to remove this participant from the jam?"
+      remove_hint: '(Click "Remove" to exclude a participant)'
     show_projects:
       title: "Projects"
       no_projects: "No games have been downloaded yet"
       not_found: "Nothing was found"
       no_author: "Author not found"
+      remove_project: "Remove project"
+      remove_project_confirm: "Are you sure you want to detach this game from the jam?"
+      remove_hint: "(You can remove a project by clicking the button next to the game)"
     modal_content:
       title: "Choose"
       your_games: "Your games"
       your_games_hint: "Choose one of your games:"
       add_new: "Add new game"
       add_existing: "Add existing game"
+    rating_settings:
+      title: "Rating settings"
+      jury_enabled_label: "Jury (yes/no)"
+      audience_enabled_label: "Audience (yes/no)"
+      both_disabled_hint: "You cannot select \"no\" for both"
+      criteria_title: "Rating criteria"
+      criteria_hint: "Criterion name (score is always 0..5)"
+      criterion_placeholder: "For example: Gameplay"
+      kind_voted_on: "Voted on"
+      kind_manually_ranked: "1 vote per game"
+      nominations_title: "Nominations"
+      nominations_hint: "Nomination is assigned by the admin at the end"
+      nomination_placeholder: "For example: Best art"
+    jury_settings:
+      title: "Jury settings"
+      invite_title: "Invite user"
+      search_user_label: "Search user"
+      search_placeholder: "Name or email"
+      search_prompt: "Start typing a name or email…"
+      search_too_short: "Enter at least 2 characters"
+    jury_contributors_table:
+      title: "Members (host/admin/judge)"
+      user: "User"
+      status: "Status"
+      host: "Host"
+      admin: "Admin"
+      judge: "Judge"
+      actions: "Actions"
+      remove: "Remove"
+      pending: "(pending)"
+      save_all: "Save all"
+    jury_search_results:
+      empty: "Nothing found"
+      invite: "Invite"
+    nominations_winners:
+      title: "Winners by nomination"
+      empty: "No nominations"
+      not_selected: "— not selected —"
+    showcase_grid:
+      start: "Start:"
+      deadline: "Submissions until:"
+      creator: "Creator:"
+      no_author: "Author not found"
+      hosts: "Hosts:"
   users:
     destroy:
       success: "The account has been successfully deleted."
@@ -218,6 +391,16 @@ en:
       decline: "Decline invitation"
       no_subscribers: "No subscribers yet"
       no_friends: "No friends yet"
+      user_frozen: "User is frozen!"
+      unfreeze_at: "Unfreeze date:"
+      frozen_indefinitely: "Indefinitely"
+      cancel_application: "Cancel application"
+      accept_application: "Accept application"
+      show_all_games: "Show all games"
+      hide_games: "Hide games"
+      role_author: "Author"
+      role_host: "Host"
+      role_admin: "Admin"
     new:
       title: "Sign up your account"
       email: "Email address"
@@ -241,6 +424,11 @@ en:
         billing: "Billing"
         teams: "Teams"
         integrations: "Integrations"
+      placeholders:
+        field: "Some field"
+        billing_title: "Some field (billing)"
+        teams_title: "Some field (teams)"
+        integrations_title: "Some field (integrations)"
       account:
         title: "Personal information"
         image:
@@ -248,6 +436,7 @@ en:
           or: "or"
           drag: "Drag an image here or click to select a file"
           recommendation: "Recommended size: 1920x1080 pixels"
+          preview_alt: "Image preview"
         nickname: "Nickname"
         real_name: "Full name"
         email:
@@ -288,6 +477,9 @@ en:
           ip: "IP Address: "
           browser: "Browser: "
           created: "Created at: "
+          view_all: "View all sessions"
+          hide_all: "Hide all sessions"
+          none: "No active sessions found."
         delete:
           title: "Delete account"
           hint: "No longer want to use our service? You can delete your account here. This action is not reversible. All information related to this account will be deleted permanently."
@@ -295,6 +487,10 @@ en:
           popup_title: "Enter your password to delete account:"
           pswd: "Password"
           cancel: "Cancel"
+  oauth:
+    failure: "Authentication failed: %{message}"
+    no_email: "Could not retrieve email from provider. Please make sure your email is public."
+    username_taken: "The username \"%{requested}\" was already taken, so we assigned you \"%{assigned}\". You can change it below."
   sessions:
     create:
       failure: "Invalid email or password"
@@ -317,11 +513,38 @@ en:
     show_all: "Show all"
     sent: "want to be your friend"
     accept: "accept your request"
+    gray_search:
+      accept_jury_invite: "Accept invitation"
+    report_form:
+      open_btn: "Report"
+      title: "Submit a report"
+      reason_label: "Reason for the report"
+      reason_placeholder: "Describe your report"
+      max_length: "Maximum 300 characters!"
+      submit: "Send"
+      submitting: "Sending..."
+      other_reason: "Other reason"
+      generic_error: "An error occurred while submitting the report"
+      success_title: "Report submitted!"
+      success_body: "Thank you for your report. We will review it shortly."
+      error_title: "Error"
   notifications:
     index:
       title: "Notifications"
       accept: "accepted your friend request"
       sent: "sent a friend request"
+      accept_jury_invite: "Accept invitation"
+    actions:
+      accepted_friendship: "accepted your friend request"
+      accepted_friend_request: "accepted your friend request"
+      sent_friend_request: "sent you a friend request"
+      awaiting_game_moderation: "— game awaits moderation"
+      awaiting_jam_moderation: "— jam awaits moderation"
+      game_status_changed: "— game status changed after moderation"
+      jam_status_changed: "— jam status changed after moderation"
+      sent_jam_jury_invite: "invited you to the jury"
+      accepted_jam_jury_invite: "accepted the jury invitation"
+      new_report: "filed a new report on %{type} (id %{id})"
   email_confirms:
     edit:
       title: "Email confirmation"
@@ -329,3 +552,346 @@ en:
       confirm: "Confirm"
       back: "Back to"
       login: "login page"
+      warning: "Attention: You must confirm your email within an hour of registration, otherwise your account will be deleted"
+    update:
+      success: "Email Confirmed successfully."
+      failure: "Something went wrong."
+      code_blank: "Code cannot be empty"
+      user_not_found: "User not found."
+      invalid_code: "Code is invalid!"
+  controllers:
+    application:
+      insufficient_rights: "Insufficient rights"
+      account_frozen: "Your account is frozen"
+    jams:
+      participate_success: "You have successfully joined the jam!"
+      participate_failure: "An error occurred. Please try again."
+      moderation_pending: "Jam is under moderation"
+      update_resubmitted: "Jam updated and resubmitted for moderation!"
+      participant_removed: "Participant removed from the jam."
+      participant_remove_failed: "Failed to remove participant."
+      project_unlinked: "Project unlinked from the jam."
+      project_unlink_failed: "Failed to remove project."
+      settings_locked: "Settings are locked"
+      ratings_saved: "Rating settings saved"
+      user_not_found: "User not found"
+      invite_sent: "Invitation sent"
+      invite_not_found: "Invitation not found"
+      invite_accepted: "You have accepted the invitation"
+      invite_accept_failed: "Failed to accept the invitation"
+      roles_updated: "Roles updated"
+      contributor_removed: "Removed"
+      winner_saved: "Winner saved"
+      game_not_in_jam: "Game does not participate in this jam"
+      submission_closed: "Submissions are closed"
+      date_deadline_before_start: "Deadline cannot be earlier than the start date"
+      date_end_before_deadline: "End date cannot be earlier than the deadline"
+      date_invalid_start: "Invalid start date"
+      date_invalid_deadline: "Invalid deadline"
+      date_invalid_end: "Invalid end date"
+      invalid_dates: "Please enter valid dates"
+    games:
+      moderation_pending: "Game is under moderation"
+      not_participating: "You are not participating in this jam"
+      not_found: "Game not found"
+      edit_locked: "Submissions are closed. Game editing is unavailable"
+    jam_votes:
+      insufficient_rights_jury: "Insufficient rights to vote as jury"
+      insufficient_rights_audience: "Insufficient rights to vote as audience"
+      scores_saved: "Scores saved"
+      not_in_jam: "This game is not participating in this jam"
+      own_game: "You cannot rate your own game"
+      voting_closed: "Voting is currently closed"
+      voting_disabled: "Voting is disabled"
+      insufficient_rights: "Insufficient rights to vote"
+    jam_criterion_picks:
+      pick_saved: "Choice saved"
+      pick_cleared: "Choice cleared"
+    sessions:
+      account_token_expired: "Your account was deleted due to token expiration. Please register again."
+      email_letter_sent: "A login letter has already been sent to your email"
+      instructions_sent: "Instructions have been sent to your address"
+      all_sessions_logged_out: "All sessions successfully logged out"
+      sessions_logout_failed: "Failed to log out sessions"
+      session_logged_out: "Session successfully logged out"
+      session_logout_failed: "Failed to log out session"
+    password_resets:
+      instructions_sent: "Instructions have been sent to your address"
+      email_not_found: "The specified email was not found"
+      success: "Password successfully updated!"
+      failure: "Something went wrong!"
+      fields_blank: "All fields must be filled in"
+      too_short: "New password is too short (minimum is 5 characters)."
+      no_match: "New passwords do not match."
+      same_as_old: "New password must be different from the old one."
+      invalid_token: "Token is invalid!"
+    users:
+      instructions_sent: "Instructions have been sent to your address"
+      invalid_password: "Invalid password."
+    admin:
+      games:
+        updated: "Game successfully updated"
+        deleted: "Game successfully deleted"
+      jams:
+        updated: "Jam successfully updated"
+        deleted: "Jam successfully deleted"
+      users:
+        created: "User successfully created"
+        updated: "User successfully updated"
+        deleted: "User successfully deleted"
+        invalid_duration: "Invalid duration"
+        freeze_failed: "Failed to freeze user"
+        unfreeze_failed: "Failed to unfreeze user"
+    moderator:
+      games:
+        updated: "Game successfully updated"
+        deleted: "Game successfully deleted"
+      jams:
+        updated: "Jam successfully updated"
+        deleted: "Jam successfully deleted"
+    reports:
+      sent: "Report successfully submitted"
+  mailers:
+    email_confirm:
+      subject: "Confirm email | Jammer"
+      title: "Email confirmation"
+      body: "You need to confirm your email address to register on Jammer. Please copy this code to confirm:"
+    password_reset:
+      subject: "Reset password | Jammer"
+      title: "Password reset"
+      body_intro: "Someone has requested a password reset for your account."
+      body_action: "If it was you, click the button below to set a new password:"
+      button: "Reset my password"
+      body_ignore: "If you did not request a password reset, simply ignore this message."
+  password_resets:
+    new:
+      title: "Password reset"
+      email_label: "Enter your email"
+      submit: "Send"
+      back: "Back"
+    edit:
+      title: "Password reset"
+      password_label: "New password"
+      password_confirmation_label: "Confirm password"
+      back: "Back to"
+      login: "login"
+  jam_votes:
+    new:
+      jam_label: "Jam:"
+      overall_score: "Overall score (by criteria)"
+      one_vote: "1 vote"
+      comment_placeholder: "Comment (optional)"
+  jam_criterion_picks:
+    pick_block:
+      you_picked: "You have picked this game"
+      cancel: "Cancel"
+      currently_picked: "Currently picked:"
+      other_game: "another game"
+      no_pick: "No pick made"
+      pick_instead: "Pick instead"
+      pick_game: "Pick game"
+  admin:
+    shared:
+      back: "Back"
+      save: "Save"
+      search: "Search"
+      reset: "Reset"
+      edit: "Edit"
+      delete: "Delete"
+      confirm: "Are you sure?"
+      tags: "Tags"
+      author_unknown: "Author unknown"
+      status_hint: "0 - Moderation; 1 - Approved; 2 - Rejected"
+      rejection_reason: "Rejection reason"
+      rejection_reasons:
+        indecent_content: "Indecent content"
+        advertising: "Advertising"
+        plagiarism: "Plagiarism"
+    actions:
+      index:
+        title: "Admin actions"
+        admin: "Admin"
+        record_type: "Record type"
+        record_id: "Record ID"
+        action: "Action"
+        changes: "Changes"
+        date: "Date"
+        old_values: "Old values:"
+        new_values: "New values:"
+        no_changes: "No changes"
+    games:
+      index:
+        search_label: "Search games"
+        not_found: 'No games found for query "%{query}".'
+      form:
+        cover: "Cover"
+        game_file: "Game file"
+        current_file: "Current file:"
+        download_archive: "Download archive"
+    jams:
+      index:
+        search_label: "Search jams"
+        not_found: 'No jams found for query "%{query}".'
+      form:
+        start_date: "Start date"
+        deadline: "Submission deadline"
+        end_date: "Jam end date"
+        cover: "Cover"
+        logo: "Logo"
+    users:
+      index:
+        search_label: "Search users"
+        not_found: 'No users found for query "%{query}".'
+        create_user: "Create user"
+      new:
+        title: "Create user"
+        name: "Name"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+        role: "Role"
+        submit: "Create"
+      form:
+        tabs:
+          profile: "Profile"
+          user_experience: "User experience"
+          games: "Games"
+          jams: "Jams"
+          sessions: "Sessions"
+          notifications: "Notifications"
+        avatar: "Avatar"
+        background_image: "Background image"
+        background_preview_alt: "Background preview"
+        upload_new_background: "Upload new background"
+        personal_link: "Personal link"
+        phone_number: "Phone number"
+        birthday: "Birthday"
+        no_info: "No information"
+        freeze:
+          freeze: "Freeze"
+          unfreeze: "Unfreeze"
+          cancel: "Cancel"
+          modal_title: "Freeze account"
+          reason: "Reason"
+          reason_placeholder: "Specify the reason..."
+          reason_required: "Specify a reason"
+          freezing: "Freezing..."
+          error: "Failed to freeze user"
+          unfreeze_error: "Failed to unfreeze user"
+          duration: "Duration"
+          durations:
+            hour_1: "1 hour"
+            hours_6: "6 hours"
+            hours_12: "12 hours"
+            day_1: "1 day"
+            days_3: "3 days"
+            days_7: "7 days"
+            month_1: "1 month"
+            months_6: "6 months"
+            year_1: "1 year"
+            forever: "Forever"
+        frozen:
+          title: "Account frozen"
+          reason: "Reason:"
+          unfreeze_at: "Unfreeze at:"
+        friends:
+          title: "Friends"
+          empty: "No friends yet"
+        requests:
+          title: "Outgoing requests"
+          empty_outgoing: "No outgoing requests yet"
+        subscribers:
+          title: "Subscribers"
+          empty_incoming: "No incoming requests yet"
+        games_section:
+          title: "Games"
+        jams_section:
+          title: "Jams"
+        sessions_section:
+          title: "Sessions"
+          empty: "No active sessions"
+        notifications_section:
+          title: "Notifications"
+          empty: "No notifications"
+          accepted_friendship: "accepted your friend request"
+          sent_friend_request: "sent you a friend request"
+    visits:
+      index:
+        title: "Visit statistics"
+        last_30_days: "Last 30 days"
+        last_90_days: "Last 90 days"
+        active_users: "Active users"
+        registered_users: "Registered users"
+        user_count: "User count"
+        date: "Date"
+  admins:
+    index:
+      title: "Admin panel"
+      go: "Open"
+      users:
+        title: "Users"
+        description: "User management"
+      games:
+        title: "Games"
+        description: "Game editing"
+      jams:
+        title: "Jams"
+        description: "Jam editing"
+      stats:
+        title: "Statistics"
+        description: "Site visit statistics"
+      settings:
+        title: "Settings"
+        description: "Site settings"
+      support:
+        title: "Support"
+        description: "User support"
+      actions:
+        title: "Action log"
+        description: "Admin action history"
+  moderator:
+    shared:
+      back: "Back"
+      save: "Save"
+      search: "Search"
+      reset: "Reset"
+      edit: "Edit"
+      delete: "Delete"
+      confirm: "Are you sure?"
+      tags: "Tags"
+      author_unknown: "Author unknown"
+      status_hint: "0 - Moderation; 1 - Approved; 2 - Rejected"
+      rejection_reason: "Rejection reason"
+      rejection_reasons:
+        indecent_content: "Indecent content"
+        advertising: "Advertising"
+        plagiarism: "Plagiarism"
+    games:
+      index:
+        search_label: "Search games"
+        not_found: 'No games found for query "%{query}".'
+      form:
+        cover: "Cover"
+        game_file: "Game file"
+        current_file: "Current file:"
+        download_archive: "Download archive"
+    jams:
+      index:
+        search_label: "Search jams"
+        not_found: 'No jams found for query "%{query}".'
+      form:
+        start_date: "Start date"
+        deadline: "Submission deadline"
+        end_date: "Jam end date"
+        cover: "Cover"
+        logo: "Logo"
+  moderators:
+    index:
+      title: "Moderator panel"
+      go: "Open"
+      games:
+        title: "Games"
+        description: "Game editing"
+      jams:
+        title: "Jams"
+        description: "Jam editing"

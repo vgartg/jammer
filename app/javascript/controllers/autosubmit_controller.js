@@ -1,7 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static values = { delay: { type: Number, default: 400 } }
+    static values = {
+        delay: { type: Number, default: 400 },
+        tooShort: String
+    }
 
     connect() {
         this.timeout = null
@@ -13,10 +16,9 @@ export default class extends Controller {
         const input = event.target
         const query = input.value.trim()
 
-        // ❗ Не искать если меньше 2 символов
         if (query.length < 2) {
             document.getElementById("jury_search_results").innerHTML =
-                '<div class="mt-3 text-sm text-gray-500">Введите минимум 2 символа</div>'
+                `<div class="mt-3 text-sm text-gray-500">${this.tooShortValue}</div>`
             return
         }
 

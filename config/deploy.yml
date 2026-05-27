@@ -2,7 +2,7 @@
 service: jammer
 
 # Name of the container image.
-image: fiitovec99/jammer
+image: <%= ENV["KAMAL_REGISTRY_USERNAME"] %>/jammer
 
 deploy_timeout: 90
 
@@ -29,7 +29,8 @@ proxy:
 registry:
   # Specify the registry server, if you're not using Docker Hub
   # server: registry.digitalocean.com / ghcr.io / ...
-  username: fiitovec99
+  username:
+    - KAMAL_REGISTRY_USERNAME
 
   # Always use an access token rather than real password (pulled from .kamal/secrets).
   password:
@@ -54,6 +55,10 @@ env:
     - MAIL_DOMAIN
     - MAIL_ADDRESS
     - MAIL_PASSWORD
+    - GITHUB_CLIENT_ID
+    - GITHUB_CLIENT_SECRET
+    - GOOGLE_CLIENT_ID
+    - GOOGLE_CLIENT_SECRET
 
 volumes:
   - "jammer_storage:/rails/storage"

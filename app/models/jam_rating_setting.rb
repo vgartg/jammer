@@ -7,7 +7,7 @@ class JamRatingSetting < ApplicationRecord
 
   def at_least_one_enabled
     if !jury_enabled && !audience_enabled
-      errors.add(:base, "Нельзя выключить и жюри, и аудиторию одновременно")
+      errors.add(:base, :both_disabled)
     end
   end
 end

@@ -1,6 +1,6 @@
 <div class="p-6" data-controller="settings">
   <div class="mt-4">
-    <%= link_to 'Назад', request.referer && URI(request.referer).path != request.fullpath ? URI(request.referer).path : moderator_games_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
+    <%= link_to t('admin.shared.back'), request.referer && URI(request.referer).path != request.fullpath ? URI(request.referer).path : moderator_games_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
   </div>
 
   <div>
@@ -31,15 +31,15 @@
                 <%= f.label :status, class: 'block text-sm font-medium text-gray-700' %>
               </div>
               <div class="w-3/4">
-                <p class="text-sm">0 - Модерация; 1 - Одобрено; 2 - Отклонено</p>
+                <p class="text-sm"><%= t('admin.shared.status_hint') %></p>
                 <%= f.select :status, options_for_select([['0', 0], ['1', 1], ['2', 2]], f.object.status),
                              { target: 'status' },
                              class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50',
                              id: "game_status",
                              data: { action: 'change->status#updateReasonField', status_target: 'status' } %>
                 <div data-status-target="reasonField" style="<%= f.object.status == 2 ? '' : 'display: none;' %>">
-                  <%= f.label :reason, "Причина отклонения", class: 'block text-sm font-medium text-gray-700 mt-2' %>
-                  <%= f.select :reason, [['Непристойный контент', 'Непристойный контент'], ['Реклама', 'Реклама'], ['Плагиат', 'Плагиат']],
+                  <%= f.label :reason, t('admin.shared.rejection_reason'), class: 'block text-sm font-medium text-gray-700 mt-2' %>
+                  <%= f.select :reason, [[t('admin.shared.rejection_reasons.indecent_content'), 'Непристойный контент'], [t('admin.shared.rejection_reasons.advertising'), 'Реклама'], [t('admin.shared.rejection_reasons.plagiarism'), 'Плагиат']],
                                { include_blank: true },
                                class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
                 </div>
@@ -49,11 +49,11 @@
 
           <div class="flex items-center">
             <div class="w-1/4">
-              <%= f.label :cover, "Обложка", class: "block text-sm font-medium text-gray-700" %>
+              <%= f.label :cover, t('.cover'), class: "block text-sm font-medium text-gray-700" %>
             </div>
             <div class="w-3/4">
               <label class="block text-sm font-medium text-gray-700 mb-2" for="game_cover">
-                Обложка
+                <%= t('.cover') %>
               </label>
               <%= f.file_field :cover, class: "mt-1 block w-full text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:bg-gray-100 file:text-sm file:font-medium hover:file:bg-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" %>
 
@@ -73,20 +73,20 @@
 
           <div class="flex items-center">
             <div class="w-1/4">
-              <%= f.label :game_file, "Файл игры",
+              <%= f.label :game_file, t('.game_file'),
                              class: "block text-sm font-medium text-gray-700" %>
             </div>
             <div class="w-3/4">
               <label class="block text-sm font-medium text-gray-700 mb-2" for="game_game_file">
-                Файл игры
+                <%= t('.game_file') %>
               </label>
               <%= f.file_field :game_file, accept: ".zip,.rar,.7z",
                                class: "mt-1 block w-full text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:bg-gray-100 file:text-sm file:font-medium hover:file:bg-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" %>
 
               <% if game.game_file.attached? %>
                 <p class="mt-2 text-sm text-gray-500">
-                  Текущий файл:
-                  <%= link_to "Скачать архив", url_for(@game.game_file),
+                  <%= t('.current_file') %>
+                  <%= link_to t('.download_archive'), url_for(@game.game_file),
                               download: true,
                               class: "text-indigo-600 hover:text-indigo-900 font-medium underline" %>
                 </p>
@@ -96,7 +96,7 @@
 
           <div class="flex items-center">
             <div class="w-1/4">
-              <%= f.label :tags, "Теги", class: "block text-sm font-medium text-gray-700" %>
+              <%= f.label :tags, t('admin.shared.tags'), class: "block text-sm font-medium text-gray-700" %>
             </div>
             <div class="w-3/4">
               <div class="mt-1">
@@ -114,7 +114,7 @@
             <div class="w-1/4"></div>
             <div class="w-3/4">
               <div class="mt-6 flex items-center space-x-2">
-                <%= f.submit 'Сохранить', class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
+                <%= f.submit t('admin.shared.save'), class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
               </div>
             </div>
           </div>

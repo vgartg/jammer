@@ -7,8 +7,8 @@
             <h1 class="text-2xl font-medium text-gray-900 break-all"><%= @jam.name %></h1>
           </div>
           <% if @jam.status != 1 %>
-            <p class="mt-2 text-red-400 sm:text-sm">Данный джем
-              <%= @jam.status == 0 ? 'находится на модерации' : 'отклонен модератором' %>
+            <p class="mt-2 text-red-400 sm:text-sm"><%= t('.this_jam') %>
+              <%= @jam.status == 0 ? t('.status_pending') : t('.status_rejected') %>
             </p>
           <% end %>
         </div>
@@ -67,36 +67,36 @@
 
           <div class="mt-10">
             <h2 class="text-lg font-medium text-gray-900">
-              Информация о джеме
+              <%= t('.jam_info') %>
             </h2>
 
             <div class="mt-4 space-y-3 text-gray-700">
               <div>
-                <span class="font-medium text-gray-900">Дата начала:</span>
+                <span class="font-medium text-gray-900"><%= t('.start_date') %></span>
                 <span><%= @jam.start_date&.strftime("%d.%m.%Y") %></span>
               </div>
 
               <div>
-                <span class="font-medium text-gray-900">Окончание приёма работ:</span>
+                <span class="font-medium text-gray-900"><%= t('.deadline') %></span>
                 <span><%= @jam.deadline&.strftime("%d.%m.%Y") %></span>
               </div>
 
               <div>
-                <span class="font-medium text-gray-900">Окончание оценивания:</span>
+                <span class="font-medium text-gray-900"><%= t('.end_date') %></span>
                 <span><%= @jam.end_date&.strftime("%d.%m.%Y") %></span>
               </div>
 
               <div>
-                <span class="font-medium text-gray-900">Создатель:</span>
+                <span class="font-medium text-gray-900"><%= t('.creator') %></span>
                 <% if @jam.author.present? %>
                   <%= link_to @jam.author.name, user_profile_path(@jam.author), class: "text-indigo-600 hover:text-indigo-900" %>
                 <% else %>
-                  <span class="text-gray-500">Автор не найден</span>
+                  <span class="text-gray-500"><%= t('.no_author') %></span>
                 <% end %>
               </div>
 
               <div>
-                <span class="font-medium text-gray-900">Хосты:</span>
+                <span class="font-medium text-gray-900"><%= t('.hosts') %></span>
                 <% hosts = @jam.hosts %>
                 <% if hosts.any? %>
                   <div class="mt-1 flex flex-wrap gap-2">
@@ -106,7 +106,7 @@
                     <% end %>
                   </div>
                 <% else %>
-                  <span class="text-gray-500">Хосты не назначены</span>
+                  <span class="text-gray-500"><%= t('.no_hosts') %></span>
                 <% end %>
               </div>
             </div>
@@ -116,7 +116,7 @@
 
           <% if winners.any? %>
             <div class="mt-10 rounded-lg border bg-white p-4">
-              <h2 class="text-lg font-semibold text-gray-900">Победители по номинациям</h2>
+              <h2 class="text-lg font-semibold text-gray-900"><%= t('.nominations_winners') %></h2>
 
               <div class="mt-4 space-y-3">
                 <% winners.each do |n| %>
@@ -150,10 +150,10 @@
                           class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
 
             <% if current_user && @jam.can_configure?(current_user) %>
-              <%= button_to "Настройки оценок", rating_settings_jam_path(@jam), method: :get,
+              <%= button_to t('.rating_settings'), rating_settings_jam_path(@jam), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700" %>
 
-              <%= button_to "Настройки жюри", jury_settings_jam_path(@jam), method: :get,
+              <%= button_to t('.jury_settings'), jury_settings_jam_path(@jam), method: :get,
                             class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700" %>
             <% end %>
           <% elsif current_user.present? %>
@@ -197,7 +197,7 @@
                   </button>
                 <% else %>
                   <p class="mt-4 text-sm text-gray-500">
-                    Приём работ завершён. Редактирование и замена игры недоступны.
+                    <%= t('.submission_closed_edit') %>
                   </p>
                 <% end %>
 
@@ -212,7 +212,7 @@
                   </button>
                 <% else %>
                   <p class="mt-4 text-sm text-gray-500">
-                    Приём работ завершён
+                    <%= t('.submission_closed') %>
                   </p>
                 <% end %>
               <% end %>
@@ -222,7 +222,7 @@
                               class: "mt-4 flex w-50 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
               <% else %>
                 <p class="mt-4 text-sm text-gray-500">
-                  Приём работ завершён
+                  <%= t('.submission_closed') %>
                 </p>
               <% end %>
             <% end %>

@@ -7,8 +7,8 @@
             <h1 class="text-2xl font-medium text-gray-900 break-all"><%= @game.name %></h1>
           </div>
           <% if @game.status != 1 %>
-            <p class="mt-2 text-red-400 sm:text-sm">Данная игра
-              <%= @game.status == 0 ? 'находится на модерации' : 'отклонена модератором' %>
+            <p class="mt-2 text-red-400 sm:text-sm"><%= t('.this_game') %>
+              <%= @game.status == 0 ? t('.status_pending') : t('.status_rejected') %>
             </p>
           <% end %>
         </div>
@@ -45,12 +45,12 @@
 
             <% if @single_pick_criteria.present? %>
               <div class="mt-8">
-                <h2 class="text-lg font-semibold text-gray-900 text-center">Голоса по критериям</h2>
+                <h2 class="text-lg font-semibold text-gray-900 text-center"><%= t('.criterion_votes_title') %></h2>
 
                 <div class="mt-4 mx-auto max-w-lg rounded border bg-white overflow-hidden">
                   <div class="grid grid-cols-2 border-b bg-gray-50 px-3 py-2 text-sm font-medium text-gray-700">
-                    <div>Критерий</div>
-                    <div>Голоса</div>
+                    <div><%= t('.criterion_header') %></div>
+                    <div><%= t('.votes_header') %></div>
                   </div>
 
                   <div class="divide-y">
@@ -84,7 +84,7 @@
 
               <%# fallback, если jam не найден %>
               <% if jam.nil? %>
-                <p class="mt-4 text-center text-sm text-gray-500">Джем не найден.</p>
+                <p class="mt-4 text-center text-sm text-gray-500"><%= t('.jam_not_found') %></p>
               <% else %>
                 <% can_vote = jam.can_vote_as_jury?(current_user) || jam.can_vote_as_audience?(current_user) %>
 
@@ -105,7 +105,7 @@
                 %>
 
                 <div class="mt-6 text-center">
-                  <h2 class="text-lg font-semibold">Оценка по критериям</h2>
+                  <h2 class="text-lg font-semibold"><%= t('.your_criteria_score') %></h2>
 
                   <p class="text-xl font-bold text-gray-900 inline-flex items-center mt-2">
                     <%= my_overall %>
@@ -118,13 +118,13 @@
                   </p>
 
                   <% if can_vote %>
-                    <%= button_to (my_overall > 0 ? "Изменить оценки по критериям" : "Оценить по критериям"),
+                    <%= button_to (my_overall > 0 ? t('.edit_criteria_scores') : t('.rate_by_criteria')),
                                   new_jam_game_vote_path(jam, @game),
                                   method: :get,
                                   class: "bg-indigo-600 text-white px-4 py-2 rounded-lg mt-4" %>
                   <% else %>
                     <p class="mt-4 text-sm text-gray-500">
-                      Оценивание для вас недоступно (закрыто или нет прав).
+                      <%= t('.voting_unavailable') %>
                     </p>
                   <% end %>
                 </div>
@@ -194,7 +194,7 @@
           <% if @jam_id.present? && @reviews.present? %>
             <div class="mt-8 text-center">
               <h2 class="text-lg font-semibold">
-                Оценки участников
+                <%= t('.participant_scores') %>
               </h2>
 
               <% grouped = @reviews.group_by(&:user) %>
@@ -217,7 +217,7 @@
                       </p>
 
                       <p class="text-sm text-gray-500">
-                        Общая оценка: <%= overall.round(1) %>
+                        <%= t('.overall_score') %> <%= overall.round(1) %>
                       </p>
                     </div>
                   </div>

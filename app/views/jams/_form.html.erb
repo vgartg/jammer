@@ -1,4 +1,7 @@
-<div data-controller="jams">
+<div data-controller="jams"
+     data-jams-invalid-dates-value="<%= t('controllers.jams.invalid_dates') %>"
+     data-jams-deadline-before-start-value="<%= t('controllers.jams.date_deadline_before_start') %>"
+     data-jams-end-before-deadline-value="<%= t('controllers.jams.date_end_before_deadline') %>">
   <%= form_with(model: @jam, url: path, local: true) do |f| %>
     <div class="mt-4">
       <%= f.label :name, t('.name'), class: "block text-sm font-medium text-white" %>
@@ -66,11 +69,11 @@
         <div class="text-gray-500 border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
           <% if @jam && @jam.cover.attached? && @jam.cover.persisted? %>
             <img data-jams-target="coverPreviewImg" id="cover-preview-img" src="<%= url_for(@jam.cover) %>"
-                 alt="Предварительный просмотр обложки"
+                 alt="<%= t('.cover_preview_alt') %>"
                  class="mt-4 w-full h-auto object-cover rounded-md">
           <% else %>
             <img data-jams-target="coverPreviewImg" id="cover-preview-img" src="#"
-                 alt="Предварительный просмотр обложки"
+                 alt="<%= t('.cover_preview_alt') %>"
                  class="mt-4 hidden w-full h-auto object-cover rounded-md">
           <% end %>
           <%= f.file_field :cover, id: "cover-input",
@@ -94,11 +97,11 @@
         <div class="text-gray-500 border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
           <% if @jam && @jam.logo.attached? && @jam.logo.persisted? %>
             <img data-jams-target="logoPreviewImg" id="logo-preview-img" src="<%= url_for(@jam.logo) %>"
-                 alt="Предварительный просмотр логотипа"
+                 alt="<%= t('.logo_preview_alt') %>"
                  class="mt-4 w-full h-auto object-cover rounded-md">
           <% else %>
             <img data-jams-target="logoPreviewImg" id="logo-preview-img" src="#"
-                 alt="Предварительный просмотр логотипа"
+                 alt="<%= t('.logo_preview_alt') %>"
                  class="mt-4 hidden w-full h-auto object-cover rounded-md">
           <% end %>
           <%= f.file_field :logo, id: "logo-input",
@@ -140,7 +143,7 @@
                    class: "mt-4 flex w-full justify-center rounded-md border
                      border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
                      hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2",
-                   data: { turbo_submits_with: "Создаем...", turbo_track: "dynamic" } %>
+                   data: { turbo_submits_with: t('.submitting'), turbo_track: "dynamic" } %>
 
     <div class='blur-background hidden' id='blur'>
       <div class="loading-spinner hidden" id="loading">

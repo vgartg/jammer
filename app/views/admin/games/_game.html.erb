@@ -8,7 +8,7 @@
           <%= truncate(game.author.name, length: 15) %>
         </a>
       <% else %>
-        <span>Автор неизвестен</span>
+        <span><%= t('admin.shared.author_unknown') %></span>
       <% end %>
     </td>
     <td class="py-3 px-6 hover:underline">
@@ -17,8 +17,8 @@
     <td class="py-3 px-10"><%= game.status %></td>
     <td class="py-3 px-6"><%= game.created_at.strftime("%Y-%m-%d %H:%M") %></td>
     <td class="py-3 px-6 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-      <%= link_to 'Edit', edit_admin_game_path(game), class: 'bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600' %>
-      <%= link_to 'Delete', admin_game_path(game), class: 'bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600', data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %>
+      <%= link_to t('admin.shared.edit'), edit_admin_game_path(game), class: 'bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600' %>
+      <%= link_to t('admin.shared.delete'), admin_game_path(game), class: 'bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600', data: { turbo_method: :delete, turbo_confirm: t('admin.shared.confirm') } %>
     </td>
   </tr>
 <% end %>

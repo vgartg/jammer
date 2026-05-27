@@ -7,13 +7,13 @@ class PasswordResetsController < ApplicationController
     @user = User.find_by_email(params[:email])
     if @user.present?
       @user.set_password_reset_token
-      PasswordResetMailer.with(user: @user).reset_email.deliver_later
+      PasswordResetMailer.with(user: @user, locale: I18n.locale).reset_email.deliver_later
       flash[:success] ||= []
-      flash[:success] << 'Инструкции были отправлены на ваш адрес'
+      flash[:success] << t('controllers.password_resets.instructions_sent')
       redirect_to login_path
     else
       flash[:failure] ||= []
-      flash[:failure] << 'Не найдена указанная почта'
+      flash[:failure] << t('controllers.password_resets.email_not_found')
       redirect_to password_reset_path
     end
   end
@@ -23,33 +23,33 @@ class PasswordResetsController < ApplicationController
   def update
      if user_params[:password].blank? || user_params[:password_confirmation].blank?
        flash[:failure] ||= []
-       flash[:failure] << "All fields must be filled in"
-       redirect_to request.fullpath # Пока такой костыль
+       flash[:failure] << t('controllers.password_resets.fields_blank')
+       redirect_to request.fullpath
        return
      elsif user_params[:password].length < 5
        flash[:failure] ||= []
-       flash[:failure] << "New password is too short (minimum is 5 characters)."
-       redirect_to request.fullpath # Пока такой костыль
+       flash[:failure] << t('controllers.password_resets.too_short')
+       redirect_to request.fullpath
        return
      elsif user_params[:password] != user_params[:password_confirmation]
        flash[:failure] ||= []
-       flash[:failure] << "New passwords do not match."
-       redirect_to request.fullpath # Пока такой костыль
+       flash[:failure] << t('controllers.password_resets.no_match')
+       redirect_to request.fullpath
        return
      elsif user_params[:password] == params[:user][:current_password]
        flash[:failure] ||= []
-       flash[:failure] << "New password must be different from the old one."
-       redirect_to request.fullpath # Пока такой костыль
+       flash[:failure] << t('controllers.password_resets.same_as_old')
+       redirect_to request.fullpath
        return
      end
 
      if @user.update(user_params)
        flash[:success] ||= []
-       flash[:success] << "Пароль успешно обновлен!"
+       flash[:success] << t('controllers.password_resets.success')
        redirect_to login_path
      else
        flash[:failure] ||= []
-       flash[:failure] << "Что-то пошло не так!"
+       flash[:failure] << t('controllers.password_resets.failure')
        redirect_to login_path
      end
   end
@@ -63,7 +63,7 @@ class PasswordResetsController < ApplicationController
   def check_user_params
     if params[:user].blank?
       flash[:failure] ||= []
-      flash[:failure] << "Что-то пошло не так!"
+      flash[:failure] << t('controllers.password_resets.failure')
       redirect_to(login_path)
     end
   end
@@ -73,7 +73,7 @@ class PasswordResetsController < ApplicationController
     @user = nil unless @user.authenticate_password_reset_token(params[:user][:password_reset_token])
     unless @user&.password_reset_period_valid?
       flash[:failure] ||= []
-      flash[:failure] << "Токен недействителен!"
+      flash[:failure] << t('controllers.password_resets.invalid_token')
       redirect_to login_path
     end
   end

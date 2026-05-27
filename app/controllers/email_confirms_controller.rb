@@ -13,11 +13,11 @@ class EmailConfirmsController < ApplicationController
       end
       remember(@user) if params[:remember_me] == '1'
       flash[:success] ||= []
-      flash[:success] << 'Email Confirmed successfully.'
+      flash[:success] << t('email_confirms.update.success')
       redirect_to dashboard_path
     else
       flash[:failure] ||= []
-      flash[:failure] << 'Something went wrong.'
+      flash[:failure] << t('email_confirms.update.failure')
       redirect_to register_path
     end
   end
@@ -27,7 +27,7 @@ class EmailConfirmsController < ApplicationController
   def check_params
     if params[:user][:code].blank?
       flash[:failure] ||= []
-      flash[:failure] << "Код не может быть пуст"
+      flash[:failure] << t('email_confirms.update.code_blank')
       redirect_to request.fullpath
     end
   end
@@ -36,7 +36,7 @@ class EmailConfirmsController < ApplicationController
     @user = User.find_by(email: params[:user][:email])
     unless @user
       flash[:failure] ||= []
-      flash[:failure] << "Пользователь не найден."
+      flash[:failure] << t('email_confirms.update.user_not_found')
       redirect_to register_path
     end
   end
@@ -46,7 +46,7 @@ class EmailConfirmsController < ApplicationController
     @user = nil unless @user.authenticate_email_confirm_token(params[:user][:code])
     unless @user&.email_confirm_period_valid?
       flash[:failure] ||= []
-      flash[:failure] << "Код недействителен!"
+      flash[:failure] << t('email_confirms.update.invalid_code')
       redirect_to request.fullpath
     end
   end

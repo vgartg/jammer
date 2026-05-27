@@ -28,9 +28,9 @@ class UsersController < ApplicationController
 
     if @user.save
       @token = @user.set_email_confirm_token
-      EmailConfirmMailer.with(user: @user, token: @token).email_confirm.deliver_later
+      EmailConfirmMailer.with(user: @user, token: @token, locale: I18n.locale).email_confirm.deliver_later
       flash[:success] ||= []
-      flash[:success] << 'Инструкции были отправлены на ваш адрес'
+      flash[:success] << t('controllers.users.instructions_sent')
       redirect_to edit_email_confirm_url(user: { email_confirm_token: @user.email_confirm_token,
                                                  email: @user.email }).gsub('&amp;', '&')
     else
@@ -42,14 +42,14 @@ class UsersController < ApplicationController
 
   def destroy
     @user = current_user
-    if @user.authenticate(params[:user][:password])
+    if @user.oauth_user? || @user.authenticate(params[:user][:password])
       @user.destroy
       flash[:success] ||= []
       flash[:success] << t('users.destroy.success')
       render json: { success: true }, status: :ok
     else
       flash[:error] = t 'users.destroy.error'
-      render json: { success: false, error: 'Неверный пароль.' }, status: :unprocessable_entity
+      render json: { success: false, error: t('controllers.users.invalid_password') }, status: :unprocessable_entity
     end
   end
 
@@ -61,14 +61,23 @@ class UsersController < ApplicationController
     @user = current_user
 
     if user_params[:password].present? || user_params[:password_confirmation].present? || params[:user][:current_password].present?
-      unless @user.authenticate(params[:user][:current_password])
-        flash[:failure] ||= []
-        flash[:failure] << t('users.update_user.failure1')
-        redirect_to settings_path
-        return
+      unless @user.oauth_user?
+        unless @user.authenticate(params[:user][:current_password])
+          flash[:failure] ||= []
+          flash[:failure] << t('users.update_user.failure1')
+          redirect_to settings_path
+          return
+        end
+
+        if params[:user][:current_password].blank?
+          flash[:failure] ||= []
+          flash[:failure] << t('users.update_user.failure2')
+          redirect_to settings_path
+          return
+        end
       end
 
-      if user_params[:password].blank? || user_params[:password_confirmation].blank? || params[:user][:current_password].blank?
+      if user_params[:password].blank? || user_params[:password_confirmation].blank?
         flash[:failure] ||= []
         flash[:failure] << t('users.update_user.failure2')
         redirect_to settings_path
@@ -83,7 +92,7 @@ class UsersController < ApplicationController
         flash[:failure] << t('users.update_user.failure4')
         redirect_to settings_path
         return
-      elsif user_params[:password] == params[:user][:current_password]
+      elsif !@user.oauth_user? && user_params[:password] == params[:user][:current_password]
         flash[:failure] ||= []
         flash[:failure] << t('users.update_user.failure5')
         redirect_to settings_path

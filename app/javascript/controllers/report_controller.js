@@ -2,6 +2,12 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
     static targets = ["modal", "successModal", "errorModal", "errorMessage", "textarea", "warning"];
+    static values = {
+        submitting: String,
+        otherReason: String,
+        genericError: String,
+        submit: String
+    };
 
     open() {
         this.modalTarget.classList.remove("hidden");
@@ -26,13 +32,13 @@ export default class extends Controller {
         const submitButton = form.querySelector("button[type='submit']");
 
         submitButton.disabled = true;
-        submitButton.textContent = "Отправка...";
+        submitButton.textContent = this.submittingValue;
 
         const payload = {
             report: {
                 reportable_type: data.get("reportable_type"),
                 reportable_id: data.get("reportable_id"),
-                reason: data.get("reason") || "Другая причина",
+                reason: data.get("reason") || this.otherReasonValue,
                 comment: data.get("complaint"),
             }
         };
@@ -51,7 +57,7 @@ export default class extends Controller {
                     this.close();
                     this.successModalTarget.classList.remove("hidden");
                 } else {
-                    throw new Error(body.error || "Произошла ошибка при отправке жалобы");
+                    throw new Error(body.error || this.genericErrorValue);
                 }
             })
             .catch((error) => {
@@ -59,7 +65,7 @@ export default class extends Controller {
             })
             .finally(() => {
                 submitButton.disabled = false;
-                submitButton.textContent = "Отправить";
+                submitButton.textContent = this.submitValue;
             });
     }
 

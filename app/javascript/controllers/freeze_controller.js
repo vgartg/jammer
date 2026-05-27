@@ -2,6 +2,12 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
     static targets = ["reason", "duration", "submit"];
+    static values = {
+        reasonRequired: String,
+        freezing: String,
+        error: String,
+        freezeLabel: String
+    };
 
     connect() {
         this.toggleButton();
@@ -34,12 +40,12 @@ export default class extends Controller {
         const duration = this.durationTarget.value;
 
         if (!reason) {
-            alert("Необходимо указать причину заморозки.");
+            alert(this.reasonRequiredValue);
             return;
         }
 
         this.submitTarget.setAttribute("disabled", "true");
-        this.submitTarget.textContent = "Замораживание...";
+        this.submitTarget.textContent = this.freezingValue;
 
         const response = await fetch(`/admin/users/${this.element.dataset.userId}/freeze`, {
             method: "POST",
@@ -53,9 +59,9 @@ export default class extends Controller {
         if (response.ok) {
             location.reload();
         } else {
-            alert("Ошибка при заморозке пользователя.");
+            alert(this.errorValue);
             this.submitTarget.removeAttribute("disabled");
-            this.submitTarget.textContent = "Заморозить";
+            this.submitTarget.textContent = this.freezeLabelValue;
         }
     }
 }

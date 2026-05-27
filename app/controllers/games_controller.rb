@@ -80,20 +80,20 @@ class GamesController < ApplicationController
     end
     return unless @game.status != 1 && current_user != @game.author
 
-    flash[:failure] = 'Игра находится на модерации'
+    flash[:failure] = t('controllers.games.moderation_pending')
     redirect_to dashboard_path
   end
 
   def submit
     submission = JamSubmission.find_by(jam_id: params[:jam_id], user_id: current_user.id)
     unless submission
-      flash[:failure] = "Вы не участвуете в этом джеме"
+      flash[:failure] = t('controllers.games.not_participating')
       return redirect_to jam_profile_path(params[:jam_id])
     end
 
     game = current_user.games.find_by(id: params[:id])
     unless game
-      flash[:failure] = "Игра не найдена"
+      flash[:failure] = t('controllers.games.not_found')
       return redirect_to jam_profile_path(params[:jam_id])
     end
 
@@ -107,7 +107,7 @@ class GamesController < ApplicationController
     if @game.save
       admins = User.where(role: [1, 2])
       admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
+        current_user.create_notification(admin, current_user, 'awaiting_game_moderation', @game)
       end
       flash[:success] ||= []
       flash[:success] << translate("games.create.success")
@@ -133,7 +133,7 @@ class GamesController < ApplicationController
     if @game.update(game_params)
       admins = User.where(role: [1, 2])
       admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting game moderation', @game)
+        current_user.create_notification(admin, current_user, 'awaiting_game_moderation', @game)
       end
       @game.update(status: 0)
       flash[:success] ||= []
@@ -163,7 +163,7 @@ class GamesController < ApplicationController
   def root_check
     return if current_user.games.find_by_id(params[:id])
 
-    flash[:failure] = 'Недостаточно прав'
+    flash[:failure] = t('controllers.application.insufficient_rights')
     redirect_to dashboard_path
   end
 
@@ -188,7 +188,7 @@ class GamesController < ApplicationController
     jam = submission.jam
     return if jam.submission_open?
 
-    flash[:failure] = "Приём работ завершён. Редактирование игры недоступно"
+    flash[:failure] = t('controllers.games.edit_locked')
     redirect_to game_profile_path(params[:id], jam_id: jam.id)
   end
 end

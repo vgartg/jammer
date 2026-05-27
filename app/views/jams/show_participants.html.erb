@@ -10,7 +10,7 @@
           <%= t '.title' %>
         </h2>
         <% if current_user && @jam.can_manage?(current_user) %>
-          <span class="text-sm text-gray-500">(Нажмите "Удалить", чтобы исключить участника)</span>
+          <span class="text-sm text-gray-500"><%= t('.remove_hint') %></span>
         <% end %>
       <% end %>
     </div>
@@ -56,9 +56,9 @@
 
           <% if current_user && @jam.can_manage?(current_user) %>
             <div class="ml-2">
-              <%= button_to "Удалить", remove_participant_jam_path(@jam, user_id: user.id),
+              <%= button_to t('.remove'), remove_participant_jam_path(@jam, user_id: user.id),
                             method: :delete,
-                            data: { confirm: "Вы уверены, что хотите удалить этого участника из джема?" },
+                            data: { confirm: t('.remove_confirm') },
                             class: "text-sm text-red-600 hover:text-red-800 underline" %>
             </div>
           <% end %>

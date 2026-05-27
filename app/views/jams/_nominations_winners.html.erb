@@ -1,8 +1,8 @@
 <div class="mt-8 p-4 rounded border bg-white">
-  <h2 class="text-xl font-medium mb-2">Победители по номинациям</h2>
+  <h2 class="text-xl font-medium mb-2"><%= t('jams.nominations_winners.title') %></h2>
 
   <% if nominations.empty? %>
-    <div class="text-sm text-gray-500">Номинаций нет</div>
+    <div class="text-sm text-gray-500"><%= t('jams.nominations_winners.empty') %></div>
   <% else %>
     <div class="space-y-3">
       <% nominations.each do |n| %>
@@ -13,7 +13,7 @@
           <input type="hidden" name="nominations_winners[][id]" value="<%= n.id %>">
 
           <select name="nominations_winners[][winner_game_id]" class="rounded border px-3 py-2">
-            <option value="">— не выбрано —</option>
+            <option value=""><%= t('jams.nominations_winners.not_selected') %></option>
             <% games.each do |g| %>
               <option value="<%= g.id %>" <%= "selected" if n.winner_game_id == g.id %>>
                 <%= g.name %>

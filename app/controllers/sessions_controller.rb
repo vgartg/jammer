@@ -22,17 +22,16 @@ class SessionsController < ApplicationController
         redirect_to dashboard_path
       elsif !user.email_confirm_period_valid? && user.last_active_at.nil? && user.last_seen_at.nil?
         user.destroy
-        flash[:failure] =
-          'Ваш аккаунт был удален из-за истечения срока действия токена. Пожалуйста, зарегистрируйтесь снова.'
+        flash[:failure] = t('controllers.sessions.account_token_expired')
         redirect_to login_path
       else
         if user.email_confirm_period_valid?
-          flash[:success] = 'Письмо с кодом для входа уже было отправлено на вашу почту'
+          flash[:success] = t('controllers.sessions.email_letter_sent')
         else
           @token = user.set_email_confirm_token
-          EmailConfirmMailer.with(user: user, token: @token).email_confirm.deliver_later
+          EmailConfirmMailer.with(user: user, token: @token, locale: I18n.locale).email_confirm.deliver_later
           flash[:success] ||= []
-        flash[:success] << 'Инструкции были отправлены на ваш адрес'
+        flash[:success] << t('controllers.sessions.instructions_sent')
         end
         redirect_to edit_email_confirm_url(user: { email_confirm_token: user.email_confirm_token,
                                                    email: user.email }).gsub('&amp;', '&')
@@ -65,7 +64,7 @@ class SessionsController < ApplicationController
   end
 
   def logout_other_sessions
-    if current_user && current_user.authenticate(params[:password])
+    if current_user && (current_user.oauth_user? || current_user.authenticate(params[:password]))
       current_user.invalidate_other_sessions(session[:session_id])
       current_user.forget_me
       flash[:success] ||= []
@@ -82,13 +81,13 @@ class SessionsController < ApplicationController
     user = User.find(params[:user])
     session_ids = user.sessions.pluck(:id)
     if user.sessions.destroy_all
-      flash[:success] = 'Все сессии успешно удалены'
+      flash[:success] = t('controllers.sessions.all_sessions_logged_out')
       if user != current_user
         create_administration_record(current_user, user, { 'session_ids' => session_ids },
                                      'delete')
       end
     else
-      flash[:failure] = 'Не удалось удалить сессии'
+      flash[:failure] = t('controllers.sessions.sessions_logout_failed')
     end
     redirect_to edit_admin_user_path(user)
   end
@@ -98,10 +97,10 @@ class SessionsController < ApplicationController
     user_session = user.sessions.find_by(id: params[:session_id])
 
     if user_session&.destroy
-      flash[:success] = 'Сессия успешно удалена'
+      flash[:success] = t('controllers.sessions.session_logged_out')
       create_administration_record(current_user, user, { 'session_id' => user_session.id }, 'delete') if user != current_user
     else
-      flash[:failure] = 'Не удалось удалить сессию'
+      flash[:failure] = t('controllers.sessions.session_logout_failed')
     end
     redirect_to edit_admin_user_path(user)
   end

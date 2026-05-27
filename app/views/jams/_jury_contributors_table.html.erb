@@ -1,16 +1,16 @@
 <div class="p-4 rounded border bg-white">
-  <h2 class="text-lg font-medium mb-3">Участники (host/admin/judge)</h2>
+  <h2 class="text-lg font-medium mb-3"><%= t('jams.jury_contributors_table.title') %></h2>
 
   <%= form_with url: bulk_update_contributors_jam_path(jam), method: :patch do %>
     <table class="w-full text-sm">
       <thead>
       <tr class="text-left border-b">
-        <th class="py-2">User</th>
-        <th class="py-2">Status</th>
-        <th class="py-2">Host</th>
-        <th class="py-2">Admin</th>
-        <th class="py-2">Judge</th>
-        <th class="py-2">Actions</th>
+        <th class="py-2"><%= t('jams.jury_contributors_table.user') %></th>
+        <th class="py-2"><%= t('jams.jury_contributors_table.status') %></th>
+        <th class="py-2"><%= t('jams.jury_contributors_table.host') %></th>
+        <th class="py-2"><%= t('jams.jury_contributors_table.admin') %></th>
+        <th class="py-2"><%= t('jams.jury_contributors_table.judge') %></th>
+        <th class="py-2"><%= t('jams.jury_contributors_table.actions') %></th>
       </tr>
       </thead>
 
@@ -39,13 +39,13 @@
           </td>
 
           <td class="py-2 flex gap-2">
-            <%= button_to "Remove",
+            <%= button_to t('jams.jury_contributors_table.remove'),
                           remove_contributor_jam_path(jam, contributor_id: c.id),
                           method: :delete,
                           class: "rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700" %>
 
             <% if c.status == "pending" %>
-              <span class="text-gray-400">(pending)</span>
+              <span class="text-gray-400"><%= t('jams.jury_contributors_table.pending') %></span>
             <% end %>
           </td>
         </tr>
@@ -54,7 +54,7 @@
     </table>
 
     <div class="mt-4">
-      <%= submit_tag "Save all", class: "rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700" %>
+      <%= submit_tag t('jams.jury_contributors_table.save_all'), class: "rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700" %>
     </div>
   <% end %>
 </div>

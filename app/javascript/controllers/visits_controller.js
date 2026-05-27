@@ -3,6 +3,12 @@ import Chart from "chart.js/auto";
 
 export default class extends Controller {
     static targets = ["chart"];
+    static values = {
+        activeUsersLabel: String,
+        registeredUsersLabel: String,
+        userCountLabel: String,
+        dateLabel: String
+    };
 
     connect() {
         this.fetchData(30);
@@ -41,14 +47,14 @@ export default class extends Controller {
                 labels: dates,
                 datasets: [
                     {
-                        label: "Активные пользователи",
+                        label: this.activeUsersLabelValue,
                         data: visits,
                         borderColor: "rgba(75, 192, 192, 1)",
                         backgroundColor: "rgba(75, 192, 192, 0.2)",
                         fill: true,
                     },
                     {
-                        label: "Зарегистрированные пользователи",
+                        label: this.registeredUsersLabelValue,
                         data: registrationCounts,
                         borderColor: "rgba(153, 102, 255, 1)",
                         backgroundColor: "rgba(153, 102, 255, 0.2)",
@@ -63,7 +69,7 @@ export default class extends Controller {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Количество пользователей'
+                            text: this.userCountLabelValue
                         },
                         ticks: {
                             callback: function(value) {
@@ -74,7 +80,7 @@ export default class extends Controller {
                     x: {
                         title: {
                             display: true,
-                            text: 'Дата'
+                            text: this.dateLabelValue
                         }
                     }
                 }

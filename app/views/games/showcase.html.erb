@@ -1,8 +1,8 @@
 <div class="bg-white" data-controller="games">
   <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center mb-8">
-      <h2 class="text-3xl font-bold tracking-tight text-gray-900">Игры</h2>
-      <%= button_to "Создать игру", games_new_path, method: :get,
+      <h2 class="text-3xl font-bold tracking-tight text-gray-900"><%= t('layouts.header.games') %></h2>
+      <%= button_to t('games.showcase.create'), games_new_path, method: :get,
                     class: "rounded-md bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow
                      hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
                       focus:ring-offset-2 transition duration-300" %>
@@ -13,11 +13,11 @@
         <button data-action="click->games#toggleGames"
                 data-view="all"
                 data-games-target="showAll"
-                class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200">Все игры</button>
+                class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200"><%= t('.all_games') %></button>
         <button data-action="click->games#toggleGames"
                 data-view="mine"
                 data-games-target="showMine"
-                class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200">Мои игры</button>
+                class="text-lg text-gray-400 hover:text-gray-800 font-medium transition duration-200"><%= t('.my_games') %></button>
       </div>
     <% end %>
 
@@ -40,7 +40,7 @@
       </div>
 
       <div class="mt-4">
-        <label class="block text-sm font-medium text-white">Теги</label>
+        <label class="block text-sm font-medium text-white"><%= t('games.form.tags') %></label>
         <div class="mt-1 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-10">
           <% @tags.each do |tag| %>
             <label data-games-target="label"
@@ -87,35 +87,35 @@
     </div>
 
     <div data-games-target="allGames">
-      <h3 class="text-xl font-semibold my-4">Все игры</h3>
+      <h3 class="text-xl font-semibold my-4"><%= t('.all_games') %></h3>
       <% if @games.present? %>
         <%= render partial: 'helpers/showcase_grid', locals: { items: @games } %>
         <%= render partial: 'helpers/pagy' if @pagy.pages > 1 %>
     <% else %>
-        <p class="text-gray-600 mt-2">Нет доступных игр.</p>
+        <p class="text-gray-600 mt-2"><%= t('.no_games_available') %></p>
       <% end %>
     </div>
 
     <div data-games-target="myGames" class="mt-6 hidden">
-      <h3 class="text-xl font-semibold my-4">Мои игры</h3>
+      <h3 class="text-xl font-semibold my-4"><%= t('.my_games') %></h3>
       <% if @games_accepted.present? %>
         <%= render partial: 'helpers/showcase_grid', locals: { items: @games_accepted } %>
       <% else %>
-        <p class="text-gray-600 mt-2">У вас нет принятых игр.</p>
+        <p class="text-gray-600 mt-2"><%= t('.no_accepted') %></p>
       <% end %>
 
-      <h3 class="text-xl font-semibold my-4">Игры на модерации</h3>
+      <h3 class="text-xl font-semibold my-4"><%= t('.under_moderation') %></h3>
       <% if @games_under_moderation.present? %>
         <%= render partial: 'helpers/showcase_grid', locals: { items: @games_under_moderation } %>
       <% else %>
-        <p class="text-gray-600 mt-2">У вас нет игр на модерации.</p>
+        <p class="text-gray-600 mt-2"><%= t('.no_under_moderation') %></p>
       <% end %>
 
-      <h3 class="text-xl font-semibold my-4">Отклоненные игры</h3>
+      <h3 class="text-xl font-semibold my-4"><%= t('.rejected') %></h3>
       <% if @games_rejected.present? %>
         <%= render partial: 'helpers/showcase_grid', locals: { items: @games_rejected } %>
       <% else %>
-        <p class="text-gray-600 mt-2">У вас нет отклоненных игр.</p>
+        <p class="text-gray-600 mt-2"><%= t('.no_rejected') %></p>
       <% end %>
     </div>
   </div>

@@ -29,9 +29,9 @@ class JamsController < ApplicationController
     unless JamSubmission.where(jam_id: params[:id]).find_by(user_id: current_user.id).present?
       jsb = JamSubmission.new(game_id: nil, jam_id: params[:id], user: current_user)
       if jsb.save
-        flash[:notice] = "Вы успешно присоединились к джему!"
+        flash[:notice] = t('controllers.jams.participate_success')
       else
-        flash[:alert] = "Произошла ошибка. Попробуйте еще раз."
+        flash[:alert] = t('controllers.jams.participate_failure')
       end
     end
     redirect_to jam_profile_path(params[:id])
@@ -120,7 +120,7 @@ class JamsController < ApplicationController
     end
     return unless @jam.status != 1 && current_user != @jam.author
 
-    flash[:failure] = 'Джем находится на модерации'
+    flash[:failure] = t('controllers.jams.moderation_pending')
     redirect_to dashboard_path
   end
 
@@ -137,7 +137,7 @@ class JamsController < ApplicationController
     elsif @jam.save
       admins = User.where(role: [1, 2])
       admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
+        current_user.create_notification(admin, current_user, 'awaiting_jam_moderation', @jam)
       end
       flash[:success] ||= []
       flash[:success] << t('jams.create.success')
@@ -184,10 +184,10 @@ class JamsController < ApplicationController
     elsif @jam.update(jam_params)
       admins = User.where(role: [1, 2])
       admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting jam moderation', @jam)
+        current_user.create_notification(admin, current_user, 'awaiting_jam_moderation', @jam)
       end
       @jam.update(status: 0)
-      flash[:success] = 'Джем обновлен и отправлен на повторную модерацию!'
+      flash[:success] = t('controllers.jams.update_resubmitted')
       redirect_to jam_profile_path
     else
       flash[:failure] ||= []
@@ -210,9 +210,9 @@ class JamsController < ApplicationController
   def remove_participant
     submission = @jam.jam_submissions.find_by(user_id: params[:user_id])
     if submission&.destroy
-      flash[:notice] = "Участник удалён из джема."
+      flash[:notice] = t('controllers.jams.participant_removed')
     else
-      flash[:alert] = "Не удалось удалить участника."
+      flash[:alert] = t('controllers.jams.participant_remove_failed')
     end
     redirect_to jam_show_participants_path(@jam)
   end
@@ -220,9 +220,9 @@ class JamsController < ApplicationController
   def remove_project
     submission = @jam.jam_submissions.find_by(game_id: params[:game_id])
     if submission&.update(game_id: nil)
-      flash[:notice] = "Проект отвязан от джема."
+      flash[:notice] = t('controllers.jams.project_unlinked')
     else
-      flash[:alert] = "Не удалось удалить проект."
+      flash[:alert] = t('controllers.jams.project_unlink_failed')
     end
     redirect_to jam_show_projects_path(@jam)
   end
@@ -240,7 +240,7 @@ class JamsController < ApplicationController
 
     # 1) сохраняем тумблеры
     if @setting.locked
-      flash[:failure] = "Настройки заблокированы"
+      flash[:failure] = t('controllers.jams.settings_locked')
       return redirect_to rating_settings_jam_path(@jam)
     end
 
@@ -341,7 +341,7 @@ class JamsController < ApplicationController
     end
 
     if @setting.save
-      flash[:success] = "Настройки оценок сохранены"
+      flash[:success] = t('controllers.jams.ratings_saved')
     else
       flash[:failure] ||= []
       flash[:failure] += @setting.errors.full_messages
@@ -363,7 +363,7 @@ class JamsController < ApplicationController
     user = User.find_by(id: params[:user_id])
 
     unless user
-      flash[:failure] = ["Пользователь не найден"]
+      flash[:failure] = [t('controllers.jams.user_not_found')]
       return redirect_to jury_settings_jam_path(@jam)
     end
 
@@ -374,7 +374,7 @@ class JamsController < ApplicationController
     if contributor.save
       current_user.create_notification(user, current_user, "sent_jam_jury_invite", contributor)
       flash[:success] ||= []
-      flash[:success] << "Инвайт отправлен"
+      flash[:success] << t('controllers.jams.invite_sent')
     else
       flash[:failure] ||= []
       flash[:failure] += contributor.errors.full_messages
@@ -405,16 +405,16 @@ class JamsController < ApplicationController
   def accept_contributor_invite
     contributor = @jam.jam_contributors.find_by(id: params[:contributor_id], user_id: current_user.id)
     unless contributor
-      flash[:failure] = "Инвайт не найден"
+      flash[:failure] = t('controllers.jams.invite_not_found')
       return redirect_to jam_profile_path(@jam)
     end
 
     if contributor.update(status: "accepted")
       # нотифицируем автора джема
       current_user.create_notification(@jam.author, current_user, "accepted_jam_jury_invite", contributor)
-      flash[:success] = "Вы приняли приглашение"
+      flash[:success] = t('controllers.jams.invite_accepted')
     else
-      flash[:failure] = "Не удалось принять приглашение"
+      flash[:failure] = t('controllers.jams.invite_accept_failed')
     end
 
     redirect_to jam_profile_path(@jam)
@@ -424,7 +424,7 @@ class JamsController < ApplicationController
     contributor = @jam.jam_contributors.find(params[:contributor_id])
 
     if contributor.update(contributor_params)
-      flash.now[:success] = "Роли обновлены"
+      flash.now[:success] = t('controllers.jams.roles_updated')
     else
       flash.now[:failure] ||= []
       flash.now[:failure] += contributor.errors.full_messages
@@ -454,7 +454,7 @@ class JamsController < ApplicationController
       end
     end
 
-    flash.now[:success] = "Роли обновлены"
+    flash.now[:success] = t('controllers.jams.roles_updated')
     @contributors = @jam.jam_contributors.includes(:user).order(:created_at)
 
     respond_to do |format|
@@ -474,7 +474,7 @@ class JamsController < ApplicationController
   def remove_contributor
     contributor = @jam.jam_contributors.find(params[:contributor_id])
     contributor.destroy
-    flash[:success] = "Удалено"
+    flash[:success] = t('controllers.jams.contributor_removed')
     redirect_to jury_settings_jam_path(@jam)
   end
 
@@ -501,7 +501,7 @@ class JamsController < ApplicationController
   def update_nomination_winner
     set_jam
     unless @jam.can_configure?(current_user)
-      flash[:failure] = ["Недостаточно прав"]
+      flash[:failure] = [t('controllers.application.insufficient_rights')]
       return redirect_to rating_settings_jam_path(@jam), status: :see_other
     end
 
@@ -513,13 +513,13 @@ class JamsController < ApplicationController
     if winner_id.present?
       allowed_game_ids = @jam.submitted_game_ids
       unless allowed_game_ids.include?(winner_id.to_i)
-        flash.now[:failure] = ["Игра не участвует в этом джеме"]
+        flash.now[:failure] = [t('controllers.jams.game_not_in_jam')]
         return respond_winner_update(nomination)
       end
     end
 
     nomination.update!(winner_game_id: winner_id)
-    flash.now[:success] = "Победитель сохранён"
+    flash.now[:success] = t('controllers.jams.winner_saved')
 
     respond_winner_update(nomination)
   rescue ActiveRecord::RecordInvalid => e
@@ -547,7 +547,7 @@ class JamsController < ApplicationController
 
   def author_or_admin
     unless current_user && (current_user == @jam.author || current_user.role.in?([1, 2]))
-      flash[:failure] = "Недостаточно прав"
+      flash[:failure] = t('controllers.application.insufficient_rights')
       redirect_to dashboard_path
     end
   end
@@ -555,7 +555,7 @@ class JamsController < ApplicationController
   def root_check
     return if current_user.jams.find_by_id(params[:id])
 
-    flash[:failure] = 'Недостаточно прав'
+    flash[:failure] = t('controllers.application.insufficient_rights')
     redirect_to dashboard_path
   end
 
@@ -584,25 +584,25 @@ class JamsController < ApplicationController
     deadline = Date.parse(params[:jam][:deadline])
     endDate = Date.parse(params[:jam][:end_date])
 
-    deadline < startDate ? failures.push("Дата сдачи работ не может быть раньше даты начала") : failures
-    endDate < deadline ? failures.push("Дата окончания джема не может быть раньше даты сдачи работ") : failures
-    startDate.year < 2000 ? failures.push("Некорректная дата начала джема") : failures
-    deadline.year < 2000 ? failures.push("Некорректная дата сдачи работ") : failures
-    endDate.year < 2000 ? failures.push("Некорректная дата окончания джема") : failures
+    deadline < startDate ? failures.push(t('controllers.jams.date_deadline_before_start')) : failures
+    endDate < deadline ? failures.push(t('controllers.jams.date_end_before_deadline')) : failures
+    startDate.year < 2000 ? failures.push(t('controllers.jams.date_invalid_start')) : failures
+    deadline.year < 2000 ? failures.push(t('controllers.jams.date_invalid_deadline')) : failures
+    endDate.year < 2000 ? failures.push(t('controllers.jams.date_invalid_end')) : failures
 
     failures
   end
 
   def jam_manage_check
     unless @jam.can_manage?(current_user)
-      flash[:failure] = "Недостаточно прав"
+      flash[:failure] = t('controllers.application.insufficient_rights')
       redirect_to dashboard_path
     end
   end
 
   def jam_configure_check
     unless @jam.can_configure?(current_user)
-      flash[:failure] = "Недостаточно прав"
+      flash[:failure] = t('controllers.application.insufficient_rights')
       redirect_to dashboard_path
     end
   end
@@ -620,7 +620,7 @@ class JamsController < ApplicationController
 
     return if jam.submission_open?
 
-    flash[:failure] = "Приём работ завершён"
+    flash[:failure] = t('controllers.jams.submission_closed')
     redirect_to jam_profile_path(jam)
   end
 end

@@ -22,12 +22,12 @@ class JamVotesController < ApplicationController
     vote_type = default_vote_type if vote_type.blank?
 
     if vote_type == "jury" && !@jam.can_vote_as_jury?(current_user)
-      flash[:failure] = "Недостаточно прав для голосования жюри"
+      flash[:failure] = t('controllers.jam_votes.insufficient_rights_jury')
       return redirect_to new_jam_game_vote_path(@jam, @game)
     end
 
     if vote_type == "audience" && !@jam.can_vote_as_audience?(current_user)
-      flash[:failure] = "Недостаточно прав для голосования аудитории"
+      flash[:failure] = t('controllers.jam_votes.insufficient_rights_audience')
       return redirect_to new_jam_game_vote_path(@jam, @game)
     end
 
@@ -56,7 +56,7 @@ class JamVotesController < ApplicationController
       end
     end
 
-    flash[:success] = "Оценки сохранены"
+    flash[:success] = t('controllers.jam_votes.scores_saved')
     redirect_to game_profile_path(@game, jam_id: @jam.id)
   rescue ActiveRecord::RecordInvalid => e
     flash[:failure] ||= []
@@ -73,28 +73,28 @@ class JamVotesController < ApplicationController
 
   def authorize_vote!
     unless @jam.jam_submissions.where(game_id: @game.id).exists?
-      flash[:failure] = "Эта игра не участвует в данном джеме"
+      flash[:failure] = t('controllers.jam_votes.not_in_jam')
       redirect_to jam_profile_path(@jam) and return
     end
 
     if @game.author == current_user
-      flash[:failure] = "Нельзя оценивать собственную игру"
+      flash[:failure] = t('controllers.jam_votes.own_game')
       redirect_to game_profile_path(@game, jam_id: @jam.id) and return
     end
 
     unless @jam.voting_open?
-      flash[:failure] = "Голосование сейчас закрыто"
+      flash[:failure] = t('controllers.jam_votes.voting_closed')
       redirect_to jam_profile_path(@jam) and return
     end
 
     setting = @jam.rating_setting
     unless setting.jury_enabled || setting.audience_enabled
-      flash[:failure] = "Голосование отключено"
+      flash[:failure] = t('controllers.jam_votes.voting_disabled')
       redirect_to jam_profile_path(@jam) and return
     end
 
     unless @jam.can_vote_as_jury?(current_user) || @jam.can_vote_as_audience?(current_user)
-      flash[:failure] = "Недостаточно прав для голосования"
+      flash[:failure] = t('controllers.jam_votes.insufficient_rights')
       redirect_to jam_profile_path(@jam) and return
     end
   end

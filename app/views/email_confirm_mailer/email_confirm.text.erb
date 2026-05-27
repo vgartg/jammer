@@ -1,5 +1,5 @@
-Подтверждение электронной почты
-Вам необходимо подтвердить адрес электронной почты для регистрации на Jammer. Пожалуйста, скопируйте этот код для подтверждения:
+<%= t('mailers.email_confirm.title') %>
+<%= t('mailers.email_confirm.body') %>
 <% if @user && @token && @user.email_confirm_token %>
     <%= @token %>
 <% end %>
