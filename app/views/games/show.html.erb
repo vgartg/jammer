@@ -29,7 +29,7 @@
           <% if current_user && @game.author != current_user %>
             <% if @jam_id.present? && @jam %>
               <div class="mt-4 rounded-md border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm text-indigo-900">
-                <%= t('.context_jam_html', jam: @jam.name).html_safe %>
+                <%= t('.context_jam_html', jam: @jam.name) %>
               </div>
             <% else %>
               <div class="mt-4 rounded-md border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
