@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+set -a
+source .env
+set +a
+
 echo "Running database migrations..."
 kamal app exec --reuse 'bin/rails db:migrate RAILS_ENV=production'
 echo "Migrations done."
