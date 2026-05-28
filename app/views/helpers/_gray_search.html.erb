@@ -29,7 +29,7 @@
         type="search" name="search">
     </form>
     <div class="flex items-center gap-x-4 lg:gap-x-6">
-      <% unread_count = @notifications ? @notifications.where(read: false).count : 0 %>
+      <% unread_count = notifications ? notifications.count { |n| !n.read } : 0 %>
       <div class="relative" data-controller="notifications"
            data-notifications-mark-as-read-url-value="<%= notifications_mark_as_read_path %>">
         <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 relative"
@@ -59,9 +59,10 @@
              data-target="notifications.notificationsMenu"
              style="max-height: 60vh">
 
-          <% if notifications && notifications.any? %>
+          <% sorted_notifications = notifications&.sort_by { |n| -n.created_at.to_i } %>
+          <% if sorted_notifications&.any? %>
             <div class="max-w-2xl mx-auto bg-white rounded-lg overflow-hidden">
-              <% notifications.order(created_at: :desc).limit(8).each do |notification| %>
+              <% sorted_notifications.first(8).each do |notification| %>
                 <% next if notification.notifiable.nil? && notification.actor.nil? %>
 
                 <div class="flex items-start px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition duration-200">
@@ -172,7 +173,7 @@
             </p>
           <% end %>
 
-          <% if notifications && notifications.count > 8 %>
+          <% if notifications&.size.to_i > 8 %>
             <%= link_to t('helpers.show_all'), notifications_path, class: "flex justify-center p-1" %>
           <% end %>
         </div>

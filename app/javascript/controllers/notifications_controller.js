@@ -7,7 +7,10 @@ export default class extends Controller {
 
     toggleNotificationsMenu() {
         const notificationsMenu = this.notificationsMenuTarget;
+        const isOpening = notificationsMenu.classList.contains('hidden');
         notificationsMenu.classList.toggle('hidden');
+
+        if (!isOpening) return;
 
         Rails.ajax({
             type: 'patch',
@@ -18,7 +21,9 @@ export default class extends Controller {
                     this.badgeTarget.remove();
                 }
             },
-            error: function(error) { }
+            error: (error) => {
+                console.error('Failed to mark notifications as read:', error);
+            }
         });
     }
 }
