@@ -3,15 +3,10 @@ module Confirmable
   included do
     before_update :clear_email_confirm_token, if: :email_confirmed_changed?
     def set_email_confirm_token
-      token = generate_token
+      token = SecureRandom.alphanumeric(8)
       update_column(:email_confirm_token, digest(token))
       update_column(:email_confirm_token_sent_at, Time.current)
       token
-    end
-
-    def generate_token(length = 6)
-      charset = Array('0'..'9') + Array('a'..'z') + Array('A'..'Z')
-      Array.new(length) { charset.sample }.join
     end
 
     def clear_email_confirm_token

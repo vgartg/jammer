@@ -42,10 +42,8 @@ class User < ActiveRecord::Base
 
   has_many :sessions, dependent: :destroy
 
-  has_many :notifications, lambda { |user|
-    unscope(where: :user_id).where('actor_id = ? OR recipient_id = ?', user.id, user.id)
-  },
-           class_name: 'Notification', dependent: :destroy
+  has_many :notifications, class_name: 'Notification', foreign_key: 'recipient_id', dependent: :destroy
+  has_many :actor_notifications, class_name: 'Notification', foreign_key: 'actor_id', dependent: :destroy
 
   has_many :jam_contributors, dependent: :destroy
   has_many :contributed_jams, through: :jam_contributors, source: :jam
@@ -188,10 +186,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def notifications
-    Notification.where(recipient_id: id)
-  end
-
   def can_see_administrating_jams?(other_user)
     case self.jams_administrating_visibility
     when VISIBILITY_ALL
@@ -223,7 +217,11 @@ class User < ActiveRecord::Base
   end
 
   def authenticate_password_reset_token(token)
-    digest(password_reset_token) == token
+    return false if password_reset_token.blank? || token.blank?
+
+    BCrypt::Password.new(password_reset_token).is_password?(token)
+  rescue BCrypt::Errors::InvalidHash
+    false
   end
 
   def authenticate_email_confirm_token(token)

@@ -6,7 +6,7 @@ class NotificationsController < ApplicationController
   end
 
   def show
-    @notification = Notification.find(params[:id])
+    @notification = current_user.notifications.find(params[:id])
   end
 
   def mark_as_read

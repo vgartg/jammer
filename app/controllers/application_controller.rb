@@ -23,21 +23,25 @@ class ApplicationController < ActionController::Base
   def current_user
     return @current_user if @current_user && @current_user.email_confirmed
 
-    browser_string = request.user_agent
-    browser = UserAgent.parse(browser_string).browser
-    if session[:current_user] && Session.all.where(ip_address: request.remote_ip, browser: browser).exists?
-      @current_user = User.find_by_id(session[:current_user])
+    browser = UserAgent.parse(request.user_agent).browser
+    user_id = session[:current_user]
+
+    if user_id.present? && Session.where(user_id: user_id, ip_address: request.remote_ip, browser: browser).exists?
+      @current_user = User.find_by_id(user_id)
     elsif cookies.encrypted[:current_user].present?
       user = User.find_by_id(cookies.encrypted[:current_user])
       if user&.remember_token_authenticated?(cookies.encrypted[:remember_token])
+        locale = session[:locale]
+        reset_session
+        session[:locale] = locale if locale.present?
         sign_in(user)
+        Session.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).destroy_all
+        Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
         @current_user = user
       end
     end
 
-    if @current_user && session[:session_id].present? && @current_user.sessions.where(user_id: @current_user.id).exists?
-      return @current_user
-    end
+    return @current_user if @current_user&.email_confirmed && session[:session_id].present? && @current_user.sessions.exists?
 
     @current_user = nil
   end

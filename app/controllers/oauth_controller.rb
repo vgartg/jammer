@@ -10,10 +10,13 @@ class OauthController < ApplicationController
     user = User.from_omniauth(auth)
 
     browser = UserAgent.parse(request.user_agent).browser
+    locale = session[:locale]
+    reset_session
+    session[:locale] = locale if locale.present?
     session[:current_user] = user.id
-    unless Session.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).exists?
-      Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
-    end
+
+    Session.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).destroy_all
+    Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
 
     attach_oauth_avatar(user, auth.info.image) if user.previously_new_record?
 

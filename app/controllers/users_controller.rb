@@ -32,8 +32,7 @@ class UsersController < ApplicationController
       EmailConfirmMailer.with(user: @user, token: @token, locale: I18n.locale).email_confirm.deliver_later
       flash[:success] ||= []
       flash[:success] << t('controllers.users.instructions_sent')
-      redirect_to edit_email_confirm_url(user: { email_confirm_token: @user.email_confirm_token,
-                                                 email: @user.email }).gsub('&amp;', '&')
+      redirect_to edit_email_confirm_path(user: { email: @user.email })
     else
       flash[:failure] ||= []
       flash[:failure].concat(@user.errors.full_messages)
@@ -114,7 +113,7 @@ class UsersController < ApplicationController
 
   def update_activity
     if current_user
-      current_user.update(last_active_at: Time.current, visibility: params[:visibility])
+      current_user.update_columns(last_active_at: Time.current)
       head :ok
     else
       head :unauthorized

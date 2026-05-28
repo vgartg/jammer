@@ -1,8 +1,8 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :github,
-           ENV.fetch('GITHUB_CLIENT_ID', nil),
-           ENV.fetch('GITHUB_CLIENT_SECRET', nil),
-           scope: 'user:email'
+  github_id     = Rails.env.development? ? ENV.fetch('GITHUB_CLIENT_ID_DEV', nil)     : ENV.fetch('GITHUB_CLIENT_ID', nil)
+  github_secret = Rails.env.development? ? ENV.fetch('GITHUB_CLIENT_SECRET_DEV', nil) : ENV.fetch('GITHUB_CLIENT_SECRET', nil)
+
+  provider :github, github_id, github_secret, scope: 'user:email'
 
   provider :google_oauth2,
            ENV.fetch('GOOGLE_CLIENT_ID', nil),
