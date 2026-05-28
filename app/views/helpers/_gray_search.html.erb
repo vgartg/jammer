@@ -56,13 +56,12 @@
              role="menu" aria-labelledby="notifications-menu-button"
              tabindex="-1"
              id="dashboard_notifications_menu"
-             data-target="notifications.notificationsMenu"
+             data-notifications-target="notificationsMenu"
              style="max-height: 60vh">
 
-          <% sorted_notifications = notifications&.sort_by { |n| -n.created_at.to_i } %>
-          <% if sorted_notifications&.any? %>
+          <% if notifications&.any? %>
             <div class="max-w-2xl mx-auto bg-white rounded-lg overflow-hidden">
-              <% sorted_notifications.first(8).each do |notification| %>
+              <% notifications.first(8).each do |notification| %>
                 <% next if notification.notifiable.nil? && notification.actor.nil? %>
 
                 <div class="flex items-start px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition duration-200">

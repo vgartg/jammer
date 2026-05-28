@@ -50,10 +50,7 @@ class ApplicationController < ActionController::Base
     return unless current_user
     return @notifications if @notifications
 
-    notifs = current_user.notifications.includes(:actor, :notifiable).to_a
-    jcs = notifs.filter_map(&:notifiable).grep(JamContributor)
-    ActiveRecord::Associations::Preloader.new(records: jcs, associations: :jam).call if jcs.any?
-    @notifications = notifs
+    @notifications = fetch_notifications(current_user)
   end
 
   def sign_in(user)
@@ -114,10 +111,18 @@ class ApplicationController < ActionController::Base
   def update_last_active_at
     return unless current_user
 
+    # Set before throttle so DailyActivityJob midnight reset doesn't miss the first request of a new day
     current_user.update_column(:is_online_today, true) unless current_user.is_online_today
     return if current_user.last_active_at && current_user.last_active_at > 5.minutes.ago
 
     current_user.update_column(:last_active_at, Time.current)
+  end
+
+  def fetch_notifications(user)
+    notifs = user.notifications.includes(:actor, :notifiable).order(created_at: :desc).to_a
+    jcs = notifs.filter_map(&:notifiable).grep(JamContributor)
+    ActiveRecord::Associations::Preloader.new(records: jcs, associations: :jam).call if jcs.any?
+    notifs
   end
 
   def render_404(exception = nil)

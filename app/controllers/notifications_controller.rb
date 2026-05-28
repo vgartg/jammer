@@ -2,10 +2,7 @@ class NotificationsController < ApplicationController
   before_action :authenticate_user
 
   def index
-    notifs = current_user.notifications.includes(:actor, :notifiable).order(created_at: :desc).to_a
-    jcs = notifs.filter_map(&:notifiable).grep(JamContributor)
-    ActiveRecord::Associations::Preloader.new(records: jcs, associations: :jam).call if jcs.any?
-    @notifications = notifs
+    @notifications = fetch_notifications(current_user)
   end
 
   def show
