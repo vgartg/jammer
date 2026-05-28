@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
   def notifications
     return unless current_user
 
-    @notifications = current_user.notifications
+    @notifications = current_user.notifications.includes(:actor, :notifiable)
   end
 
   def sign_in(user)
@@ -109,9 +109,9 @@ class ApplicationController < ActionController::Base
 
   def update_last_active_at
     return unless current_user
+    return if current_user.last_active_at && current_user.last_active_at > 5.minutes.ago
 
     current_user.is_online_today = true unless current_user.is_online_today
-
     current_user.update(last_active_at: Time.current)
   end
 

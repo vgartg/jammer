@@ -7,7 +7,7 @@
     </div>
 
     <% if @notifications.present? && @notifications.any? %>
-      <% @notifications.order(created_at: :desc).first(8).each do |notification| %>
+      <% @notifications.includes(:actor, :notifiable).order(created_at: :desc).limit(8).each do |notification| %>
         <% next if notification.notifiable.nil? && notification.actor.nil? %>
 
         <div class="flex items-start px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition duration-200">

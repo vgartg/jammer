@@ -2,7 +2,8 @@ import { Controller } from "stimulus";
 import Rails from "@rails/ujs";
 
 export default class extends Controller {
-    static targets = ["notificationsMenu"];
+    static targets = ["notificationsMenu", "badge"];
+    static values = { markAsReadUrl: String };
 
     toggleNotificationsMenu() {
         const notificationsMenu = this.notificationsMenuTarget;
@@ -10,23 +11,14 @@ export default class extends Controller {
 
         Rails.ajax({
             type: 'patch',
-            url: '/notifications/mark_as_read',
+            url: this.markAsReadUrlValue,
             dataType: 'json',
-            success: (data) => {
-                this.updateNotifications(data);
+            success: () => {
+                if (this.hasBadgeTarget) {
+                    this.badgeTarget.remove();
+                }
             },
             error: function(error) { }
-        });
-    }
-
-    updateNotifications(data) {
-        const notificationsList = document.getElementById('dashboard_notifications_menu');
-
-        data.forEach((notification) => {
-            const actionTranslation = this.actionsTranslations[notification.action];
-            if (actionTranslation) {
-                notification.actionTranslation = actionTranslation;
-            }
         });
     }
 }
