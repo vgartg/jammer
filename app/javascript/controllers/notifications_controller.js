@@ -10,7 +10,7 @@ export default class extends Controller {
         const isOpening = notificationsMenu.classList.contains('hidden');
         notificationsMenu.classList.toggle('hidden');
 
-        if (!isOpening) return;
+        if (!isOpening || !this.hasBadgeTarget) return;
 
         Rails.ajax({
             type: 'patch',

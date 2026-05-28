@@ -48,8 +48,12 @@ class ApplicationController < ActionController::Base
 
   def notifications
     return unless current_user
+    return @notifications if @notifications
 
-    @notifications ||= current_user.notifications.includes(:actor, :notifiable).to_a
+    notifs = current_user.notifications.includes(:actor, :notifiable).to_a
+    jcs = notifs.filter_map(&:notifiable).grep(JamContributor)
+    ActiveRecord::Associations::Preloader.new(records: jcs, associations: :jam).call if jcs.any?
+    @notifications = notifs
   end
 
   def sign_in(user)

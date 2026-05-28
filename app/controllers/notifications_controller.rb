@@ -2,7 +2,10 @@ class NotificationsController < ApplicationController
   before_action :authenticate_user
 
   def index
-    @notifications = current_user.notifications.includes(:actor, :notifiable)
+    notifs = current_user.notifications.includes(:actor, :notifiable).order(created_at: :desc).to_a
+    jcs = notifs.filter_map(&:notifiable).grep(JamContributor)
+    ActiveRecord::Associations::Preloader.new(records: jcs, associations: :jam).call if jcs.any?
+    @notifications = notifs
   end
 
   def show
@@ -10,8 +13,7 @@ class NotificationsController < ApplicationController
   end
 
   def mark_as_read
-    @notifications = current_user.notifications.where(read: false)
-    @notifications.update_all(read: true)
-    render json: @notifications
+    current_user.notifications.where(read: false).update_all(read: true)
+    render json: { ok: true }
   end
 end
