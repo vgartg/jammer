@@ -30,8 +30,12 @@ class FriendshipsController < ApplicationController
   end
 
   def update
-    @friendship = find_own_friendship(params[:id])
-    return unless @friendship
+    @friendship = Friendship.where(id: params[:id], friend_id: current_user.id).first
+    unless @friendship
+      flash[:alert] = t 'friendships.update.alert'
+      redirect_to user_profile_path(current_user)
+      return
+    end
 
     if @friendship.update(status: 'accepted')
       create_notification(@friendship.user, current_user, 'accepted_friendship', @friendship)
