@@ -27,6 +27,7 @@ class PasswordResetsController < ApplicationController
     end
 
     if @user.update(user_params)
+      @user.sessions.destroy_all
       flash[:success] ||= []
       flash[:success] << t('controllers.password_resets.success')
       redirect_to login_path
