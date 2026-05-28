@@ -184,8 +184,7 @@
                               <%= image_tag url_for(game.cover), alt: game.name,
                                             class: "pointer-events-none object-cover group-hover:opacity-75" %>
                             <% else %>
-                              <img src="https://via.placeholder.com/300" alt="<%= game.name %>"
-                                   class="pointer-events-none object-cover group-hover:opacity-75">
+                              <%= image_tag 'empty-avatar.jpg', alt: game.name, class: "pointer-events-none object-cover group-hover:opacity-75" %>
                             <% end %>
                           </div>
                           <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
@@ -258,8 +257,7 @@
                                 <%= image_tag url_for(jam.cover), alt: jam.name,
                                               class: "pointer-events-none object-cover group-hover:opacity-75" %>
                               <% else %>
-                                <img src="https://via.placeholder.com/300" alt="<%= jam.name %>"
-                                     class="pointer-events-none object-cover group-hover:opacity-75">
+                                <%= image_tag 'empty-avatar.jpg', alt: jam.name, class: "pointer-events-none object-cover group-hover:opacity-75" %>
                               <% end %>
                             </div>
 
@@ -322,8 +320,7 @@
                                 <%= image_tag url_for(jam.cover), alt: jam.name,
                                               class: "pointer-events-none object-cover group-hover:opacity-75" %>
                               <% else %>
-                                <img src="https://via.placeholder.com/300" alt="<%= jam.name %>"
-                                     class="pointer-events-none object-cover group-hover:opacity-75">
+                                <%= image_tag 'empty-avatar.jpg', alt: jam.name, class: "pointer-events-none object-cover group-hover:opacity-75" %>
                               <% end %>
                             </div>
                             <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">

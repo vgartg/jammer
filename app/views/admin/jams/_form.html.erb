@@ -103,8 +103,7 @@
                 </div>
               <% else %>
                 <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80 mt-4">
-                  <img src="https://via.placeholder.com/300" alt="<%= @jam.name %>"
-                       class="max-h-xs object-cover object-center">
+                  <%= image_tag 'empty-avatar.jpg', alt: @jam.name, class: "max-h-xs object-cover object-center" %>
                 </div>
               <% end %>
             </div>
@@ -127,8 +126,7 @@
                 </div>
               <% else %>
                 <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80 mt-4">
-                  <img src="https://via.placeholder.com/300" alt="<%= @jam.name %>"
-                       class="max-h-xs object-cover object-center">
+                  <%= image_tag 'empty-avatar.jpg', alt: @jam.name, class: "max-h-xs object-cover object-center" %>
                 </div>
               <% end %>
             </div>

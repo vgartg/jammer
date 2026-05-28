@@ -8,8 +8,7 @@
                           class: "h-56 w-full object-cover object-center" %>
           <% else %>
             <div class="aspect-w-16 aspect-h-9 bg-gray-200">
-              <img src="https://via.placeholder.com/300" alt="<%= item.name %>"
-                   class="object-cover object-center">
+              <%= image_tag 'empty-avatar.jpg', alt: item.name, class: "object-cover object-center" %>
             </div>
           <% end %>
         </a>

@@ -19,9 +19,7 @@
                                 alt: notification.notifiable.name,
                                 class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover" %>
                 <% else %>
-                  <img src="https://via.placeholder.com/150"
-                       alt="<%= notification.notifiable.name %>"
-                       class="w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200">
+                  <%= image_tag 'empty-avatar.jpg', alt: notification.notifiable.name, class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200" %>
                 <% end %>
               </a>
 
@@ -32,9 +30,7 @@
                                 alt: notification.notifiable.name,
                                 class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover" %>
                 <% else %>
-                  <img src="https://via.placeholder.com/150"
-                       alt="<%= notification.notifiable.name %>"
-                       class="w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200">
+                  <%= image_tag 'empty-avatar.jpg', alt: notification.notifiable.name, class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200" %>
                 <% end %>
               </a>
 
@@ -46,9 +42,7 @@
                                 alt: jam.name,
                                 class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover" %>
                 <% else %>
-                  <img src="https://via.placeholder.com/150"
-                       alt="<%= jam.name %>"
-                       class="w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200">
+                  <%= image_tag 'empty-avatar.jpg', alt: jam.name, class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200" %>
                 <% end %>
               </a>
 

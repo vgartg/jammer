@@ -73,10 +73,7 @@
                                         alt: notification.notifiable.name,
                                         class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover object-center group-hover:opacity-75" %>
                         <% else %>
-                          <div class="w-16 h-16 lg:w-20 lg:h-20 bg-gray-200 rounded-md flex items-center justify-center">
-                            <img src="https://via.placeholder.com/150" alt="<%= notification.notifiable.name %>"
-                                 class="w-full h-full object-cover">
-                          </div>
+                          <%= image_tag 'empty-avatar.jpg', alt: notification.notifiable.name, class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200 object-cover" %>
                         <% end %>
                       </a>
 
@@ -87,10 +84,7 @@
                                         alt: notification.notifiable.name,
                                         class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover object-center group-hover:opacity-75" %>
                         <% else %>
-                          <div class="w-16 h-16 lg:w-20 lg:h-20 bg-gray-200 rounded-md flex items-center justify-center">
-                            <img src="https://via.placeholder.com/150" alt="<%= notification.notifiable.name %>"
-                                 class="w-full h-full object-cover">
-                          </div>
+                          <%= image_tag 'empty-avatar.jpg', alt: notification.notifiable.name, class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200 object-cover" %>
                         <% end %>
                       </a>
 
@@ -102,10 +96,7 @@
                                         alt: jam.name,
                                         class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover object-center group-hover:opacity-75" %>
                         <% else %>
-                          <div class="w-16 h-16 lg:w-20 lg:h-20 bg-gray-200 rounded-md flex items-center justify-center">
-                            <img src="https://via.placeholder.com/150" alt="<%= jam.name %>"
-                                 class="w-full h-full object-cover">
-                          </div>
+                          <%= image_tag 'empty-avatar.jpg', alt: jam.name, class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200 object-cover" %>
                         <% end %>
                       </a>
 
@@ -115,7 +106,7 @@
                               image_tag(url_for(notification.actor.avatar),
                                         alt: "Profile Picture",
                                         class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md object-cover") :
-                              image_tag("https://via.placeholder.com/150",
+                              image_tag('empty-avatar.jpg',
                                         alt: "Profile Picture",
                                         class: "w-16 h-16 lg:w-20 lg:h-20 rounded-md bg-gray-200") %>
                       </a>

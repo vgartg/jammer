@@ -68,7 +68,7 @@
                   <% if user && user.avatar.attached? %>
                     <%= image_tag url_for(user.avatar), alt: "Profile Picture", class: "avatar-image rounded-full h-24 w-24 object-cover" %>
                   <% else %>
-                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-image rounded-full h-24 w-24 object-cover" data-target="user.avatarImage">
+                    <%= image_tag 'empty-avatar.jpg', alt: "Profile Picture", class: "avatar-image rounded-full h-24 w-24 object-cover", data: { target: "user.avatarImage" } %>
                   <% end %>
                   <div class="flex flex-col items-center justify-center">
                     <%= f.file_field :avatar, class: "hidden", accept: "image/jpeg,image/png", data: { max_size: 1.megabytes.to_i } %>
@@ -338,7 +338,7 @@
                     <% if find_user_friend(user_friendship, @user).avatar.attached? %>
                       <%= image_tag url_for(find_user_friend(user_friendship, @user).avatar), alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
                     <% else %>
-                      <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-16 w-16 rounded-full">
+                      <%= image_tag 'empty-avatar.jpg', alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
                     <% end %>
                     <% if find_user_friend(user_friendship, @user).can_see_online?(@user) %>
                       <% if find_user_friend(user_friendship, @user).online? %>
@@ -385,7 +385,7 @@
                     <% if user_request.friend.avatar.attached? %>
                       <%= image_tag url_for(user_request.friend.avatar), alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
                     <% else %>
-                      <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-16 w-16 rounded-full">
+                      <%= image_tag 'empty-avatar.jpg', alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
                     <% end %>
                     <% if user_request.friend.can_see_online?(@user) %>
                       <% if user_request.friend.online? %>
@@ -432,7 +432,7 @@
                     <% if user_request.user.avatar.attached? %>
                       <%= image_tag url_for(user_request.user.avatar), alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
                     <% else %>
-                      <img src="https://via.placeholder.com/150" alt="Profile Picture" class="h-16 w-16 rounded-full">
+                      <%= image_tag 'empty-avatar.jpg', alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
                     <% end %>
                     <% if user_request.user.can_see_online?(@user) %>
                       <% if user_request.user.online? %>
@@ -489,8 +489,7 @@
                           <%= image_tag url_for(game.cover), alt: game.name,
                                         class: "pointer-events-none object-cover group-hover:opacity-75" %>
                         <% else %>
-                          <img src="https://via.placeholder.com/300" alt="<%= game.name %>"
-                               class="pointer-events-none object-cover group-hover:opacity-75">
+                          <%= image_tag 'empty-avatar.jpg', alt: game.name, class: "pointer-events-none object-cover group-hover:opacity-75" %>
                         <% end %>
                       </div>
                       <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
@@ -540,8 +539,7 @@
                           <%= image_tag url_for(jam.cover), alt: jam.name,
                                         class: "pointer-events-none object-cover group-hover:opacity-75" %>
                         <% else %>
-                          <img src="https://via.placeholder.com/300" alt="<%= jam.name %>"
-                               class="pointer-events-none object-cover group-hover:opacity-75">
+                          <%= image_tag 'empty-avatar.jpg', alt: jam.name, class: "pointer-events-none object-cover group-hover:opacity-75" %>
                         <% end %>
                       </div>
                       <p class="pointer-events-none mt-2 block text-center truncate text-sm font-medium text-gray-900">
@@ -623,8 +621,7 @@
                           <%= image_tag url_for(notification.actor.avatar), alt: "Profile Picture",
                                         class: "w-16 text-gray-400" %>
                         <% else %>
-                          <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                               class="w-16 text-gray-400">
+                          <%= image_tag 'empty-avatar.jpg', alt: "Profile Picture", class: "w-16 text-gray-400" %>
                         <% end %>
                       </a>
                     </div>
