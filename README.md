@@ -3,7 +3,7 @@
 [![Ruby on Rails CI](https://github.com/vgartg/jammer/actions/workflows/rubyonrails.yml/badge.svg)](https://github.com/vgartg/jammer/actions/workflows/rubyonrails.yml)
 [![Ruby](https://img.shields.io/badge/ruby-3.3.4-CC342D?logo=ruby&logoColor=white)](https://www.ruby-lang.org/)
 [![Rails](https://img.shields.io/badge/rails-8.0-CC0000?logo=rubyonrails&logoColor=white)](https://rubyonrails.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.txt)
 
 Jammer is a platform for running game jams and distributing games. You set up a jam, configure voting criteria, invite judges or open it to everyone - then collect submissions and watch the leaderboard take shape. Profiles, notifications, and friend connections work on top of that.
 
