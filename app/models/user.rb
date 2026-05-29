@@ -48,8 +48,6 @@ class User < ActiveRecord::Base
   has_many :jam_contributors, dependent: :destroy
   has_many :contributed_jams, through: :jam_contributors, source: :jam
 
-  attr_accessor :current_password
-
   def oauth_user?
     provider.present?
   end
@@ -136,17 +134,30 @@ class User < ActiveRecord::Base
     end
   end
 
+  FRIEND_REQUEST_ACTIONS = %w[sent_friend_request accepted_friendship accepted_friend_request].freeze
+  JAM_INVITE_ACTIONS     = %w[sent_jam_jury_invite accepted_jam_jury_invite].freeze
+  STATUS_CHANGE_ACTIONS  = %w[game_status_changed jam_status_changed].freeze
+
   def create_notification(recipient, actor, action, notifiable)
+    return if notification_muted?(recipient, action)
+
     existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action,
                                                 notifiable: notifiable)
-
-    if existing_notifications.any?
-      # Удаляем старые уведомления из БД
-      existing_notifications.destroy_all
-    end
-
+    existing_notifications.destroy_all if existing_notifications.any?
     Notification.create(recipient: recipient, actor: actor, action: action, notifiable: notifiable)
   end
+
+  private
+
+  def notification_muted?(recipient, action)
+    return false unless recipient.is_a?(User)
+
+    (FRIEND_REQUEST_ACTIONS.include?(action) && !recipient.notify_friend_requests?) ||
+      (JAM_INVITE_ACTIONS.include?(action)   && !recipient.notify_jam_invites?) ||
+      (STATUS_CHANGE_ACTIONS.include?(action) && !recipient.notify_status_changes?)
+  end
+
+  public
 
   def remove_friend(user)
     friendship = friendships.find_by(friend: user)

@@ -1,4 +1,9 @@
+require 'sidekiq/web'
+require 'admin_constraint'
+
 Rails.application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq', constraints: AdminConstraint.new
+
   scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do
     match '/404', to: 'errors#not_found', via: :all, as: :not_found_error
     match '/500', to: 'errors#internal_server_error', via: :all, as: :internal_server_error
@@ -143,6 +148,7 @@ Rails.application.routes.draw do
     %i[games jams].each do |resource|
       resources resource, only: %i[index edit update destroy]
     end
+    resources :audit, only: :index
   end
 
   resources :reports, only: [:create]

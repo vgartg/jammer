@@ -439,9 +439,17 @@ ru:
       header:
         account: "Аккаунт"
         security: "Приватность и безопасность"
+        notifications: "Уведомления"
         billing: "Счета"
         teams: "Команды"
         integrations: "Интеграции"
+      notifications:
+        title: "Настройки уведомлений"
+        hint: "Выберите, какие уведомления вы хотите получать."
+        friend_requests: "Заявки в друзья и принятие"
+        jam_invites: "Приглашения в жюри джемов"
+        status_changes: "Результаты модерации игр и джемов"
+        save: "Сохранить настройки"
       placeholders:
         field: "Какое-то поле"
         billing_title: "Какое-то поле (billing)"
@@ -913,6 +921,23 @@ ru:
         end_date: "Дата окончания джема"
         cover: "Обложка"
         logo: "Логотип"
+    audit:
+      index:
+        filter:
+          admin: "Администратор"
+          action: "Действие"
+          type: "Тип записи"
+          date_from: "С"
+          date_to: "По"
+        table:
+          admin: "Администратор"
+          action: "Действие"
+          type: "Тип"
+          record_id: "Запись"
+          changes: "Изменения"
+          date: "Дата"
+          show_changes: "Показать"
+        empty: "Записи не найдены для выбранных фильтров."
   moderators:
     index:
       title: "Панель модератора"
@@ -923,3 +948,6 @@ ru:
       jams:
         title: "Джемы"
         description: "Редактирование джемов"
+      audit:
+        title: "Журнал действий"
+        description: "История действий администраторов и модераторов"
