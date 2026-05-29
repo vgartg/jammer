@@ -160,14 +160,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def remove_friend(user)
-    friendship = friendships.find_by(friend: user)
-    if friendship
-      Notification.where(notifiable: friendship).destroy_all
-      friendship.destroy
-    end
-  end
-
   def friendship_with(user)
     friendships.find_by(friend_id: user.id) || user.friendships.find_by(friend_id: id)
   end

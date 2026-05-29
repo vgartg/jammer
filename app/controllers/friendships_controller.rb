@@ -52,7 +52,7 @@ class FriendshipsController < ApplicationController
     return unless @friendship
 
     friend = @friendship.friend
-    destroy_friendship(@friendship)
+    @friendship.purge
     flash[:notice] = t 'friendships.update.notice'
     redirect_to friend ? user_profile_path(friend) : dashboard_path
   end
@@ -63,18 +63,13 @@ class FriendshipsController < ApplicationController
 
     friend = @friendship.friend
     user   = @friendship.user
-    destroy_friendship(@friendship)
+    @friendship.purge
     flash[:notice] = t 'friendships.update.notice'
     other = (friend && friend.id != current_user.id) ? friend : user
     redirect_to other ? user_profile_path(other) : dashboard_path
   end
 
   private
-
-  def destroy_friendship(friendship)
-    Notification.where(notifiable: friendship).destroy_all
-    friendship.destroy
-  end
 
   def find_own_friendship(id)
     friendship = Friendship.where(id: id)
