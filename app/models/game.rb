@@ -1,4 +1,8 @@
 class Game < ActiveRecord::Base
+  STATUS_MODERATION = 0
+  STATUS_ACCEPTED   = 1
+  STATUS_REJECTED   = 2
+
   validates :name, :description, presence: true
   validates :cover, presence: true
   validates :game_file, presence: true

@@ -42,7 +42,7 @@
             <% end %>
             <div class="mt-auto flex items-center justify-between text-xs text-gray-400">
               <span>
-                <%= t '.members_count', count: team.team_memberships.where(status: 'accepted').count %>
+                <%= t '.members_count', count: team.team_memberships.count { |m| m.status == 'accepted' } %>
               </span>
               <span><%= team.created_at.strftime('%d.%m.%Y') %></span>
             </div>

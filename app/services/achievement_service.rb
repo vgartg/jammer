@@ -68,7 +68,7 @@ class AchievementService
   end
 
   def games_uploaded_count
-    @user.games.where(status: 1).count
+    @user.games.where(status: Game::STATUS_ACCEPTED).count
   end
 
   def total_jam_participants

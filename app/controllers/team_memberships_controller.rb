@@ -8,7 +8,7 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
-    if @team.team_memberships.exists?(user: current_user)
+    if @team.team_memberships.exists?(user: current_user, status: 'pending')
       flash[:failure] = t('team_memberships.create.request_pending')
       return redirect_to team_profile_path(@team)
     end
@@ -26,6 +26,12 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
+    allowed_statuses = %w[accepted declined]
+    unless allowed_statuses.include?(params[:status])
+      flash[:failure] = t('controllers.application.insufficient_rights')
+      return redirect_to team_profile_path(@team)
+    end
+
     @membership.update!(status: params[:status])
     flash[:success] = t('team_memberships.update.success')
     redirect_to team_profile_path(@team)
@@ -34,9 +40,11 @@ class TeamMembershipsController < ApplicationController
   def destroy
     @membership = @team.team_memberships.find(params[:id])
 
-    can_remove = current_user == @team.leader ||
-                 current_user == @membership.user ||
-                 current_user.admin?
+    is_leader_membership = @membership.user == @team.leader
+    can_remove = !is_leader_membership &&
+                 (current_user == @team.leader ||
+                  current_user == @membership.user ||
+                  current_user.admin?)
 
     unless can_remove
       flash[:failure] = t('controllers.application.insufficient_rights')

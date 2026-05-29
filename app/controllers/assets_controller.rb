@@ -7,7 +7,7 @@ class AssetsController < ApplicationController
     @assets = Asset.all.order(created_at: :desc)
     @assets = @assets.by_category(params[:category]) if params[:category].present?
     @assets = @assets.search(params[:search]) if params[:search].present?
-    @pagy, @assets = pagy(@assets, limit: 12)
+    @pagy, @assets = pagy(@assets.includes(:author), limit: 12)
   end
 
   def show
