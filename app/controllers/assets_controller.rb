@@ -65,7 +65,7 @@ class AssetsController < ApplicationController
   private
 
   def set_asset
-    @asset = Asset.find(params[:id])
+    @asset = Asset.includes(:author, files_attachments: :blob, preview_attachment: :blob).find(params[:id])
   end
 
   def authorize_asset!

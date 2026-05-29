@@ -9,7 +9,7 @@ class TeamsController < ApplicationController
       q = "%#{params[:search].downcase}%"
       @teams = @teams.where('LOWER(teams.name) LIKE ? OR LOWER(teams.description) LIKE ?', q, q)
     end
-    @pagy, @teams = pagy(@teams.includes(:accepted_memberships), limit: 12)
+    @pagy, @teams = pagy(@teams.includes(:accepted_memberships, :leader), limit: 12)
   end
 
   def show
