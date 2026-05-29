@@ -65,7 +65,7 @@ class FriendshipsController < ApplicationController
     user   = @friendship.user
     destroy_friendship(@friendship)
     flash[:notice] = t 'friendships.update.notice'
-    other = friend&.id != current_user.id ? friend : user
+    other = (friend && friend.id != current_user.id) ? friend : user
     redirect_to other ? user_profile_path(other) : dashboard_path
   end
 

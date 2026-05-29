@@ -13,11 +13,19 @@ module Moderator
       records = records.where(structure_type: params[:structure_type]) if params[:structure_type].in?(ALLOWED_TYPES)
 
       if params[:date_from].present?
-        date_from = Date.parse(params[:date_from]) rescue nil
+        date_from = begin
+          Date.parse(params[:date_from])
+        rescue ArgumentError
+          nil
+        end
         records = records.where('created_at >= ?', date_from) if date_from
       end
       if params[:date_to].present?
-        date_to = Date.parse(params[:date_to]) rescue nil
+        date_to = begin
+          Date.parse(params[:date_to])
+        rescue ArgumentError
+          nil
+        end
         records = records.where('created_at <= ?', date_to.end_of_day) if date_to
       end
 

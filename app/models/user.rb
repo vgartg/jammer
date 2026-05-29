@@ -151,7 +151,10 @@ class User < ActiveRecord::Base
 
   def remove_friend(user)
     friendship = friendships.find_by(friend: user)
-    friendship.destroy if friendship
+    if friendship
+      Notification.where(notifiable: friendship).destroy_all
+      friendship.destroy
+    end
   end
 
   def friendship_with(user)
@@ -275,8 +278,14 @@ class User < ActiveRecord::Base
   def notification_muted?(recipient, action)
     return false unless recipient.is_a?(User)
 
-    (FRIEND_REQUEST_ACTIONS.include?(action) && !recipient.notify_friend_requests?) ||
-      (JAM_INVITE_ACTIONS.include?(action)   && !recipient.notify_jam_invites?) ||
-      (STATUS_CHANGE_ACTIONS.include?(action) && !recipient.notify_status_changes?)
+    if FRIEND_REQUEST_ACTIONS.include?(action)
+      !recipient.notify_friend_requests?
+    elsif JAM_INVITE_ACTIONS.include?(action)
+      !recipient.notify_jam_invites?
+    elsif STATUS_CHANGE_ACTIONS.include?(action)
+      !recipient.notify_status_changes?
+    else
+      false
+    end
   end
 end
