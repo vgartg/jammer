@@ -3,21 +3,17 @@
     <a href="/" class="inline-block mb-10">
       <img src="<%= asset_path('whitewithoutwall.png') %>" alt="Jammer" width="120" class="mx-auto">
     </a>
-    <p class="text-8xl font-extrabold text-indigo-400 tracking-tight">404</p>
+    <p class="text-8xl font-extrabold text-red-400 tracking-tight">500</p>
     <h1 class="mt-6 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-      <%= t('errors.not_found.title') %>
+      <%= t('errors.internal_server_error.title') %>
     </h1>
     <p class="mt-4 text-base leading-7 text-gray-400 max-w-md mx-auto">
-      <%= t('errors.not_found.description') %>
+      <%= t('errors.internal_server_error.description') %>
     </p>
     <div class="mt-10 flex items-center justify-center gap-x-6">
       <a href="/"
          class="rounded-md bg-indigo-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 transition-colors">
-        <%= t('errors.not_found.home_link') %>
-      </a>
-      <a href="javascript:history.back()"
-         class="text-sm font-semibold text-gray-400 hover:text-gray-200 transition-colors">
-        <%= t('errors.not_found.back_link') %> <span aria-hidden="true">&larr;</span>
+        <%= t('errors.internal_server_error.home_link') %>
       </a>
     </div>
   </div>

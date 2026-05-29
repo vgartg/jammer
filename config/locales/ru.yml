@@ -1,6 +1,16 @@
 ru:
   ru: "Русский"
   en: "English"
+  errors:
+    not_found:
+      title: "Страница не найдена"
+      description: "Страница, которую вы ищете, не существует. Возможно, она была перемещена или удалена."
+      home_link: "На главную"
+      back_link: "Назад"
+    internal_server_error:
+      title: "Что-то пошло не так"
+      description: "На нашей стороне произошла ошибка. Пожалуйста, попробуйте снова через некоторое время."
+      home_link: "На главную"
   activerecord:
     models:
       tag: "Тег"

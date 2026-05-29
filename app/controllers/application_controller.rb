@@ -128,7 +128,7 @@ class ApplicationController < ActionController::Base
 
   def render_404(exception = nil)
     logger.info "Rendering 404 with exception: #{exception.message}" if exception
-    render template: 'errors/not_found', status: 404
+    render template: 'errors/not_found', layout: 'error', status: 404
   end
 
   def require_subdomain
