@@ -48,6 +48,8 @@ class User < ActiveRecord::Base
   has_many :jam_contributors, dependent: :destroy
   has_many :contributed_jams, through: :jam_contributors, source: :jam
 
+  scope :staff, -> { where(role: [:moderator, :admin]) }
+
   attr_accessor :current_password
 
   def oauth_user?
@@ -147,6 +149,25 @@ class User < ActiveRecord::Base
     Notification.where(recipient: recipient, actor: actor, action: action,
                        notifiable: notifiable).destroy_all
     Notification.create(recipient: recipient, actor: actor, action: action, notifiable: notifiable)
+  end
+
+  def self.notify_staff(actor, action, notifiable)
+    recipients = staff.reject { |u| u.muted_notification?(action) }
+    return if recipients.empty?
+
+    Notification.where(
+      actor: actor, action: action, notifiable: notifiable,
+      recipient_id: recipients.map(&:id)
+    ).delete_all
+
+    now = Time.current
+    Notification.insert_all(
+      recipients.map do |r|
+        { recipient_id: r.id, actor_id: actor.id, action: action,
+          notifiable_id: notifiable.id, notifiable_type: notifiable.class.name,
+          read: false, created_at: now, updated_at: now }
+      end
+    )
   end
 
   def muted_notification?(action)
