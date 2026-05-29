@@ -13,7 +13,7 @@ class TeamsController < ApplicationController
   end
 
   def show
-    all_memberships = @team.team_memberships.includes(:user).to_a
+    all_memberships = @team.team_memberships.includes(user: { avatar_attachment: :blob }).to_a
     @memberships = all_memberships.select { |m| m.status == 'accepted' }
     @pending_memberships = all_memberships.select { |m| m.status == 'pending' }
     @user_membership = current_user ? all_memberships.find { |m| m.user_id == current_user.id } : nil
