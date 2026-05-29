@@ -95,6 +95,8 @@ ru:
       users: "Пользователи"
       games: "Игры"
       jams: "Джемы"
+      assets: "Ассеты"
+      teams: "Команды"
       sign_up: "Регистрация"
       log_in: "Авторизация"
       sign_out: "Выход"
@@ -404,6 +406,7 @@ ru:
       info_tab: "Информация"
       friends_tab: "Друзья"
       subscribers: "Подписчики"
+      achievements_tab: "Достижения"
       remove: "Удалить из друзей"
       accept: "Принять заявку"
       decline: "Отклонить заявку"
@@ -952,3 +955,159 @@ ru:
       audit:
         title: "Журнал действий"
         description: "История действий администраторов и модераторов"
+  assets:
+    categories:
+      sprite: "Спрайт"
+      sound: "Звук"
+      font: "Шрифт"
+      shader: "Шейдер"
+      3d_model: "3D Модель"
+      music: "Музыка"
+      sfx: "Звуковой эффект"
+      tileset: "Тайлсет"
+      ui: "UI"
+      other: "Прочее"
+    create:
+      success: "Ассет успешно загружен."
+    update:
+      success: "Ассет обновлён."
+    destroy:
+      success: "Ассет удалён."
+    download:
+      no_file: "Файл не прикреплён."
+    index:
+      title: "Ассеты"
+      new_asset: "Загрузить ассет"
+      search_placeholder: "Поиск ассетов..."
+      search_btn: "Найти"
+      no_assets: "Ассетов пока нет"
+      be_first: "Станьте первым, кто поделится ассетом!"
+      has_guide: "Гайд"
+    show:
+      download: "Скачать"
+      download_guide: "Скачать гайд"
+      author: "Автор"
+      files_title: "Файлы"
+      downloads_count:
+        one: "%{count} скачивание"
+        few: "%{count} скачивания"
+        many: "%{count} скачиваний"
+        other: "%{count} скачиваний"
+      edit: "Редактировать"
+      delete: "Удалить"
+    new:
+      title: "Загрузить новый ассет"
+    edit:
+      title: "Редактировать ассет"
+    _form:
+      title: "Название"
+      description: "Описание"
+      category: "Категория"
+      preview: "Превью"
+      files: "Файлы ассета"
+      guide: "Гайд (необязательно)"
+      guide_hint: "Загрузите PDF или Word документ с описанием использования ассета."
+      hint_click: "Нажмите для выбора файлов"
+      preview_formats: "JPG, PNG, GIF, WebP"
+      files_hint: "Любой формат файлов. До 200 МБ на файл."
+      guide_formats: "PDF, DOC, DOCX"
+      btn: "Загрузить ассет"
+  teams:
+    create:
+      success: "Команда успешно создана."
+    update:
+      success: "Команда обновлена."
+    destroy:
+      success: "Команда удалена."
+    index:
+      title: "Команды"
+      new_team: "Создать команду"
+      search_placeholder: "Поиск команд..."
+      search_btn: "Найти"
+      no_teams: "Команд пока нет"
+      leader: "Лидер"
+      members_count:
+        one: "%{count} участник"
+        few: "%{count} участника"
+        many: "%{count} участников"
+        other: "%{count} участников"
+    show:
+      leader: "Лидер"
+      founded: "Основана"
+      members: "Участники"
+      pending_requests: "Заявки"
+      role_leader: "Лидер"
+      role_member: "Участник"
+      join: "Вступить"
+      leave: "Покинуть команду"
+      request_pending: "Заявка на рассмотрении"
+      cancel_request: "Отозвать заявку"
+      accept: "Принять"
+      decline: "Отклонить"
+      kick: "Исключить"
+      edit: "Редактировать"
+      delete: "Удалить"
+    new:
+      title: "Создать команду"
+    edit:
+      title: "Редактировать команду"
+    _form:
+      name: "Название команды"
+      description: "Описание"
+      avatar: "Аватар команды"
+      btn: "Создать команду"
+  team_memberships:
+    create:
+      success: "Заявка на вступление отправлена."
+      already_member: "Вы уже являетесь участником этой команды."
+      request_pending: "Ваша заявка уже на рассмотрении."
+    update:
+      success: "Статус участника обновлён."
+    destroy:
+      success: "Участник удалён из команды."
+  achievements:
+    none_earned: "Достижений пока нет."
+    tiers:
+      bronze: "Бронза"
+      silver: "Серебро"
+      gold: "Золото"
+      special: "Особое"
+    game_rated_bronze:
+      name: "Восходящая звезда"
+      description: "Ваши игры оценили 10 раз."
+    game_rated_silver:
+      name: "Любимец публики"
+      description: "Ваши игры оценили 100 раз."
+    game_rated_gold:
+      name: "Легенда"
+      description: "Ваши игры оценили 1000 раз."
+    rated_games_bronze:
+      name: "Критик"
+      description: "Вы оценили 10 игр."
+    rated_games_silver:
+      name: "Опытный критик"
+      description: "Вы оценили 100 игр."
+    rated_games_gold:
+      name: "Мастер-критик"
+      description: "Вы оценили 1000 игр."
+    games_uploaded_bronze:
+      name: "Разработчик"
+      description: "Вы опубликовали 3 игры."
+    games_uploaded_silver:
+      name: "Плодовитый"
+      description: "Вы опубликовали 10 игр."
+    games_uploaded_gold:
+      name: "Студия"
+      description: "Вы опубликовали 50 игр."
+    jam_participants_bronze:
+      name: "Организатор"
+      description: "В ваших джемах суммарно участвовало 25 человек."
+    jam_participants_silver:
+      name: "Строитель сообщества"
+      description: "В ваших джемах суммарно участвовало 50 человек."
+    jam_participants_gold:
+      name: "Легенда джемов"
+      description: "В ваших джемах суммарно участвовало 100 человек."
+    jammer_developer:
+      name: "Разработчик Jammer"
+      description: "Основной вкладчик в платформу Jammer."

@@ -1,0 +1,35 @@
+<%= form_with(model: @team, url: path, local: true, html: { multipart: true }) do |f| %>
+  <div class="mt-4">
+    <%= f.label :name, t('.name'), class: "block text-sm font-medium text-white" %>
+    <div class="mt-2">
+      <%= f.text_field :name, required: true,
+          class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" %>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= f.label :description, t('.description'), class: "block text-sm font-medium text-white" %>
+    <div class="mt-2">
+      <%= f.text_area :description, rows: 4,
+          class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" %>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= f.label :avatar, t('.avatar'), class: "block text-sm font-medium text-white" %>
+    <div class="mt-2">
+      <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative text-gray-500">
+        <% if @team.persisted? && @team.avatar.attached? %>
+          <img src="<%= url_for(@team.avatar) %>" alt="avatar" class="h-20 w-20 rounded-full object-cover mx-auto mb-2">
+        <% end %>
+        <%= f.file_field :avatar, accept: ".jpg,.jpeg,.png,.gif,.webp",
+            class: "absolute inset-0 opacity-0 cursor-pointer" %>
+        <p class="text-sm"><%= t 'assets._form.hint_click' %></p>
+        <p class="text-xs"><%= t 'assets._form.preview_formats' %></p>
+      </div>
+    </div>
+  </div>
+
+  <%= submit_tag (@team.persisted? ? t('buttons.save') : t('.btn')),
+      class: "mt-6 flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+<% end %>

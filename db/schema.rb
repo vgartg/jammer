@@ -64,6 +64,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.index ["admin_id"], name: "index_administration_tracking_on_admin_id"
   end
 
+  create_table "assets", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.string "category", default: "other", null: false
+    t.integer "author_id", null: false
+    t.integer "downloads_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_assets_on_author_id"
+    t.index ["category"], name: "index_assets_on_category"
+  end
+
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "friend_id", null: false
@@ -259,6 +271,38 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "team_memberships", force: :cascade do |t|
+    t.integer "team_id", null: false
+    t.integer "user_id", null: false
+    t.string "role", default: "member", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id", "user_id"], name: "index_team_memberships_on_team_id_and_user_id", unique: true
+    t.index ["team_id"], name: "index_team_memberships_on_team_id"
+    t.index ["user_id"], name: "index_team_memberships_on_user_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.integer "leader_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["leader_id"], name: "index_teams_on_leader_id"
+    t.index ["name"], name: "index_teams_on_name", unique: true
+  end
+
+  create_table "user_achievements", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "achievement_key", null: false
+    t.datetime "earned_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "achievement_key"], name: "index_user_achievements_on_user_id_and_achievement_key", unique: true
+    t.index ["user_id"], name: "index_user_achievements_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

@@ -1,0 +1,121 @@
+<div class="bg-white min-h-full">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+      <%= link_to t('teams.index.title'), teams_path, class: "hover:text-gray-700" %>
+      <span>/</span>
+      <span class="text-gray-900 font-medium"><%= @team.name %></span>
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:items-start gap-6 mb-8">
+      <% if @team.avatar.attached? %>
+        <%= image_tag url_for(@team.avatar), alt: @team.name, class: "h-20 w-20 rounded-xl object-cover shrink-0" %>
+      <% else %>
+        <div class="h-20 w-20 rounded-xl bg-indigo-100 flex items-center justify-center shrink-0">
+          <span class="text-3xl font-bold text-indigo-600"><%= @team.name.first.upcase %></span>
+        </div>
+      <% end %>
+      <div class="flex-1 min-w-0">
+        <h1 class="text-3xl font-bold text-gray-900 mb-1"><%= @team.name %></h1>
+        <p class="text-sm text-gray-500 mb-3">
+          <%= t '.leader' %>:
+          <%= link_to @team.leader.name, user_profile_path(@team.leader), class: "text-indigo-600 hover:underline" %>
+          &bull;
+          <%= t '.founded' %>: <%= @team.created_at.strftime('%d.%m.%Y') %>
+        </p>
+        <% if @team.description.present? %>
+          <p class="text-gray-700"><%= @team.description %></p>
+        <% end %>
+      </div>
+      <div class="flex flex-col gap-2 shrink-0">
+        <% if current_user %>
+          <% if current_user == @team.leader || current_user.admin? %>
+            <%= link_to t('.edit'), team_edit_path(@team),
+                class: "rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50" %>
+            <%= button_to t('.delete'), team_destroy_path(@team), method: :delete,
+                data: { turbo_confirm: t('buttons.confirm') },
+                class: "rounded-md bg-red-50 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-100" %>
+          <% elsif @user_membership.nil? %>
+            <%= button_to t('.join'), team_team_memberships_path(@team), method: :post,
+                class: "rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
+          <% elsif @user_membership.status == 'pending' %>
+            <span class="rounded-md bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700">
+              <%= t '.request_pending' %>
+            </span>
+            <%= button_to t('.cancel_request'), team_team_membership_path(@team, @user_membership), method: :delete,
+                class: "rounded-md bg-red-50 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-100" %>
+          <% elsif @user_membership.status == 'accepted' && current_user != @team.leader %>
+            <%= button_to t('.leave'), team_team_membership_path(@team, @user_membership), method: :delete,
+                data: { turbo_confirm: t('buttons.confirm') },
+                class: "rounded-md bg-red-50 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-100" %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">
+          <%= t '.members' %> (<%= @memberships.count %>)
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <% @memberships.each do |membership| %>
+            <div class="flex items-center justify-between gap-3 rounded-lg border border-gray-200 p-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <% if membership.user.avatar.attached? %>
+                  <%= image_tag url_for(membership.user.avatar), class: "h-9 w-9 rounded-full object-cover shrink-0" %>
+                <% else %>
+                  <%= image_tag 'empty-avatar.jpg', class: "h-9 w-9 rounded-full shrink-0" %>
+                <% end %>
+                <div class="min-w-0">
+                  <%= link_to membership.user.name, user_profile_path(membership.user),
+                      class: "text-sm font-medium text-gray-900 hover:text-indigo-600 truncate block" %>
+                  <% if membership.role == 'leader' %>
+                    <span class="text-xs text-indigo-600 font-medium"><%= t '.role_leader' %></span>
+                  <% else %>
+                    <span class="text-xs text-gray-400"><%= t '.role_member' %></span>
+                  <% end %>
+                </div>
+              </div>
+              <% if (current_user == @team.leader || current_user&.admin?) && membership.user != @team.leader %>
+                <%= button_to t('.kick'), team_team_membership_path(@team, membership), method: :delete,
+                    data: { turbo_confirm: t('buttons.confirm') },
+                    class: "shrink-0 rounded text-xs text-red-600 hover:text-red-800 px-2 py-1 hover:bg-red-50" %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <% if (current_user == @team.leader || current_user&.admin?) && @pending_memberships.any? %>
+        <div>
+          <h2 class="text-lg font-semibold text-gray-900 mb-4">
+            <%= t '.pending_requests' %> (<%= @pending_memberships.count %>)
+          </h2>
+          <div class="space-y-2">
+            <% @pending_memberships.each do |membership| %>
+              <div class="flex items-center justify-between gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3">
+                <div class="flex items-center gap-2 min-w-0">
+                  <% if membership.user.avatar.attached? %>
+                    <%= image_tag url_for(membership.user.avatar), class: "h-8 w-8 rounded-full shrink-0" %>
+                  <% else %>
+                    <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full shrink-0" %>
+                  <% end %>
+                  <%= link_to membership.user.name, user_profile_path(membership.user),
+                      class: "text-sm font-medium text-gray-900 hover:underline truncate" %>
+                </div>
+                <div class="flex gap-1 shrink-0">
+                  <%= button_to t('.accept'),
+                      team_team_membership_path(@team, membership, status: 'accepted'), method: :patch,
+                      class: "rounded text-xs bg-green-500 text-white px-2 py-1 hover:bg-green-600" %>
+                  <%= button_to t('.decline'),
+                      team_team_membership_path(@team, membership, status: 'declined'), method: :patch,
+                      class: "rounded text-xs bg-red-500 text-white px-2 py-1 hover:bg-red-600" %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

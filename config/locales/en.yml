@@ -95,6 +95,8 @@ en:
       users: "Users"
       games: "Games"
       jams: "Jams"
+      assets: "Assets"
+      teams: "Teams"
       sign_up: "Sign up"
       log_in: "Log in"
       sign_out: "Sign out"
@@ -404,6 +406,7 @@ en:
       info_tab: "Information"
       friends_tab: "Friends"
       subscribers: "Subscribers"
+      achievements_tab: "Achievements"
       remove: "Remove friend"
       accept: "Accept invitation"
       decline: "Decline invitation"
@@ -952,3 +955,155 @@ en:
       audit:
         title: "Audit log"
         description: "History of admin and moderator actions"
+  assets:
+    categories:
+      sprite: "Sprite"
+      sound: "Sound"
+      font: "Font"
+      shader: "Shader"
+      3d_model: "3D Model"
+      music: "Music"
+      sfx: "SFX"
+      tileset: "Tileset"
+      ui: "UI"
+      other: "Other"
+    create:
+      success: "Asset uploaded successfully."
+    update:
+      success: "Asset updated successfully."
+    destroy:
+      success: "Asset deleted."
+    download:
+      no_file: "No file attached."
+    index:
+      title: "Assets"
+      new_asset: "Upload Asset"
+      search_placeholder: "Search assets..."
+      search_btn: "Search"
+      no_assets: "No assets yet"
+      be_first: "Be the first to share an asset!"
+      has_guide: "Guide"
+    show:
+      download: "Download"
+      download_guide: "Download Guide"
+      author: "Author"
+      files_title: "Files"
+      downloads_count:
+        one: "%{count} download"
+        other: "%{count} downloads"
+      edit: "Edit"
+      delete: "Delete"
+    new:
+      title: "Upload New Asset"
+    edit:
+      title: "Edit Asset"
+    _form:
+      title: "Title"
+      description: "Description"
+      category: "Category"
+      preview: "Preview Image"
+      files: "Asset Files"
+      guide: "Guide (optional)"
+      guide_hint: "Upload a PDF or Word document describing how to use this asset."
+      hint_click: "Click to select files"
+      preview_formats: "JPG, PNG, GIF, WebP"
+      files_hint: "Any file type. Max 200 MB per file."
+      guide_formats: "PDF, DOC, DOCX"
+      btn: "Upload Asset"
+  teams:
+    create:
+      success: "Team created successfully."
+    update:
+      success: "Team updated successfully."
+    destroy:
+      success: "Team deleted."
+    index:
+      title: "Teams"
+      new_team: "Create Team"
+      search_placeholder: "Search teams..."
+      search_btn: "Search"
+      no_teams: "No teams yet"
+      leader: "Leader"
+      members_count:
+        one: "%{count} member"
+        other: "%{count} members"
+    show:
+      leader: "Leader"
+      founded: "Founded"
+      members: "Members"
+      pending_requests: "Requests"
+      role_leader: "Leader"
+      role_member: "Member"
+      join: "Join Team"
+      leave: "Leave Team"
+      request_pending: "Request Pending"
+      cancel_request: "Cancel Request"
+      accept: "Accept"
+      decline: "Decline"
+      kick: "Kick"
+      edit: "Edit"
+      delete: "Delete"
+    new:
+      title: "Create New Team"
+    edit:
+      title: "Edit Team"
+    _form:
+      name: "Team Name"
+      description: "Description"
+      avatar: "Team Avatar"
+      btn: "Create Team"
+  team_memberships:
+    create:
+      success: "Join request sent."
+      already_member: "You are already a member of this team."
+      request_pending: "Your request is already pending."
+    update:
+      success: "Membership updated."
+    destroy:
+      success: "Removed from team."
+  achievements:
+    none_earned: "No achievements yet."
+    tiers:
+      bronze: "Bronze"
+      silver: "Silver"
+      gold: "Gold"
+      special: "Special"
+    game_rated_bronze:
+      name: "Rising Star"
+      description: "Your games have been rated 10 times."
+    game_rated_silver:
+      name: "Crowd Favorite"
+      description: "Your games have been rated 100 times."
+    game_rated_gold:
+      name: "Legendary"
+      description: "Your games have been rated 1000 times."
+    rated_games_bronze:
+      name: "Critic"
+      description: "You have rated 10 games."
+    rated_games_silver:
+      name: "Seasoned Critic"
+      description: "You have rated 100 games."
+    rated_games_gold:
+      name: "Master Critic"
+      description: "You have rated 1000 games."
+    games_uploaded_bronze:
+      name: "Developer"
+      description: "You have published 3 games."
+    games_uploaded_silver:
+      name: "Prolific"
+      description: "You have published 10 games."
+    games_uploaded_gold:
+      name: "Studio"
+      description: "You have published 50 games."
+    jam_participants_bronze:
+      name: "Host"
+      description: "Your jams had 25 participants in total."
+    jam_participants_silver:
+      name: "Community Builder"
+      description: "Your jams had 50 participants in total."
+    jam_participants_gold:
+      name: "Jam Legend"
+      description: "Your jams had 100 participants in total."
+    jammer_developer:
+      name: "Jammer Dev"
+      description: "A core contributor to the Jammer platform."

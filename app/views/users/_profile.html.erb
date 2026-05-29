@@ -78,6 +78,17 @@
                     data-action="click->profile#openTab" data-tab-name="user_followers">
               <%= t '.subscribers' %>
             </button>
+            <button id="btnUserAchievements" class="tab_links inline-flex justify-center items-center gap-1.5 rounded-md px-3 py-2 text-sm font-semibold
+                            text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    data-action="click->profile#openTab" data-tab-name="user_achievements">
+              <%= t '.achievements_tab' %>
+              <% achievements_count = @user.user_achievements.count %>
+              <% if achievements_count > 0 %>
+                <span class="inline-flex items-center justify-center rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-800">
+                  <%= achievements_count %>
+                </span>
+              <% end %>
+            </button>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <% if @user.id != session[:current_user] %>
@@ -472,6 +483,9 @@
               </div>
             <% end %>
           </div>
+        </div>
+        <div id="user_achievements" class="tab_content hidden">
+          <%= render partial: 'users/achievements_tab', locals: { user_achievements: @user.user_achievements.order(:earned_at) } %>
         </div>
       </div>
     </div>

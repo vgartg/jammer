@@ -9,6 +9,8 @@ class Game < ActiveRecord::Base
   has_many :reviews
   has_many :jam_submissions, dependent: :destroy
 
+  after_save :check_author_achievements, if: :saved_change_to_status?
+
   attr_accessor :admin_edit, :moderator_edit
 
   belongs_to :author, foreign_key: 'author_id', class_name: 'User'
@@ -54,6 +56,10 @@ class Game < ActiveRecord::Base
   validates :reason, presence: true, if: -> { status == 2 }
 
   private
+
+  def check_author_achievements
+    AchievementService.check_and_award(author)
+  end
 
   def game_file_format
     if game_file.attached?

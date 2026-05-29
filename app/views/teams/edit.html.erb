@@ -1,0 +1,7 @@
+<div class="flex bg-gray-900 min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="mt-10 mx-auto w-full max-w-sm lg:w-[60%] lg:max-w-none">
+    <h2 class="text-2xl font-bold text-white mb-6"><%= t '.title' %></h2>
+    <%= render partial: 'helpers/errors' %>
+    <%= render partial: 'teams/form', locals: { path: team_update_path(@team) } %>
+  </div>
+</div>

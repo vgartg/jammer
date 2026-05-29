@@ -53,6 +53,28 @@ Rails.application.routes.draw do
       post 'logout_one_session', on: :collection
     end
 
+    # Assets
+    get '/assets', to: 'assets#index', as: 'assets'
+    get '/assets/new', to: 'assets#new', as: 'new_asset'
+    post '/assets', to: 'assets#create'
+    get '/assets/:id', to: 'assets#show', as: 'asset_profile'
+    get '/assets/:id/edit', to: 'assets#edit', as: 'asset_edit'
+    patch '/assets/:id', to: 'assets#update', as: 'asset_update'
+    delete '/assets/:id', to: 'assets#destroy', as: 'asset_destroy'
+    get '/assets/:id/download', to: 'assets#download', as: 'asset_download'
+
+    # Teams
+    get '/teams', to: 'teams#index', as: 'teams'
+    get '/teams/new', to: 'teams#new', as: 'new_team'
+    post '/teams', to: 'teams#create'
+    get '/teams/:id', to: 'teams#show', as: 'team_profile'
+    get '/teams/:id/edit', to: 'teams#edit', as: 'team_edit'
+    patch '/teams/:id', to: 'teams#update', as: 'team_update'
+    delete '/teams/:id', to: 'teams#destroy', as: 'team_destroy'
+    resources :teams, only: [] do
+      resources :team_memberships, only: %i[create update destroy]
+    end
+
     # Games
     get '/games/new', to: 'games#new'
     post '/games', to: 'games#create'

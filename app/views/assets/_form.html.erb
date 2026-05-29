@@ -1,0 +1,80 @@
+<%= form_with(model: @asset, url: path, local: true, html: { multipart: true }) do |f| %>
+  <div class="mt-4">
+    <%= f.label :title, t('.title'), class: "block text-sm font-medium text-white" %>
+    <div class="mt-2">
+      <%= f.text_field :title, required: true,
+          class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" %>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= f.label :description, t('.description'), class: "block text-sm font-medium text-white" %>
+    <div class="mt-2">
+      <%= f.text_area :description, rows: 4,
+          class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" %>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= f.label :category, t('.category'), class: "block text-sm font-medium text-white" %>
+    <div class="mt-2">
+      <%= f.select :category,
+          Asset::CATEGORIES.map { |c| [t("assets.categories.#{c}"), c] },
+          { selected: @asset.category || 'other' },
+          class: "block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" %>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= f.label :preview, t('.preview'), class: "block text-sm font-medium text-white" %>
+    <div class="mt-2">
+      <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative text-gray-500">
+        <% if @asset.persisted? && @asset.preview.attached? %>
+          <img src="<%= url_for(@asset.preview) %>" alt="preview" class="mt-2 w-full h-auto object-cover rounded-md mb-2">
+        <% end %>
+        <%= f.file_field :preview, accept: ".jpg,.jpeg,.png,.gif,.webp",
+            class: "absolute inset-0 opacity-0 cursor-pointer" %>
+        <p class="text-sm"><%= t '.hint_click' %></p>
+        <p class="text-xs"><%= t '.preview_formats' %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= f.label :files, t('.files'), class: "block text-sm font-medium text-white" %>
+    <div class="mt-2">
+      <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative text-gray-500">
+        <% if @asset.persisted? && @asset.files.attached? %>
+          <ul class="mb-2 text-left text-sm text-gray-300">
+            <% @asset.files.each do |file| %>
+              <li><%= file.filename %> (<%= number_to_human_size(file.byte_size) %>)</li>
+            <% end %>
+          </ul>
+        <% end %>
+        <%= f.file_field 'files[]', multiple: true,
+            class: "absolute inset-0 opacity-0 cursor-pointer" %>
+        <p class="text-sm"><%= t '.hint_click' %></p>
+        <p class="text-xs"><%= t '.files_hint' %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= f.label :guide, t('.guide'), class: "block text-sm font-medium text-white" %>
+    <p class="text-xs text-gray-400 mt-0.5"><%= t '.guide_hint' %></p>
+    <div class="mt-2">
+      <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative text-gray-500">
+        <% if @asset.persisted? && @asset.guide.attached? %>
+          <p class="mb-2 text-sm text-gray-300"><%= @asset.guide.filename %></p>
+        <% end %>
+        <%= f.file_field :guide, accept: ".pdf,.doc,.docx",
+            class: "absolute inset-0 opacity-0 cursor-pointer" %>
+        <p class="text-sm"><%= t '.hint_click' %></p>
+        <p class="text-xs"><%= t '.guide_formats' %></p>
+      </div>
+    </div>
+  </div>
+
+  <%= submit_tag (@asset.persisted? ? t('buttons.save') : t('.btn')),
+      class: "mt-6 flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+<% end %>

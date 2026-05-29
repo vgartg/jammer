@@ -48,6 +48,11 @@ class User < ActiveRecord::Base
   has_many :jam_contributors, dependent: :destroy
   has_many :contributed_jams, through: :jam_contributors, source: :jam
 
+  has_many :user_achievements, dependent: :destroy
+  has_many :team_memberships, dependent: :destroy
+  has_many :led_teams, class_name: 'Team', foreign_key: 'leader_id', dependent: :destroy
+  has_many :teams, through: :team_memberships
+
   scope :staff, -> { where(role: [:moderator, :admin]) }
 
   attr_accessor :current_password
