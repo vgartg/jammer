@@ -7,6 +7,7 @@ class Announcement < ApplicationRecord
   validates :announcement_type, inclusion: { in: TYPES }
   validates :version, format: { with: /\A\d+\.\d+\.\d+\z/, message: :invalid_version }, allow_blank: true
   validates :version, presence: true, if: -> { announcement_type == 'release' }
+  validates :published_at, presence: true, if: -> { published? }
 
   scope :published, -> { where(published: true).order(published_at: :desc) }
 
