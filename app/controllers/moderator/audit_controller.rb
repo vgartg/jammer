@@ -1,5 +1,6 @@
 module Moderator
   class AuditController < ApplicationController
+    before_action :authenticate_user
     before_action :moderator?
 
     ALLOWED_ACTIONS = %w[edit delete create].freeze
@@ -10,8 +11,16 @@ module Moderator
       records = records.where(admin_id: params[:admin_id]) if params[:admin_id].present?
       records = records.where(action: params[:action_type]) if params[:action_type].in?(ALLOWED_ACTIONS)
       records = records.where(structure_type: params[:structure_type]) if params[:structure_type].in?(ALLOWED_TYPES)
-      records = (records.where('created_at >= ?', Date.parse(params[:date_from])) rescue records) if params[:date_from].present?
-      records = (records.where('created_at <= ?', Date.parse(params[:date_to]).end_of_day) rescue records) if params[:date_to].present?
+
+      if params[:date_from].present?
+        date_from = Date.parse(params[:date_from]) rescue nil
+        records = records.where('created_at >= ?', date_from) if date_from
+      end
+      if params[:date_to].present?
+        date_to = Date.parse(params[:date_to]) rescue nil
+        records = records.where('created_at <= ?', date_to.end_of_day) if date_to
+      end
+
       @pagy, @records = pagy(records, limit: 25)
       @admins = User.where(role: %i[admin moderator]).order(:name)
     end
