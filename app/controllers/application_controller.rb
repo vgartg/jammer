@@ -205,7 +205,9 @@ class ApplicationController < ActionController::Base
   end
 
   def set_time_zone(&block)
-    tz = current_user&.timezone.presence || 'Europe/Moscow'
+    raw = current_user&.timezone.presence || 'Europe/Moscow'
+    tz_name = raw.sub(/\s*\(UTC[+-]\d{2}:\d{2}\)\z/, '')
+    tz = ActiveSupport::TimeZone[tz_name] || ActiveSupport::TimeZone['Europe/Moscow']
     Time.use_zone(tz, &block)
   end
 end
