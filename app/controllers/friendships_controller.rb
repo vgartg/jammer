@@ -37,34 +37,36 @@ class FriendshipsController < ApplicationController
       return
     end
 
+    sender = @friendship.user
     if @friendship.update(status: 'accepted')
-      if (sender = @friendship.user)
-        sender.create_notification(sender, current_user, 'accepted_friendship', @friendship)
-      end
+      sender&.create_notification(sender, current_user, 'accepted_friendship', @friendship)
       flash[:notice] = t 'friendships.update.notice'
     else
       flash[:alert] = t 'friendships.update.alert'
     end
-    redirect_to @friendship.user ? user_profile_path(@friendship.user) : dashboard_path
+    redirect_to sender ? user_profile_path(sender) : dashboard_path
   end
 
   def cancel
     @friendship = find_own_friendship(params[:id])
     return unless @friendship
 
+    friend = @friendship.friend
     destroy_friendship(@friendship)
     flash[:notice] = t 'friendships.update.notice'
-    redirect_to user_profile_path(@friendship.friend)
+    redirect_to friend ? user_profile_path(friend) : dashboard_path
   end
 
   def destroy
     @friendship = find_own_friendship(params[:id])
     return unless @friendship
 
+    friend = @friendship.friend
+    user   = @friendship.user
     destroy_friendship(@friendship)
     flash[:notice] = t 'friendships.update.notice'
-    friend = @friendship.friend.id != current_user.id ? @friendship.friend : @friendship.user
-    redirect_to user_profile_path(friend)
+    other = friend&.id != current_user.id ? friend : user
+    redirect_to other ? user_profile_path(other) : dashboard_path
   end
 
   private
