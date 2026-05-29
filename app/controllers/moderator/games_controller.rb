@@ -1,5 +1,6 @@
 module Moderator
   class GamesController < ApplicationController
+    before_action :authenticate_user
     before_action :moderator?
     before_action :set_game!, only: %i[edit update destroy]
 

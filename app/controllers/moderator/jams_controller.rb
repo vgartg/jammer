@@ -1,5 +1,6 @@
 module Moderator
   class JamsController < ApplicationController
+    before_action :authenticate_user
     before_action :moderator?
     before_action :set_jam!, only: %i[edit update destroy]
 

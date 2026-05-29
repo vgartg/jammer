@@ -449,6 +449,7 @@ en:
         friend_requests: "Friend requests and acceptances"
         jam_invites: "Jam jury invitations"
         status_changes: "Game and jam moderation results"
+        moderation: "New submissions and reports (staff only)"
         save: "Save preferences"
       placeholders:
         field: "Some field"

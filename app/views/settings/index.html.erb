@@ -765,7 +765,8 @@
           <% [
             [:notify_friend_requests, t('.notifications.friend_requests')],
             [:notify_jam_invites,     t('.notifications.jam_invites')],
-            [:notify_status_changes,  t('.notifications.status_changes')]
+            [:notify_status_changes,  t('.notifications.status_changes')],
+            [:notify_moderation,      t('.notifications.moderation')]
           ].each do |field, label| %>
             <div class="flex items-center justify-between rounded-lg bg-white/5 px-4 py-3">
               <span class="text-sm font-medium text-white"><%= label %></span>

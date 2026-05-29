@@ -134,6 +134,6 @@ class UsersController < ApplicationController
           .permit(:name, :email, :password, :password_confirmation, :avatar, :background_image,
                   :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
                   :visibility, :jams_administrating_visibility, :jams_participating_visibility, :theme, :is_online_today,
-                  :notify_friend_requests, :notify_jam_invites, :notify_status_changes)
+                  :notify_friend_requests, :notify_jam_invites, :notify_status_changes, :notify_moderation)
   end
 end

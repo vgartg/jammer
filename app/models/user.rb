@@ -141,6 +141,7 @@ class User < ActiveRecord::Base
   FRIEND_REQUEST_ACTIONS = %w[sent_friend_request accepted_friendship accepted_friend_request].freeze
   JAM_INVITE_ACTIONS     = %w[sent_jam_jury_invite accepted_jam_jury_invite].freeze
   STATUS_CHANGE_ACTIONS  = %w[game_status_changed jam_status_changed].freeze
+  MODERATION_ACTIONS     = %w[awaiting_game_moderation awaiting_jam_moderation new_report].freeze
 
   def self.create_notification(recipient, actor, action, notifiable)
     return unless recipient.is_a?(User)
@@ -156,6 +157,7 @@ class User < ActiveRecord::Base
     recipients = recipients.where(notify_friend_requests: true) if FRIEND_REQUEST_ACTIONS.include?(action)
     recipients = recipients.where(notify_jam_invites: true)     if JAM_INVITE_ACTIONS.include?(action)
     recipients = recipients.where(notify_status_changes: true)  if STATUS_CHANGE_ACTIONS.include?(action)
+    recipients = recipients.where(notify_moderation: true)      if MODERATION_ACTIONS.include?(action)
 
     recipient_ids = recipients.pluck(:id)
     return if recipient_ids.empty?
@@ -182,6 +184,8 @@ class User < ActiveRecord::Base
       !notify_jam_invites?
     elsif STATUS_CHANGE_ACTIONS.include?(action)
       !notify_status_changes?
+    elsif MODERATION_ACTIONS.include?(action)
+      !notify_moderation?
     else
       false
     end
