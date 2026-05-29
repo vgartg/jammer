@@ -26,7 +26,12 @@ module Admin
         return redirect_to admin_achievements_path
       end
 
-      achievement = user.user_achievements.create!(achievement_key: key, earned_at: Time.current)
+      begin
+        achievement = user.user_achievements.create!(achievement_key: key, earned_at: Time.current)
+      rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid
+        flash[:failure] = t('admin.achievements.already_has')
+        return redirect_to admin_achievements_path
+      end
       create_administration_record(current_user, user, { achievement: key }, 'grant_achievement')
       User.create_notification(user, current_user, 'achievement_granted', achievement)
       flash[:success] = t('admin.achievements.granted')

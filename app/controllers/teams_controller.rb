@@ -66,8 +66,7 @@ class TeamsController < ApplicationController
     end
     q = params[:q].to_s.strip.downcase
     if q.length >= 2
-      member_ids = @team.team_memberships.pluck(:user_id)
-      users = User.where.not(id: member_ids)
+      users = User.where.not(id: @team.team_memberships.select(:user_id))
                   .where('LOWER(name) LIKE ?', "%#{q}%")
                   .limit(10)
       render json: users.map { |u| { id: u.id, name: u.name } }
