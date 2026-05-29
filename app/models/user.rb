@@ -162,7 +162,7 @@ class User < ActiveRecord::Base
       Notification.where(
         actor: actor, action: action, notifiable: notifiable,
         recipient_id: recipient_ids
-      ).delete_all
+      ).destroy_all
 
       now = Time.current
       Notification.insert_all(
