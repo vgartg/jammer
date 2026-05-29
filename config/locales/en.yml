@@ -135,7 +135,6 @@ en:
       announcements_title: "Platform Announcements"
       announcement_release_badge: "Release"
       announcement_general_badge: "Update"
-      announcement_read_more: "Read more"
   games:
     create:
       success: "Game has been created successfully!"
@@ -894,6 +893,7 @@ en:
         published: "Published"
         save: "Save"
         save_and_publish: "Save & Publish"
+        unpublish: "Unpublish"
     teams:
       deleted: "Team deleted."
       index:
@@ -902,6 +902,7 @@ en:
         members: "Members"
         search_label: "Search teams"
         not_found: "No teams found."
+        created_at: "Created"
     assets:
       deleted: "Asset deleted."
       index:
@@ -911,6 +912,7 @@ en:
         downloads: "Downloads"
         search_label: "Search assets"
         not_found: "No assets found."
+        created_at: "Created"
     achievements:
       granted: "Achievement granted."
       revoked: "Achievement revoked."

@@ -44,17 +44,18 @@
           class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm' %>
     </div>
 
-    <div class="flex items-center gap-2">
-      <%= f.check_box :published, class: 'h-4 w-4 rounded border-gray-300 text-indigo-600' %>
-      <%= f.label :published, t('admin.announcements.form.published'), class: 'text-sm font-medium text-gray-700' %>
-    </div>
-
     <div class="flex gap-3">
       <%= f.submit t('admin.announcements.form.save'),
           class: 'rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 cursor-pointer' %>
-      <%= f.submit t('admin.announcements.form.save_and_publish'),
-          name: 'publish',
-          class: 'rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500 cursor-pointer' %>
+      <% unless @announcement.published? %>
+        <%= f.submit t('admin.announcements.form.save_and_publish'),
+            name: 'publish',
+            class: 'rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500 cursor-pointer' %>
+      <% else %>
+        <%= f.submit t('admin.announcements.form.unpublish'),
+            name: 'unpublish',
+            class: 'rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-400 cursor-pointer' %>
+      <% end %>
       <%= link_to t('admin.shared.back'), admin_announcements_path, class: 'rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50' %>
     </div>
   </div>

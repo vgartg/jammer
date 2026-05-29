@@ -13,8 +13,12 @@ module Admin
 
     def destroy
       team = Team.find(params[:id])
-      create_administration_record(current_user, team, {}, 'delete') if team.destroy
-      flash[:success] = t('admin.teams.deleted')
+      if team.destroy
+        create_administration_record(current_user, team, {}, 'delete')
+        flash[:success] = t('admin.teams.deleted')
+      else
+        flash[:failure] = team.errors.full_messages
+      end
       redirect_to admin_teams_path
     end
   end

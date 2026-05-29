@@ -13,8 +13,12 @@ module Admin
 
     def destroy
       asset = Asset.find(params[:id])
-      create_administration_record(current_user, asset, {}, 'delete') if asset.destroy
-      flash[:success] = t('admin.assets.deleted')
+      if asset.destroy
+        create_administration_record(current_user, asset, {}, 'delete')
+        flash[:success] = t('admin.assets.deleted')
+      else
+        flash[:failure] = asset.errors.full_messages
+      end
       redirect_to admin_assets_path
     end
   end

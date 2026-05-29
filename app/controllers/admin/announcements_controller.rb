@@ -33,10 +33,12 @@ module Admin
 
     def update
       was_published = @announcement.published?
-      if params[:publish] && !was_published
-        announcement_params_merged = announcement_params.merge(published: true, published_at: Time.current)
+      announcement_params_merged = if params[:publish] && !was_published
+        announcement_params.merge(published: true, published_at: Time.current)
+      elsif params[:unpublish] && was_published
+        announcement_params.merge(published: false, published_at: nil)
       else
-        announcement_params_merged = announcement_params
+        announcement_params
       end
       if @announcement.update(announcement_params_merged)
         create_administration_record(current_user, @announcement, @announcement.previous_changes.except('updated_at'), 'edit')
@@ -49,8 +51,12 @@ module Admin
     end
 
     def destroy
-      create_administration_record(current_user, @announcement, {}, 'delete') if @announcement.destroy
-      flash[:success] = t('admin.announcements.deleted')
+      if @announcement.destroy
+        create_administration_record(current_user, @announcement, {}, 'delete')
+        flash[:success] = t('admin.announcements.deleted')
+      else
+        flash[:failure] = @announcement.errors.full_messages
+      end
       redirect_to admin_announcements_path
     end
 
@@ -61,7 +67,7 @@ module Admin
     end
 
     def announcement_params
-      params.require(:announcement).permit(:announcement_type, :version, :title_en, :title_ru, :body_en, :body_ru, :published)
+      params.require(:announcement).permit(:announcement_type, :version, :title_en, :title_ru, :body_en, :body_ru)
     end
   end
 end

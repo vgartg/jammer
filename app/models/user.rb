@@ -147,7 +147,6 @@ class User < ActiveRecord::Base
   JAM_INVITE_ACTIONS     = %w[sent_jam_jury_invite accepted_jam_jury_invite].freeze
   STATUS_CHANGE_ACTIONS  = %w[game_status_changed jam_status_changed].freeze
   MODERATION_ACTIONS     = %w[awaiting_game_moderation awaiting_jam_moderation new_report].freeze
-  ACHIEVEMENT_ACTIONS    = %w[achievement_granted].freeze
 
   def self.create_notification(recipient, actor, action, notifiable)
     return unless recipient.is_a?(User)

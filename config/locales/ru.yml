@@ -135,7 +135,6 @@ ru:
       announcements_title: "Объявления платформы"
       announcement_release_badge: "Релиз"
       announcement_general_badge: "Обновление"
-      announcement_read_more: "Подробнее"
   games:
     create:
       success: "Игра успешно создана!"
@@ -894,6 +893,7 @@ ru:
         published: "Опубликовано"
         save: "Сохранить"
         save_and_publish: "Сохранить и опубликовать"
+        unpublish: "Снять с публикации"
     teams:
       deleted: "Команда удалена."
       index:
@@ -902,6 +902,7 @@ ru:
         members: "Участники"
         search_label: "Поиск команд"
         not_found: "Команды не найдены."
+        created_at: "Создано"
     assets:
       deleted: "Ассет удалён."
       index:
@@ -911,6 +912,7 @@ ru:
         downloads: "Скачивания"
         search_label: "Поиск ассетов"
         not_found: "Ассеты не найдены."
+        created_at: "Создано"
     achievements:
       granted: "Достижение выдано."
       revoked: "Достижение отозвано."
