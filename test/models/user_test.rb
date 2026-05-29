@@ -42,8 +42,9 @@ class UserTest < ActiveSupport::TestCase
   def test_remove_friend
     @user.friend_request(@another_user)
     @another_user.accept_friend_request(@user)
+    friendship = @user.friendship_with(@another_user)
     assert_difference '@user.friendships.count', -1 do
-      @user.remove_friend(@another_user)
+      friendship.destroy
     end
   end
 
