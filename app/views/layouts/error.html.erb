@@ -7,6 +7,11 @@
   <%= stylesheet_link_tag "application" %>
 </head>
 <body class="h-full">
+  <% error_slug = action_name == 'not_found' ? '404' : '500' %>
+  <div class="absolute top-4 right-4 flex gap-x-3 text-sm font-medium">
+    <a href="/en/<%= error_slug %>" class="<%= I18n.locale == :en ? 'text-white' : 'text-gray-500 hover:text-gray-300' %> transition-colors">EN</a>
+    <a href="/ru/<%= error_slug %>" class="<%= I18n.locale == :ru ? 'text-white' : 'text-gray-500 hover:text-gray-300' %> transition-colors">RU</a>
+  </div>
   <%= yield %>
 </body>
 </html>
