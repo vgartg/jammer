@@ -52,7 +52,7 @@ class FriendshipsController < ApplicationController
     return unless @friendship
 
     friend = @friendship.friend
-    @friendship.purge
+    @friendship.destroy
     flash[:notice] = t 'friendships.update.notice'
     redirect_to friend ? user_profile_path(friend) : dashboard_path
   end
@@ -63,7 +63,7 @@ class FriendshipsController < ApplicationController
 
     friend = @friendship.friend
     user   = @friendship.user
-    @friendship.purge
+    @friendship.destroy
     flash[:notice] = t 'friendships.update.notice'
     other = (friend && friend.id != current_user.id) ? friend : user
     redirect_to other ? user_profile_path(other) : dashboard_path

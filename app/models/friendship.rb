@@ -6,10 +6,6 @@ class Friendship < ApplicationRecord
   after_initialize :set_default_status, if: :new_record?
   before_destroy :cleanup_notifications
 
-  def purge
-    destroy
-  end
-
   private
 
   def cleanup_notifications

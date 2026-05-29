@@ -152,18 +152,23 @@ class User < ActiveRecord::Base
   end
 
   def self.notify_staff(actor, action, notifiable)
-    recipients = staff.reject { |u| u.muted_notification?(action) }
-    return if recipients.empty?
+    recipients = staff
+    recipients = recipients.where(notify_friend_requests: true) if FRIEND_REQUEST_ACTIONS.include?(action)
+    recipients = recipients.where(notify_jam_invites: true)     if JAM_INVITE_ACTIONS.include?(action)
+    recipients = recipients.where(notify_status_changes: true)  if STATUS_CHANGE_ACTIONS.include?(action)
+
+    recipient_ids = recipients.pluck(:id)
+    return if recipient_ids.empty?
 
     Notification.where(
       actor: actor, action: action, notifiable: notifiable,
-      recipient_id: recipients.map(&:id)
+      recipient_id: recipient_ids
     ).delete_all
 
     now = Time.current
     Notification.insert_all(
-      recipients.map do |r|
-        { recipient_id: r.id, actor_id: actor.id, action: action,
+      recipient_ids.map do |rid|
+        { recipient_id: rid, actor_id: actor.id, action: action,
           notifiable_id: notifiable.id, notifiable_type: notifiable.class.name,
           read: false, created_at: now, updated_at: now }
       end
