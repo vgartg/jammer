@@ -18,7 +18,7 @@ module Moderator
         rescue ArgumentError, TypeError
           nil
         end
-        records = records.where('created_at >= ?', date_from) if date_from
+        records = records.where('created_at >= ?', date_from.in_time_zone(current_user.timezone).beginning_of_day) if date_from
       end
       if params[:date_to].present?
         date_to = begin
@@ -26,7 +26,7 @@ module Moderator
         rescue ArgumentError, TypeError
           nil
         end
-        records = records.where('created_at <= ?', date_to.end_of_day) if date_to
+        records = records.where('created_at <= ?', date_to.in_time_zone(current_user.timezone).end_of_day) if date_to
       end
 
       @pagy, @records = pagy(records, limit: 25)

@@ -162,19 +162,21 @@ class User < ActiveRecord::Base
     recipient_ids = recipients.pluck(:id)
     return if recipient_ids.empty?
 
-    Notification.where(
-      actor: actor, action: action, notifiable: notifiable,
-      recipient_id: recipient_ids
-    ).delete_all
+    ApplicationRecord.transaction do
+      Notification.where(
+        actor: actor, action: action, notifiable: notifiable,
+        recipient_id: recipient_ids
+      ).delete_all
 
-    now = Time.current
-    Notification.insert_all(
-      recipient_ids.map do |rid|
-        { recipient_id: rid, actor_id: actor.id, action: action,
-          notifiable_id: notifiable.id, notifiable_type: notifiable.class.name,
-          read: false, created_at: now, updated_at: now }
-      end
-    )
+      now = Time.current
+      Notification.insert_all(
+        recipient_ids.map do |rid|
+          { recipient_id: rid, actor_id: actor.id, action: action,
+            notifiable_id: notifiable.id, notifiable_type: notifiable.class.name,
+            read: false, created_at: now, updated_at: now }
+        end
+      )
+    end
   end
 
   def muted_notification?(action)
