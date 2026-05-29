@@ -42,7 +42,7 @@
         <% end %>
 
         <div class="flex flex-wrap gap-3 mt-6">
-          <% if @asset.files.count == 1 %>
+          <% if @asset.files.size == 1 %>
             <%= link_to asset_download_path(@asset),
                 class: "inline-flex items-center gap-2 rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" do %>
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
