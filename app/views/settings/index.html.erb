@@ -13,6 +13,11 @@
              class="change-set-button"><%= t '.header.security' %>
           </a>
         </li>
+        <li>
+          <a href="#" data-action="click->settings#toggleSection" data-target="notifications-section"
+             class="change-set-button"><%= t '.header.notifications' %>
+          </a>
+        </li>
         <li class="hidden">
           <a href="#" data-action="click->settings#toggleSection" data-target="billing-section"
              class="change-set-button"><%= t '.header.billing' %>
@@ -743,6 +748,40 @@
               <label class="block text-sm font-medium text-white"><%= t '.placeholders.billing_title' %></label>
             </div>
           <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div id="notifications-section" class="section divide-y set-menuitem hidden">
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.notifications.title' %></h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.notifications.hint' %></p>
+      </div>
+
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
+        <div class="space-y-6">
+          <% [
+            [:notify_friend_requests, t('.notifications.friend_requests')],
+            [:notify_jam_invites,     t('.notifications.jam_invites')],
+            [:notify_status_changes,  t('.notifications.status_changes')],
+            [:notify_moderation,      t('.notifications.moderation')]
+          ].each do |field, label| %>
+            <div class="flex items-center justify-between rounded-lg bg-white/5 px-4 py-3">
+              <span class="text-sm font-medium text-white"><%= label %></span>
+              <label class="relative inline-flex cursor-pointer items-center">
+                <%= f.check_box field, { class: 'sr-only peer' }, '1', '0' %>
+                <div class="peer h-6 w-11 rounded-full bg-gray-600 after:absolute after:left-[2px] after:top-[2px]
+                            after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all after:content-['']
+                            peer-checked:bg-indigo-500 peer-checked:after:translate-x-full"></div>
+              </label>
+            </div>
+          <% end %>
+
+          <div class="flex justify-end">
+            <%= f.submit t('.notifications.save'), class: 'rounded-md bg-indigo-500 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-400 transition-colors' %>
+          </div>
         </div>
       <% end %>
     </div>

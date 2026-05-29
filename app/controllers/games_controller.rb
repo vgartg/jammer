@@ -105,10 +105,7 @@ class GamesController < ApplicationController
     @game = Game.new(game_params.merge(author: current_user))
     @tags = Tag.all
     if @game.save
-      admins = User.where(role: [1, 2])
-      admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting_game_moderation', @game)
-      end
+      User.notify_staff(current_user, 'awaiting_game_moderation', @game)
       flash[:success] ||= []
       flash[:success] << translate("games.create.success")
       redirect_to dashboard_path
@@ -131,10 +128,7 @@ class GamesController < ApplicationController
   def update
     @game = current_user.games.find_by_id(params[:id])
     if @game.update(game_params)
-      admins = User.where(role: [1, 2])
-      admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting_game_moderation', @game)
-      end
+      User.notify_staff(current_user, 'awaiting_game_moderation', @game)
       @game.update(status: 0)
       flash[:success] ||= []
       flash[:success] << t('games.update.success')

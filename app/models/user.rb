@@ -48,6 +48,8 @@ class User < ActiveRecord::Base
   has_many :jam_contributors, dependent: :destroy
   has_many :contributed_jams, through: :jam_contributors, source: :jam
 
+  scope :staff, -> { where(role: [:moderator, :admin]) }
+
   attr_accessor :current_password
 
   def oauth_user?
@@ -129,28 +131,62 @@ class User < ActiveRecord::Base
 
     if friendship
       friendship.update(status: 'accepted')
-      create_notification(friendship.user, user, 'accepted_friend_request', friendship)
+      User.create_notification(friendship.user, user, 'accepted_friend_request', friendship)
     elsif inverse_friendship
       inverse_friendship.update(status: 'accepted')
-      create_notification(inverse_friendship.friend, user, 'accepted_friend_request', inverse_friendship)
+      User.create_notification(inverse_friendship.friend, user, 'accepted_friend_request', inverse_friendship)
     end
   end
 
-  def create_notification(recipient, actor, action, notifiable)
-    existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action,
-                                                notifiable: notifiable)
+  FRIEND_REQUEST_ACTIONS = %w[sent_friend_request accepted_friendship accepted_friend_request].freeze
+  JAM_INVITE_ACTIONS     = %w[sent_jam_jury_invite accepted_jam_jury_invite].freeze
+  STATUS_CHANGE_ACTIONS  = %w[game_status_changed jam_status_changed].freeze
+  MODERATION_ACTIONS     = %w[awaiting_game_moderation awaiting_jam_moderation new_report].freeze
 
-    if existing_notifications.any?
-      # Удаляем старые уведомления из БД
-      existing_notifications.destroy_all
-    end
+  def self.create_notification(recipient, actor, action, notifiable)
+    return unless recipient.is_a?(User)
+    return if recipient.muted_notification?(action)
 
+    Notification.where(recipient: recipient, actor: actor, action: action,
+                       notifiable: notifiable).destroy_all
     Notification.create(recipient: recipient, actor: actor, action: action, notifiable: notifiable)
   end
 
-  def remove_friend(user)
-    friendship = friendships.find_by(friend: user)
-    friendship.destroy if friendship
+  def self.notify_staff(actor, action, notifiable)
+    recipients = staff.where(notify_moderation: true)
+
+    recipient_ids = recipients.pluck(:id)
+    return if recipient_ids.empty?
+
+    ApplicationRecord.transaction do
+      Notification.where(
+        actor: actor, action: action, notifiable: notifiable,
+        recipient_id: recipient_ids
+      ).destroy_all
+
+      now = Time.current
+      Notification.insert_all(
+        recipient_ids.map do |rid|
+          { recipient_id: rid, actor_id: actor.id, action: action,
+            notifiable_id: notifiable.id, notifiable_type: notifiable.class.name,
+            read: false, created_at: now, updated_at: now }
+        end
+      )
+    end
+  end
+
+  def muted_notification?(action)
+    if FRIEND_REQUEST_ACTIONS.include?(action)
+      !notify_friend_requests?
+    elsif JAM_INVITE_ACTIONS.include?(action)
+      !notify_jam_invites?
+    elsif STATUS_CHANGE_ACTIONS.include?(action)
+      !notify_status_changes?
+    elsif MODERATION_ACTIONS.include?(action)
+      !notify_moderation?
+    else
+      false
+    end
   end
 
   def friendship_with(user)
@@ -268,4 +304,5 @@ class User < ActiveRecord::Base
 
     result.values
   end
+
 end

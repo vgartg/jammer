@@ -20,8 +20,6 @@ class ReportsController < ApplicationController
   end
 
   def notify_admins(report)
-    User.where(role: [1, 2]).find_each do |admin|
-      current_user.create_notification(admin, current_user, 'new_report', report)
-    end
+    User.notify_staff(current_user, 'new_report', report)
   end
 end

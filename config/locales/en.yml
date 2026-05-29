@@ -439,9 +439,18 @@ en:
       header:
         account: "Account"
         security: "Security and privacy"
+        notifications: "Notifications"
         billing: "Billing"
         teams: "Teams"
         integrations: "Integrations"
+      notifications:
+        title: "Notification preferences"
+        hint: "Choose which notifications you want to receive."
+        friend_requests: "Friend requests and acceptances"
+        jam_invites: "Jam jury invitations"
+        status_changes: "Game and jam moderation results"
+        moderation: "New submissions and reports (staff only)"
+        save: "Save preferences"
       placeholders:
         field: "Some field"
         billing_title: "Some field (billing)"
@@ -913,6 +922,23 @@ en:
         end_date: "Jam end date"
         cover: "Cover"
         logo: "Logo"
+    audit:
+      index:
+        filter:
+          admin: "Admin"
+          action: "Action"
+          type: "Record type"
+          date_from: "From"
+          date_to: "To"
+        table:
+          admin: "Admin"
+          action: "Action"
+          type: "Type"
+          record_id: "Record"
+          changes: "Changes"
+          date: "Date"
+          show_changes: "Show"
+        empty: "No records found for the selected filters."
   moderators:
     index:
       title: "Moderator panel"
@@ -923,3 +949,6 @@ en:
       jams:
         title: "Jams"
         description: "Jam editing"
+      audit:
+        title: "Audit log"
+        description: "History of admin and moderator actions"

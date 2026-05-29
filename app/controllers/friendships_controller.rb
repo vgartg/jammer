@@ -24,7 +24,7 @@ class FriendshipsController < ApplicationController
 
     unless existing_friendship
       @friendship = current_user.friendships.build(friend: @user, status: 'pending')
-      create_notification(@user, current_user, 'sent_friend_request', @friendship) if @friendship.save
+      User.create_notification(@user, current_user, 'sent_friend_request', @friendship) if @friendship.save
     end
     redirect_to user_profile_path(@user)
   end
@@ -37,32 +37,38 @@ class FriendshipsController < ApplicationController
       return
     end
 
+    sender = @friendship.user
     if @friendship.update(status: 'accepted')
-      create_notification(@friendship.user, current_user, 'accepted_friendship', @friendship)
+      User.create_notification(sender, current_user, 'accepted_friendship', @friendship) if sender
       flash[:notice] = t 'friendships.update.notice'
     else
       flash[:alert] = t 'friendships.update.alert'
     end
-    redirect_to user_profile_path(@friendship.user)
+    redirect_to sender ? user_profile_path(sender) : dashboard_path
   end
 
   def cancel
     @friendship = find_own_friendship(params[:id])
     return unless @friendship
 
+    friend = @friendship.friend
+    user   = @friendship.user
     @friendship.destroy
     flash[:notice] = t 'friendships.update.notice'
-    redirect_to user_profile_path(@friendship.friend)
+    other = (friend && friend.id != current_user.id) ? friend : user
+    redirect_to other ? user_profile_path(other) : dashboard_path
   end
 
   def destroy
     @friendship = find_own_friendship(params[:id])
     return unless @friendship
 
+    friend = @friendship.friend
+    user   = @friendship.user
     @friendship.destroy
     flash[:notice] = t 'friendships.update.notice'
-    friend = @friendship.friend.id != current_user.id ? @friendship.friend : @friendship.user
-    redirect_to user_profile_path(friend)
+    other = (friend && friend.id != current_user.id) ? friend : user
+    redirect_to other ? user_profile_path(other) : dashboard_path
   end
 
   private
@@ -85,14 +91,5 @@ class FriendshipsController < ApplicationController
     friendship.friend.id != current_user.id ? friendship.friend : friendship.user
   end
 
-  def create_notification(recipient, actor, action, notifiable)
-    existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action)
 
-    if existing_notifications.any?
-      # Remove old notifications from DB
-      existing_notifications.destroy_all
-    end
-
-    Notification.create(recipient: recipient, actor: actor, action: action, notifiable: notifiable)
-  end
 end

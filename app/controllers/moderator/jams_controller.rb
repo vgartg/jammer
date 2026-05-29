@@ -1,5 +1,6 @@
 module Moderator
   class JamsController < ApplicationController
+    before_action :authenticate_user
     before_action :moderator?
     before_action :set_jam!, only: %i[edit update destroy]
 
@@ -22,7 +23,7 @@ module Moderator
         flash[:success] = t('controllers.moderator.jams.updated')
         if old_jam.status != @jam.status
           @author = @jam.author
-          @author.create_notification(@author, current_user, 'jam_status_changed', @jam)
+          User.create_notification(@author, current_user, 'jam_status_changed', @jam)
         end
 
         changes = @jam.previous_changes.except('updated_at')

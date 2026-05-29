@@ -1,0 +1,89 @@
+<div class="overflow-x-auto">
+  <div class="flex flex-col bg-gray-100 p-4 rounded-lg shadow-md mb-6">
+    <%= form_with url: moderator_audit_index_path, method: :get, local: true do |f| %>
+      <div class="flex flex-wrap gap-4 items-end">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1"><%= t('.filter.admin') %></label>
+          <%= f.select :admin_id,
+                [['—', '']] + @admins.map { |u| [u.name, u.id] },
+                {},
+                selected: params[:admin_id],
+                class: 'border border-gray-300 rounded-lg p-2 text-gray-700 text-sm' %>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1"><%= t('.filter.action') %></label>
+          <%= f.select :action_type,
+                [['—', ''], ['edit', 'edit'], ['delete', 'delete'], ['create', 'create']],
+                {},
+                selected: params[:action_type],
+                class: 'border border-gray-300 rounded-lg p-2 text-gray-700 text-sm' %>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1"><%= t('.filter.type') %></label>
+          <%= f.select :structure_type,
+                [['—', ''], ['Game', 'Game'], ['Jam', 'Jam'], ['User', 'User']],
+                {},
+                selected: params[:structure_type],
+                class: 'border border-gray-300 rounded-lg p-2 text-gray-700 text-sm' %>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1"><%= t('.filter.date_from') %></label>
+          <%= f.date_field :date_from, value: params[:date_from], class: 'border border-gray-300 rounded-lg p-2 text-gray-700 text-sm' %>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1"><%= t('.filter.date_to') %></label>
+          <%= f.date_field :date_to, value: params[:date_to], class: 'border border-gray-300 rounded-lg p-2 text-gray-700 text-sm' %>
+        </div>
+        <div class="flex gap-2">
+          <%= f.submit t('moderator.shared.search'), class: 'bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-150 shadow text-sm' %>
+          <%= link_to t('moderator.shared.reset'), moderator_audit_index_path, class: 'text-gray-500 hover:text-gray-700 font-semibold text-sm' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @records.any? %>
+    <table class="min-w-full bg-white border border-gray-200 text-sm">
+      <thead>
+        <tr class="bg-gray-100 text-gray-600 uppercase text-xs leading-normal">
+          <th class="py-3 px-4 text-left">ID</th>
+          <th class="py-3 px-4 text-left"><%= t('.table.admin') %></th>
+          <th class="py-3 px-4 text-left"><%= t('.table.action') %></th>
+          <th class="py-3 px-4 text-left"><%= t('.table.type') %></th>
+          <th class="py-3 px-4 text-left"><%= t('.table.record_id') %></th>
+          <th class="py-3 px-4 text-left"><%= t('.table.changes') %></th>
+          <th class="py-3 px-4 text-left"><%= t('.table.date') %></th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-600 font-light divide-y divide-gray-100">
+        <% @records.each do |record| %>
+          <tr class="hover:bg-gray-50">
+            <td class="py-2 px-4"><%= record.id %></td>
+            <td class="py-2 px-4"><%= record.admin&.name || t('moderator.shared.author_unknown') %></td>
+            <td class="py-2 px-4">
+              <span class="<%= record.action == 'delete' ? 'text-red-600' : 'text-blue-600' %> font-medium">
+                <%= record.action %>
+              </span>
+            </td>
+            <td class="py-2 px-4"><%= record.structure_type %></td>
+            <td class="py-2 px-4">#<%= record.structure_id %></td>
+            <td class="py-2 px-4 max-w-xs">
+              <% if record.changed_fields.any? %>
+                <details>
+                  <summary class="cursor-pointer text-gray-500 hover:text-gray-700"><%= t('.table.show_changes') %></summary>
+                  <pre class="mt-1 text-xs bg-gray-50 p-2 rounded overflow-x-auto"><%= JSON.pretty_generate(record.changed_fields) %></pre>
+                </details>
+              <% else %>
+                <span class="text-gray-400">—</span>
+              <% end %>
+            </td>
+            <td class="py-2 px-4 whitespace-nowrap"><%= record.created_at.strftime('%d.%m.%Y %H:%M') %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= render partial: 'helpers/pagy' %>
+  <% else %>
+    <p class="text-gray-500 m-8"><%= t('.empty') %></p>
+  <% end %>
+</div>

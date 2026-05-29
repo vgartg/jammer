@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_26_174328) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -295,6 +295,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_26_174328) do
     t.string "jams_administrating_visibility", default: "All"
     t.string "provider"
     t.string "uid"
+    t.boolean "notify_friend_requests", default: true, null: false
+    t.boolean "notify_jam_invites", default: true, null: false
+    t.boolean "notify_status_changes", default: true, null: false
+    t.boolean "notify_moderation", default: true, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true, where: "(provider IS NOT NULL)"

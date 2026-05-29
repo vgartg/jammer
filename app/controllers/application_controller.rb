@@ -70,8 +70,7 @@ class ApplicationController < ActionController::Base
 
   def moderator?
     @user = current_user
-    # Права администратора включают в себя права модератора и выше, поэтому такая проверка
-    return unless @user && @user.role == 'basic'
+    return if @user && !@user.basic?
 
     flash[:failure] = t('controllers.application.insufficient_rights')
     redirect_to dashboard_path
