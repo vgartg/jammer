@@ -1,6 +1,6 @@
 module Moderator
   class AuditController < ApplicationController
-    before_action :admin?
+    before_action :moderator?
 
     ALLOWED_ACTIONS = %w[edit delete create].freeze
     ALLOWED_TYPES   = %w[Game Jam User].freeze
