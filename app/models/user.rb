@@ -153,11 +153,7 @@ class User < ActiveRecord::Base
   end
 
   def self.notify_staff(actor, action, notifiable)
-    recipients = staff
-    recipients = recipients.where(notify_friend_requests: true) if FRIEND_REQUEST_ACTIONS.include?(action)
-    recipients = recipients.where(notify_jam_invites: true)     if JAM_INVITE_ACTIONS.include?(action)
-    recipients = recipients.where(notify_status_changes: true)  if STATUS_CHANGE_ACTIONS.include?(action)
-    recipients = recipients.where(notify_moderation: true)      if MODERATION_ACTIONS.include?(action)
+    recipients = staff.where(notify_moderation: true)
 
     recipient_ids = recipients.pluck(:id)
     return if recipient_ids.empty?
