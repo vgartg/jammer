@@ -51,7 +51,7 @@
             <% end %>
           </ul>
         <% end %>
-        <%= f.file_field 'files[]', multiple: true,
+        <%= f.file_field :files, multiple: true,
             class: "absolute inset-0 opacity-0 cursor-pointer" %>
         <p class="text-sm"><%= t '.hint_click' %></p>
         <p class="text-xs"><%= t '.files_hint' %></p>

@@ -1,6 +1,7 @@
 class Team < ApplicationRecord
   belongs_to :leader, foreign_key: 'leader_id', class_name: 'User'
   has_many :team_memberships, dependent: :destroy
+  has_many :jam_submissions, foreign_key: 'team_id'
   has_many :accepted_memberships, -> { where(status: 'accepted') }, class_name: 'TeamMembership'
   has_many :members, through: :team_memberships, source: :user
   has_one_attached :avatar

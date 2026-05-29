@@ -17,6 +17,12 @@ class TeamsController < ApplicationController
     @memberships = all_memberships.select { |m| m.status == 'accepted' }
     @pending_memberships = all_memberships.select { |m| m.status == 'pending' }
     @user_membership = current_user ? all_memberships.find { |m| m.user_id == current_user.id } : nil
+
+    if (current_user == @team.leader || current_user&.admin?) && params[:invite_search_q].present?
+      q = "%#{params[:invite_search_q].downcase}%"
+      member_ids = all_memberships.map(&:user_id)
+      @invite_results = User.where.not(id: member_ids).where('LOWER(name) LIKE ?', q).limit(10)
+    end
   end
 
   def new
@@ -51,6 +57,23 @@ class TeamsController < ApplicationController
     @team.destroy
     flash[:success] = t('teams.destroy.success')
     redirect_to teams_path
+  end
+
+  def invite_search
+    @team = Team.find(params[:id])
+    unless current_user && (current_user == @team.leader || current_user.admin?)
+      render json: [], status: :ok and return
+    end
+    q = params[:q].to_s.strip.downcase
+    if q.length >= 2
+      member_ids = @team.team_memberships.pluck(:user_id)
+      users = User.where.not(id: member_ids)
+                  .where('LOWER(name) LIKE ?', "%#{q}%")
+                  .limit(10)
+      render json: users.map { |u| { id: u.id, name: u.name } }
+    else
+      render json: []
+    end
   end
 
   private

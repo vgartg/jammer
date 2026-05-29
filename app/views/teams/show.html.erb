@@ -37,12 +37,14 @@
           <% elsif @user_membership.nil? %>
             <%= button_to t('.join'), team_team_memberships_path(@team), method: :post,
                 class: "rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
-          <% elsif @user_membership.status == 'pending' %>
+          <% elsif @user_membership.status == 'pending' && !@user_membership.leader_invited? %>
             <span class="rounded-md bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700">
               <%= t '.request_pending' %>
             </span>
             <%= button_to t('.cancel_request'), team_team_membership_path(@team, @user_membership), method: :delete,
                 class: "rounded-md bg-red-50 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-100" %>
+          <% elsif @user_membership.status == 'pending' && @user_membership.leader_invited? %>
+            <%# Invite response buttons are shown in the sidebar section below %>
           <% elsif @user_membership.status == 'accepted' && current_user != @team.leader %>
             <%= button_to t('.leave'), team_team_membership_path(@team, @user_membership), method: :delete,
                 data: { turbo_confirm: t('buttons.confirm') },
@@ -86,36 +88,109 @@
         </div>
       </div>
 
-      <% if (current_user == @team.leader || current_user&.admin?) && @pending_memberships.any? %>
-        <div>
-          <h2 class="text-lg font-semibold text-gray-900 mb-4">
-            <%= t '.pending_requests' %> (<%= @pending_memberships.count %>)
-          </h2>
-          <div class="space-y-2">
-            <% @pending_memberships.each do |membership| %>
-              <div class="flex items-center justify-between gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3">
-                <div class="flex items-center gap-2 min-w-0">
-                  <% if membership.user.avatar.attached? %>
-                    <%= image_tag url_for(membership.user.avatar), class: "h-8 w-8 rounded-full shrink-0" %>
-                  <% else %>
-                    <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full shrink-0" %>
-                  <% end %>
-                  <%= link_to membership.user.name, user_profile_path(membership.user),
-                      class: "text-sm font-medium text-gray-900 hover:underline truncate" %>
+      <div class="space-y-6">
+        <%# Pending join requests (shown to leader/admin) %>
+        <% join_requests = @pending_memberships.reject(&:leader_invited?) %>
+        <% if (current_user == @team.leader || current_user&.admin?) && join_requests.any? %>
+          <div>
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">
+              <%= t '.pending_requests' %> (<%= join_requests.count %>)
+            </h2>
+            <div class="space-y-2">
+              <% join_requests.each do |membership| %>
+                <div class="flex items-center justify-between gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <% if membership.user.avatar.attached? %>
+                      <%= image_tag url_for(membership.user.avatar), class: "h-8 w-8 rounded-full shrink-0" %>
+                    <% else %>
+                      <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full shrink-0" %>
+                    <% end %>
+                    <%= link_to membership.user.name, user_profile_path(membership.user),
+                        class: "text-sm font-medium text-gray-900 hover:underline truncate" %>
+                  </div>
+                  <div class="flex gap-1 shrink-0">
+                    <%= button_to t('.accept'),
+                        team_team_membership_path(@team, membership, status: 'accepted'), method: :patch,
+                        class: "rounded text-xs bg-green-500 text-white px-2 py-1 hover:bg-green-600" %>
+                    <%= button_to t('.decline'),
+                        team_team_membership_path(@team, membership, status: 'declined'), method: :patch,
+                        class: "rounded text-xs bg-red-500 text-white px-2 py-1 hover:bg-red-600" %>
+                  </div>
                 </div>
-                <div class="flex gap-1 shrink-0">
-                  <%= button_to t('.accept'),
-                      team_team_membership_path(@team, membership, status: 'accepted'), method: :patch,
-                      class: "rounded text-xs bg-green-500 text-white px-2 py-1 hover:bg-green-600" %>
-                  <%= button_to t('.decline'),
-                      team_team_membership_path(@team, membership, status: 'declined'), method: :patch,
-                      class: "rounded text-xs bg-red-500 text-white px-2 py-1 hover:bg-red-600" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# Sent invites (shown to leader/admin) — show invite as "awaiting response" %>
+        <% sent_invites = @pending_memberships.select(&:leader_invited?) %>
+        <% if (current_user == @team.leader || current_user&.admin?) && sent_invites.any? %>
+          <div>
+            <h2 class="text-lg font-semibold text-gray-900 mb-4"><%= t '.invite_sent_title' %> (<%= sent_invites.count %>)</h2>
+            <div class="space-y-2">
+              <% sent_invites.each do |membership| %>
+                <div class="flex items-center justify-between gap-2 rounded-lg border border-blue-200 bg-blue-50 p-3">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <% if membership.user.avatar.attached? %>
+                      <%= image_tag url_for(membership.user.avatar), class: "h-8 w-8 rounded-full shrink-0" %>
+                    <% else %>
+                      <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full shrink-0" %>
+                    <% end %>
+                    <%= link_to membership.user.name, user_profile_path(membership.user),
+                        class: "text-sm font-medium text-gray-900 hover:underline truncate" %>
+                  </div>
+                  <span class="text-xs text-blue-600"><%= t '.invited_pending' %></span>
                 </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# Current user's own invite (if they were invited) %>
+        <% if current_user && @user_membership&.leader_invited? && @user_membership.status == 'pending' %>
+          <div class="rounded-lg border border-indigo-300 bg-indigo-50 p-4">
+            <p class="text-sm font-medium text-indigo-900 mb-3">
+              <%= t '.you_are_invited', team: @team.name %>
+            </p>
+            <div class="flex gap-2">
+              <%= button_to t('.accept_invite'),
+                  team_team_membership_path(@team, @user_membership, status: 'accepted'), method: :patch,
+                  class: "rounded bg-green-600 text-white text-sm px-3 py-1.5 hover:bg-green-500" %>
+              <%= button_to t('.decline_invite'),
+                  team_team_membership_path(@team, @user_membership, status: 'declined'), method: :patch,
+                  class: "rounded bg-red-100 text-red-700 text-sm px-3 py-1.5 hover:bg-red-200" %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# Invite search form (leader/admin only) %>
+        <% if current_user == @team.leader || current_user&.admin? %>
+          <div class="rounded-lg border border-gray-200 p-4">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3"><%= t '.invite_title' %></h2>
+            <%= form_with url: team_profile_path(@team), method: :get, local: true, class: "flex gap-2 mb-4" do |f| %>
+              <%= f.text_field :invite_search_q, value: params[:invite_search_q],
+                  placeholder: t('.invite_search_label'),
+                  class: "flex-1 rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" %>
+              <%= f.submit t('.invite_search_btn'),
+                  class: "rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-500 cursor-pointer" %>
+            <% end %>
+            <% if @invite_results&.any? %>
+              <div class="space-y-2">
+                <% @invite_results.each do |user| %>
+                  <div class="flex items-center justify-between rounded-md border border-gray-200 bg-gray-50 p-2">
+                    <span class="text-sm text-gray-900"><%= user.name %></span>
+                    <%= button_to t('.invite_btn'),
+                        team_invite_path(@team, user_id: user.id), method: :post,
+                        class: "rounded bg-indigo-600 text-white text-xs px-2 py-1 hover:bg-indigo-500" %>
+                  </div>
+                <% end %>
               </div>
+            <% elsif params[:invite_search_q].present? %>
+              <p class="text-sm text-gray-400"><%= t '.no_users_found' %></p>
             <% end %>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

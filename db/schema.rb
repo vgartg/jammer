@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_30_000003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -62,6 +62,23 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.string "action"
     t.index ["admin_id", "structure_type", "structure_id"], name: "idx_on_admin_id_structure_type_structure_id_75f645dcb5"
     t.index ["admin_id"], name: "index_administration_tracking_on_admin_id"
+  end
+
+  create_table "announcements", force: :cascade do |t|
+    t.integer "author_id", null: false
+    t.string "announcement_type", default: "general", null: false
+    t.string "version"
+    t.string "title_en", null: false
+    t.string "title_ru", null: false
+    t.text "body_en"
+    t.text "body_ru"
+    t.boolean "published", default: false, null: false
+    t.datetime "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["announcement_type"], name: "index_announcements_on_announcement_type"
+    t.index ["author_id"], name: "index_announcements_on_author_id"
+    t.index ["published"], name: "index_announcements_on_published"
   end
 
   create_table "assets", force: :cascade do |t|
@@ -175,6 +192,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.integer "team_id"
+    t.index ["team_id"], name: "index_jam_submissions_on_team_id"
   end
 
   create_table "jams", force: :cascade do |t|
@@ -280,6 +299,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "leader_invited", default: false, null: false
     t.index ["team_id", "user_id"], name: "index_team_memberships_on_team_id_and_user_id", unique: true
     t.index ["team_id"], name: "index_team_memberships_on_team_id"
     t.index ["user_id"], name: "index_team_memberships_on_user_id"

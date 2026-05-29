@@ -132,6 +132,10 @@ en:
       no_comment: "No comment"
       my_jams: "My jams"
       no_jams: "You are not participating in or administrating any jam yet."
+      announcements_title: "Platform Announcements"
+      announcement_release_badge: "Release"
+      announcement_general_badge: "Update"
+      announcement_read_more: "Read more"
   games:
     create:
       success: "Game has been created successfully!"
@@ -575,6 +579,8 @@ en:
       sent_jam_jury_invite: "invited you to the jury"
       accepted_jam_jury_invite: "accepted the jury invitation"
       new_report: "filed a new report on %{type} (id %{id})"
+      achievement_granted: "granted you an achievement"
+      team_invite_received: "invited you to join the team"
   email_confirms:
     edit:
       title: "Email confirmation"
@@ -861,6 +867,62 @@ en:
         registered_users: "Registered users"
         user_count: "User count"
         date: "Date"
+    announcements:
+      created: "Announcement created."
+      updated: "Announcement updated."
+      deleted: "Announcement deleted."
+      index:
+        title: "Announcements"
+        new: "New Announcement"
+        type: "Type"
+        version: "Version"
+        title_col: "Title"
+        published: "Published"
+        published_at: "Published at"
+        author: "Author"
+        not_found: "No announcements found."
+      form:
+        type_label: "Type"
+        type_general: "General"
+        type_release: "Release"
+        title_en: "Title (EN)"
+        title_ru: "Title (RU)"
+        body_en: "Body (EN)"
+        body_ru: "Body (RU)"
+        version: "Version (e.g. 0.7.0)"
+        version_hint: "Format: Major.Minor.Patch"
+        published: "Published"
+        save: "Save"
+        save_and_publish: "Save & Publish"
+    teams:
+      deleted: "Team deleted."
+      index:
+        title: "Teams"
+        leader: "Leader"
+        members: "Members"
+        search_label: "Search teams"
+        not_found: "No teams found."
+    assets:
+      deleted: "Asset deleted."
+      index:
+        title: "Assets"
+        category: "Category"
+        author: "Author"
+        downloads: "Downloads"
+        search_label: "Search assets"
+        not_found: "No assets found."
+    achievements:
+      granted: "Achievement granted."
+      revoked: "Achievement revoked."
+      invalid_key: "Invalid achievement key."
+      already_has: "User already has this achievement."
+      index:
+        title: "Achievements"
+        search_label: "Search users"
+        grant: "Grant"
+        revoke: "Revoke"
+        select_achievement: "Select achievement..."
+        no_achievements: "No achievements yet."
   admins:
     index:
       title: "Admin panel"
@@ -1043,6 +1105,16 @@ en:
       kick: "Kick"
       edit: "Edit"
       delete: "Delete"
+      invite_title: "Invite Users"
+      invite_search_label: "Search by username"
+      invite_search_btn: "Search"
+      invite_btn: "Invite"
+      no_users_found: "No users found."
+      invite_sent_title: "Sent Invites"
+      invited_pending: "Invite sent, awaiting response"
+      you_are_invited: "You have been invited to join %{team}"
+      accept_invite: "Accept"
+      decline_invite: "Decline"
     new:
       title: "Create New Team"
     edit:
@@ -1057,6 +1129,10 @@ en:
       success: "Join request sent."
       already_member: "You are already a member of this team."
       request_pending: "Your request is already pending."
+    invite:
+      success: "Invitation sent."
+      user_not_found: "User not found."
+      already_member: "User is already a member or has a pending request."
     update:
       success: "Membership updated."
     destroy:

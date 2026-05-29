@@ -4,6 +4,7 @@ class JamSubmission < ActiveRecord::Base
   belongs_to :game, optional: true
   belongs_to :jam
   belongs_to :user
+  belongs_to :team, optional: true
 
   after_create :check_jam_author_achievements
   after_destroy :check_jam_author_achievements

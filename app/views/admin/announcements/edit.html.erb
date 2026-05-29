@@ -1,0 +1,12 @@
+<div class="p-6">
+  <div class="flex items-center gap-4 mb-4">
+    <%= link_to t('admin.shared.back'), admin_announcements_path, class: 'text-gray-500 hover:text-gray-700 text-sm' %>
+    <h1 class="text-2xl font-bold text-gray-900">#<%= @announcement.id %> — <%= @announcement.title_en %></h1>
+    <% if @announcement.published? %>
+      <span class="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">
+        <%= t('admin.announcements.form.published') %> <%= @announcement.published_at&.strftime('%d.%m.%Y') %>
+      </span>
+    <% end %>
+  </div>
+  <%= render 'form' %>
+</div>

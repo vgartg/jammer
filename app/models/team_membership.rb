@@ -11,4 +11,6 @@ class TeamMembership < ApplicationRecord
 
   scope :accepted, -> { where(status: 'accepted') }
   scope :pending, -> { where(status: 'pending') }
+  scope :invited, -> { where(leader_invited: true, status: 'pending') }
+  scope :requested, -> { where(leader_invited: false, status: 'pending') }
 end

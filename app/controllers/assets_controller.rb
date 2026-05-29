@@ -32,7 +32,11 @@ class AssetsController < ApplicationController
   end
 
   def update
-    if @asset.update(asset_params)
+    update_params = asset_params
+    unless params.dig(:asset, :files).present?
+      update_params = update_params.except('files')
+    end
+    if @asset.update(update_params)
       flash[:success] = t('assets.update.success')
       redirect_to asset_profile_path(@asset)
     else

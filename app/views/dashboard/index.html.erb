@@ -6,6 +6,35 @@
       </h2>
     </div>
 
+    <% if @announcements.any? %>
+      <div class="mt-6 space-y-3">
+        <h3 class="text-lg font-semibold text-gray-900"><%= t '.announcements_title' %></h3>
+        <% @announcements.each do |ann| %>
+          <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <% if ann.announcement_type == 'release' %>
+                <span class="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-800">
+                  <%= t '.announcement_release_badge' %>
+                </span>
+                <% if ann.version.present? %>
+                  <span class="font-mono font-bold text-indigo-700 text-sm">v<%= ann.version %></span>
+                <% end %>
+              <% else %>
+                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+                  <%= t '.announcement_general_badge' %>
+                </span>
+              <% end %>
+              <span class="font-medium text-gray-900"><%= ann.title %></span>
+              <span class="text-xs text-gray-400 ml-auto"><%= ann.published_at&.strftime('%d.%m.%Y') %></span>
+            </div>
+            <% if ann.body.present? %>
+              <p class="text-sm text-gray-600 line-clamp-2"><%= ann.body.truncate(150) %></p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
     <div class="grid grid-cols-1 gap-6 pt-4">
 
       <% if @average_rating_no_jam.present? && @user.games.count > 0 %>

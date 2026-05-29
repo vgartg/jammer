@@ -1,0 +1,63 @@
+<div class="p-6 max-w-6xl">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900"><%= t '.title' %></h1>
+  </div>
+
+  <div class="mb-6">
+    <%= form_with url: admin_achievements_path, method: :get, local: true, class: "flex items-center gap-2" do |f| %>
+      <%= f.text_field :search, value: params[:search], placeholder: t('.search_label'),
+          class: 'border border-gray-300 rounded-lg p-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-64' %>
+      <%= f.submit t('admin.shared.search'), class: 'bg-blue-500 text-white py-2 px-3 rounded text-sm hover:bg-blue-600' %>
+      <%= link_to t('admin.shared.reset'), admin_achievements_path, class: 'text-gray-500 hover:text-gray-700 text-sm' %>
+    <% end %>
+  </div>
+
+  <div class="space-y-4">
+    <% @users.each do |user| %>
+      <div class="rounded-lg border border-gray-200 bg-white p-4">
+        <div class="flex flex-col lg:flex-row lg:items-start gap-4">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="font-semibold text-gray-900"><%= user.name %></span>
+              <span class="text-sm text-gray-500"><%= user.email %></span>
+              <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600"><%= user.role %></span>
+            </div>
+
+            <% if user.user_achievements.any? %>
+              <div class="flex flex-wrap gap-2 mb-3">
+                <% user.user_achievements.each do |ua| %>
+                  <span class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium
+                    <%= ua.achievement_key.include?('gold') ? 'bg-yellow-100 text-yellow-800' :
+                        ua.achievement_key.include?('silver') ? 'bg-gray-200 text-gray-800' :
+                        ua.achievement_key.include?('bronze') ? 'bg-orange-100 text-orange-800' :
+                        'bg-purple-100 text-purple-800' %>">
+                    <%= t("achievements.#{ua.achievement_key}.name", default: ua.achievement_key) %>
+                    <%= button_to t('.revoke'), admin_achievement_path(ua), method: :delete,
+                        data: { turbo_confirm: t('admin.shared.confirm') },
+                        class: 'ml-1 text-red-500 hover:text-red-700 bg-transparent border-0 cursor-pointer p-0 text-xs' %>
+                  </span>
+                <% end %>
+              </div>
+            <% else %>
+              <p class="text-sm text-gray-400 mb-3"><%= t '.no_achievements' %></p>
+            <% end %>
+          </div>
+
+          <div class="shrink-0">
+            <%= form_with url: admin_achievements_path, method: :post, local: true, class: "flex items-center gap-2" do |f| %>
+              <%= f.hidden_field :user_id, value: user.id %>
+              <%= f.select :achievement_key,
+                  @available_achievements.map { |k| [t("achievements.#{k}.name", default: k), k] },
+                  { prompt: t('.select_achievement') },
+                  class: 'border border-gray-300 rounded p-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500' %>
+              <%= f.submit t('.grant'),
+                  class: 'rounded bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-500 cursor-pointer' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render partial: 'helpers/pagy' %>
+</div>

@@ -71,6 +71,8 @@ Rails.application.routes.draw do
     get '/teams/:id/edit', to: 'teams#edit', as: 'team_edit'
     patch '/teams/:id', to: 'teams#update', as: 'team_update'
     delete '/teams/:id', to: 'teams#destroy', as: 'team_destroy'
+    get '/teams/:id/invite_search', to: 'teams#invite_search', as: 'team_invite_search'
+    post '/teams/:id/invite', to: 'team_memberships#invite', as: 'team_invite'
     resources :teams, only: [] do
       resources :team_memberships, only: %i[create update destroy]
     end
@@ -162,6 +164,10 @@ Rails.application.routes.draw do
     end
     get '/visits_data', to: 'visits#visits_data'
     get '/registrations_data', to: 'visits#registrations_data'
+    resources :announcements
+    resources :teams, only: %i[index destroy]
+    resources :assets, only: %i[index destroy]
+    resources :achievements, only: %i[index create destroy]
   end
 
   # Moderator

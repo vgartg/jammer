@@ -22,16 +22,42 @@ class TeamMembershipsController < ApplicationController
     redirect_to team_profile_path(@team)
   end
 
-  def update
-    @membership = @team.team_memberships.find(params[:id])
-
+  def invite
     unless current_user == @team.leader || current_user.admin?
       flash[:failure] = t('controllers.application.insufficient_rights')
       return redirect_to team_profile_path(@team)
     end
 
+    user = User.find_by(id: params[:user_id])
+    unless user
+      flash[:failure] = t('team_memberships.invite.user_not_found')
+      return redirect_to team_profile_path(@team)
+    end
+
+    if @team.team_memberships.exists?(user: user)
+      flash[:failure] = t('team_memberships.invite.already_member')
+      return redirect_to team_profile_path(@team)
+    end
+
+    membership = @team.team_memberships.create!(user: user, role: 'member', status: 'pending', leader_invited: true)
+    User.create_notification(user, current_user, 'team_invite_received', membership)
+    flash[:success] = t('team_memberships.invite.success')
+    redirect_to team_profile_path(@team)
+  end
+
+  def update
+    @membership = @team.team_memberships.find(params[:id])
+
     allowed_statuses = %w[accepted declined]
     unless allowed_statuses.include?(params[:status])
+      flash[:failure] = t('controllers.application.insufficient_rights')
+      return redirect_to team_profile_path(@team)
+    end
+
+    invited_self_responding = @membership.leader_invited? && current_user == @membership.user &&
+                              %w[accepted declined].include?(params[:status])
+
+    unless current_user == @team.leader || current_user.admin? || invited_self_responding
       flash[:failure] = t('controllers.application.insufficient_rights')
       return redirect_to team_profile_path(@team)
     end
@@ -63,6 +89,6 @@ class TeamMembershipsController < ApplicationController
   private
 
   def set_team
-    @team = Team.find(params[:team_id])
+    @team = Team.find(params[:team_id] || params[:id])
   end
 end

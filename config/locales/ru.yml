@@ -132,6 +132,10 @@ ru:
       no_comment: "Комментарий не оставлен"
       my_jams: "Мои джемы"
       no_jams: "Вы пока не участвуете и не администрируете ни в одном джеме."
+      announcements_title: "Объявления платформы"
+      announcement_release_badge: "Релиз"
+      announcement_general_badge: "Обновление"
+      announcement_read_more: "Подробнее"
   games:
     create:
       success: "Игра успешно создана!"
@@ -575,6 +579,8 @@ ru:
       sent_jam_jury_invite: "пригласил вас в жюри"
       accepted_jam_jury_invite: "принял приглашение в жюри"
       new_report: "оставил новую жалобу на %{type} (id %{id})"
+      achievement_granted: "выдал вам достижение"
+      team_invite_received: "пригласил вас в команду"
   email_confirms:
     edit:
       title: "Подтверждение почты"
@@ -861,6 +867,62 @@ ru:
         registered_users: "Зарегистрированные пользователи"
         user_count: "Количество пользователей"
         date: "Дата"
+    announcements:
+      created: "Объявление создано."
+      updated: "Объявление обновлено."
+      deleted: "Объявление удалено."
+      index:
+        title: "Объявления"
+        new: "Новое объявление"
+        type: "Тип"
+        version: "Версия"
+        title_col: "Заголовок"
+        published: "Опубликовано"
+        published_at: "Дата публикации"
+        author: "Автор"
+        not_found: "Объявлений не найдено."
+      form:
+        type_label: "Тип"
+        type_general: "Общее"
+        type_release: "Релиз"
+        title_en: "Заголовок (EN)"
+        title_ru: "Заголовок (RU)"
+        body_en: "Текст (EN)"
+        body_ru: "Текст (RU)"
+        version: "Версия (например, 0.7.0)"
+        version_hint: "Формат: Major.Minor.Patch"
+        published: "Опубликовано"
+        save: "Сохранить"
+        save_and_publish: "Сохранить и опубликовать"
+    teams:
+      deleted: "Команда удалена."
+      index:
+        title: "Команды"
+        leader: "Лидер"
+        members: "Участники"
+        search_label: "Поиск команд"
+        not_found: "Команды не найдены."
+    assets:
+      deleted: "Ассет удалён."
+      index:
+        title: "Ассеты"
+        category: "Категория"
+        author: "Автор"
+        downloads: "Скачивания"
+        search_label: "Поиск ассетов"
+        not_found: "Ассеты не найдены."
+    achievements:
+      granted: "Достижение выдано."
+      revoked: "Достижение отозвано."
+      invalid_key: "Неверный ключ достижения."
+      already_has: "У пользователя уже есть это достижение."
+      index:
+        title: "Достижения"
+        search_label: "Поиск пользователей"
+        grant: "Выдать"
+        revoke: "Отозвать"
+        select_achievement: "Выберите достижение..."
+        no_achievements: "Достижений пока нет."
   admins:
     index:
       title: "Панель администратора"
@@ -1047,6 +1109,16 @@ ru:
       kick: "Исключить"
       edit: "Редактировать"
       delete: "Удалить"
+      invite_title: "Пригласить участников"
+      invite_search_label: "Поиск по имени"
+      invite_search_btn: "Найти"
+      invite_btn: "Пригласить"
+      no_users_found: "Пользователи не найдены."
+      invite_sent_title: "Отправленные приглашения"
+      invited_pending: "Приглашение отправлено, ожидается ответ"
+      you_are_invited: "Вас пригласили в команду «%{team}»"
+      accept_invite: "Принять"
+      decline_invite: "Отклонить"
     new:
       title: "Создать команду"
     edit:
@@ -1061,6 +1133,10 @@ ru:
       success: "Заявка на вступление отправлена."
       already_member: "Вы уже являетесь участником этой команды."
       request_pending: "Ваша заявка уже на рассмотрении."
+    invite:
+      success: "Приглашение отправлено."
+      user_not_found: "Пользователь не найден."
+      already_member: "Пользователь уже является участником или подал заявку."
     update:
       success: "Статус участника обновлён."
     destroy:

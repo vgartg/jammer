@@ -1,0 +1,7 @@
+<div class="p-6">
+  <div class="flex items-center gap-4 mb-6">
+    <%= link_to t('admin.shared.back'), admin_announcements_path, class: 'text-gray-500 hover:text-gray-700 text-sm' %>
+    <h1 class="text-2xl font-bold text-gray-900"><%= t 'admin.announcements.index.new' %></h1>
+  </div>
+  <%= render 'form' %>
+</div>

@@ -1,0 +1,45 @@
+module Admin
+  class AchievementsController < ApplicationController
+    before_action :admin?
+
+    def index
+      @users = User.includes(:user_achievements).order(:name)
+      if params[:search].present?
+        q = "%#{params[:search].downcase}%"
+        @users = @users.where('LOWER(name) LIKE ? OR LOWER(email) LIKE ?', q, q)
+      end
+      @pagy, @users = pagy(@users, limit: 20)
+      @available_achievements = AchievementService::ACHIEVEMENTS.keys
+    end
+
+    def create
+      user = User.find(params[:user_id])
+      key = params[:achievement_key]
+
+      unless AchievementService::ACHIEVEMENTS.key?(key)
+        flash[:failure] = t('admin.achievements.invalid_key')
+        return redirect_to admin_achievements_path
+      end
+
+      if user.user_achievements.exists?(achievement_key: key)
+        flash[:failure] = t('admin.achievements.already_has')
+        return redirect_to admin_achievements_path
+      end
+
+      achievement = user.user_achievements.create!(achievement_key: key, earned_at: Time.current)
+      create_administration_record(current_user, user, { achievement: key }, 'grant_achievement')
+      User.create_notification(user, current_user, 'achievement_granted', achievement)
+      flash[:success] = t('admin.achievements.granted')
+      redirect_to admin_achievements_path
+    end
+
+    def destroy
+      achievement = UserAchievement.find(params[:id])
+      user = achievement.user
+      create_administration_record(current_user, user, { achievement: achievement.achievement_key }, 'revoke_achievement')
+      achievement.destroy
+      flash[:success] = t('admin.achievements.revoked')
+      redirect_to admin_achievements_path
+    end
+  end
+end

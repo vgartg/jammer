@@ -1,0 +1,72 @@
+<%= form_with model: [:admin, @announcement], local: true do |f| %>
+  <div class="space-y-6 max-w-3xl">
+
+    <div>
+      <%= f.label :announcement_type, t('admin.announcements.form.type_label'), class: 'block text-sm font-medium text-gray-700 mb-1' %>
+      <%= f.select :announcement_type,
+          [
+            [t('admin.announcements.form.type_general'), 'general'],
+            [t('admin.announcements.form.type_release'), 'release']
+          ],
+          {},
+          id: 'announcement_type_select',
+          class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm' %>
+    </div>
+
+    <div id="version_field" class="<%= @announcement.announcement_type == 'release' ? '' : 'hidden' %>">
+      <%= f.label :version, t('admin.announcements.form.version'), class: 'block text-sm font-medium text-gray-700 mb-1' %>
+      <%= f.text_field :version, placeholder: '0.7.0',
+          class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm' %>
+      <p class="text-xs text-gray-500 mt-1"><%= t('admin.announcements.form.version_hint') %></p>
+    </div>
+
+    <div>
+      <%= f.label :title_en, t('admin.announcements.form.title_en'), class: 'block text-sm font-medium text-gray-700 mb-1' %>
+      <%= f.text_field :title_en, required: true,
+          class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm' %>
+    </div>
+
+    <div>
+      <%= f.label :title_ru, t('admin.announcements.form.title_ru'), class: 'block text-sm font-medium text-gray-700 mb-1' %>
+      <%= f.text_field :title_ru, required: true,
+          class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm' %>
+    </div>
+
+    <div>
+      <%= f.label :body_en, t('admin.announcements.form.body_en'), class: 'block text-sm font-medium text-gray-700 mb-1' %>
+      <%= f.text_area :body_en, rows: 6,
+          class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm' %>
+    </div>
+
+    <div>
+      <%= f.label :body_ru, t('admin.announcements.form.body_ru'), class: 'block text-sm font-medium text-gray-700 mb-1' %>
+      <%= f.text_area :body_ru, rows: 6,
+          class: 'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm' %>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <%= f.check_box :published, class: 'h-4 w-4 rounded border-gray-300 text-indigo-600' %>
+      <%= f.label :published, t('admin.announcements.form.published'), class: 'text-sm font-medium text-gray-700' %>
+    </div>
+
+    <div class="flex gap-3">
+      <%= f.submit t('admin.announcements.form.save'),
+          class: 'rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 cursor-pointer' %>
+      <%= f.submit t('admin.announcements.form.save_and_publish'),
+          name: 'publish',
+          class: 'rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500 cursor-pointer' %>
+      <%= link_to t('admin.shared.back'), admin_announcements_path, class: 'rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50' %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  document.getElementById('announcement_type_select')?.addEventListener('change', function() {
+    const versionField = document.getElementById('version_field');
+    if (this.value === 'release') {
+      versionField.classList.remove('hidden');
+    } else {
+      versionField.classList.add('hidden');
+    }
+  });
+</script>

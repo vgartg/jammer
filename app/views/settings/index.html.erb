@@ -762,12 +762,13 @@
 
       <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
         <div class="space-y-6">
-          <% [
+          <% notification_settings = [
             [:notify_friend_requests, t('.notifications.friend_requests')],
             [:notify_jam_invites,     t('.notifications.jam_invites')],
             [:notify_status_changes,  t('.notifications.status_changes')],
-            [:notify_moderation,      t('.notifications.moderation')]
-          ].each do |field, label| %>
+          ]
+          notification_settings << [:notify_moderation, t('.notifications.moderation')] if current_user.admin? || current_user.moderator?
+          notification_settings.each do |field, label| %>
             <div class="flex items-center justify-between rounded-lg bg-white/5 px-4 py-3">
               <span class="text-sm font-medium text-white"><%= label %></span>
               <label class="relative inline-flex cursor-pointer items-center">
