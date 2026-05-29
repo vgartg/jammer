@@ -23,7 +23,7 @@ module Admin
 
         if old_game.status != @game.status
           @author = @game.author
-          @author.create_notification(@author, current_user, 'game_status_changed', @game)
+          User.create_notification(@author, current_user, 'game_status_changed', @game)
         end
 
         changes = @game.previous_changes.except('updated_at')

@@ -24,7 +24,7 @@ class FriendshipsController < ApplicationController
 
     unless existing_friendship
       @friendship = current_user.friendships.build(friend: @user, status: 'pending')
-      @user.create_notification(@user, current_user, 'sent_friend_request', @friendship) if @friendship.save
+      User.create_notification(@user, current_user, 'sent_friend_request', @friendship) if @friendship.save
     end
     redirect_to user_profile_path(@user)
   end
@@ -39,7 +39,7 @@ class FriendshipsController < ApplicationController
 
     sender = @friendship.user
     if @friendship.update(status: 'accepted')
-      sender&.create_notification(sender, current_user, 'accepted_friendship', @friendship)
+      User.create_notification(sender, current_user, 'accepted_friendship', @friendship) if sender
       flash[:notice] = t 'friendships.update.notice'
     else
       flash[:alert] = t 'friendships.update.alert'

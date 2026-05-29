@@ -107,7 +107,7 @@ class GamesController < ApplicationController
     if @game.save
       admins = User.where(role: [1, 2])
       admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting_game_moderation', @game)
+        User.create_notification(admin, current_user, 'awaiting_game_moderation', @game)
       end
       flash[:success] ||= []
       flash[:success] << translate("games.create.success")
@@ -133,7 +133,7 @@ class GamesController < ApplicationController
     if @game.update(game_params)
       admins = User.where(role: [1, 2])
       admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting_game_moderation', @game)
+        User.create_notification(admin, current_user, 'awaiting_game_moderation', @game)
       end
       @game.update(status: 0)
       flash[:success] ||= []

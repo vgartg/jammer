@@ -129,10 +129,10 @@ class User < ActiveRecord::Base
 
     if friendship
       friendship.update(status: 'accepted')
-      create_notification(friendship.user, user, 'accepted_friend_request', friendship)
+      User.create_notification(friendship.user, user, 'accepted_friend_request', friendship)
     elsif inverse_friendship
       inverse_friendship.update(status: 'accepted')
-      create_notification(inverse_friendship.friend, user, 'accepted_friend_request', inverse_friendship)
+      User.create_notification(inverse_friendship.friend, user, 'accepted_friend_request', inverse_friendship)
     end
   end
 
@@ -140,13 +140,24 @@ class User < ActiveRecord::Base
   JAM_INVITE_ACTIONS     = %w[sent_jam_jury_invite accepted_jam_jury_invite].freeze
   STATUS_CHANGE_ACTIONS  = %w[game_status_changed jam_status_changed].freeze
 
-  def create_notification(recipient, actor, action, notifiable)
-    return if notification_muted?(recipient, action)
+  def self.create_notification(recipient, actor, action, notifiable)
+    return if recipient.is_a?(User) && recipient.muted_notification?(action)
 
-    existing_notifications = Notification.where(recipient: recipient, actor: actor, action: action,
-                                                notifiable: notifiable)
-    existing_notifications.destroy_all
+    Notification.where(recipient: recipient, actor: actor, action: action,
+                       notifiable: notifiable).destroy_all
     Notification.create(recipient: recipient, actor: actor, action: action, notifiable: notifiable)
+  end
+
+  def muted_notification?(action)
+    if FRIEND_REQUEST_ACTIONS.include?(action)
+      !notify_friend_requests?
+    elsif JAM_INVITE_ACTIONS.include?(action)
+      !notify_jam_invites?
+    elsif STATUS_CHANGE_ACTIONS.include?(action)
+      !notify_status_changes?
+    else
+      false
+    end
   end
 
   def remove_friend(user)
@@ -273,19 +284,4 @@ class User < ActiveRecord::Base
     result.values
   end
 
-  private
-
-  def notification_muted?(recipient, action)
-    return false unless recipient.is_a?(User)
-
-    if FRIEND_REQUEST_ACTIONS.include?(action)
-      !recipient.notify_friend_requests?
-    elsif JAM_INVITE_ACTIONS.include?(action)
-      !recipient.notify_jam_invites?
-    elsif STATUS_CHANGE_ACTIONS.include?(action)
-      !recipient.notify_status_changes?
-    else
-      false
-    end
-  end
 end

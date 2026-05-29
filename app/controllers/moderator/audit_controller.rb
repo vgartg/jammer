@@ -15,7 +15,7 @@ module Moderator
       if params[:date_from].present?
         date_from = begin
           Date.parse(params[:date_from])
-        rescue ArgumentError
+        rescue ArgumentError, TypeError
           nil
         end
         records = records.where('created_at >= ?', date_from) if date_from
@@ -23,7 +23,7 @@ module Moderator
       if params[:date_to].present?
         date_to = begin
           Date.parse(params[:date_to])
-        rescue ArgumentError
+        rescue ArgumentError, TypeError
           nil
         end
         records = records.where('created_at <= ?', date_to.end_of_day) if date_to

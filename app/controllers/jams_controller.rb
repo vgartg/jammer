@@ -137,7 +137,7 @@ class JamsController < ApplicationController
     elsif @jam.save
       admins = User.where(role: [1, 2])
       admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting_jam_moderation', @jam)
+        User.create_notification(admin, current_user, 'awaiting_jam_moderation', @jam)
       end
       flash[:success] ||= []
       flash[:success] << t('jams.create.success')
@@ -184,7 +184,7 @@ class JamsController < ApplicationController
     elsif @jam.update(jam_params)
       admins = User.where(role: [1, 2])
       admins.each do |admin|
-        current_user.create_notification(admin, current_user, 'awaiting_jam_moderation', @jam)
+        User.create_notification(admin, current_user, 'awaiting_jam_moderation', @jam)
       end
       @jam.update(status: 0)
       flash[:success] = t('controllers.jams.update_resubmitted')
@@ -372,7 +372,7 @@ class JamsController < ApplicationController
     contributor.judge = true if contributor.new_record?
 
     if contributor.save
-      current_user.create_notification(user, current_user, "sent_jam_jury_invite", contributor)
+      User.create_notification(user, current_user, "sent_jam_jury_invite", contributor)
       flash[:success] ||= []
       flash[:success] << t('controllers.jams.invite_sent')
     else
@@ -411,7 +411,7 @@ class JamsController < ApplicationController
 
     if contributor.update(status: "accepted")
       # нотифицируем автора джема
-      current_user.create_notification(@jam.author, current_user, "accepted_jam_jury_invite", contributor)
+      User.create_notification(@jam.author, current_user, "accepted_jam_jury_invite", contributor)
       flash[:success] = t('controllers.jams.invite_accepted')
     else
       flash[:failure] = t('controllers.jams.invite_accept_failed')
