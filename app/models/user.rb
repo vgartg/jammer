@@ -141,7 +141,8 @@ class User < ActiveRecord::Base
   STATUS_CHANGE_ACTIONS  = %w[game_status_changed jam_status_changed].freeze
 
   def self.create_notification(recipient, actor, action, notifiable)
-    return if recipient.is_a?(User) && recipient.muted_notification?(action)
+    return unless recipient.is_a?(User)
+    return if recipient.muted_notification?(action)
 
     Notification.where(recipient: recipient, actor: actor, action: action,
                        notifiable: notifiable).destroy_all

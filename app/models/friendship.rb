@@ -4,13 +4,17 @@ class Friendship < ApplicationRecord
 
   validates :status, presence: true
   after_initialize :set_default_status, if: :new_record?
+  before_destroy :cleanup_notifications
 
   def purge
-    Notification.where(notifiable: self).destroy_all
     destroy
   end
 
   private
+
+  def cleanup_notifications
+    Notification.where(notifiable: self).destroy_all
+  end
 
   def set_default_status
     self.status ||= 'pending'
