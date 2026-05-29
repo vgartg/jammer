@@ -54,7 +54,7 @@
             <strong><%= t '.user_frozen' %></strong>
             <br>
             <% if @user.unfreeze_at.present? %>
-              <span><%= t '.unfreeze_at' %> <%= @user.unfreeze_at.strftime("%d-%m-%Y %H:%M") %></span>
+              <span><%= t '.unfreeze_at' %> <%= @user.unfreeze_at.in_time_zone.strftime("%d-%m-%Y %H:%M") %></span>
             <% else %>
               <span><%= t '.frozen_indefinitely' %></span>
             <% end %>

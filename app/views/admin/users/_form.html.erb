@@ -318,7 +318,7 @@
           <br>
           <span><%= t('.frozen.reason') %> <%= @user.frozen_reason %></span>
           <br>
-          <span><%= t('.frozen.unfreeze_at') %> <%= @user.unfreeze_at.present? ? @user.unfreeze_at.strftime("%d-%m-%Y %H:%M") : t('.freeze.durations.forever') %></span>
+          <span><%= t('.frozen.unfreeze_at') %> <%= @user.unfreeze_at.present? ? @user.unfreeze_at.in_time_zone.strftime("%d-%m-%Y %H:%M") : t('.freeze.durations.forever') %></span>
         </div>
       <% end %>
     </div>
@@ -638,7 +638,7 @@
                           <%= notification.action %>
                         <% end %>
                       </p>
-                      <p class="text-xs text-gray-500"><%= notification.created_at.strftime("%d.%m.%Y, %H:%M")%></p>
+                      <p class="text-xs text-gray-500"><%= notification.created_at.in_time_zone.strftime("%d.%m.%Y, %H:%M")%></p>
                     </div>
                   </div>
                 <% end %>

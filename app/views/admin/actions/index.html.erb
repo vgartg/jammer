@@ -41,7 +41,7 @@
             <span><%= t('.no_changes') %></span>
           <% end %>
         </td>
-        <td class="py-3 px-6 text-sm md:text-base"><%= action.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        <td class="py-3 px-6 text-sm md:text-base"><%= action.created_at.in_time_zone.strftime("%Y-%m-%d %H:%M:%S") %></td>
       </tr>
     <% end %>
     </tbody>

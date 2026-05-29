@@ -160,7 +160,7 @@
                     <% end %>
 
                     <p class="text-xs text-gray-500">
-                      <%= notification.created_at.strftime("%d.%m.%Y, %H:%M") %>
+                      <%= notification.created_at.in_time_zone.strftime("%d.%m.%Y, %H:%M") %>
                     </p>
                   </div>
                 </div>

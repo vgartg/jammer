@@ -5,9 +5,9 @@
     <div class="bg-white p-6 rounded-lg max-w-lg w-full">
       <h2 class="text-xl font-bold text-red-500"><%= t 'layouts.is_frozen.title' %></h2>
       <p class="mt-4 text-gray-800"><%= t 'layouts.is_frozen.reason' %> <%= current_user.frozen_reason %></p>
-      <p class="mt-2 text-gray-800"><%= t 'layouts.is_frozen.frozen_at' %> <%= current_user.frozen_at.strftime("%d-%m-%Y %H:%M") %></p>
+      <p class="mt-2 text-gray-800"><%= t 'layouts.is_frozen.frozen_at' %> <%= current_user.frozen_at.in_time_zone.strftime("%d-%m-%Y %H:%M") %></p>
       <p class="mt-2 text-gray-800"><%= t 'layouts.is_frozen.frozen_until' %>
-        <%= current_user.unfreeze_at.present? ? current_user.unfreeze_at.strftime("%d-%m-%Y %H:%M") : t('layouts.is_frozen.indefinitely') %>
+        <%= current_user.unfreeze_at.present? ? current_user.unfreeze_at.in_time_zone.strftime("%d-%m-%Y %H:%M") : t('layouts.is_frozen.indefinitely') %>
       </p>
       <p class="mt-4 text-gray-600"><%= t 'layouts.is_frozen.contact' %> <a href="mailto:jammer.website@internet.ru" class="text-blue-500">jammer.website@internet.ru</a></p>
 

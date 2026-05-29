@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   prepend_around_action :switch_locale
+  around_action :set_time_zone
 
   helper_method :current_user
   before_action :check_user_freeze, unless: :logout_action?
@@ -201,5 +202,10 @@ class ApplicationController < ActionController::Base
 
   def logout_action?
     request.path == logout_path
+  end
+
+  def set_time_zone(&block)
+    tz = current_user&.timezone.presence || 'Europe/Moscow'
+    Time.use_zone(tz, &block)
   end
 end

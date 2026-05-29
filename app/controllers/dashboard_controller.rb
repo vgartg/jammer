@@ -12,9 +12,9 @@ class DashboardController < ApplicationController
     @jams = Jam.all.where(status: 1)
     @notifications = current_user.notifications
 
-    participating_ids = @user.jam_submissions.pluck(:jam_id)
+    authored_ids = @user.jams.where(status: 1).pluck(:id)
     admin_ids = @user.jam_contributors.where(status: 'accepted', admin: true).pluck(:jam_id)
-    @user_jams = Jam.where(id: (participating_ids + admin_ids).uniq).order(start_date: :desc)
+    @user_jams = Jam.where(id: (authored_ids + admin_ids).uniq).order(start_date: :desc)
 
     @reviews_in_jams = Review.where(user: @user).where.not(jam_id: nil).includes(:game, :jam)
     @reviews_no_jam = Review.where(user: @user).where(jam_id: nil).includes(:game, :jam)
