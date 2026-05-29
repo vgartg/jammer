@@ -20,22 +20,30 @@ class Asset < ApplicationRecord
 
   private
 
+  ACCEPTABLE_GUIDE_TYPES = %w[
+    application/pdf
+    application/msword
+    application/vnd.openxmlformats-officedocument.wordprocessingml.document
+  ].freeze
+  ACCEPTABLE_GUIDE_EXTENSIONS = %w[.pdf .doc .docx].freeze
+
+  ACCEPTABLE_PREVIEW_TYPES = %w[image/jpeg image/png image/gif image/webp].freeze
+  ACCEPTABLE_PREVIEW_EXTENSIONS = %w[.jpg .jpeg .png .gif .webp].freeze
+
   def guide_format
     return unless guide.attached?
 
-    acceptable = %w[
-      application/pdf
-      application/msword
-      application/vnd.openxmlformats-officedocument.wordprocessingml.document
-    ]
-    errors.add(:guide, :wrong_format) unless acceptable.include?(guide.content_type)
+    type_ok = ACCEPTABLE_GUIDE_TYPES.include?(guide.content_type)
+    ext_ok  = ACCEPTABLE_GUIDE_EXTENSIONS.include?(File.extname(guide.filename.to_s).downcase)
+    errors.add(:guide, :wrong_format) unless type_ok && ext_ok
   end
 
   def preview_format
     return unless preview.attached?
 
-    acceptable = %w[image/jpeg image/png image/gif image/webp]
-    errors.add(:preview, :wrong_format) unless acceptable.include?(preview.content_type)
+    type_ok = ACCEPTABLE_PREVIEW_TYPES.include?(preview.content_type)
+    ext_ok  = ACCEPTABLE_PREVIEW_EXTENSIONS.include?(File.extname(preview.filename.to_s).downcase)
+    errors.add(:preview, :wrong_format) unless type_ok && ext_ok
   end
 
   def files_size

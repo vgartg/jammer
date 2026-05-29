@@ -48,13 +48,18 @@ class AssetsController < ApplicationController
   end
 
   def download
-    if @asset.files.attached?
-      @asset.increment!(:downloads_count)
-      redirect_to url_for(@asset.files.first), allow_other_host: true
-    else
+    unless @asset.files.attached?
       flash[:failure] = t('assets.download.no_file')
-      redirect_to asset_profile_path(@asset)
+      return redirect_to asset_profile_path(@asset)
     end
+
+    file = if params[:blob_signed_id].present?
+             @asset.files.find { |f| f.blob.signed_id == params[:blob_signed_id] }
+           end
+    file ||= @asset.files.first
+
+    @asset.increment!(:downloads_count)
+    redirect_to url_for(file), allow_other_host: true
   end
 
   private

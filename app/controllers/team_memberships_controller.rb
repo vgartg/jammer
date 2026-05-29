@@ -13,8 +13,12 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
-    @team.team_memberships.create!(user: current_user, role: 'member', status: 'pending')
-    flash[:success] = t('team_memberships.create.success')
+    begin
+      @team.team_memberships.create!(user: current_user, role: 'member', status: 'pending')
+      flash[:success] = t('team_memberships.create.success')
+    rescue ActiveRecord::RecordNotUnique
+      flash[:failure] = t('team_memberships.create.request_pending')
+    end
     redirect_to team_profile_path(@team)
   end
 

@@ -9,13 +9,14 @@ class TeamsController < ApplicationController
       q = "%#{params[:search].downcase}%"
       @teams = @teams.where('LOWER(teams.name) LIKE ? OR LOWER(teams.description) LIKE ?', q, q)
     end
-    @pagy, @teams = pagy(@teams.includes(:team_memberships), limit: 12)
+    @pagy, @teams = pagy(@teams.includes(:accepted_memberships), limit: 12)
   end
 
   def show
-    @memberships = @team.team_memberships.where(status: 'accepted').includes(:user)
-    @pending_memberships = @team.team_memberships.where(status: 'pending').includes(:user)
-    @user_membership = current_user ? @team.team_memberships.find_by(user: current_user) : nil
+    all_memberships = @team.team_memberships.includes(:user).to_a
+    @memberships = all_memberships.select { |m| m.status == 'accepted' }
+    @pending_memberships = all_memberships.select { |m| m.status == 'pending' }
+    @user_membership = current_user ? all_memberships.find { |m| m.user_id == current_user.id } : nil
   end
 
   def new

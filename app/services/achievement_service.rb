@@ -60,22 +60,26 @@ class AchievementService
   end
 
   def total_ratings_received
-    Review.joins(:game).where(games: { author_id: @user.id }).count
+    @total_ratings_received ||= Review.joins(:game).where(games: { author_id: @user.id }).count
   end
 
   def total_ratings_given
-    Review.where(user: @user).count
+    @total_ratings_given ||= Review.where(user: @user).count
   end
 
   def games_uploaded_count
-    @user.games.where(status: Game::STATUS_ACCEPTED).count
+    @games_uploaded_count ||= @user.games.where(status: Game::STATUS_ACCEPTED).count
   end
 
   def total_jam_participants
-    jam_ids = @user.jams.pluck(:id)
-    return 0 if jam_ids.empty?
-
-    JamSubmission.where(jam_id: jam_ids).select(:user_id).distinct.count
+    @total_jam_participants ||= begin
+      jam_ids = @user.jams.pluck(:id)
+      if jam_ids.empty?
+        0
+      else
+        JamSubmission.where(jam_id: jam_ids).select(:user_id).distinct.count
+      end
+    end
   end
 
   def award(key)
