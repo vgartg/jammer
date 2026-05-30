@@ -44,7 +44,11 @@ module Admin
             when 'team'
               team = Team.find_by(id: params[:target_team_id])
               return [] unless team
-              team.members.where(email_confirmed: true).where.not(id: current_user.id).pluck(:id)
+              User.joins(:team_memberships)
+                  .where(team_memberships: { team_id: team.id, status: 'accepted' })
+                  .where(email_confirmed: true)
+                  .where.not(id: current_user.id)
+                  .pluck(:id)
             when 'jam'
               jam = Jam.find_by(id: params[:target_jam_id])
               return [] unless jam

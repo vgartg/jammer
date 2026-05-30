@@ -15,5 +15,6 @@ class CreateAnnouncements < ActiveRecord::Migration[8.0]
     add_index :announcements, :author_id
     add_index :announcements, :published
     add_index :announcements, :announcement_type
+    add_foreign_key :announcements, :users, column: :author_id
   end
 end
