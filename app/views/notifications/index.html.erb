@@ -8,7 +8,7 @@
 
     <% if @notifications.any? %>
       <% @notifications.each do |notification| %>
-        <% next if notification.notifiable.nil? && notification.actor.nil? %>
+        <% next if notification.notifiable.nil? || notification.actor.nil? %>
 
         <div class="flex items-start px-4 py-3 border-b border-gray-200 hover:bg-gray-100 transition duration-200">
           <div class="flex-shrink-0 mr-3">

@@ -20,9 +20,8 @@ module Admin
       ApplicationRecord.transaction do
         @message.save!
         send_notifications(recipient_ids)
+        create_administration_record(current_user, @message, {}, 'create')
       end
-
-      create_administration_record(current_user, @message, {}, 'create')
       flash[:success] = t('admin.messages.sent', count: recipient_ids.size)
       redirect_to new_admin_message_path
     rescue ActiveRecord::RecordInvalid
@@ -43,7 +42,7 @@ module Admin
             when 'user'
               raw = params[:target_user_id].to_s.strip
               return [] if raw.blank?
-              user = User.find_by(id: raw.to_i.nonzero? ? raw : nil) || User.find_by(name: raw)
+              user = User.find_by(id: raw.match?(/\A\d+\z/) ? raw.to_i : nil) || User.find_by(name: raw)
               user && user.email_confirmed? && user.id != current_user.id ? [user.id] : []
             when 'team'
               team = Team.find_by(id: params[:target_team_id])
