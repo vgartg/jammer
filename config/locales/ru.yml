@@ -884,6 +884,7 @@ ru:
       index:
         title: "Пользователи"
         search_label: "Поиск пользователей"
+        search_btn: "Найти"
         not_found: 'Пользователи не найдены по запросу "%{query}".'
         create_user: "Создать пользователя"
       new:

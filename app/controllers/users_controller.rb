@@ -22,6 +22,10 @@ class UsersController < ApplicationController
 
   def index
     scope = current_user ? User.where.not(id: current_user.id) : User.all
+    if params[:search].present?
+      q = "%#{params[:search].downcase}%"
+      scope = scope.where('LOWER(name) LIKE ?', q)
+    end
     @pagy, @users = pagy(scope, limit: 16)
   end
 

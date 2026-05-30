@@ -1,55 +1,71 @@
-<div class="bg-white">
-  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
-    <div class="flex justify-between items-center">
-      <h2 class="px-4 text-2xl font-bold tracking-tight text-gray-900">
-        <%= t '.title' %>
-      </h2>
+<div class="bg-gray-900 min-h-screen">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <h1 class="text-3xl font-bold text-white"><%= t '.title' %></h1>
     </div>
-    <div class="grid sm:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
-      <% @users.each do |user| %>
-          <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
-      duration-200 flex items-center space-x-4">
-            <%= link_to users_path + '/' + user.id.to_s, class: "flex items-center space-x-4 flex-grow" do %>
-              <span class="relative">
-            <% if user && user.avatar.attached? %>
-              <%= image_tag url_for(user.avatar), alt: "Profile Picture",
-                            class: "h-16 w-16 rounded-full" %>
-            <% else %>
-              <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full" %>
-            <% end %>
-                <% if current_user && user.can_see_online?(current_user) %>
-            <% if user.online? %>
-              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
-            <% elsif user.last_active_at %>
-              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
-            <% end %>
-              <% end %>
-          </span>
-              <div>
-                <h2 class="text-lg font-semibold text-gray-800">
-              <% if current_user && current_user.role != 'basic' && user.role != 'basic' %>
-                <span class="<%= user.role == 'moderator' ? 'text-green-500' : 'text-red-500' %>">[<%= user.role[0].upcase %>]</span>
-              <% end %>
-              <%= user.name %>
-              </h2>
-                <% if user.can_see_online?(current_user) %>
-                  <p class="mt-6"
-                     data-controller="online">
-                    <% if user.last_active_at.present? %>
-      <span id="user-status" class="text-sm text-gray-600"
-            data-online-target="lastActiveAt"
-            data-last-active-at="<%= user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
-            data-action="load->online#updateStatus"></span>
-                    <% else %>
-                      <span class="text-sm text-gray-600">Offline</span>
-                    <% end %>
-                  </p>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
+
+    <div class="mb-8">
+      <%= form_with url: users_path, method: :get, local: true, class: "flex gap-3" do |f| %>
+        <%= f.text_field :search, value: params[:search], placeholder: t('.search_label'),
+            class: "flex-1 max-w-sm rounded-xl border-0 bg-gray-800 py-2.5 px-4 text-white placeholder-gray-500 ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-indigo-500 sm:text-sm" %>
+        <%= f.submit t('.search_btn'), class: "rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 transition-colors cursor-pointer" %>
       <% end %>
     </div>
-  <%= render partial: 'helpers/pagy' %>
-</div>
+
+    <% if @users.any? %>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <% @users.each do |user| %>
+          <%= link_to user_path(user), class: "group flex items-center gap-4 rounded-2xl border border-gray-700/60 bg-gray-800 p-4 hover:border-gray-500/80 transition-all hover:shadow-xl hover:shadow-black/40" do %>
+            <span class="relative shrink-0">
+              <% if user.avatar.attached? %>
+                <%= image_tag url_for(user.avatar), alt: user.name, class: "h-14 w-14 rounded-xl object-cover" %>
+              <% else %>
+                <%= image_tag 'empty-avatar.jpg', alt: user.name, class: "h-14 w-14 rounded-xl object-cover" %>
+              <% end %>
+              <% if current_user && user.can_see_online?(current_user) %>
+                <% if user.online? %>
+                  <span class="absolute bottom-0.5 right-0.5 block h-3.5 w-3.5 rounded-full bg-green-400 ring-2 ring-gray-800"></span>
+                <% elsif user.last_active_at %>
+                  <span class="absolute bottom-0.5 right-0.5 block h-3.5 w-3.5 rounded-full bg-gray-500 ring-2 ring-gray-800"></span>
+                <% end %>
+              <% end %>
+            </span>
+
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <% if current_user && current_user.role != 'basic' && user.role != 'basic' %>
+                  <span class="text-xs font-bold <%= user.role == 'moderator' ? 'text-green-400' : 'text-red-400' %>">[<%= user.role[0].upcase %>]</span>
+                <% end %>
+                <span class="font-semibold text-white truncate group-hover:text-indigo-400 transition-colors"><%= user.name %></span>
+              </div>
+              <% if user.can_see_online?(current_user) && user.last_active_at.present? %>
+                <p data-controller="online" class="mt-0.5">
+                  <span class="text-xs text-gray-500"
+                        data-online-target="lastActiveAt"
+                        data-last-active-at="<%= user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                        data-action="load->online#updateStatus"></span>
+                </p>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="mt-6">
+        <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+      </div>
+    <% else %>
+      <div class="text-center py-20">
+        <svg class="mx-auto h-12 w-12 text-gray-700" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/>
+        </svg>
+        <% if params[:search].present? %>
+          <p class="mt-4 text-gray-500 text-sm"><%= t '.not_found', query: params[:search] %></p>
+        <% else %>
+          <p class="mt-4 text-gray-500 text-sm"><%= t '.title' %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+  </div>
 </div>

@@ -884,6 +884,7 @@ en:
       index:
         title: "Users"
         search_label: "Search users"
+        search_btn: "Search"
         not_found: 'No users found for query "%{query}".'
         create_user: "Create user"
       new:
