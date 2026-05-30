@@ -1,30 +1,30 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-    static targets = ["tab-name"];
+    static values = { defaultTab: String };
+
+    connect() {
+        this._activateTab(this.defaultTabValue || 'friends');
+    }
+
     openTab(event) {
-        const tabName = event.currentTarget.dataset.tabName;
-        let i, tab_content, tab_links;
+        this._activateTab(event.currentTarget.dataset.tabName);
+    }
 
-        tab_content = document.getElementsByClassName("tab_content");
-        for (i = 0; i < tab_content.length; i++) {
-            tab_content[i].style.display = "none";
-        }
+    _activateTab(tabName) {
+        document.querySelectorAll(".tab_content").forEach(el => el.classList.add("hidden"));
+        document.querySelectorAll(".tab_links").forEach(btn => {
+            btn.classList.remove("bg-gray-700", "text-white");
+            btn.classList.add("text-gray-400");
+        });
 
-        tab_links = document.getElementsByClassName("tab_links");
-        for (i = 0; i < tab_links.length; i++) {
-            tab_links[i].className = tab_links[i].className.replace(" active", "");
-        }
+        const target = document.getElementById(tabName);
+        if (target) target.classList.remove("hidden");
 
-        document.getElementById(tabName).style.display = "block";
-        event.currentTarget.className += " active";
-
-        if (tabName === 'sent_requests') {
-            document.getElementById("btnSentRequests").classList.add("bg-blue-700");
-            document.getElementById("btnReceivedRequests").classList.remove("bg-blue-700");
-        } else if (tabName === 'received_requests') {
-            document.getElementById("btnSentRequests").classList.remove("bg-blue-700");
-            document.getElementById("btnReceivedRequests").classList.add("bg-blue-700");
+        const activeBtn = document.querySelector(`[data-tab-name="${tabName}"]`);
+        if (activeBtn) {
+            activeBtn.classList.add("bg-gray-700", "text-white");
+            activeBtn.classList.remove("text-gray-400");
         }
     }
 }

@@ -16,6 +16,8 @@ class FriendshipsController < ApplicationController
     @received_requests = current_user.inverse_friendships.where(status: 'pending')
     @current_user = current_user
     @notifications = current_user.notifications
+    @default_tab = 'received_requests'
+    render :index
   end
 
   def create

@@ -11,14 +11,9 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @current_user = current_user
-    @viewing_own_profile = @current_user&.id == @user.id
-    @is_admin = @current_user&.admin?
+    setup_profile_context
 
-    @friendship = @current_user&.friendship_with(@user)
-    @is_mutual_friend = @friendship&.status == 'accepted'
-
-    @profile_hidden_for_viewer = @user.profile_hidden? && !@viewing_own_profile && !@is_admin && !@is_mutual_friend
-    @profile_hidden_admin_view = @user.profile_hidden? && @is_admin && !@viewing_own_profile
+    return render 'private_profile' if @profile_hidden_for_viewer
 
     @notifications = @current_user.notifications if @current_user
     @friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
@@ -131,10 +126,20 @@ class UsersController < ApplicationController
     subdomain = Subdomain.extract_subdomain(request)
     @user = User.find_by_link_username(subdomain)
     @current_user = current_user
-    @notifications = current_user.notifications
+    @notifications = current_user&.notifications
+    setup_profile_context
   end
 
   private
+
+  def setup_profile_context
+    @viewing_own_profile = @current_user&.id == @user.id
+    @is_admin = @current_user&.admin?
+    @friendship = @current_user&.friendship_with(@user)
+    @is_mutual_friend = @friendship&.status == 'accepted'
+    @profile_hidden_for_viewer = @user.profile_hidden? && !@viewing_own_profile && !@is_admin && !@is_mutual_friend
+    @profile_hidden_admin_view = @user.profile_hidden? && @is_admin && !@viewing_own_profile
+  end
 
   def user_params
     params.require(:user)

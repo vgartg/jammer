@@ -32,12 +32,11 @@
         <%# Кнопки действий %>
         <div class="mt-6 flex flex-wrap gap-3">
           <% if current_user && current_user.id != @user.id %>
-            <% friendship = current_user.friendship_with(@user) %>
-            <% if friendship.nil? %>
+            <% if @friendship.nil? %>
               <%= button_to t('.add_friend'), user_friendships_path(@user),
                     method: :post,
                     class: "rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 transition-colors" %>
-            <% elsif friendship.status == 'pending' %>
+            <% elsif @friendship.status == 'pending' %>
               <span class="rounded-xl bg-gray-700 px-5 py-2.5 text-sm text-gray-400"><%= t '.request_pending' %></span>
             <% end %>
 

@@ -44,7 +44,7 @@ Rails.application.routes.draw do
         end
       end
     end
-    get '/requests', to: 'friendships#index'
+    get '/requests', to: 'friendships#requests'
 
   # Sessions
     resources :sessions do
