@@ -8,9 +8,16 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
-    if @team.team_memberships.exists?(user: current_user, status: 'pending')
-      flash[:failure] = t('team_memberships.create.request_pending')
-      return redirect_to team_profile_path(@team)
+    existing = @team.team_memberships.find_by(user: current_user)
+    if existing
+      if existing.status == 'pending'
+        flash[:failure] = t('team_memberships.create.request_pending')
+        return redirect_to team_profile_path(@team)
+      elsif existing.status == 'declined'
+        existing.update!(status: 'pending', leader_invited: false)
+        flash[:success] = t('team_memberships.create.success')
+        return redirect_to team_profile_path(@team)
+      end
     end
 
     begin
@@ -34,12 +41,22 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
-    if @team.team_memberships.exists?(user: user)
-      flash[:failure] = t('team_memberships.invite.already_member')
-      return redirect_to team_profile_path(@team)
+    existing = @team.team_memberships.find_by(user: user)
+    membership = if existing
+      if %w[pending accepted].include?(existing.status)
+        flash[:failure] = t('team_memberships.invite.already_member')
+        return redirect_to team_profile_path(@team)
+      else
+        existing.tap { |m| m.update!(status: 'pending', leader_invited: true) }
+      end
+    else
+      begin
+        @team.team_memberships.create!(user: user, role: 'member', status: 'pending', leader_invited: true)
+      rescue ActiveRecord::RecordNotUnique
+        flash[:failure] = t('team_memberships.invite.already_member')
+        return redirect_to team_profile_path(@team)
+      end
     end
-
-    membership = @team.team_memberships.create!(user: user, role: 'member', status: 'pending', leader_invited: true)
     User.create_notification(user, current_user, 'team_invite_received', membership)
     flash[:success] = t('team_memberships.invite.success')
     redirect_to team_profile_path(@team)
@@ -62,8 +79,11 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
-    @membership.update!(status: params[:status])
-    flash[:success] = t('team_memberships.update.success')
+    if @membership.update(status: params[:status])
+      flash[:success] = t('team_memberships.update.success')
+    else
+      flash[:failure] = @membership.errors.full_messages
+    end
     redirect_to team_profile_path(@team)
   end
 

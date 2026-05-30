@@ -164,7 +164,7 @@ Rails.application.routes.draw do
     end
     get '/visits_data', to: 'visits#visits_data'
     get '/registrations_data', to: 'visits#registrations_data'
-    resources :announcements
+    resources :announcements, only: %i[index new create edit update destroy]
     resources :teams, only: %i[index destroy]
     resources :assets, only: %i[index destroy]
     resources :achievements, only: %i[index create destroy]
