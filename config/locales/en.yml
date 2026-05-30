@@ -542,6 +542,11 @@ en:
           drag: "Drag an image here or click to select a file"
           recommendation: "Recommended size: 1920x1080 pixels"
           preview_alt: "Image preview"
+          background_position: "Background position"
+          background_preview: "Preview"
+          pos_top: "Top"
+          pos_center: "Center"
+          pos_bottom: "Bottom"
         nickname: "Nickname"
         real_name: "Full name"
         email:
@@ -567,11 +572,6 @@ en:
           title: "Private Profile"
           hint: "When enabled, visitors see only your name and avatar, but no other information. Your full profile is visible only to friends."
           label: "Enable private profile"
-        background_position: "Background position"
-        background_preview: "Preview"
-        pos_top: "Top"
-        pos_center: "Center"
-        pos_bottom: "Bottom"
         password:
           title: "Change password"
           hint: "Update your password associated with your account."
