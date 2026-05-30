@@ -9,9 +9,8 @@ export default class extends Controller {
             this.updateLink();
             this.usernameTarget.addEventListener('input', () => this.updateLink());
         }
-        // this.updateLink();
-        // this.usernameTarget.addEventListener('input', () => this.updateLink());
         this.initFlatpickr();
+        this.formatPhoneNumber();
 
         this.sectionTargets.forEach((section, index) => {
             if (index !== 0) {
@@ -19,7 +18,35 @@ export default class extends Controller {
             }
         });
 
-        this.buttons = this.buttonTargets; // Ссылаемся на все кнопки
+        this.buttons = this.buttonTargets;
+
+        const hash = window.location.hash.substring(1);
+        if (hash) {
+            const sections = document.querySelectorAll('.section.divide-y.set-menuitem');
+            const matched = Array.from(sections).find(s => s.id === hash);
+            if (matched) {
+                sections.forEach(s => s.classList.toggle('hidden', s.id !== hash));
+                document.querySelectorAll('.change-set-button').forEach(btn => {
+                    btn.classList.toggle('text-indigo-400', btn.getAttribute('data-target') === hash);
+                });
+            }
+        }
+
+        document.querySelectorAll('form[action*="/users/"]').forEach(form => {
+            form.addEventListener('submit', () => {
+                const visibleSection = document.querySelector('.section.divide-y.set-menuitem:not(.hidden)');
+                if (visibleSection) {
+                    let field = form.querySelector('input[name="settings_section"]');
+                    if (!field) {
+                        field = document.createElement('input');
+                        field.type = 'hidden';
+                        field.name = 'settings_section';
+                        form.appendChild(field);
+                    }
+                    field.value = visibleSection.id;
+                }
+            });
+        });
     }
 
     showSection(event) {

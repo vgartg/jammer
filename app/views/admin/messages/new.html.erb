@@ -57,10 +57,16 @@
       <!-- Конкретный пользователь -->
       <div id="target-user-block" class="hidden">
         <label class="block text-sm font-medium text-gray-700 mb-1"><%= t 'admin.messages.user_id_label' %></label>
-        <input type="text" name="target_user_id"
-               class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                      focus:outline-none focus:ring-2 focus:ring-indigo-500"
-               placeholder="<%= t 'admin.messages.user_id_placeholder' %>">
+        <div class="relative">
+          <input type="text" id="user-search-input" autocomplete="off"
+                 class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                 placeholder="<%= t 'admin.messages.user_id_placeholder' %>">
+          <input type="hidden" name="target_user_id" id="target_user_id_hidden">
+          <ul id="user-search-results"
+              class="hidden absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-48 overflow-auto text-sm">
+          </ul>
+        </div>
       </div>
 
       <!-- Команда -->
@@ -116,5 +122,49 @@
 
     radios.forEach(r => r.addEventListener('change', updateVisibility));
     updateVisibility();
+
+    const searchInput = document.getElementById('user-search-input');
+    const hiddenInput = document.getElementById('target_user_id_hidden');
+    const resultsList = document.getElementById('user-search-results');
+    let searchTimeout;
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
+        clearTimeout(searchTimeout);
+        const q = this.value.trim();
+        hiddenInput.value = '';
+        if (q.length < 2) { resultsList.classList.add('hidden'); resultsList.innerHTML = ''; return; }
+        searchTimeout = setTimeout(function () {
+          fetch('/admin/users/search?q=' + encodeURIComponent(q), { headers: { 'Accept': 'application/json' } })
+            .then(r => r.json())
+            .then(function (users) {
+              resultsList.innerHTML = '';
+              if (!users.length) {
+                resultsList.classList.add('hidden');
+                return;
+              }
+              users.forEach(function (u) {
+                const li = document.createElement('li');
+                li.className = 'px-3 py-2 cursor-pointer hover:bg-indigo-50';
+                li.textContent = u.name + ' (id: ' + u.id + ')';
+                li.addEventListener('click', function () {
+                  searchInput.value = u.name;
+                  hiddenInput.value = u.id;
+                  resultsList.classList.add('hidden');
+                });
+                resultsList.appendChild(li);
+              });
+              resultsList.classList.remove('hidden');
+            })
+            .catch(function () { resultsList.classList.add('hidden'); });
+        }, 250);
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!searchInput.contains(e.target) && !resultsList.contains(e.target)) {
+          resultsList.classList.add('hidden');
+        }
+      });
+    }
   });
 </script>

@@ -148,6 +148,7 @@ Rails.application.routes.draw do
     get '/settings', to: 'settings#index'
     get '/frozen', to: 'frozen#show', as: 'frozen'
     get '/contacts', to: 'contacts#index', as: 'contacts'
+    get '/achievements', to: 'achievements#index', as: 'achievements'
 
   # Admin
   get '/admin', to: 'admins#index'
@@ -171,6 +172,7 @@ Rails.application.routes.draw do
     resources :assets, only: %i[index destroy]
     resources :achievements, only: %i[index create destroy]
     resources :messages, only: %i[new create]
+    get '/users/search', to: 'users#search', as: 'user_search'
   end
 
   # Moderator

@@ -397,7 +397,7 @@ ru:
     github_title: "GitHub"
     founders_title: "Основатели"
     current_devs_title: "Текущие разработчики"
-    past_devs_title: "Участники проекта"
+    past_devs_title: "Также принимали участие в разработке продукта"
     email_title: "Обратная связь"
   users:
     destroy:
@@ -1210,6 +1210,8 @@ ru:
     destroy:
       success: "Участник удалён из команды."
   achievements:
+    page_title: "Достижения"
+    page_subtitle: "Список всех достижений платформы и условий их получения."
     none_earned: "Достижений пока нет."
     tiers:
       bronze: "Бронза"

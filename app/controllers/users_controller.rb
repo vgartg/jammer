@@ -75,14 +75,14 @@ class UsersController < ApplicationController
         unless @user.authenticate(params[:user][:current_password])
           flash[:failure] ||= []
           flash[:failure] << t('users.update_user.failure1')
-          redirect_to settings_path
+          redirect_to settings_path(anchor: params[:settings_section].presence)
           return
         end
 
         if params[:user][:current_password].blank?
           flash[:failure] ||= []
           flash[:failure] << t('users.update_user.failure2')
-          redirect_to settings_path
+          redirect_to settings_path(anchor: params[:settings_section].presence)
           return
         end
       end

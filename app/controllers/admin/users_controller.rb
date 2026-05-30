@@ -108,6 +108,14 @@ module Admin
       end
     end
 
+    def search
+      q = params[:q].to_s.strip
+      return render json: [] if q.length < 2
+
+      users = User.where('LOWER(name) LIKE ? OR LOWER(email) LIKE ?', "%#{q.downcase}%", "%#{q.downcase}%").limit(10)
+      render json: users.map { |u| { id: u.id, name: u.name } }
+    end
+
     private
 
     def set_user!

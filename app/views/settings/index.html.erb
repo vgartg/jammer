@@ -613,25 +613,6 @@
             }
         });
     </script>
-    <script>
-      document.addEventListener('turbo:load', function () {
-        const phoneInput = document.querySelector('input[data-phone-mask]');
-        if (!phoneInput) return;
-        phoneInput.addEventListener('input', function () {
-          let digits = this.value.replace(/\D/g, '');
-          if (digits.startsWith('8')) digits = '7' + digits.slice(1);
-          if (!digits.startsWith('7')) digits = '7' + digits;
-          digits = digits.slice(0, 11);
-          let formatted = '+7';
-          if (digits.length > 1) formatted += ' (' + digits.slice(1, 4);
-          if (digits.length >= 4) formatted += ') ' + digits.slice(4, 7);
-          if (digits.length >= 7) formatted += ' ' + digits.slice(7, 9);
-          if (digits.length >= 9) formatted += ' ' + digits.slice(9, 11);
-          this.value = formatted;
-        });
-      });
-    </script>
-
     <div data-controller="modal">
       <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
         <div>
