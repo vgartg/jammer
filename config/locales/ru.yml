@@ -84,6 +84,7 @@ ru:
     add_friend: "Добавить в друзья"
     cancel: "Отмена"
     close: "Закрыть"
+    confirm: "Вы уверены?"
   search: "Поиск..."
   home:
     title: "Прототип сервиса Jammer"
@@ -950,6 +951,18 @@ ru:
       actions:
         title: "Журнал действий"
         description: "История действий администраторов"
+      announcements:
+        title: "Объявления"
+        description: "Управление объявлениями платформы"
+      teams:
+        title: "Команды"
+        description: "Управление командами"
+      assets:
+        title: "Ассеты"
+        description: "Управление ассетами"
+      achievements:
+        title: "Достижения"
+        description: "Управление достижениями пользователей"
   moderator:
     shared:
       back: "Назад"

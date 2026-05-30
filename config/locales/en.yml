@@ -84,6 +84,7 @@ en:
     add_friend: "Add friend"
     cancel: "Cancel"
     close: "Close"
+    confirm: "Are you sure?"
   search: "Search..."
   home:
     title: "Jammer service prototype"
@@ -950,6 +951,18 @@ en:
       actions:
         title: "Action log"
         description: "Admin action history"
+      announcements:
+        title: "Announcements"
+        description: "Platform announcements management"
+      teams:
+        title: "Teams"
+        description: "Team management"
+      assets:
+        title: "Assets"
+        description: "Asset management"
+      achievements:
+        title: "Achievements"
+        description: "User achievement management"
   moderator:
     shared:
       back: "Back"

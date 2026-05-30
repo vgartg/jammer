@@ -57,5 +57,37 @@
       </div>
       <%= link_to t('.go'), admin_actions_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
     </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
+      <div>
+        <h2 class="text-xl font-semibold mb-2"><%= t('.announcements.title') %></h2>
+        <p class="text-gray-600 mb-4"><%= t('.announcements.description') %></p>
+      </div>
+      <%= link_to t('.go'), admin_announcements_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
+      <div>
+        <h2 class="text-xl font-semibold mb-2"><%= t('.teams.title') %></h2>
+        <p class="text-gray-600 mb-4"><%= t('.teams.description') %></p>
+      </div>
+      <%= link_to t('.go'), admin_teams_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
+      <div>
+        <h2 class="text-xl font-semibold mb-2"><%= t('.assets.title') %></h2>
+        <p class="text-gray-600 mb-4"><%= t('.assets.description') %></p>
+      </div>
+      <%= link_to t('.go'), admin_assets_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
+      <div>
+        <h2 class="text-xl font-semibold mb-2"><%= t('.achievements.title') %></h2>
+        <p class="text-gray-600 mb-4"><%= t('.achievements.description') %></p>
+      </div>
+      <%= link_to t('.go'), admin_achievements_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
+    </div>
   </div>
 </div>

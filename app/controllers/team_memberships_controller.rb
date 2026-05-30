@@ -71,7 +71,8 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
-    invited_self_responding = @membership.leader_invited? && current_user == @membership.user &&
+    invited_self_responding = @membership.leader_invited? && @membership.status == 'pending' &&
+                              current_user == @membership.user &&
                               %w[accepted declined].include?(params[:status])
 
     unless current_user == @team.leader || current_user.admin? || invited_self_responding
