@@ -21,11 +21,6 @@ module Admin
         return redirect_to admin_achievements_path
       end
 
-      if user.user_achievements.exists?(achievement_key: key)
-        flash[:failure] = t('admin.achievements.already_has')
-        return redirect_to admin_achievements_path
-      end
-
       begin
         achievement = user.user_achievements.create!(achievement_key: key, earned_at: Time.current)
       rescue ActiveRecord::RecordNotUnique

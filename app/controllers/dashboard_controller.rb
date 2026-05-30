@@ -28,6 +28,8 @@ class DashboardController < ApplicationController
                                    .where.not(ratings: { jam_id: nil })
                                    .where.not(ratings: { average_rating: 0 })
                                    .average(:average_rating)
+
+    @games_count = @user.games.count
   end
 
   private

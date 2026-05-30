@@ -3,17 +3,21 @@ class TeamMembershipsController < ApplicationController
   before_action :set_team
 
   def create
-    if @team.member?(current_user)
+    if current_user == @team.leader
       flash[:failure] = t('team_memberships.create.already_member')
       return redirect_to team_profile_path(@team)
     end
 
     existing = @team.team_memberships.find_by(user: current_user)
     if existing
-      if existing.status == 'pending'
+      case existing.status
+      when 'accepted'
+        flash[:failure] = t('team_memberships.create.already_member')
+        return redirect_to team_profile_path(@team)
+      when 'pending'
         flash[:failure] = t('team_memberships.create.request_pending')
         return redirect_to team_profile_path(@team)
-      elsif existing.status == 'declined'
+      when 'declined'
         existing.update!(status: 'pending', leader_invited: false)
         flash[:success] = t('team_memberships.create.success')
         return redirect_to team_profile_path(@team)
@@ -24,7 +28,7 @@ class TeamMembershipsController < ApplicationController
       @team.team_memberships.create!(user: current_user, role: 'member', status: 'pending')
       flash[:success] = t('team_memberships.create.success')
     rescue ActiveRecord::RecordNotUnique
-      flash[:failure] = t('team_memberships.create.request_pending')
+      flash[:failure] = t('team_memberships.create.already_member')
     end
     redirect_to team_profile_path(@team)
   end
@@ -81,9 +85,7 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
-    invited_self_responding = @membership.leader_invited? && @membership.status == 'pending' &&
-                              current_user == @membership.user &&
-                              %w[accepted declined].include?(params[:status])
+    invited_self_responding = @membership.leader_invited? && current_user == @membership.user
 
     unless current_user == @team.leader || current_user.admin? || invited_self_responding
       flash[:failure] = t('controllers.application.insufficient_rights')
