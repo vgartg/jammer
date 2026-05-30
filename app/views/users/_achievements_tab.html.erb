@@ -4,6 +4,7 @@
     <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
       <% AchievementService::ACHIEVEMENTS.each do |key, config| %>
         <% next unless earned_keys.include?(key) %>
+        <% next unless File.exist?(Rails.root.join("app/assets/images/achievements/#{key}.svg")) %>
         <% ua = user_achievements.find { |a| a.achievement_key == key } %>
         <div class="flex flex-col items-center gap-1 group relative"
              title="<%= t "achievements.#{key}.name" %> — <%= t "achievements.#{key}.description" %>">

@@ -46,6 +46,7 @@ class UsersController < ApplicationController
     else
       flash[:failure] ||= []
       flash[:failure].concat(@user.errors.full_messages)
+      flash[:register_params] = params[:user].to_unsafe_h.slice('email', 'name')
       redirect_to register_path
     end
   end

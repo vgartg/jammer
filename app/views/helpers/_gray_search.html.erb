@@ -155,6 +155,10 @@
                       <%= notification_message(notification) %>
                     </p>
 
+                    <% if notification.notifiable.is_a?(AdminMessage) && notification.notifiable.body.present? %>
+                      <p class="text-xs text-gray-600 mt-1 line-clamp-2"><%= notification.notifiable.body %></p>
+                    <% end %>
+
                     <%# ===== КНОПКА ПРИНЯТЬ ИНВАЙТ В ЖЮРИ ===== %>
                     <% if notification.action == "sent_jam_jury_invite" && notification.notifiable.is_a?(JamContributor) %>
                       <% contributor = notification.notifiable %>

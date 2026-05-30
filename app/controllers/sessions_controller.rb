@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
     unless user.present? && user.authenticate(auth_params[:password])
       flash[:failure] ||= []
       flash[:failure] << t('sessions.create.failure')
-      redirect_to login_path
+      redirect_to login_path(email: auth_params[:email])
       return
     end
 

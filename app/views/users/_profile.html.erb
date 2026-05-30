@@ -2,12 +2,15 @@
 <% friend_btn_class = "inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-colors" %>
 
 <% if @profile_hidden_admin_view %>
-  <div class="bg-yellow-900/30 border border-yellow-600/40 rounded-lg px-4 py-3 mx-4 mt-4 text-sm text-yellow-300 flex items-center gap-2">
-    <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round"
-            d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
-    </svg>
-    <%= t 'users.show.admin_hidden_profile_notice' %>
+  <div class="bg-gray-900">
+    <div class="max-w-6xl mx-auto px-6 pt-4">
+      <div class="flex items-center gap-2 bg-amber-950/60 border border-amber-700/50 rounded-xl px-4 py-2.5 text-sm text-amber-300">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+        </svg>
+        <%= t 'users.show.admin_hidden_profile_notice' %>
+      </div>
+    </div>
   </div>
 <% end %>
 
@@ -193,11 +196,11 @@
           <% if special_earned.any? %>
             <div class="flex flex-wrap gap-2 mb-4">
               <% special_earned.each do |ua| %>
+                <% next unless File.exist?(Rails.root.join("app/assets/images/achievements/#{ua.achievement_key}.svg")) %>
                 <div class="group relative" title="<%= t "achievements.#{ua.achievement_key}.name" %>">
                   <%= image_tag "achievements/#{ua.achievement_key}.svg",
                         alt: t("achievements.#{ua.achievement_key}.name"),
-                        class: "h-9 w-9 drop-shadow transition-transform group-hover:scale-110",
-                        onerror: "this.style.display='none'" %>
+                        class: "h-9 w-9 drop-shadow transition-transform group-hover:scale-110" %>
                 </div>
               <% end %>
             </div>
@@ -256,8 +259,7 @@
           <% tabs = [
             ['btnGames',       'tab_games',    t('.tab_games')],
             ['btnJams',        'tab_jams',     t('.tab_jams')],
-            ['btnFriends',     'user_friends', t('.friends_tab')],
-            ['btnFollowers',   'user_followers', t('.subscribers')],
+            ['btnContacts',    'tab_contacts', t('.friends_tab')],
             ['btnAchievements','user_achievements', t('.achievements_tab')]
           ] %>
           <% tabs.each_with_index do |(btn_id, tab_name, label), i| %>
@@ -396,14 +398,55 @@
           <% end %>
         </div>
 
-        <!-- ТАБ: Друзья -->
-        <div id="user_friends" class="tab_content hidden">
+        <!-- ТАБ: Контакты (друзья + входящие заявки) -->
+        <div id="tab_contacts" class="tab_content hidden">
+          <% def find_friend(friendship)
+               if friendship.friend
+                 friendship.friend.id != @user.id ? friendship.friend : friendship.user
+               end
+             end %>
+
+          <%# Входящие заявки (только для владельца профиля) %>
+          <% if @current_user == @user && @received_requests.any? %>
+            <div class="mb-6">
+              <h4 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+                <%= t '.subscribers' %>
+                <span class="ml-1.5 bg-indigo-600 text-white text-xs rounded-full px-1.5 py-0.5"><%= @received_requests.count %></span>
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <% @received_requests.each do |request| %>
+                  <% next unless request.user %>
+                  <div class="flex items-center justify-between gap-3 bg-gray-800 rounded-xl p-3 border border-indigo-700/30">
+                    <a href="<%= user_profile_path(request.user) %>" class="flex items-center gap-3 min-w-0 flex-1">
+                      <span class="relative shrink-0">
+                        <% if request.user.avatar.attached? %>
+                          <%= image_tag url_for(request.user.avatar), class: "h-10 w-10 rounded-full object-cover" %>
+                        <% else %>
+                          <%= image_tag 'empty-avatar.jpg', class: "h-10 w-10 rounded-full" %>
+                        <% end %>
+                        <% if request.user.can_see_online?(current_user) && request.user.online? %>
+                          <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-400 ring-1 ring-gray-800"></span>
+                        <% end %>
+                      </span>
+                      <span class="text-sm font-medium text-gray-200 truncate"><%= request.user.name %></span>
+                    </a>
+                    <div class="flex gap-1 shrink-0">
+                      <%= button_to t('.accept'), user_friendship_path(@current_user, request), method: :put,
+                            class: "text-xs bg-green-700 text-white px-2 py-1 rounded hover:bg-green-600 transition-colors" %>
+                      <%= button_to t('.decline'), cancel_user_friendship_path(@current_user, request), method: :delete,
+                            class: "text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded hover:bg-red-900/50 transition-colors" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <%# Принятые друзья %>
           <% if @friendships.count > 0 %>
-            <% def find_friend(friendship)
-                 if friendship.friend
-                   friendship.friend.id != @user.id ? friendship.friend : friendship.user
-                 end
-               end %>
+            <% if @current_user == @user && @received_requests.any? %>
+              <h4 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3"><%= t '.friends_tab' %></h4>
+            <% end %>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <% @friendships.each do |friendship| %>
                 <% friend = find_friend(friendship) %>
@@ -431,44 +474,8 @@
                 </div>
               <% end %>
             </div>
-          <% else %>
+          <% elsif @current_user != @user || @received_requests.empty? %>
             <p class="text-center py-16 text-gray-500 text-sm"><%= t '.no_friends' %></p>
-          <% end %>
-        </div>
-
-        <!-- ТАБ: Подписчики -->
-        <div id="user_followers" class="tab_content hidden">
-          <% if @received_requests.count > 0 %>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <% @received_requests.each do |request| %>
-                <% next unless request.user %>
-                <div class="flex items-center justify-between gap-3 bg-gray-800 rounded-xl p-3 border border-gray-700/50">
-                  <a href="<%= user_profile_path(request.user) %>" class="flex items-center gap-3 min-w-0 flex-1">
-                    <span class="relative shrink-0">
-                      <% if request.user.avatar.attached? %>
-                        <%= image_tag url_for(request.user.avatar), class: "h-10 w-10 rounded-full object-cover" %>
-                      <% else %>
-                        <%= image_tag 'empty-avatar.jpg', class: "h-10 w-10 rounded-full" %>
-                      <% end %>
-                      <% if request.user.can_see_online?(current_user) && request.user.online? %>
-                        <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-400 ring-1 ring-gray-800"></span>
-                      <% end %>
-                    </span>
-                    <span class="text-sm font-medium text-gray-200 truncate"><%= request.user.name %></span>
-                  </a>
-                  <% if @current_user == @user %>
-                    <div class="flex gap-1 shrink-0">
-                      <%= button_to t('.accept'), user_friendship_path(@current_user, request), method: :put,
-                            class: "text-xs bg-green-700 text-white px-2 py-1 rounded hover:bg-green-600 transition-colors" %>
-                      <%= button_to t('.decline'), cancel_user_friendship_path(@current_user, request), method: :delete,
-                            class: "text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded hover:bg-red-900/50 transition-colors" %>
-                    </div>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
-          <% else %>
-            <p class="text-center py-16 text-gray-500 text-sm"><%= t '.no_subscribers' %></p>
           <% end %>
         </div>
 
