@@ -10,11 +10,15 @@ module Admin
 
     def create
       @message = AdminMessage.new(message_params.merge(sender: current_user))
-      recipient_ids = []
+      recipient_ids = resolve_recipient_ids
+
+      if recipient_ids.empty?
+        flash[:failure] = t('admin.messages.no_recipients')
+        return redirect_to new_admin_message_path
+      end
 
       ApplicationRecord.transaction do
         @message.save!
-        recipient_ids = resolve_recipient_ids
         send_notifications(recipient_ids)
       end
 

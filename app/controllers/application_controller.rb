@@ -204,7 +204,7 @@ class ApplicationController < ActionController::Base
   end
 
   def frozen_or_logout_path?
-    logout_action? || request.path.end_with?('/frozen')
+    logout_action? || request.path == frozen_path
   end
 
   def set_time_zone(&block)

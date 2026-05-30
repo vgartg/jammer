@@ -945,6 +945,7 @@ en:
     messages:
       title: "Send Notification"
       sent: "Notification sent to %{count} users."
+      no_recipients: "No eligible recipients found for the selected target."
       label_title: "Title"
       label_body: "Message"
       placeholder_title: "Notification title..."
