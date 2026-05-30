@@ -27,7 +27,9 @@
               <span class="text-xs text-gray-500 ml-auto"><%= ann.published_at&.strftime('%d.%m.%Y') %></span>
             </div>
             <% if ann.body.present? %>
-              <p class="text-sm text-gray-300 leading-relaxed"><%= ann.body.truncate(300) %></p>
+              <div class="text-sm text-gray-300 leading-relaxed prose-invert space-y-1">
+                <%= simple_format ann.body, class: 'text-sm text-gray-300 leading-relaxed' %>
+              </div>
             <% end %>
           </div>
         <% end %>
