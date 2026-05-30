@@ -138,6 +138,7 @@ en:
       announcements_title: "Platform Announcements"
       announcement_release_badge: "Release"
       announcement_general_badge: "Update"
+      no_announcements: "No announcements yet."
   games:
     create:
       success: "Game has been created successfully!"
@@ -1126,7 +1127,7 @@ en:
       title: "Upload New Asset"
     edit:
       title: "Edit Asset"
-    _form:
+    form:
       title: "Title"
       description: "Description"
       category: "Category"

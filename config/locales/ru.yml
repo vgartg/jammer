@@ -102,7 +102,7 @@ ru:
       sign_up: "Регистрация"
       log_in: "Авторизация"
       sign_out: "Выход"
-      dashboard: "Панель управления"
+      dashboard: "Главная"
       language: "Язык"
     footer:
       contacts: "Контакты"
@@ -126,7 +126,7 @@ ru:
       contact: "Если у вас есть вопросы, свяжитесь с нами по адресу:"
   dashboard:
     index:
-      title: "Панель управления"
+      title: "Главная"
       games_reviews: "Ваши отзывы на игры: "
       rating: "Оценка: "
       games_rating: "Средняя оценка ваших игр: "
@@ -138,6 +138,7 @@ ru:
       announcements_title: "Объявления платформы"
       announcement_release_badge: "Релиз"
       announcement_general_badge: "Обновление"
+      no_announcements: "Объявлений пока нет."
   games:
     create:
       success: "Игра успешно создана!"
@@ -1128,7 +1129,7 @@ ru:
       title: "Загрузить новый ассет"
     edit:
       title: "Редактировать ассет"
-    _form:
+    form:
       title: "Название"
       description: "Описание"
       category: "Категория"
