@@ -65,7 +65,7 @@ class TeamsController < ApplicationController
   def invite_search
     @team = Team.find(params[:id])
     unless current_user && (current_user == @team.leader || current_user.admin?)
-      render json: [], status: :ok and return
+      render json: { error: 'Forbidden' }, status: :forbidden and return
     end
     q = params[:q].to_s.strip.downcase
     if q.length >= 2

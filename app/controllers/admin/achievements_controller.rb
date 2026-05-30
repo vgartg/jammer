@@ -28,7 +28,7 @@ module Admin
 
       begin
         achievement = user.user_achievements.create!(achievement_key: key, earned_at: Time.current)
-      rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid
+      rescue ActiveRecord::RecordNotUnique
         flash[:failure] = t('admin.achievements.already_has')
         return redirect_to admin_achievements_path
       end
