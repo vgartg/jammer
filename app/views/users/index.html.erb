@@ -52,7 +52,7 @@
         <% end %>
       </div>
       <div class="mt-6">
-        <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+        <%= render partial: 'helpers/pagy' %>
       </div>
     <% else %>
       <div class="text-center py-20">

@@ -214,7 +214,7 @@
             <% non_jam_with_comment = @reviews.select { |r| r.criterion.present? || r.comment.present? } %>
             <% if non_jam_with_comment.any? %>
               <div class="mt-8">
-                <h2 class="text-lg font-semibold text-center">
+                <h2 class="text-lg font-semibold text-center text-white">
                   <%= t('.user_comments') %>
                 </h2>
 
@@ -253,7 +253,7 @@
 
           <% if @jam_id.present? && @reviews.present? %>
             <div class="mt-8 text-center">
-              <h2 class="text-lg font-semibold">
+              <h2 class="text-lg font-semibold text-white">
                 <% rs = @jam.rating_setting %>
                 <% scores_key = if rs.jury_enabled && rs.audience_enabled then '.all_scores'
                                 elsif rs.jury_enabled then '.jury_scores'
