@@ -47,6 +47,13 @@ en:
       report:
         reason: "Reason"
         comment: "Comment"
+      asset:
+        title: "Title"
+        description: "Description"
+        files: "Files"
+        preview: "Preview"
+        guide: "Guide"
+        category: "Category"
     errors:
       models:
         game:
@@ -75,6 +82,19 @@ en:
               taken: "you have already filed a report on this entity"
         jam_rating_setting:
           both_disabled: "you cannot disable both jury and audience at the same time"
+        asset:
+          attributes:
+            title:
+              blank: "can't be blank"
+              too_short: "is too short (minimum %{count} characters)"
+              too_long: "is too long (maximum %{count} characters)"
+            files:
+              blank: "must be uploaded"
+              too_large: "size must not exceed 200 MB"
+            preview:
+              wrong_format: "must be .jpg, .jpeg, .png, .gif or .webp"
+            guide:
+              wrong_format: "must be .pdf, .doc or .docx"
   buttons:
     save: "Save"
     change_avatar: "Change avatar"
@@ -232,6 +252,18 @@ en:
       title: "Friends"
       empty: "No friends yet"
       btn: "Remove friend"
+      remove_btn: "Remove"
+      tab_friends: "Friends"
+      tab_incoming: "Incoming"
+      tab_outgoing: "Outgoing"
+      wants_to_friend: "Wants to add you as a friend"
+      request_pending: "Request pending"
+      find_friends: "Find friends"
+      accept: "Accept"
+      cancel: "Decline"
+      cancel_inv: "Cancel"
+      sent_empt: "No outgoing requests yet"
+      inc_empt: "No incoming requests yet"
     requests:
       sent: "Sent applications"
       income: "Incoming applications"
@@ -455,8 +487,10 @@ en:
       role_admin: "Admin"
     private_profile:
       title: "Profile is private"
-      description: "This user has hidden their profile from other visitors."
+      description: "This user has hidden their profile. Information is only visible to mutually confirmed friends."
       back: "Go back"
+      add_friend: "Add friend"
+      request_pending: "Request sent"
     show:
       admin_hidden_profile_notice: "Admin view: this user's profile is hidden from regular visitors."
     new:
@@ -526,9 +560,9 @@ en:
           label2: "Who can see jams I participate?"
           hint: "Select who can see jams you are administrating and participating."
         profile_hidden:
-          title: "Hide Profile"
-          hint: "When enabled, your profile will only be visible to you and administrators."
-          label: "Hide my profile from other users"
+          title: "Private Profile"
+          hint: "When enabled, visitors see only your name and avatar, but no other information. Your full profile is visible only to mutually confirmed friends."
+          label: "Enable private profile"
         password:
           title: "Change password"
           hint: "Update your password associated with your account."
@@ -605,6 +639,8 @@ en:
       accept: "accepted your friend request"
       sent: "sent a friend request"
       accept_jury_invite: "Accept invitation"
+      destroy_all: "Delete all"
+      delete_one: "Delete"
     actions:
       accepted_friendship: "accepted your friend request"
       accepted_friend_request: "accepted your friend request"
@@ -617,6 +653,7 @@ en:
       accepted_jam_jury_invite: "accepted the jury invitation"
       new_report: "filed a new report on %{type} (id %{id})"
       achievement_granted: "granted you an achievement"
+      earned_achievement: "you earned a new achievement"
       team_invite_received: "invited you to join the team"
       admin_message: "— message from administration"
   email_confirms:
@@ -1197,6 +1234,11 @@ en:
     edit:
       title: "Edit Team"
     _form:
+      name: "Team Name"
+      description: "Description"
+      avatar: "Team Avatar"
+      btn: "Create Team"
+    form:
       name: "Team Name"
       description: "Description"
       avatar: "Team Avatar"

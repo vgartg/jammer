@@ -189,7 +189,8 @@ class AchievementService
   end
 
   def award(key)
-    @user.user_achievements.create!(achievement_key: key, earned_at: Time.current)
+    ua = @user.user_achievements.create!(achievement_key: key, earned_at: Time.current)
+    User.create_notification(@user, @user, 'earned_achievement', ua)
   rescue ActiveRecord::RecordNotUnique
     # already awarded by concurrent call
   end

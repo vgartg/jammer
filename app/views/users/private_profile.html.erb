@@ -1,12 +1,53 @@
-<div class="max-w-2xl mx-auto px-4 py-24 text-center">
-  <div class="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-6">
-    <svg class="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round"
-            d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
-    </svg>
+<div class="bg-gray-900 min-h-screen">
+  <div class="max-w-2xl mx-auto px-4 py-16 sm:px-6">
+    <div class="bg-gray-800 rounded-3xl border border-gray-700/60 overflow-hidden">
+
+      <%# Шапка с аватаром %>
+      <div class="h-32 bg-gradient-to-br from-gray-700 to-gray-800 relative">
+        <div class="absolute -bottom-12 left-6">
+          <div class="relative">
+            <% if @user.avatar.attached? %>
+              <%= image_tag url_for(@user.avatar), alt: @user.name,
+                    class: "h-24 w-24 rounded-2xl object-cover border-4 border-gray-800" %>
+            <% else %>
+              <%= image_tag 'empty-avatar.jpg', alt: @user.name,
+                    class: "h-24 w-24 rounded-2xl object-cover border-4 border-gray-800" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-16 pb-8 px-6">
+        <h1 class="text-2xl font-bold text-white"><%= @user.name %></h1>
+
+        <%# Замок — профиль закрыт %>
+        <div class="mt-4 flex items-center gap-2 text-gray-500">
+          <svg class="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+          </svg>
+          <span class="text-sm"><%= t '.title' %></span>
+        </div>
+        <p class="mt-2 text-sm text-gray-500 max-w-sm leading-relaxed"><%= t '.description' %></p>
+
+        <%# Кнопки действий %>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <% if current_user && current_user.id != @user.id %>
+            <% friendship = current_user.friendship_with(@user) %>
+            <% if friendship.nil? %>
+              <%= button_to t('.add_friend'), user_friendships_path(@user),
+                    method: :post,
+                    class: "rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 transition-colors" %>
+            <% elsif friendship.status == 'pending' %>
+              <span class="rounded-xl bg-gray-700 px-5 py-2.5 text-sm text-gray-400"><%= t '.request_pending' %></span>
+            <% end %>
+
+            <%= render 'helpers/report_form', report_item: @user %>
+          <% end %>
+
+          <%= link_to t('.back'), :back,
+                class: "rounded-xl border border-gray-700 px-5 py-2.5 text-sm text-gray-400 hover:text-white hover:border-gray-500 transition-colors" %>
+        </div>
+      </div>
+    </div>
   </div>
-  <h1 class="text-2xl font-bold text-gray-800 mb-3"><%= t 'users.private_profile.title' %></h1>
-  <p class="text-gray-500 mb-8"><%= t 'users.private_profile.description' %></p>
-  <%= link_to t('users.private_profile.back'), :back,
-              class: "rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors" %>
 </div>

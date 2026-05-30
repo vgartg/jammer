@@ -44,7 +44,7 @@ Rails.application.routes.draw do
         end
       end
     end
-    get '/requests', to: 'friendships#requests'
+    get '/requests', to: 'friendships#index'
 
   # Sessions
     resources :sessions do
@@ -138,8 +138,10 @@ Rails.application.routes.draw do
       resources :ratings, only: [:create]
     end
 
-    resources :notifications, only: %i[index show] do
-      delete 'destroy_all_notifications', on: :collection
+    resources :notifications, only: %i[index show destroy] do
+      collection do
+        delete 'destroy_all', to: 'notifications#destroy_all'
+      end
     end
     patch '/notifications/mark_as_read', to: 'notifications#mark_as_read'
 

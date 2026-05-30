@@ -4,7 +4,7 @@
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-2xl font-bold text-white"><%= t '.title' %></h1>
       <% if @notifications.any? %>
-        <%= button_to t('.destroy_all', default: 'Удалить все'), destroy_all_notifications_notifications_path,
+        <%= button_to t('.destroy_all', default: 'Удалить все'), destroy_all_notifications_path,
               method: :delete,
               class: "text-xs text-gray-500 hover:text-red-400 transition-colors px-3 py-1.5 rounded-lg border border-gray-700 hover:border-red-700/40" %>
       <% end %>
@@ -16,11 +16,19 @@
         <% next if notification.notifiable.nil? && notification.actor.nil? %>
         <% rendered_any = true %>
 
-        <div class="flex items-start gap-4 bg-gray-800 rounded-2xl p-4 border <%= notification.read ? 'border-gray-700/50' : 'border-indigo-700/40' %> hover:border-gray-600/80 transition-all">
+        <div class="flex items-start gap-4 bg-gray-800 rounded-2xl p-4 border <%= notification.read ? 'border-gray-700/50' : 'border-indigo-700/40' %> hover:border-gray-600/80 transition-all group">
 
           <%# Аватар %>
           <div class="flex-shrink-0">
-            <% if notification.notifiable.is_a?(AdminMessage) %>
+            <% if notification.notifiable.is_a?(UserAchievement) %>
+              <div class="w-12 h-12 rounded-xl bg-yellow-900/30 border border-yellow-700/40 flex items-center justify-center">
+                <%= image_tag "achievements/#{notification.notifiable.achievement_key}.svg",
+                              alt: notification.notifiable.achievement_key,
+                              class: "w-8 h-8",
+                              onerror: "this.style.display='none'" rescue nil %>
+              </div>
+
+            <% elsif notification.notifiable.is_a?(AdminMessage) %>
               <div class="w-12 h-12 rounded-xl bg-indigo-900/50 border border-indigo-700/40 flex items-center justify-center">
                 <svg class="w-6 h-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/>
@@ -69,8 +77,15 @@
           <%# Контент %>
           <div class="flex-1 min-w-0">
             <div class="flex items-start justify-between gap-2">
-              <div class="min-w-0">
-                <% if notification.notifiable.is_a?(AdminMessage) %>
+              <div class="min-w-0 flex-1">
+                <% if notification.notifiable.is_a?(UserAchievement) %>
+                  <% ach_key = notification.notifiable.achievement_key %>
+                  <p class="text-sm font-semibold text-yellow-300 truncate">
+                    <%= t("achievements.#{ach_key}.name", default: ach_key.humanize) %>
+                  </p>
+                  <p class="text-sm text-gray-400 mt-0.5"><%= notification_message(notification) %></p>
+
+                <% elsif notification.notifiable.is_a?(AdminMessage) %>
                   <p class="text-sm font-semibold text-indigo-300 truncate"><%= notification.notifiable.title %></p>
                   <% if notification.notifiable.body.present? %>
                     <p class="text-sm text-gray-300 mt-1 leading-relaxed"><%= notification.notifiable.body %></p>
@@ -116,9 +131,19 @@
                 <% end %>
               </div>
 
-              <% unless notification.read %>
-                <span class="flex-shrink-0 h-2 w-2 rounded-full bg-indigo-500 mt-1.5"></span>
-              <% end %>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <% unless notification.read %>
+                  <span class="h-2 w-2 rounded-full bg-indigo-500"></span>
+                <% end %>
+                <%= button_to notification_path(notification),
+                      method: :delete,
+                      class: "opacity-0 group-hover:opacity-100 transition-opacity text-gray-600 hover:text-red-400 p-1 rounded",
+                      title: t('.delete_one', default: 'Удалить') do %>
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                  </svg>
+                <% end %>
+              </div>
             </div>
 
             <p class="text-xs text-gray-600 mt-2">

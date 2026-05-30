@@ -14,17 +14,17 @@ class UsersController < ApplicationController
     @viewing_own_profile = @current_user&.id == @user.id
     @is_admin = @current_user&.admin?
 
-    if @user.profile_hidden? && !@viewing_own_profile && !@is_admin
-      render 'users/private_profile', status: :forbidden
+    @friendship = @current_user&.friendship_with(@user)
+    @is_mutual_friend = @friendship&.status == 'accepted'
+
+    if @user.profile_hidden? && !@viewing_own_profile && !@is_admin && !@is_mutual_friend
+      render 'users/private_profile'
       return
     end
 
     @profile_hidden_admin_view = @user.profile_hidden? && @is_admin && !@viewing_own_profile
 
-    if @current_user
-      @notifications = @current_user.notifications
-      @friendship = @current_user.friendship_with(@user)
-    end
+    @notifications = @current_user.notifications if @current_user
     @friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
     @received_requests = @user.inverse_friendships.where(status: 'pending')
   end
