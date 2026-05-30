@@ -1,60 +1,73 @@
-<div class="mx-auto max-w-3xl px-4 py-8">
-  <h1 class="text-2xl font-semibold mb-6"><%= t('.title') %></h1>
+<div class="bg-gray-900 min-h-screen">
+  <div class="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+    <h1 class="text-2xl font-bold text-white mb-8"><%= t('.title') %></h1>
 
-  <div class="mb-6">
     <%= form_with model: @setting, url: rating_settings_jam_path(@jam), method: :patch do |f| %>
-      <div class="space-y-4">
-        <div class="flex items-center gap-3">
-          <%= f.check_box :jury_enabled %>
-          <%= f.label :jury_enabled, t('.jury_enabled_label') %>
+      <div class="space-y-6">
+        <!-- Voting options -->
+        <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-6 space-y-4">
+          <label class="flex items-center gap-3 cursor-pointer">
+            <%= f.check_box :jury_enabled,
+                            class: "h-4 w-4 rounded border-gray-600 bg-gray-700 text-indigo-600 focus:ring-indigo-500" %>
+            <span class="text-sm font-medium text-white"><%= t('.jury_enabled_label') %></span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <%= f.check_box :audience_enabled,
+                            class: "h-4 w-4 rounded border-gray-600 bg-gray-700 text-indigo-600 focus:ring-indigo-500" %>
+            <span class="text-sm font-medium text-white"><%= t('.audience_enabled_label') %></span>
+          </label>
+          <p class="text-sm text-indigo-400"><%= t('.both_disabled_hint') %></p>
         </div>
 
-        <div class="flex items-center gap-3">
-          <%= f.check_box :audience_enabled %>
-          <%= f.label :audience_enabled, t('.audience_enabled_label') %>
+        <!-- Criteria -->
+        <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-6">
+          <h2 class="text-lg font-semibold text-white mb-1"><%= t('.criteria_title') %></h2>
+          <p class="text-sm text-gray-400 mb-4"><%= t('.criteria_hint') %></p>
+          <div class="space-y-3">
+            <% 5.times do |i| %>
+              <% c = @criteria[i] %>
+              <div class="flex gap-3">
+                <input type="hidden" name="criteria[][id]" value="<%= c&.id %>">
+                <input name="criteria[][title]" value="<%= c&.title.to_s %>"
+                       placeholder="<%= t('.criterion_placeholder') %>"
+                       class="flex-1 rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white
+                              placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+                <select name="criteria[][kind]"
+                        class="rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white
+                               focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                  <option value="voted_on" <%= "selected" if c&.kind == "voted_on" %>><%= t('.kind_voted_on') %></option>
+                  <option value="manually_ranked" <%= "selected" if c&.kind == "manually_ranked" %>><%= t('.kind_manually_ranked') %></option>
+                </select>
+              </div>
+            <% end %>
+          </div>
         </div>
 
-        <p class="text-sm text-cyan-500"><%= t('.both_disabled_hint') %></p>
-
-        <hr class="my-6"/>
-
-        <h2 class="text-xl font-medium"><%= t('.criteria_title') %></h2>
-        <p class="text-sm text-gray-500 mb-2"><%= t('.criteria_hint') %></p>
-
-        <div class="space-y-3">
-          <% 5.times do |i| %>
-            <% c = @criteria[i] %>
-            <div class="flex gap-3">
-              <input type="hidden" name="criteria[][id]" value="<%= c&.id %>">
-              <input name="criteria[][title]" value="<%= c&.title.to_s %>" class="w-full rounded border px-3 py-2" placeholder="<%= t('.criterion_placeholder') %>" />
-              <select name="criteria[][kind]" class="rounded border px-3 py-2">
-                <option value="voted_on" <%= "selected" if c&.kind == "voted_on" %>><%= t('.kind_voted_on') %></option>
-                <option value="manually_ranked" <%= "selected" if c&.kind == "manually_ranked" %>><%= t('.kind_manually_ranked') %></option>
-              </select>
-            </div>
-          <% end %>
-        </div>
-
-        <hr class="my-6"/>
-
-        <h2 class="text-xl font-medium"><%= t('.nominations_title') %></h2>
-        <p class="text-sm text-gray-500 mb-2"><%= t('.nominations_hint') %></p>
-
-        <div class="space-y-3">
-          <% 5.times do |i| %>
-            <% n = @nominations[i] %>
-            <div class="flex gap-3">
-              <input type="hidden" name="nominations[][id]" value="<%= n&.id %>">
-              <input name="nominations[][title]" value="<%= n&.title.to_s %>" class="w-full rounded border px-3 py-2" placeholder="<%= t('.nomination_placeholder') %>" />
-            </div>
-          <% end %>
+        <!-- Nominations -->
+        <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-6">
+          <h2 class="text-lg font-semibold text-white mb-1"><%= t('.nominations_title') %></h2>
+          <p class="text-sm text-gray-400 mb-4"><%= t('.nominations_hint') %></p>
+          <div class="space-y-3">
+            <% 5.times do |i| %>
+              <% n = @nominations[i] %>
+              <div class="flex gap-3">
+                <input type="hidden" name="nominations[][id]" value="<%= n&.id %>">
+                <input name="nominations[][title]" value="<%= n&.title.to_s %>"
+                       placeholder="<%= t('.nomination_placeholder') %>"
+                       class="w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white
+                              placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              </div>
+            <% end %>
+          </div>
         </div>
 
         <%= render partial: "jams/nominations_winners",
                    locals: { jam: @jam, nominations: @nominations, games: @games } %>
 
-        <div class="pt-6">
-          <%= f.submit t('buttons.save'), class: "rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700" %>
+        <div>
+          <%= f.submit t('buttons.save'),
+                       class: "rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white
+                               hover:bg-indigo-700 transition-colors cursor-pointer" %>
         </div>
       </div>
     <% end %>

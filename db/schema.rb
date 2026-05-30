@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_30_144536) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,6 +52,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "admin_messages", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "body", null: false
+    t.bigint "sender_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sender_id"], name: "index_admin_messages_on_sender_id"
+  end
+
   create_table "administration_tracking", force: :cascade do |t|
     t.bigint "admin_id", null: false
     t.string "structure_type", null: false
@@ -62,6 +71,35 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.string "action"
     t.index ["admin_id", "structure_type", "structure_id"], name: "idx_on_admin_id_structure_type_structure_id_75f645dcb5"
     t.index ["admin_id"], name: "index_administration_tracking_on_admin_id"
+  end
+
+  create_table "announcements", force: :cascade do |t|
+    t.integer "author_id", null: false
+    t.string "announcement_type", default: "general", null: false
+    t.string "version"
+    t.string "title_en", null: false
+    t.string "title_ru", null: false
+    t.text "body_en"
+    t.text "body_ru"
+    t.boolean "published", default: false, null: false
+    t.datetime "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["announcement_type"], name: "index_announcements_on_announcement_type"
+    t.index ["author_id"], name: "index_announcements_on_author_id"
+    t.index ["published"], name: "index_announcements_on_published"
+  end
+
+  create_table "assets", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.string "category", default: "other", null: false
+    t.integer "author_id", null: false
+    t.integer "downloads_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_assets_on_author_id"
+    t.index ["category"], name: "index_assets_on_category"
   end
 
   create_table "friendships", force: :cascade do |t|
@@ -163,6 +201,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.integer "team_id"
+    t.index ["team_id"], name: "index_jam_submissions_on_team_id"
   end
 
   create_table "jams", force: :cascade do |t|
@@ -261,6 +301,40 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "team_memberships", force: :cascade do |t|
+    t.integer "team_id", null: false
+    t.integer "user_id", null: false
+    t.string "role", default: "member", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "leader_invited", default: false, null: false
+    t.index ["team_id", "user_id"], name: "index_team_memberships_on_team_id_and_user_id", unique: true
+    t.index ["team_id"], name: "index_team_memberships_on_team_id"
+    t.index ["user_id"], name: "index_team_memberships_on_user_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.integer "leader_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "open_membership", default: true, null: false
+    t.index ["leader_id"], name: "index_teams_on_leader_id"
+    t.index ["name"], name: "index_teams_on_name", unique: true
+  end
+
+  create_table "user_achievements", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "achievement_key", null: false
+    t.datetime "earned_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "achievement_key"], name: "index_user_achievements_on_user_id_and_achievement_key", unique: true
+    t.index ["user_id"], name: "index_user_achievements_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
@@ -299,6 +373,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
     t.boolean "notify_jam_invites", default: true, null: false
     t.boolean "notify_status_changes", default: true, null: false
     t.boolean "notify_moderation", default: true, null: false
+    t.boolean "profile_hidden", default: false, null: false
+    t.string "background_position", default: "center"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true, where: "(provider IS NOT NULL)"
@@ -307,6 +383,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_29_140000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "admin_messages", "users", column: "sender_id"
   add_foreign_key "administration_tracking", "users", column: "admin_id"
   add_foreign_key "games", "users", column: "author_id"
   add_foreign_key "games_tags", "games"

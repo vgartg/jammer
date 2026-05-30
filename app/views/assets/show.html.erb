@@ -1,0 +1,118 @@
+<div class="bg-white min-h-full">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+      <%= link_to t('assets.index.title'), assets_path, class: "hover:text-gray-700" %>
+      <span>/</span>
+      <span class="text-gray-900 font-medium"><%= @asset.title %></span>
+    </div>
+
+    <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+      <div class="lg:col-span-2">
+        <div class="aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-indigo-50 to-purple-50 mb-6">
+          <% if @asset.preview.attached? %>
+            <%= image_tag url_for(@asset.preview), alt: @asset.title, class: "h-full w-full object-cover" %>
+          <% else %>
+            <div class="flex h-full items-center justify-center">
+              <svg class="h-24 w-24 text-indigo-200" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/>
+              </svg>
+            </div>
+          <% end %>
+        </div>
+
+        <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @asset.title %></h1>
+
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+          <span class="rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-800">
+            <%= t "assets.categories.#{@asset.category}" %>
+          </span>
+          <span class="flex items-center gap-1 text-sm text-gray-500">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+            </svg>
+            <%= t '.downloads_count', count: @asset.downloads_count %>
+          </span>
+          <span class="text-sm text-gray-500"><%= @asset.created_at.strftime('%d.%m.%Y') %></span>
+        </div>
+
+        <% if @asset.description.present? %>
+          <div class="prose prose-sm max-w-none text-gray-700 mb-6">
+            <p><%= simple_format(@asset.description) %></p>
+          </div>
+        <% end %>
+
+        <div class="flex flex-wrap gap-3 mt-6">
+          <% if @asset.files.size == 1 %>
+            <%= link_to asset_download_path(@asset), target: '_blank',
+                data: { turbo_prefetch: false },
+                class: "inline-flex items-center gap-2 rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" do %>
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+              </svg>
+              <%= t '.download' %>
+            <% end %>
+          <% end %>
+
+          <% if @asset.guide.attached? %>
+            <%= link_to rails_blob_url(@asset.guide.blob, disposition: 'attachment'), target: '_blank',
+                data: { turbo: false },
+                class: "inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50" do %>
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+              </svg>
+              <%= t '.download_guide' %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="mt-8 lg:mt-0">
+        <div class="rounded-xl border border-gray-200 p-5 mb-4">
+          <h2 class="text-sm font-semibold text-gray-900 mb-3"><%= t '.author' %></h2>
+          <div class="flex items-center gap-3">
+            <% if @asset.author.avatar.attached? %>
+              <%= image_tag url_for(@asset.author.avatar), alt: @asset.author.name, class: "h-10 w-10 rounded-full" %>
+            <% else %>
+              <%= image_tag 'empty-avatar.jpg', class: "h-10 w-10 rounded-full" %>
+            <% end %>
+            <%= link_to @asset.author.name, user_profile_path(@asset.author), class: "text-sm font-medium text-gray-900 hover:text-indigo-600" %>
+          </div>
+        </div>
+
+        <div class="rounded-xl border border-gray-200 p-5">
+          <h2 class="text-sm font-semibold text-gray-900 mb-3"><%= t '.files_title' %></h2>
+          <% if @asset.files.attached? %>
+            <ul class="space-y-2">
+              <% @asset.files.each do |file| %>
+                <li class="flex items-center gap-2 text-sm text-gray-600">
+                  <svg class="h-4 w-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+                  </svg>
+                  <span class="truncate flex-1"><%= file.filename %></span>
+                  <span class="shrink-0 text-xs text-gray-400"><%= number_to_human_size(file.byte_size) %></span>
+                  <%= link_to asset_download_path(@asset, blob_signed_id: file.blob.signed_id),
+                      target: '_blank', data: { turbo_prefetch: false },
+                      class: "shrink-0 text-indigo-600 hover:text-indigo-500" do %>
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+                    </svg>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
+
+        <% if current_user && (current_user == @asset.author || current_user.admin?) %>
+          <div class="mt-4 flex gap-2">
+            <%= link_to t('.edit'), asset_edit_path(@asset),
+                class: "flex-1 text-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50" %>
+            <%= button_to t('.delete'), asset_destroy_path(@asset), method: :delete,
+                data: { turbo_confirm: t('buttons.confirm') },
+                class: "flex-1 rounded-md bg-red-50 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-100" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

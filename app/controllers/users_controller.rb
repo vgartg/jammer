@@ -11,10 +11,11 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @current_user = current_user
-    if @current_user
-      @notifications = @current_user.notifications
-      @friendship = @current_user.friendship_with(@user)
-    end
+    setup_profile_context
+
+    return render 'private_profile' if @profile_hidden_for_viewer
+
+    @notifications = @current_user.notifications if @current_user
     @friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
     @received_requests = @user.inverse_friendships.where(status: 'pending')
   end
@@ -36,6 +37,7 @@ class UsersController < ApplicationController
     else
       flash[:failure] ||= []
       flash[:failure].concat(@user.errors.full_messages)
+      flash[:register_params] = params[:user].to_unsafe_h.slice('email', 'name')
       redirect_to register_path
     end
   end
@@ -65,14 +67,14 @@ class UsersController < ApplicationController
         unless @user.authenticate(params[:user][:current_password])
           flash[:failure] ||= []
           flash[:failure] << t('users.update_user.failure1')
-          redirect_to settings_path
+          redirect_to settings_path(anchor: params[:settings_section].presence)
           return
         end
 
         if params[:user][:current_password].blank?
           flash[:failure] ||= []
           flash[:failure] << t('users.update_user.failure2')
-          redirect_to settings_path
+          redirect_to settings_path(anchor: params[:settings_section].presence)
           return
         end
       end
@@ -124,16 +126,29 @@ class UsersController < ApplicationController
     subdomain = Subdomain.extract_subdomain(request)
     @user = User.find_by_link_username(subdomain)
     @current_user = current_user
-    @notifications = current_user.notifications
+    @notifications = current_user&.notifications
+    setup_profile_context
+    @friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
+    @received_requests = @user.inverse_friendships.where(status: 'pending')
   end
 
   private
 
+  def setup_profile_context
+    @viewing_own_profile = @current_user&.id == @user.id
+    @is_admin = @current_user&.admin?
+    @friendship = @current_user&.friendship_with(@user)
+    @is_mutual_friend = @friendship&.status == 'accepted'
+    @profile_hidden_for_viewer = @user.profile_hidden? && !@viewing_own_profile && !@is_admin && !@is_mutual_friend
+    @profile_hidden_admin_view = @user.profile_hidden? && @is_admin && !@viewing_own_profile
+  end
+
   def user_params
     params.require(:user)
           .permit(:name, :email, :password, :password_confirmation, :avatar, :background_image,
-                  :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
+                  :background_position, :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
                   :visibility, :jams_administrating_visibility, :jams_participating_visibility, :theme, :is_online_today,
-                  :notify_friend_requests, :notify_jam_invites, :notify_status_changes, :notify_moderation)
+                  :notify_friend_requests, :notify_jam_invites, :notify_status_changes, :notify_moderation,
+                  :profile_hidden)
   end
 end

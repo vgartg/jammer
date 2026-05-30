@@ -53,6 +53,30 @@ Rails.application.routes.draw do
       post 'logout_one_session', on: :collection
     end
 
+    # Assets
+    get '/assets', to: 'assets#index', as: 'assets'
+    get '/assets/new', to: 'assets#new', as: 'new_asset'
+    post '/assets', to: 'assets#create'
+    get '/assets/:id', to: 'assets#show', as: 'asset_profile'
+    get '/assets/:id/edit', to: 'assets#edit', as: 'asset_edit'
+    patch '/assets/:id', to: 'assets#update', as: 'asset_update'
+    delete '/assets/:id', to: 'assets#destroy', as: 'asset_destroy'
+    get '/assets/:id/download', to: 'assets#download', as: 'asset_download'
+
+    # Teams
+    get '/teams', to: 'teams#index', as: 'teams'
+    get '/teams/new', to: 'teams#new', as: 'new_team'
+    post '/teams', to: 'teams#create'
+    get '/teams/:id', to: 'teams#show', as: 'team_profile'
+    get '/teams/:id/edit', to: 'teams#edit', as: 'team_edit'
+    patch '/teams/:id', to: 'teams#update', as: 'team_update'
+    delete '/teams/:id', to: 'teams#destroy', as: 'team_destroy'
+    get '/teams/:id/invite_search', to: 'teams#invite_search', as: 'team_invite_search'
+    post '/teams/:id/invite', to: 'team_memberships#invite', as: 'team_invite'
+    resources :teams, only: [] do
+      resources :team_memberships, only: %i[create update destroy]
+    end
+
     # Games
     get '/games/new', to: 'games#new'
     post '/games', to: 'games#create'
@@ -114,14 +138,19 @@ Rails.application.routes.draw do
       resources :ratings, only: [:create]
     end
 
-    resources :notifications, only: %i[index show] do
-      delete 'destroy_all_notifications', on: :collection
+    resources :notifications, only: %i[index show destroy] do
+      collection do
+        delete 'destroy_all', to: 'notifications#destroy_all'
+      end
     end
     patch '/notifications/mark_as_read', to: 'notifications#mark_as_read'
 
     get '/notifications', to: 'notifications#index'
 
     get '/settings', to: 'settings#index'
+    get '/frozen', to: 'frozen#show', as: 'frozen'
+    get '/contacts', to: 'contacts#index', as: 'contacts'
+    get '/achievements', to: 'achievements#index', as: 'achievements'
 
   # Admin
   get '/admin', to: 'admins#index'
@@ -133,6 +162,7 @@ Rails.application.routes.draw do
       resources resource, only: %i[index new create edit update destroy]
     end
     resources :users do
+      collection { get :search }
       member do
         post :freeze
         post :unfreeze
@@ -140,6 +170,11 @@ Rails.application.routes.draw do
     end
     get '/visits_data', to: 'visits#visits_data'
     get '/registrations_data', to: 'visits#registrations_data'
+    resources :announcements, only: %i[index new create edit update destroy]
+    resources :teams, only: %i[index destroy]
+    resources :assets, only: %i[index destroy]
+    resources :achievements, only: %i[index create destroy]
+    resources :messages, only: %i[new create]
   end
 
   # Moderator

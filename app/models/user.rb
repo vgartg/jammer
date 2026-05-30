@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
   # validates :jams_administrating_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
   validates :jams_participating_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
   validates :theme, inclusion: { in: [THEME_LIGHT, THEME_DARK] }
+  validates :background_position, format: { with: /\A[\w\s.%]+\z/ }, allow_blank: true
 
   validate :password_length, on: :create, unless: :oauth_user?
   has_secure_password validations: false
@@ -32,6 +33,7 @@ class User < ActiveRecord::Base
   has_one_attached :background_image
   has_many :games, foreign_key: 'author_id', dependent: :destroy
   has_many :jams, foreign_key: 'author_id', dependent: :destroy
+  has_many :assets, foreign_key: 'author_id', dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships, dependent: :destroy
 
@@ -47,6 +49,11 @@ class User < ActiveRecord::Base
 
   has_many :jam_contributors, dependent: :destroy
   has_many :contributed_jams, through: :jam_contributors, source: :jam
+
+  has_many :user_achievements, dependent: :destroy
+  has_many :team_memberships, dependent: :destroy
+  has_many :led_teams, class_name: 'Team', foreign_key: 'leader_id', dependent: :destroy
+  has_many :teams, through: :team_memberships
 
   scope :staff, -> { where(role: [:moderator, :admin]) }
 
@@ -142,6 +149,7 @@ class User < ActiveRecord::Base
   JAM_INVITE_ACTIONS     = %w[sent_jam_jury_invite accepted_jam_jury_invite].freeze
   STATUS_CHANGE_ACTIONS  = %w[game_status_changed jam_status_changed].freeze
   MODERATION_ACTIONS     = %w[awaiting_game_moderation awaiting_jam_moderation new_report].freeze
+  ACHIEVEMENT_ACTIONS    = %w[earned_achievement achievement_granted].freeze
 
   def self.create_notification(recipient, actor, action, notifiable)
     return unless recipient.is_a?(User)

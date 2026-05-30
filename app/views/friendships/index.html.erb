@@ -1,62 +1,163 @@
-<div class="bg-white">
-  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
-    <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-bold tracking-tight text-gray-900"><%= t '.title' %></h2>
+<div class="bg-gray-900 min-h-screen" data-controller="friends" data-friends-default-tab-value="<%= @default_tab || 'friends' %>">
+  <div class="max-w-4xl mx-auto px-4 py-10 sm:px-6">
+
+    <h1 class="text-2xl font-bold text-white mb-8"><%= t '.title' %></h1>
+
+    <%# Табы %>
+    <div class="flex gap-1 mb-8 bg-gray-800 rounded-xl p-1 w-fit border border-gray-700/60">
+      <button data-action="click->friends#openTab" data-tab-name="friends"
+              class="tab_links px-5 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white transition-colors relative">
+        <%= t '.tab_friends' %>
+        <% if @friendships.count > 0 %>
+          <span class="ml-1.5 text-xs bg-gray-700 text-gray-300 rounded-full px-1.5 py-0.5"><%= @friendships.count %></span>
+        <% end %>
+      </button>
+      <button data-action="click->friends#openTab" data-tab-name="received_requests"
+              class="tab_links px-5 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white transition-colors relative">
+        <%= t '.tab_incoming' %>
+        <% if @received_requests.count > 0 %>
+          <span class="ml-1.5 text-xs bg-indigo-900 text-indigo-300 rounded-full px-1.5 py-0.5"><%= @received_requests.count %></span>
+        <% end %>
+      </button>
+      <button data-action="click->friends#openTab" data-tab-name="sent_requests"
+              class="tab_links px-5 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white transition-colors">
+        <%= t '.tab_outgoing' %>
+        <% if @sent_requests.count > 0 %>
+          <span class="ml-1.5 text-xs bg-gray-700 text-gray-300 rounded-full px-1.5 py-0.5"><%= @sent_requests.count %></span>
+        <% end %>
+      </button>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
-      <% if @friendships.count > 0 %>
-        <% @friendships.each do |friendship| %>
-          <% friend = find_friend(friendship) %>
-          <% if friend %>
-            <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
-      duration-200 flex items-center space-x-4">
-              <a href='<%= '/users/' + friend.id.to_s %>' class="flex items-center space-x-4 flex-grow">
-          <span class="relative">
-            <% if friend.avatar.attached? %>
-              <%= image_tag url_for(friend.avatar), alt: "Profile Picture",
-                            class: "h-16 w-16 rounded-full" %>
-            <% else %>
-              <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full" %>
-            <% end %>
-            <% if friend.can_see_online?(current_user) %>
-              <% if friend.online? %>
-                <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
-              <% elsif friend.last_active_at %>
-                <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
-              <% end %>
-            <% end %>
-          </span>
-                <div>
-                  <h2 class="text-lg font-semibold text-gray-800"><%= friend.name %></h2>
-                  <% if friend.can_see_online?(current_user) %>
-                    <p class="mt-6"
-                       data-controller="online">
-                      <% if friend.last_active_at.present? %>
-      <span id="user-status" class="text-sm text-gray-600"
-            data-online-target="lastActiveAt"
-            data-last-active-at="<%= friend.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
-            data-action="load->online#updateStatus"></span>
-                      <% else %>
-                        <span class="text-sm text-gray-600">
-                          <%= t 'users.profile.offline' %>
-                        </span>
-                      <% end %></p>
-                  <% end %>
-                </div>
+
+    <%# Вкладка: Друзья %>
+    <div id="friends" class="tab_content">
+      <% if @friendships.any? %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <% @friendships.each do |friendship| %>
+            <% friend = find_friend(friendship) %>
+            <% next unless friend %>
+            <div class="flex items-center gap-4 bg-gray-800 rounded-2xl p-4 border border-gray-700/60 hover:border-gray-500/80 transition-all group">
+              <a href="<%= user_profile_path(friend) %>" class="relative flex-shrink-0">
+                <% if friend.avatar.attached? %>
+                  <%= image_tag url_for(friend.avatar), alt: friend.name, class: "h-14 w-14 rounded-2xl object-cover" %>
+                <% else %>
+                  <%= image_tag 'empty-avatar.jpg', class: "h-14 w-14 rounded-2xl object-cover" %>
+                <% end %>
+                <% if friend.can_see_online?(current_user) %>
+                  <span class="absolute bottom-0.5 right-0.5 block h-3 w-3 rounded-full ring-2 ring-gray-800 <%= friend.online? ? 'bg-green-400' : 'bg-gray-500' %>"></span>
+                <% end %>
               </a>
-              <div>
-                <%= button_to t('.btn'), user_friendship_path(@current_user, friendship), method: :delete,
-                              class: "bg-red-500 text-white px-3 py-1 rounded-full
-                        hover:bg-red-600 transition-colors duration-200" %>
+
+              <div class="flex-1 min-w-0">
+                <a href="<%= user_profile_path(friend) %>" class="font-semibold text-white hover:text-indigo-400 transition-colors truncate block">
+                  <%= friend.name %>
+                </a>
+                <% if friend.can_see_online?(current_user) %>
+                  <p class="text-xs text-gray-500 mt-0.5" data-controller="online">
+                    <% if friend.last_active_at.present? %>
+                      <span data-online-target="lastActiveAt"
+                            data-last-active-at="<%= friend.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                            data-action="load->online#updateStatus"></span>
+                    <% else %>
+                      <%= t 'users.profile.offline' %>
+                    <% end %>
+                  </p>
+                <% end %>
               </div>
+
+              <%= button_to t('.remove_btn', default: 'Удалить'), user_friendship_path(@current_user, friendship),
+                    method: :delete,
+                    class: "opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 text-xs text-gray-500 hover:text-red-400 px-3 py-1.5 rounded-lg border border-gray-700 hover:border-red-700/40" %>
             </div>
           <% end %>
-        <% end %>
+        </div>
       <% else %>
-        <div class="flex justify-between items-center">
-          <h2 class="text-1xl font-bold tracking-tight text-gray-600"><%= t '.empty' %></h2>
+        <div class="text-center py-16">
+          <svg class="mx-auto h-12 w-12 text-gray-700" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+          </svg>
+          <p class="mt-4 text-gray-500"><%= t '.empty' %></p>
+          <%= link_to t('.find_friends', default: 'Найти друзей'), users_path, class: "mt-4 inline-block text-sm text-indigo-400 hover:text-indigo-300" %>
         </div>
       <% end %>
     </div>
+
+    <%# Вкладка: Входящие запросы %>
+    <div id="received_requests" class="tab_content hidden">
+      <% if @received_requests.any? %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <% @received_requests.each do |request| %>
+            <% next unless request.user %>
+            <div class="flex items-center gap-4 bg-gray-800 rounded-2xl p-4 border border-indigo-700/30 hover:border-indigo-600/50 transition-all">
+              <a href="<%= user_profile_path(request.user) %>" class="relative flex-shrink-0">
+                <% if request.user.avatar.attached? %>
+                  <%= image_tag url_for(request.user.avatar), alt: request.user.name, class: "h-14 w-14 rounded-2xl object-cover" %>
+                <% else %>
+                  <%= image_tag 'empty-avatar.jpg', class: "h-14 w-14 rounded-2xl object-cover" %>
+                <% end %>
+                <% if request.user.can_see_online?(current_user) %>
+                  <span class="absolute bottom-0.5 right-0.5 block h-3 w-3 rounded-full ring-2 ring-gray-800 <%= request.user.online? ? 'bg-green-400' : 'bg-gray-500' %>"></span>
+                <% end %>
+              </a>
+
+              <div class="flex-1 min-w-0">
+                <a href="<%= user_profile_path(request.user) %>" class="font-semibold text-white hover:text-indigo-400 transition-colors truncate block">
+                  <%= request.user.name %>
+                </a>
+                <p class="text-xs text-gray-500 mt-0.5"><%= t '.wants_to_friend' %></p>
+              </div>
+
+              <div class="flex flex-col gap-2 flex-shrink-0">
+                <%= button_to t('.accept'), user_friendship_path(@current_user, request),
+                      method: :put,
+                      class: "text-xs font-medium px-3 py-1.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-500 transition-colors" %>
+                <%= button_to t('.cancel'), cancel_user_friendship_path(@current_user, request),
+                      method: :delete,
+                      class: "text-xs px-3 py-1.5 rounded-lg border border-gray-700 text-gray-400 hover:text-red-400 hover:border-red-700/40 transition-colors" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-16">
+          <p class="text-gray-500"><%= t '.inc_empt' %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <%# Вкладка: Исходящие запросы %>
+    <div id="sent_requests" class="tab_content hidden">
+      <% if @sent_requests.any? %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <% @sent_requests.each do |request| %>
+            <% next unless request.friend %>
+            <div class="flex items-center gap-4 bg-gray-800 rounded-2xl p-4 border border-gray-700/60 hover:border-gray-500/80 transition-all group">
+              <a href="<%= user_profile_path(request.friend) %>" class="relative flex-shrink-0">
+                <% if request.friend.avatar.attached? %>
+                  <%= image_tag url_for(request.friend.avatar), alt: request.friend.name, class: "h-14 w-14 rounded-2xl object-cover" %>
+                <% else %>
+                  <%= image_tag 'empty-avatar.jpg', class: "h-14 w-14 rounded-2xl object-cover" %>
+                <% end %>
+              </a>
+
+              <div class="flex-1 min-w-0">
+                <a href="<%= user_profile_path(request.friend) %>" class="font-semibold text-white hover:text-indigo-400 transition-colors truncate block">
+                  <%= request.friend.name %>
+                </a>
+                <p class="text-xs text-gray-500 mt-0.5"><%= t '.request_pending' %></p>
+              </div>
+
+              <%= button_to t('.cancel_inv'), cancel_user_friendship_path(@current_user, request),
+                    method: :delete,
+                    class: "opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 text-xs text-gray-500 hover:text-red-400 px-3 py-1.5 rounded-lg border border-gray-700 hover:border-red-700/40" %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-16">
+          <p class="text-gray-500"><%= t '.sent_empt' %></p>
+        </div>
+      <% end %>
+    </div>
+
   </div>
 </div>

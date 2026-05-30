@@ -31,8 +31,8 @@ export default class extends Controller {
         this.myGamesTarget.classList.add("hidden")
 
         if (this.hasSearchFormTarget) this.searchFormTarget.classList.remove("hidden")
-        if (this.hasShowAllTarget) this.showAllTarget.classList.add("font-bold", "text-gray-800")
-        if (this.hasShowMineTarget) this.showMineTarget.classList.remove("font-bold", "text-gray-800")
+        if (this.hasShowAllTarget) this.showAllTarget.classList.add("font-bold", "text-white")
+        if (this.hasShowMineTarget) this.showMineTarget.classList.remove("font-bold", "text-white")
     }
 
     displayMyGames() {
@@ -42,8 +42,8 @@ export default class extends Controller {
         this.allGamesTarget.classList.add("hidden")
 
         if (this.hasSearchFormTarget) this.searchFormTarget.classList.add("hidden")
-        if (this.hasShowMineTarget) this.showMineTarget.classList.add("font-bold", "text-gray-800")
-        if (this.hasShowAllTarget) this.showAllTarget.classList.remove("font-bold", "text-gray-800")
+        if (this.hasShowMineTarget) this.showMineTarget.classList.add("font-bold", "text-white")
+        if (this.hasShowAllTarget) this.showAllTarget.classList.remove("font-bold", "text-white")
     }
 
     search() {

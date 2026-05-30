@@ -75,3 +75,6 @@ application.register("criteria-rating", CriteriaRatingController)
 
 import AutosubmitController from "./autosubmit_controller"
 application.register("autosubmit", AutosubmitController)
+
+import BgPositionPickerController from "./bg_position_picker_controller"
+application.register("bg-position-picker", BgPositionPickerController)

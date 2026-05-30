@@ -1,21 +1,23 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-    static targets = ["tab-name"];
     openTab(event) {
         const tabName = event.currentTarget.dataset.tabName;
-        let i, tab_content, tab_links;
-        tab_content = document.getElementsByClassName("tab_content");
-        for (i = 0; i < tab_content.length; i++) {
-            tab_content[i].style.display = "none";
-        }
 
-        tab_links = document.getElementsByClassName("tab_links");
-        for (i = 0; i < tab_links.length; i++) {
-            tab_links[i].classList.remove("bg-gray-100");
-        }
+        document.querySelectorAll(".tab_content").forEach(el => {
+            el.classList.add("hidden");
+            el.style.display = "";
+        });
 
-        document.getElementById(tabName).style.display = "block";
-        event.currentTarget.className += " bg-gray-100";
+        document.querySelectorAll(".tab_links").forEach(btn => {
+            btn.classList.remove("bg-gray-700", "text-white");
+            btn.classList.add("text-gray-400");
+        });
+
+        const target = document.getElementById(tabName);
+        if (target) target.classList.remove("hidden");
+
+        event.currentTarget.classList.add("bg-gray-700", "text-white");
+        event.currentTarget.classList.remove("text-gray-400");
     }
 }

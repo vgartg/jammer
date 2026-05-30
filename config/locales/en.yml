@@ -11,6 +11,7 @@ en:
       title: "Something went wrong"
       description: "We're sorry — something on our end went wrong. Please try again in a moment."
       home_link: "Go home"
+      report_hint: "If the error persists, please email us at"
   activerecord:
     models:
       tag: "Tag"
@@ -46,6 +47,17 @@ en:
       report:
         reason: "Reason"
         comment: "Comment"
+      asset:
+        title: "Title"
+        description: "Description"
+        files: "Files"
+        preview: "Preview"
+        guide: "Guide"
+        category: "Category"
+      team:
+        name: "Name"
+        description: "Description"
+        avatar: "Avatar"
     errors:
       models:
         game:
@@ -74,6 +86,19 @@ en:
               taken: "you have already filed a report on this entity"
         jam_rating_setting:
           both_disabled: "you cannot disable both jury and audience at the same time"
+        asset:
+          attributes:
+            title:
+              blank: "can't be blank"
+              too_short: "is too short (minimum %{count} characters)"
+              too_long: "is too long (maximum %{count} characters)"
+            files:
+              blank: "must be uploaded"
+              too_large: "size must not exceed 200 MB"
+            preview:
+              wrong_format: "must be .jpg, .jpeg, .png, .gif or .webp"
+            guide:
+              wrong_format: "must be .pdf, .doc or .docx"
   buttons:
     save: "Save"
     change_avatar: "Change avatar"
@@ -84,6 +109,7 @@ en:
     add_friend: "Add friend"
     cancel: "Cancel"
     close: "Close"
+    confirm: "Are you sure?"
   search: "Search..."
   home:
     title: "Jammer service prototype"
@@ -95,16 +121,20 @@ en:
       users: "Users"
       games: "Games"
       jams: "Jams"
+      assets: "Assets"
+      teams: "Teams"
       sign_up: "Sign up"
       log_in: "Log in"
       sign_out: "Sign out"
       dashboard: "Dashboard"
       language: "Language"
     footer:
+      contacts: "Contacts"
       copyright: "All rights reserved."
       fsi_text: 'The project was implemented with the support of the Foundation for Assistance to Small Innovative Enterprises (FASIE) within the framework of the Student Startup program of the University Technological Entrepreneurship Platform event of the Technologies federal project.'
     left-menu:
       requests: "Requests"
+      notifications: "Notifications"
       settings: "Settings"
       plug: "Empty yet"
     application:
@@ -130,6 +160,10 @@ en:
       no_comment: "No comment"
       my_jams: "My jams"
       no_jams: "You are not participating in or administrating any jam yet."
+      announcements_title: "Platform Announcements"
+      announcement_release_badge: "Release"
+      announcement_general_badge: "Update"
+      no_announcements: "No announcements yet."
   games:
     create:
       success: "Game has been created successfully!"
@@ -222,6 +256,18 @@ en:
       title: "Friends"
       empty: "No friends yet"
       btn: "Remove friend"
+      remove_btn: "Remove"
+      tab_friends: "Friends"
+      tab_incoming: "Incoming"
+      tab_outgoing: "Outgoing"
+      wants_to_friend: "Wants to add you as a friend"
+      request_pending: "Request pending"
+      find_friends: "Find friends"
+      accept: "Accept"
+      cancel: "Decline"
+      cancel_inv: "Cancel"
+      sent_empt: "No outgoing requests yet"
+      inc_empt: "No incoming requests yet"
     requests:
       sent: "Sent applications"
       income: "Incoming applications"
@@ -375,6 +421,22 @@ en:
       creator: "Creator:"
       no_author: "Author not found"
       hosts: "Hosts:"
+  frozen:
+    title: "Account Frozen"
+    reason: "Reason:"
+    frozen_at: "Frozen at:"
+    frozen_until: "Frozen until:"
+    indefinitely: "Indefinitely"
+    contact: "If you have any questions, contact us at"
+  contacts:
+    title: "Contacts"
+    subtitle: "Here you can find information about the Jammer project team."
+    github_title: "GitHub"
+    founders_title: "Founders"
+    founders_title_short: "Founder"
+    current_devs_title: "Current Developers"
+    past_devs_title: "Past Contributors"
+    email_title: "Contact"
   users:
     destroy:
       success: "The account has been successfully deleted."
@@ -404,6 +466,14 @@ en:
       info_tab: "Information"
       friends_tab: "Friends"
       subscribers: "Subscribers"
+      achievements_tab: "Achievements"
+      tab_games: "Games"
+      tab_jams: "Jams"
+      stat_games: "Games"
+      stat_jams: "Jams"
+      stat_friends: "Friends"
+      stat_achievements: "Achievements"
+      joined: "Member since"
       remove: "Remove friend"
       accept: "Accept invitation"
       decline: "Decline invitation"
@@ -419,6 +489,14 @@ en:
       role_author: "Author"
       role_host: "Host"
       role_admin: "Admin"
+    private_profile:
+      title: "Profile is private"
+      description: "This user has hidden their profile. Information is only visible to mutually confirmed friends."
+      back: "Go back"
+      add_friend: "Add friend"
+      request_pending: "Request sent"
+    show:
+      admin_hidden_profile_notice: "Admin view: this user's profile is hidden from regular visitors."
     new:
       title: "Sign up your account"
       email: "Email address"
@@ -464,6 +542,12 @@ en:
           drag: "Drag an image here or click to select a file"
           recommendation: "Recommended size: 1920x1080 pixels"
           preview_alt: "Image preview"
+          background_position: "Crop background"
+          background_preview: "Preview"
+          crop_hint: "Drag the image to select the visible area"
+          pos_top: "Top"
+          pos_center: "Center"
+          pos_bottom: "Bottom"
         nickname: "Nickname"
         real_name: "Full name"
         email:
@@ -485,6 +569,10 @@ en:
           label1: "Who can see jams I administrate?"
           label2: "Who can see jams I participate?"
           hint: "Select who can see jams you are administrating and participating."
+        profile_hidden:
+          title: "Private Profile"
+          hint: "When enabled, visitors see only your name and avatar, but no other information. Your full profile is visible only to friends."
+          label: "Enable private profile"
         password:
           title: "Change password"
           hint: "Update your password associated with your account."
@@ -561,6 +649,8 @@ en:
       accept: "accepted your friend request"
       sent: "sent a friend request"
       accept_jury_invite: "Accept invitation"
+      destroy_all: "Delete all"
+      delete_one: "Delete"
     actions:
       accepted_friendship: "accepted your friend request"
       accepted_friend_request: "accepted your friend request"
@@ -572,6 +662,10 @@ en:
       sent_jam_jury_invite: "invited you to the jury"
       accepted_jam_jury_invite: "accepted the jury invitation"
       new_report: "filed a new report on %{type} (id %{id})"
+      achievement_granted: "granted you an achievement"
+      earned_achievement: "you earned a new achievement"
+      team_invite_received: "invited you to join the team"
+      admin_message: "— message from administration"
   email_confirms:
     edit:
       title: "Email confirmation"
@@ -732,6 +826,9 @@ en:
       confirm: "Are you sure?"
       tags: "Tags"
       author_unknown: "Author unknown"
+      name: "Name"
+      role: "Role"
+      created_at: "Created at"
       status_hint: "0 - Moderation; 1 - Approved; 2 - Rejected"
       rejection_reason: "Rejection reason"
       rejection_reasons:
@@ -742,16 +839,27 @@ en:
       rejection_reason_placeholder: "Enter a reason or pick one above"
     actions:
       index:
-        title: "Admin actions"
+        title: "Action log"
         admin: "Admin"
         record_type: "Record type"
         record_id: "Record ID"
         action: "Action"
         changes: "Changes"
         date: "Date"
-        old_values: "Old values:"
-        new_values: "New values:"
+        old_values: "Before"
+        new_values: "After"
         no_changes: "No changes"
+        by: "by:"
+        changes_field: "Field"
+        no_actions: "No records found"
+        filter_admin: "Admin"
+        filter_all: "All"
+        filter_resource: "Resource type"
+        filter_action_type: "Action type"
+        filter_date_from: "From date"
+        filter_date_to: "To date"
+        filter_apply: "Apply"
+        filter_reset: "Reset"
     games:
       index:
         search_label: "Search games"
@@ -774,6 +882,7 @@ en:
         logo: "Logo"
     users:
       index:
+        title: "Users"
         search_label: "Search users"
         not_found: 'No users found for query "%{query}".'
         create_user: "Create user"
@@ -858,6 +967,86 @@ en:
         registered_users: "Registered users"
         user_count: "User count"
         date: "Date"
+    announcements:
+      created: "Announcement created."
+      updated: "Announcement updated."
+      deleted: "Announcement deleted."
+      index:
+        title: "Announcements"
+        new: "New Announcement"
+        type: "Type"
+        version: "Version"
+        title_col: "Title"
+        published: "Published"
+        published_at: "Published at"
+        author: "Author"
+        not_found: "No announcements found."
+      form:
+        type_label: "Type"
+        type_general: "General"
+        type_release: "Release"
+        title_en: "Title (EN)"
+        title_ru: "Title (RU)"
+        body_en: "Body (EN)"
+        body_ru: "Body (RU)"
+        version: "Version (e.g. 0.7.0)"
+        version_hint: "Format: Major.Minor.Patch"
+        published: "Published"
+        save: "Save"
+        save_and_publish: "Save & Publish"
+        unpublish: "Unpublish"
+    teams:
+      deleted: "Team deleted."
+      index:
+        title: "Teams"
+        leader: "Leader"
+        members: "Members"
+        search_label: "Search teams"
+        not_found: "No teams found."
+        created_at: "Created"
+    assets:
+      deleted: "Asset deleted."
+      index:
+        title: "Assets"
+        category: "Category"
+        author: "Author"
+        downloads: "Downloads"
+        search_label: "Search assets"
+        not_found: "No assets found."
+        created_at: "Created"
+    messages:
+      title: "Send Notification"
+      sent: "Notification sent to %{count} users."
+      no_recipients: "No eligible recipients found for the selected target."
+      label_title: "Title"
+      label_body: "Message"
+      placeholder_title: "Notification title..."
+      placeholder_body: "Notification text..."
+      body_hint: "The text will be shown to users in their notifications."
+      target_label: "Send to"
+      target_all: "All users"
+      target_user: "Specific user"
+      target_team: "Team members"
+      target_jam: "Jam participants"
+      user_id_label: "User ID or username"
+      user_id_placeholder: "Enter ID or name..."
+      team_label: "Select team"
+      team_placeholder: "— select team —"
+      jam_label: "Select jam"
+      jam_placeholder: "— select jam —"
+      send_btn: "Send notification"
+    achievements:
+      granted: "Achievement granted."
+      revoked: "Achievement revoked."
+      invalid_key: "Invalid achievement key."
+      already_has: "User already has this achievement."
+      index:
+        title: "Achievements"
+        search_label: "Search users"
+        grant: "Grant"
+        revoke: "Revoke"
+        select_achievement: "Select achievement..."
+        no_achievements: "No achievements yet."
   admins:
     index:
       title: "Admin panel"
@@ -883,6 +1072,21 @@ en:
       actions:
         title: "Action log"
         description: "Admin action history"
+      announcements:
+        title: "Announcements"
+        description: "Platform announcements management"
+      teams:
+        title: "Teams"
+        description: "Team management"
+      assets:
+        title: "Assets"
+        description: "Asset management"
+      achievements:
+        title: "Achievements"
+        description: "User achievement management"
+      messages:
+        title: "Notifications"
+        description: "Send platform notifications to users"
   moderator:
     shared:
       back: "Back"
@@ -952,3 +1156,220 @@ en:
       audit:
         title: "Audit log"
         description: "History of admin and moderator actions"
+  assets:
+    categories:
+      sprite: "Sprite"
+      sound: "Sound"
+      font: "Font"
+      shader: "Shader"
+      3d_model: "3D Model"
+      music: "Music"
+      sfx: "SFX"
+      tileset: "Tileset"
+      ui: "UI"
+      other: "Other"
+    create:
+      success: "Asset uploaded successfully."
+    update:
+      success: "Asset updated successfully."
+    destroy:
+      success: "Asset deleted."
+    download:
+      no_file: "No file attached."
+    index:
+      title: "Assets"
+      new_asset: "Upload Asset"
+      search_placeholder: "Search assets..."
+      search_btn: "Search"
+      no_assets: "No assets yet"
+      be_first: "Be the first to share an asset!"
+      has_guide: "Guide"
+    show:
+      download: "Download"
+      download_guide: "Download Guide"
+      author: "Author"
+      files_title: "Files"
+      downloads_count:
+        one: "%{count} download"
+        other: "%{count} downloads"
+      edit: "Edit"
+      delete: "Delete"
+    new:
+      title: "Upload New Asset"
+    edit:
+      title: "Edit Asset"
+    form:
+      title: "Title"
+      description: "Description"
+      category: "Category"
+      preview: "Preview Image"
+      files: "Asset Files"
+      guide: "Guide (optional)"
+      guide_hint: "Upload a PDF or Word document describing how to use this asset."
+      hint_click: "Click to select files"
+      preview_formats: "JPG, PNG, GIF, WebP"
+      files_hint: "Any file type. Max 200 MB per file."
+      guide_formats: "PDF, DOC, DOCX"
+      btn: "Upload Asset"
+  teams:
+    create:
+      success: "Team created successfully."
+    update:
+      success: "Team updated successfully."
+    destroy:
+      success: "Team deleted."
+    index:
+      title: "Teams"
+      new_team: "Create Team"
+      search_placeholder: "Search teams..."
+      search_btn: "Search"
+      no_teams: "No teams yet"
+      leader: "Leader"
+      members_count:
+        one: "%{count} member"
+        other: "%{count} members"
+    show:
+      leader: "Leader"
+      founded: "Founded"
+      members: "Members"
+      pending_requests: "Requests"
+      role_leader: "Leader"
+      role_member: "Member"
+      join: "Join Team"
+      leave: "Leave Team"
+      request_pending: "Request Pending"
+      cancel_request: "Cancel Request"
+      accept: "Accept"
+      decline: "Decline"
+      kick: "Kick"
+      edit: "Edit"
+      delete: "Delete"
+      invite_title: "Invite Users"
+      invite_search_label: "Search by username"
+      invite_search_btn: "Search"
+      invite_btn: "Invite"
+      no_users_found: "No users found."
+      invite_sent_title: "Sent Invites"
+      invited_pending: "Invite sent, awaiting response"
+      you_are_invited: "You have been invited to join %{team}"
+      accept_invite: "Accept"
+      decline_invite: "Decline"
+    new:
+      title: "Create New Team"
+    edit:
+      title: "Edit Team"
+    _form:
+      name: "Team Name"
+      description: "Description"
+      avatar: "Team Avatar"
+      btn: "Create Team"
+      membership_type: "Membership type"
+      membership_open: "Open"
+      membership_open_hint: "Anyone can join immediately"
+      membership_closed: "By invitation"
+      membership_closed_hint: "Joining requires leader approval"
+    form:
+      name: "Team Name"
+      description: "Description"
+      avatar: "Team Avatar"
+      btn: "Create Team"
+      membership_type: "Membership type"
+      membership_open: "Open"
+      membership_open_hint: "Anyone can join immediately"
+      membership_closed: "By invitation"
+      membership_closed_hint: "Joining requires leader approval"
+  team_memberships:
+    create:
+      success: "Join request sent."
+      joined: "You have successfully joined the team."
+      already_member: "You are already a member of this team."
+      request_pending: "Your request is already pending."
+    invite:
+      success: "Invitation sent."
+      user_not_found: "User not found."
+      already_member: "User is already a member or has a pending request."
+    update:
+      success: "Membership updated."
+    destroy:
+      success: "Removed from team."
+  achievements:
+    none_earned: "No achievements yet."
+    categories:
+      game_rated: "Game ratings"
+      rated_games: "Games rated"
+      games_uploaded: "Games uploaded"
+      jam_participants: "Jam participants"
+      assets_created: "Assets"
+      friends_count: "Friends"
+      teams_led: "Teams"
+    tiers:
+      bronze: "Bronze"
+      silver: "Silver"
+      gold: "Gold"
+      special: "Special"
+    game_rated_bronze:
+      name: "Rising Star"
+      description: "Your games have been rated 10 times."
+    game_rated_silver:
+      name: "Crowd Favorite"
+      description: "Your games have been rated 100 times."
+    game_rated_gold:
+      name: "Legendary"
+      description: "Your games have been rated 1000 times."
+    rated_games_bronze:
+      name: "Critic"
+      description: "You have rated 10 games."
+    rated_games_silver:
+      name: "Seasoned Critic"
+      description: "You have rated 100 games."
+    rated_games_gold:
+      name: "Master Critic"
+      description: "You have rated 1000 games."
+    games_uploaded_bronze:
+      name: "Developer"
+      description: "You have published 3 games."
+    games_uploaded_silver:
+      name: "Prolific"
+      description: "You have published 10 games."
+    games_uploaded_gold:
+      name: "Studio"
+      description: "You have published 50 games."
+    jam_participants_bronze:
+      name: "Host"
+      description: "Your jams had 25 participants in total."
+    jam_participants_silver:
+      name: "Community Builder"
+      description: "Your jams had 50 participants in total."
+    jam_participants_gold:
+      name: "Jam Legend"
+      description: "Your jams had 100 participants in total."
+    jammer_developer:
+      name: "Jammer Dev"
+      description: "A core contributor to the Jammer platform."
+    asset_creator_bronze:
+      name: "Asset Creator"
+      description: "Uploaded 3 assets."
+    asset_creator_silver:
+      name: "Asset Master"
+      description: "Uploaded 10 assets."
+    asset_creator_gold:
+      name: "Content Factory"
+      description: "Uploaded 30 assets."
+    social_butterfly:
+      name: "Social Butterfly"
+      description: "Made 10 friends on the platform."
+    team_founder:
+      name: "Team Captain"
+      description: "Founded your own team."
+    first_blood:
+      name: "First Game"
+      description: "Published your first accepted game."
+    jammer_sponsor:
+      name: "Jammer Sponsor"
+      description: "Supported the development of the Jammer platform."
+    jam_first_time:
+      name: "First Jam"
+      description: "Participated in a jam for the first time."
+    jack_of_all_trades:
+      name: "Jack of All Trades"
+      description: "Uploaded an asset, published a game, and participated in a jam."

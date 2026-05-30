@@ -1,18 +1,27 @@
-<tbody class="text-gray-600 text-sm font-light">
 <% @users.each do |user| %>
-  <tr class="border-b hover:bg-gray-100">
-    <th scope="row" class="py-3 px-6"><%= user.id %></th>
-    <td class="py-3 px-6 hover:underline">
-      <%= link_to user.name, user_profile_path(user), class: 'break-all' %>
+  <tr class="hover:bg-white/5 transition-colors text-gray-300">
+    <td class="py-3 px-4 text-gray-500 text-xs"><%= user.id %></td>
+    <td class="py-3 px-4">
+      <%= link_to user.name, user_profile_path(user), class: 'text-indigo-300 hover:text-indigo-200 hover:underline break-all' %>
     </td>
-    <td class="py-3 px-6"><%= user.email %></td>
-    <td class="py-3 px-6"><%= user.role %></td>
-    <td class="py-3 px-6"><%= user.created_at %></td>
-    <td class="py-3 px-6 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-      <%= link_to t('admin.shared.edit'), edit_admin_user_path(user), class: 'bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600' %>
-      <%= link_to t('admin.shared.delete'), admin_user_path(user), class: 'bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600',
-                  data: { turbo_method: :delete, turbo_confirm: t('admin.shared.confirm') } %>
+    <td class="py-3 px-4 text-gray-400 break-all"><%= user.email %></td>
+    <td class="py-3 px-4">
+      <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
+        <%= user.role == 'admin' ? 'bg-red-500/20 text-red-300 ring-1 ring-red-500/30' :
+            user.role == 'moderator' ? 'bg-yellow-500/20 text-yellow-300 ring-1 ring-yellow-500/30' :
+            'bg-gray-700 text-gray-400' %>">
+        <%= user.role %>
+      </span>
+    </td>
+    <td class="py-3 px-4 text-gray-500 text-xs"><%= user.created_at.strftime("%d.%m.%Y %H:%M") %></td>
+    <td class="py-3 px-4">
+      <div class="flex gap-2">
+        <%= link_to t('admin.shared.edit'), edit_admin_user_path(user),
+                    class: 'rounded bg-indigo-600/80 text-white py-1 px-3 text-xs hover:bg-indigo-600 transition-colors' %>
+        <%= link_to t('admin.shared.delete'), admin_user_path(user),
+                    class: 'rounded bg-red-600/80 text-white py-1 px-3 text-xs hover:bg-red-600 transition-colors',
+                    data: { turbo_method: :delete, turbo_confirm: t('admin.shared.confirm') } %>
+      </div>
     </td>
   </tr>
 <% end %>
-</tbody>

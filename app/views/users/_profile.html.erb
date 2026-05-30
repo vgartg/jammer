@@ -1,479 +1,526 @@
-<div data-controller="profile">
-  <div>
-    <% if @user.background_image.attached? %>
-      <%= image_tag url_for(@user.background_image), class: "h-32 w-full object-cover lg:h-48", alt: "Background Image" %>
-    <% else %>
-      <img class="h-32 w-full object-cover lg:h-48"
-           src="https://images.unsplash.com/photo-1444628838545-ac4016a5418a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="">
-    <% end %>
+<% profile_owner = @user.id == session[:current_user] %>
+<% friend_btn_class = "inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-colors" %>
+
+<% if @profile_hidden_admin_view %>
+  <div class="bg-gray-900">
+    <div class="max-w-6xl mx-auto px-6 pt-4">
+      <div class="flex items-center gap-2 bg-amber-950/60 border border-amber-700/50 rounded-xl px-4 py-2.5 text-sm text-amber-300">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+        </svg>
+        <%= t 'users.show.admin_hidden_profile_notice' %>
+      </div>
+    </div>
   </div>
-  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-    <div class="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
-      <span class="relative">
-            <% if @user.avatar.attached? %>
-              <%= image_tag url_for(@user.avatar), alt: "Profile Picture",
-                            class: "h-24 w-24 rounded-full ring-4
-      ring-white sm:h-32 sm:w-32" %>
-            <% else %>
-          <%= image_tag 'empty-avatar.jpg', class: "h-24 w-24 rounded-full ring-4
-      ring-white sm:h-32 sm:w-32" %>
-            <% end %>
+<% end %>
+
+<div class="bg-gray-900 min-h-screen" data-controller="profile">
+
+  <!-- ============ ОБЛОЖКА + ШАПКА ============ -->
+  <div class="relative">
+    <!-- Обложка -->
+    <div class="h-48 w-full overflow-hidden">
+      <% if @user.background_image.attached? %>
+        <%= image_tag url_for(@user.background_image), class: "w-full h-full object-cover", alt: "",
+              style: "object-position: #{@user.background_position.presence || 'center'}" %>
+      <% else %>
+        <div class="w-full h-full bg-gradient-to-br from-indigo-900 via-gray-900 to-gray-800"></div>
+      <% end %>
+    </div>
+
+    <!-- Аватар -->
+    <div class="absolute -bottom-14 left-6 sm:left-8">
+      <span class="relative block">
+        <% if @user.avatar.attached? %>
+          <%= image_tag url_for(@user.avatar), alt: @user.name,
+                class: "h-28 w-28 rounded-2xl ring-4 ring-gray-900 object-cover shadow-xl" %>
+        <% else %>
+          <%= image_tag 'empty-avatar.jpg',
+                class: "h-28 w-28 rounded-2xl ring-4 ring-gray-900 object-cover shadow-xl" %>
+        <% end %>
         <% if @user.can_see_online?(current_user) %>
           <% if @user.online? %>
-                <span class="absolute bottom-1 right-1 block h-6 w-6
-                rounded-full bg-green-400 ring-2 ring-white"></span>
-              <% elsif @user.last_active_at %>
-                <span
-                  class="absolute bottom-1 right-1 block h-6 w-6 rounded-full bg-gray-400 ring-2 ring-white">
-                  <!-- Возможно, будем использовать title позже.
-                       Сейчас он отображает время, не ориентируясь на часовой пояс -->
-                  <!-- title="Последний раз в сети: < %= @user.last_active_at.strftime("%d.%m.%Y, %H:%M") % >" -->
-                </span>
-              <% end %>
-          <% end %>
-          </span>
-      <div class="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
-        <div class="mt-6 min-w-0 flex-1">
-          <h1 class="truncate text-2xl font-bold text-gray-900">
-            <% if current_user %>
-              <% unless current_user.role == 'basic' || @user.role == 'basic' %>
-                <span class="<%= @user.role == 'moderator' ? 'text-green-500' : 'text-red-500' %>">[<%= @user.role[0].upcase %>]</span>
-              <% end %>
-            <% end %>
-            <%= @user.name %>
-          </h1>
-          <p class="truncate mt-1">
-            <% unless @user.status.blank? %>
-              <span class="text-gray-900"><%= @user.status %></span>
-            <% end %>
-          </p>
-        </div>
-
-        <% if @user.is_frozen? %>
-          <div class="alert alert-danger text-red-500">
-            <strong><%= t '.user_frozen' %></strong>
-            <br>
-            <% if @user.unfreeze_at.present? %>
-              <span><%= t '.unfreeze_at' %> <%= @user.unfreeze_at.in_time_zone.strftime("%d-%m-%Y %H:%M") %></span>
-            <% else %>
-              <span><%= t '.frozen_indefinitely' %></span>
-            <% end %>
-          </div>
-        <% end %>
-
-        <div class="mt-6 py-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div class="flex flex-wrap items-center gap-2">
-            <button id="btnUserInfo" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
-                            text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 bg-gray-100"
-                    data-action="click->profile#openTab" data-tab-name="user_info">
-              <%= t '.info_tab' %>
-            </button>
-            <button id="btnUserFriends" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
-                            text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                    data-action="click->profile#openTab" data-tab-name="user_friends">
-              <%= t '.friends_tab' %>
-            </button>
-            <button id="btnUserFollowers" class="tab_links inline-flex justify-center rounded-md px-3 py-2 text-sm font-semibold
-                            text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                    data-action="click->profile#openTab" data-tab-name="user_followers">
-              <%= t '.subscribers' %>
-            </button>
-          </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <% if @user.id != session[:current_user] %>
-              <% friend_btn_green = "mt-4 inline-flex items-center justify-center rounded-md border border-transparent bg-green-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" %>
-              <% friend_btn_red   = "mt-4 inline-flex items-center justify-center rounded-md border border-transparent bg-red-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" %>
-              <% if @friendship.nil? %>
-                <%= button_to t('buttons.add_friend'), user_friendships_path(@user), method: :post,
-                              class: friend_btn_green %>
-              <% elsif @friendship.status == 'pending' && @friendship.user == @current_user %>
-                <%= button_to t('.cancel_application'), cancel_user_friendship_path(@user, @friendship),
-                              method: :delete, class: friend_btn_red %>
-              <% elsif @friendship.status == 'accepted' %>
-                <%= button_to t("buttons.remove_friend"), user_friendship_path(@user, @friendship), method: :delete,
-                              class: friend_btn_red %>
-              <% elsif @friendship.status == 'pending' && @friendship.user != @current_user %>
-                <%= button_to t('.accept_application'), user_friendship_path(@current_user, @friendship), method: :put,
-                              class: friend_btn_green %>
-                <%= button_to t('.cancel_application'), cancel_user_friendship_path(@current_user, @friendship), method: :delete,
-                              class: friend_btn_red %>
-              <% end %>
-              <% if current_user %>
-                <%= render "helpers/report_form", report_item: @user %>
-              <% end %>
-            <% else %>
-              <%= link_to t('.edit'), settings_path, class: "mt-4 inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-50" %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-    <% if @user.can_see_online?(current_user) %>
-      <p class="mt-6"
-         data-controller="online">
-        <% if @user.last_active_at.present? %>
-      <span id="user-status" class="text-sm text-gray-600"
-            data-online-target="lastActiveAt"
-            data-last-active-at="<%= @user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
-            data-action="load->online#updateStatus"></span>
-        <% else %>
-          <span class="text-sm text-gray-600">
-            <%= t '.offline' %>
-          </span>
-        <% end %>
-      </p>
-    <% end %>
-    <div class="mt-6">
-      <div class="mt-6 border-t border-gray-100">
-        <div id="user_info" class="tab_content">
-          <ul class="divide-y divide-gray-100">
-            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.full_name' %></dt>
-              <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                <% if @user.real_name.blank? %>
-                  <span><%= t '.no_info' %></span>
-                <% else %>
-                  <span><%= @user.real_name %></span>
-                <% end %>
-              </dd>
-            </div>
-            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.birthday' %></dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                <% if @user.birthday.blank? %>
-                  <span><%= t '.no_info' %></span>
-                <% else %>
-                  <span><%= Date.parse(@user.birthday).strftime("%d.%m.%Y") %></span>
-                <% end %>
-              </dd>
-            </div>
-            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.location' %></dt>
-              <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                <% if @user.location.blank? %>
-                  <span><%= t '.no_info' %></span>
-                <% else %>
-                  <span><%= @user.location %></span>
-                <% end %>
-              </dd>
-            </div>
-            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.phone' %></dt>
-              <dd class="truncate mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                <% if @user.phone_number.blank? %>
-                  <span><%= t '.no_info' %></span>
-                <% else %>
-                  <span><%= @user.phone_number %></span>
-                <% end %>
-              </dd>
-            </div>
-
-            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.games' %></dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                <% accepted_games = @user.games.where(status: 1) %>
-                <% if accepted_games.any? %>
-                  <ul role="list" id="game-list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-                    <% accepted_games.each_with_index do |game, index| %>
-                      <li class="relative game-item <%= index >= 8 ? 'hidden' : '' %>">
-                        <a href="/games/<%= game.id %>">
-                          <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
-                focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
-                focus-within:ring-offset-gray-100">
-                            <% if game && game.cover.attached? %>
-                              <%= image_tag url_for(game.cover), alt: game.name,
-                                            class: "pointer-events-none object-cover group-hover:opacity-75" %>
-                            <% else %>
-                              <%= image_tag 'empty-avatar.jpg', alt: game.name, class: "pointer-events-none object-cover group-hover:opacity-75" %>
-                            <% end %>
-                          </div>
-                          <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
-                            <%= game.name %>
-                          </p>
-                          <p class="pointer-events-none block truncate text-sm font-medium text-gray-500">
-                            <%= game.description %>
-                          </p>
-                        </a>
-                      </li>
-                    <% end %>
-                  </ul>
-                  <% if accepted_games.count >= 8 %>
-                    <button id="toggle-button"
-                            class="mt-4 text-gray-400 hover:underline"
-                            data-show-text="<%= t '.show_all_games' %>"
-                            data-hide-text="<%= t '.hide_games' %>">
-                      <%= t '.show_all_games' %>
-                    </button>
-                  <% end %>
-                <% else %>
-                  <span class="text-gray-900">
-                    <%= t '.no_info' %>
-                  </span>
-                <% end %>
-              </dd>
-            </div>
-
-            <script>
-                tb = document.getElementById('toggle-button');
-                if (tb) {
-                    tb.addEventListener('click', function () {
-                        const games = document.querySelectorAll('.game-item.hidden');
-                        const allGames = document.querySelectorAll('.game-item');
-                        const isHidden = games.length > 0;
-                        if (isHidden) {
-                            games.forEach(game => {
-                                game.classList.remove('hidden');
-                            });
-                            this.innerText = this.dataset.hideText;
-                        } else {
-                            allGames.forEach((game, index) => {
-                                if (index >= 8) {
-                                    game.classList.add('hidden');
-                                }
-                            });
-                            this.innerText = this.dataset.showText;
-                        }
-                    });
-                }
-            </script>
-            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.adm_jams' %></dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                <% if @user.can_see_administrating_jams?(current_user) || current_user == @user %>
-                  <% administrated_jams = @user.administrated_jams_with_roles %>
-
-                  <% if administrated_jams.any? %>
-                    <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-                      <% administrated_jams.each do |item| %>
-                        <% jam = item[:jam] %>
-                        <% roles = item[:roles] %>
-
-                        <li class="relative">
-                          <%= link_to jams_url + '/' + jam.id.to_s do %>
-                            <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
-                    focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
-                    focus-within:ring-offset-gray-100">
-                              <% if jam&.cover&.attached? %>
-                                <%= image_tag url_for(jam.cover), alt: jam.name,
-                                              class: "pointer-events-none object-cover group-hover:opacity-75" %>
-                              <% else %>
-                                <%= image_tag 'empty-avatar.jpg', alt: jam.name, class: "pointer-events-none object-cover group-hover:opacity-75" %>
-                              <% end %>
-                            </div>
-
-                            <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
-                              <%= jam.name %>
-                            </p>
-
-                            <% jam_desc = jam.description.to_plain_text.strip %>
-                            <% if jam_desc.present? %>
-                              <p class="pointer-events-none block text-sm font-medium text-gray-500 line-clamp-2">
-                                <%= truncate(jam_desc, length: 140) %>
-                              </p>
-                            <% end %>
-
-                            <div class="mt-2 flex flex-wrap gap-2">
-                              <% roles.each do |role| %>
-                                <% label, classes =
-                                     case role
-                                     when :author
-                                       [t('.role_author'), "bg-purple-100 text-purple-800"]
-                                     when :host
-                                       [t('.role_host'), "bg-indigo-100 text-indigo-800"]
-                                     when :admin
-                                       [t('.role_admin'), "bg-amber-100 text-amber-800"]
-                                     end
-                                %>
-
-                                <span class="px-2 py-1 rounded-full text-xs font-medium <%= classes %>">
-                      <%= label %>
-                    </span>
-                              <% end %>
-                            </div>
-                          <% end %>
-                        </li>
-                      <% end %>
-                    </ul>
-                  <% else %>
-                    <span class="text-gray-900"><%= t '.no_info' %></span>
-                  <% end %>
-                <% else %>
-                  <span class="text-gray-900"><%= t '.no_info' %></span>
-                <% end %>
-              </dd>
-            </div>
-
-            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900"><%= t '.part_jams' %></dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                <% if @user.can_see_participating_jams?(current_user) || current_user == @user %>
-                  <% if @user.jam_submissions.any? %>
-                    <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3
-                sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-                      <% @user.get_all_participating_jams.each do |jam| %>
-                        <li class="relative">
-                          <%= link_to jams_url + '/' + jam.id.to_s do %>
-                            <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100
-                        focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2
-                         focus-within:ring-offset-gray-100">
-                              <% if jam && jam.cover.attached? %>
-                                <%= image_tag url_for(jam.cover), alt: jam.name,
-                                              class: "pointer-events-none object-cover group-hover:opacity-75" %>
-                              <% else %>
-                                <%= image_tag 'empty-avatar.jpg', alt: jam.name, class: "pointer-events-none object-cover group-hover:opacity-75" %>
-                              <% end %>
-                            </div>
-                            <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
-                              <%= jam.name %>
-                            </p>
-                            <% jam_desc = jam.description.to_plain_text.strip %>
-                            <% if jam_desc.present? %>
-                              <p class="pointer-events-none block text-sm font-medium text-gray-500 line-clamp-2">
-                                <%= truncate(jam_desc, length: 140) %>
-                              </p>
-                            <% end %>
-                          <% end %>
-                        </li>
-                      <% end %>
-                    </ul>
-                  <% else %>
-                    <span class="text-gray-900"><%= t '.no_info' %></span>
-                  <% end %>
-                <% else %>
-                  <span class="text-gray-900"><%= t '.no_info' %></span>
-                <% end %>
-              </dd>
-            </div>
-          </ul>
-
-        </div>
-        <% def find_friend(friendship) %>
-          <% if friendship.friend %>
-            <% friendship.friend.id != @user.id ? friendship.friend : friendship.user %>
+            <span class="absolute bottom-1.5 right-1.5 block h-5 w-5 rounded-full bg-green-400 ring-2 ring-gray-900"></span>
+          <% elsif @user.last_active_at %>
+            <span class="absolute bottom-1.5 right-1.5 block h-5 w-5 rounded-full bg-gray-500 ring-2 ring-gray-900"></span>
           <% end %>
         <% end %>
-        <div id="user_friends" class="tab_content hidden">
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
-            <% if @friendships.count > 0 %>
-              <% @friendships.each do |friendship| %>
-                <% if find_friend(friendship) %>
-                  <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow
-                              duration-200 flex items-center space-x-4">
-                    <a href='<%= '/users/' + find_friend(friendship).id.to_s %>' class="flex items-center space-x-4 flex-grow">
-          <span class="relative">
-            <% if find_friend(friendship).avatar.attached? %>
-              <%= image_tag url_for(find_friend(friendship).avatar), alt: "Profile Picture",
-                            class: "h-16 w-16 rounded-full" %>
-            <% else %>
-              <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full" %>
-            <% end %>
-            <% if find_friend(friendship).can_see_online?(current_user) %>
-              <% if find_friend(friendship).online? %>
-                <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
-              <% elsif find_friend(friendship).last_active_at %>
-                <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
-              <% end %>
-            <% end %>
-          </span>
-                      <div>
-                        <h2 class="text-lg font-semibold text-gray-800"><%= find_friend(friendship).name %></h2>
-                        <% if find_friend(friendship).can_see_online?(current_user) %>
-                          <p class="mt-6"
-                             data-controller="online">
-                            <% if find_friend(friendship).last_active_at.present? %>
-          <span id="user-status" class="text-sm text-gray-600"
-                data-online-target="lastActiveAt"
-                data-last-active-at="<%= find_friend(friendship).last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
-                data-action="load->online#updateStatus"></span>
-                            <% else %>
-                              <span class="text-sm text-gray-600"><%= t '.offline' %></span>
-                            <% end %></p>
-                        <% end %>
-                      </div>
-                    </a>
-                    <% if @current_user == @user %>
-                      <div>
-                        <%= button_to t('.remove'), user_friendship_path(@current_user, friendship), method: :delete,
-                                      class: "bg-red-500 text-white px-3 py-1 rounded-full
-                          hover:bg-red-600 transition-colors duration-200" %>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
-              <% end %>
-            <% else %>
-              <div class="flex justify-between items-center">
-                <h2 class="text-1xl font-bold tracking-tight text-gray-600">
-                  <%= t '.no_friends' %>
-                </h2>
-              </div>
-            <% end %>
-          </div>
-        </div>
-        <div id="user_followers" class="tab_content hidden">
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 pt-4">
-            <% if @received_requests.count > 0 %>
-              <% @received_requests.each do |request| %>
-                <% if request.user %>
-                  <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
-                    <a href='<%= '/users/' + request.user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
-                  <span class="relative">
-                    <% if request.user.avatar.attached? %>
-                      <%= image_tag url_for(request.user.avatar), alt: "Profile Picture",
-                                    class: "h-16 w-16 rounded-full" %>
-                    <% else %>
-                      <%= image_tag 'empty-avatar.jpg', class: "h-16 w-16 rounded-full" %>
-                    <% end %>
-                    <% if request.user.can_see_online?(current_user) %>
-                    <% if request.user.online? %>
-              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
-               bg-green-400 ring-2 ring-white"></span>
-            <% elsif request.user.last_active_at %>
-              <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full
-               bg-gray-400 ring-2 ring-white"></span>
-            <% end %>
-                      <% end %>
-          </span>
-                      <div>
-                        <h3 class="text-lg font-semibold text-gray-800"><%= request.user.name %></h3>
-                        <% if request.user.can_see_online?(current_user) %>
-                          <p class="mt-6"
-                             data-controller="online">
-                            <% if request.user.last_active_at.present? %>
-      <span id="user-status" class="text-sm text-gray-600"
-            data-online-target="lastActiveAt"
-            data-last-active-at="<%= request.user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
-            data-action="load->online#updateStatus"></span>
-                            <% else %>
-                              <span class="text-sm text-gray-600"><%= t '.offline' %></span>
-                            <% end %>
-                          </p>
-                        <% end %>
-                      </div>
-                    </a>
-                    <% if @current_user == @user %>
-                      <div class="flex flex-col gap-0.5">
-                        <%= button_to t('.accept'), user_friendship_path(@current_user, request), method: :put,
-                                      class: "bg-green-500 text-white px-3 py-1 rounded-full
-                        hover:bg-green-600 transition-colors duration-200 mb-2" %>
-                        <%= button_to t('.decline'), cancel_user_friendship_path(@current_user, request), method: :delete,
-                                      class: "bg-red-500 text-white px-3 py-1 rounded-full
-                        hover:bg-red-600 transition-colors duration-200" %>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
-              <% end %>
-            <% else %>
-              <div class="flex justify-between items-center">
-                <h2 class="text-1xl font-bold tracking-tight text-gray-600">
-                  <%= t '.no_subscribers' %>
-                </h2>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
+      </span>
     </div>
   </div>
+
+  <!-- Имя + кнопки -->
+  <div class="pt-16 px-6 sm:px-8 pb-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+    <div class="min-w-0">
+      <div class="flex items-center gap-2 flex-wrap">
+        <% if current_user && !(current_user.role == 'basic') && !(@user.role == 'basic') %>
+          <span class="<%= @user.role == 'moderator' ? 'text-green-400' : 'text-red-400' %> text-sm font-bold">
+            [<%= @user.role[0].upcase %>]
+          </span>
+        <% end %>
+        <h1 class="text-2xl font-bold text-white truncate"><%= @user.name %></h1>
+        <% if @user.is_frozen? %>
+          <span class="rounded-full bg-red-900/40 border border-red-500/40 px-2 py-0.5 text-xs text-red-400">
+            <%= t '.user_frozen' %>
+          </span>
+        <% end %>
+      </div>
+      <% unless @user.status.blank? %>
+        <p class="text-gray-400 text-sm mt-0.5"><%= @user.status %></p>
+      <% end %>
+      <% if @user.can_see_online?(current_user) && @user.last_active_at.present? %>
+        <p data-controller="online" class="mt-1">
+          <span class="text-xs text-gray-500"
+                data-online-target="lastActiveAt"
+                data-last-active-at="<%= @user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                data-action="load->online#updateStatus"></span>
+        </p>
+      <% end %>
+    </div>
+
+    <!-- Кнопки действий -->
+    <div class="flex flex-wrap items-center gap-2 shrink-0">
+      <% if profile_owner %>
+        <%= link_to t('.edit'), settings_path,
+              class: "#{friend_btn_class} bg-gray-700 text-gray-200 hover:bg-gray-600 border border-gray-600" %>
+      <% else %>
+        <% if @friendship.nil? %>
+          <%= button_to t('buttons.add_friend'), user_friendships_path(@user), method: :post,
+                class: "#{friend_btn_class} bg-indigo-600 text-white hover:bg-indigo-500" %>
+        <% elsif @friendship.status == 'pending' && @friendship.user == @current_user %>
+          <%= button_to t('.cancel_application'), cancel_user_friendship_path(@user, @friendship),
+                method: :delete, class: "#{friend_btn_class} bg-red-700/50 text-red-300 hover:bg-red-700 border border-red-600/40" %>
+        <% elsif @friendship.status == 'accepted' %>
+          <%= button_to t("buttons.remove_friend"), user_friendship_path(@user, @friendship), method: :delete,
+                class: "#{friend_btn_class} bg-gray-700 text-gray-300 hover:bg-red-900/50 border border-gray-600" %>
+        <% elsif @friendship.status == 'pending' && @friendship.user != @current_user %>
+          <%= button_to t('.accept_application'), user_friendship_path(@current_user, @friendship), method: :put,
+                class: "#{friend_btn_class} bg-green-700 text-white hover:bg-green-600" %>
+          <%= button_to t('.cancel_application'), cancel_user_friendship_path(@current_user, @friendship), method: :delete,
+                class: "#{friend_btn_class} bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600" %>
+        <% end %>
+        <% if current_user %>
+          <%= render "helpers/report_form", report_item: @user %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- ============ ОСНОВНАЯ СЕТКА ============ -->
+  <% if @profile_hidden_for_viewer %>
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-16 mt-4">
+      <div class="relative rounded-2xl overflow-hidden">
+        <!-- Блюр-заглушка -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 blur-sm pointer-events-none select-none opacity-40" aria-hidden="true">
+          <div class="space-y-4">
+            <div class="bg-gray-800 rounded-xl p-5 border border-gray-700/50 h-36"></div>
+            <div class="bg-gray-800 rounded-xl p-5 border border-gray-700/50 h-48"></div>
+            <div class="bg-gray-800 rounded-xl p-5 border border-gray-700/50 h-32"></div>
+          </div>
+          <div class="lg:col-span-2">
+            <div class="bg-gray-800/50 rounded-xl h-12 mb-5 border border-gray-700/50"></div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <% 6.times do %>
+                <div class="aspect-video rounded-xl bg-gray-800 border border-gray-700/50"></div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <!-- Оверлей -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+          <div class="bg-gray-900/90 border border-gray-700/60 rounded-2xl px-8 py-8 max-w-sm shadow-2xl backdrop-blur-sm">
+            <div class="flex items-center justify-center w-14 h-14 rounded-2xl bg-gray-800 border border-gray-700/50 mx-auto mb-4">
+              <svg class="w-7 h-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2"><%= t 'users.private_profile.title' %></h3>
+            <p class="text-sm text-gray-400 leading-relaxed"><%= t 'users.private_profile.description' %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- ===== ЛЕВАЯ ПАНЕЛЬ ===== -->
+      <div class="space-y-4">
+
+        <!-- Статистика -->
+        <div class="bg-gray-800 rounded-xl p-5 border border-gray-700/50">
+          <% accepted_games_count = @user.games.where(status: 1).count %>
+          <% jams_count          = @user.jam_submissions.count %>
+          <% friends_count       = (@user.friendships.where(status: 'accepted').count + @user.inverse_friendships.where(status: 'accepted').count) %>
+          <% achievements_count  = @user.user_achievements.count %>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-gray-700/50 rounded-lg p-3 text-center">
+              <p class="text-2xl font-bold text-indigo-400"><%= accepted_games_count %></p>
+              <p class="text-xs text-gray-400 mt-0.5"><%= t '.stat_games' %></p>
+            </div>
+            <div class="bg-gray-700/50 rounded-lg p-3 text-center">
+              <p class="text-2xl font-bold text-purple-400"><%= jams_count %></p>
+              <p class="text-xs text-gray-400 mt-0.5"><%= t '.stat_jams' %></p>
+            </div>
+            <div class="bg-gray-700/50 rounded-lg p-3 text-center">
+              <p class="text-2xl font-bold text-green-400"><%= friends_count %></p>
+              <p class="text-xs text-gray-400 mt-0.5"><%= t '.stat_friends' %></p>
+            </div>
+            <div class="bg-gray-700/50 rounded-lg p-3 text-center">
+              <p class="text-2xl font-bold text-yellow-400"><%= achievements_count %></p>
+              <p class="text-xs text-gray-400 mt-0.5"><%= t '.stat_achievements' %></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Информация -->
+        <div class="bg-gray-800 rounded-xl p-5 border border-gray-700/50">
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3"><%= t '.info_tab' %></h3>
+          <ul class="space-y-2.5 text-sm">
+            <% if @user.real_name.present? %>
+              <li class="flex items-center gap-2 text-gray-300">
+                <svg class="w-4 h-4 text-gray-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+                </svg>
+                <%= @user.real_name %>
+              </li>
+            <% end %>
+            <% if @user.location.present? %>
+              <li class="flex items-center gap-2 text-gray-300">
+                <svg class="w-4 h-4 text-gray-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+                </svg>
+                <%= @user.location %>
+              </li>
+            <% end %>
+            <% if @user.birthday.present? %>
+              <li class="flex items-center gap-2 text-gray-300">
+                <svg class="w-4 h-4 text-gray-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0L3 18m0-13.5V6a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 6v.75"/>
+                </svg>
+                <%= Date.parse(@user.birthday.to_s).strftime("%d.%m.%Y") %>
+              </li>
+            <% end %>
+            <li class="flex items-center gap-2 text-gray-400 text-xs">
+              <svg class="w-4 h-4 text-gray-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+              </svg>
+              <%= t '.joined' %> <%= @user.created_at.strftime('%m.%Y') %>
+            </li>
+            <% if @user.link_username.present? %>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-gray-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
+                </svg>
+                <a href="https://<%= @user.link_username %>.jammer.website/" target="_blank"
+                   class="text-indigo-400 hover:text-indigo-300 text-xs truncate">
+                  <%= @user.link_username %>.jammer.website
+                </a>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <!-- Достижения с прогресс-барами -->
+        <div class="bg-gray-800 rounded-xl p-5 border border-gray-700/50">
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4"><%= t '.achievements_tab' %></h3>
+
+          <%# Earned special achievements %>
+          <% special_earned = @user.user_achievements.select { |ua| AchievementService::ACHIEVEMENTS.dig(ua.achievement_key, :tier) == :special } %>
+          <% if special_earned.any? %>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <% special_earned.each do |ua| %>
+                <% next unless File.exist?(Rails.root.join("app/assets/images/achievements/#{ua.achievement_key}.svg")) %>
+                <div class="group relative" title="<%= t "achievements.#{ua.achievement_key}.name" %>">
+                  <%= image_tag "achievements/#{ua.achievement_key}.svg",
+                        alt: t("achievements.#{ua.achievement_key}.name"),
+                        class: "h-9 w-9 drop-shadow transition-transform group-hover:scale-110" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <%# Progress bars per category %>
+          <% progress_data = AchievementService.category_progress(@user) %>
+          <% progress_data.each do |row| %>
+            <div class="mb-4">
+              <%# Category label %>
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-1.5">
+                  <%# Show earned tier badges %>
+                  <% row[:earned_keys].each do |key| %>
+                    <span title="<%= t "achievements.#{key}.name" %>"
+                          class="inline-block w-2 h-2 rounded-full
+                            <%= AchievementService::ACHIEVEMENTS[key][:tier] == :gold ? 'bg-yellow-400' :
+                                AchievementService::ACHIEVEMENTS[key][:tier] == :silver ? 'bg-gray-300' : 'bg-amber-600' %>">
+                    </span>
+                  <% end %>
+                  <span class="text-xs text-gray-300">
+                    <% if row[:next_key] %>
+                      <%= t "achievements.#{row[:next_key]}.name" %>
+                    <% else %>
+                      <%= t "achievements.#{row[:earned_keys].last}.name" %>
+                    <% end %>
+                  </span>
+                </div>
+                <span class="text-xs text-gray-500">
+                  <%= row[:current] %><% if row[:next_key] %>/<%= row[:next_threshold] %><% end %>
+                </span>
+              </div>
+              <%# Progress bar %>
+              <div class="bg-gray-700 rounded-full h-1.5">
+                <div class="h-1.5 rounded-full transition-all duration-500
+                  <%= row[:next_key].nil? ? 'bg-yellow-400' :
+                      row[:next_tier] == :gold ? 'bg-yellow-500' :
+                      row[:next_tier] == :silver ? 'bg-gray-300' : 'bg-amber-500' %>"
+                     style="width: <%= row[:pct] %>%"></div>
+              </div>
+            </div>
+          <% end %>
+
+          <% if @user.user_achievements.count == 0 && progress_data.all? { |r| r[:current] == 0 } %>
+            <p class="text-xs text-gray-500 text-center py-2"><%= t 'achievements.none_earned' %></p>
+          <% end %>
+        </div>
+
+      </div><!-- END LEFT PANEL -->
+
+      <!-- ===== ПРАВАЯ ОБЛАСТЬ С ТАБАМИ ===== -->
+      <div class="lg:col-span-2">
+
+        <!-- Навигация по табам -->
+        <div class="flex gap-1 bg-gray-800/50 p-1 rounded-xl border border-gray-700/50 mb-5 flex-wrap">
+          <% tabs = [
+            ['btnGames',       'tab_games',    t('.tab_games')],
+            ['btnJams',        'tab_jams',     t('.tab_jams')],
+            ['btnContacts',    'tab_contacts', t('.friends_tab')],
+            ['btnAchievements','user_achievements', t('.achievements_tab')]
+          ] %>
+          <% tabs.each_with_index do |(btn_id, tab_name, label), i| %>
+            <button id="<%= btn_id %>"
+                    class="tab_links flex-1 min-w-0 rounded-lg px-3 py-2 text-sm font-medium transition-colors
+                      <%= i == 0 ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-gray-200' %>"
+                    data-action="click->profile#openTab"
+                    data-tab-name="<%= tab_name %>">
+              <%= label %>
+            </button>
+          <% end %>
+        </div>
+
+        <!-- ТАБ: Игры -->
+        <div id="tab_games" class="tab_content">
+          <% accepted_games = @user.games.where(status: 1) %>
+          <% if accepted_games.any? %>
+            <ul class="grid grid-cols-2 sm:grid-cols-3 gap-4" id="game-list">
+              <% accepted_games.each_with_index do |game, index| %>
+                <li class="game-item group <%= index >= 9 ? 'hidden' : '' %>">
+                  <a href="<%= game_profile_path(game) %>" class="block">
+                    <div class="aspect-video rounded-xl overflow-hidden bg-gray-800">
+                      <% if game.cover.attached? %>
+                        <%= image_tag url_for(game.cover), alt: game.name,
+                              class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" %>
+                      <% else %>
+                        <%= image_tag 'empty-avatar.jpg', alt: game.name,
+                              class: "w-full h-full object-cover" %>
+                      <% end %>
+                    </div>
+                    <p class="mt-2 text-sm font-medium text-gray-200 truncate group-hover:text-indigo-400 transition-colors">
+                      <%= game.name %>
+                    </p>
+                    <p class="text-xs text-gray-500 truncate"><%= game.description %></p>
+                  </a>
+                </li>
+              <% end %>
+            </ul>
+            <% if accepted_games.count > 9 %>
+              <button id="toggle-button" class="mt-4 text-indigo-400 hover:text-indigo-300 text-sm transition-colors"
+                      data-show-text="<%= t '.show_all_games' %>"
+                      data-hide-text="<%= t '.hide_games' %>">
+                <%= t '.show_all_games' %>
+              </button>
+              <script>
+                document.getElementById('toggle-button')?.addEventListener('click', function () {
+                  const hidden = document.querySelectorAll('.game-item.hidden');
+                  const all = document.querySelectorAll('.game-item');
+                  if (hidden.length > 0) {
+                    hidden.forEach(g => g.classList.remove('hidden'));
+                    this.innerText = this.dataset.hideText;
+                  } else {
+                    all.forEach((g, i) => { if (i >= 9) g.classList.add('hidden'); });
+                    this.innerText = this.dataset.showText;
+                  }
+                });
+              </script>
+            <% end %>
+          <% else %>
+            <div class="text-center py-16 text-gray-500">
+              <svg class="mx-auto h-12 w-12 mb-3" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.401.604-.401.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.959.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z"/>
+              </svg>
+              <p class="text-sm"><%= t '.no_info' %></p>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- ТАБ: Джемы -->
+        <div id="tab_jams" class="tab_content hidden">
+          <% if @user.can_see_participating_jams?(current_user) || current_user == @user %>
+            <% participating_jams = @user.get_all_participating_jams %>
+            <% if participating_jams.any? %>
+              <ul class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <% participating_jams.each do |jam| %>
+                  <li class="group">
+                    <%= link_to jam_profile_path(jam), class: "block" do %>
+                      <div class="aspect-video rounded-xl overflow-hidden bg-gray-800">
+                        <% if jam.cover.attached? %>
+                          <%= image_tag url_for(jam.cover), alt: jam.name,
+                                class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" %>
+                        <% else %>
+                          <%= image_tag 'empty-avatar.jpg', alt: jam.name,
+                                class: "w-full h-full object-cover" %>
+                        <% end %>
+                      </div>
+                      <p class="mt-2 text-sm font-medium text-gray-200 truncate group-hover:text-indigo-400 transition-colors">
+                        <%= jam.name %>
+                      </p>
+                      <% jam_desc = jam.description.to_plain_text.strip %>
+                      <% if jam_desc.present? %>
+                        <p class="text-xs text-gray-500 line-clamp-2"><%= truncate(jam_desc, length: 80) %></p>
+                      <% end %>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+            <% else %>
+              <p class="text-center py-16 text-gray-500 text-sm"><%= t '.no_info' %></p>
+            <% end %>
+          <% else %>
+            <p class="text-center py-16 text-gray-500 text-sm"><%= t '.no_info' %></p>
+          <% end %>
+
+          <% administrated_jams = @user.administrated_jams_with_roles %>
+          <% if (current_user == @user || @user.can_see_administrating_jams?(current_user)) && administrated_jams.any? %>
+            <h3 class="text-sm font-semibold text-gray-400 mt-8 mb-4"><%= t '.adm_jams' %></h3>
+            <ul class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <% administrated_jams.each do |item| %>
+                <% jam = item[:jam]; roles = item[:roles] %>
+                <li class="group">
+                  <%= link_to jam_profile_path(jam), class: "block" do %>
+                    <div class="aspect-video rounded-xl overflow-hidden bg-gray-800">
+                      <% if jam.cover.attached? %>
+                        <%= image_tag url_for(jam.cover), alt: jam.name,
+                              class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" %>
+                      <% else %>
+                        <%= image_tag 'empty-avatar.jpg', alt: jam.name, class: "w-full h-full object-cover" %>
+                      <% end %>
+                    </div>
+                    <p class="mt-2 text-sm font-medium text-gray-200 truncate group-hover:text-indigo-400 transition-colors"><%= jam.name %></p>
+                    <div class="mt-1 flex flex-wrap gap-1">
+                      <% roles.each do |role| %>
+                        <% label, cls = case role
+                           when :author then [t('.role_author'), 'bg-purple-900/50 text-purple-300']
+                           when :host   then [t('.role_host'),   'bg-indigo-900/50 text-indigo-300']
+                           when :admin  then [t('.role_admin'),  'bg-amber-900/50 text-amber-300']
+                           end %>
+                        <span class="px-1.5 py-0.5 rounded text-xs font-medium <%= cls %>"><%= label %></span>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
+
+        <!-- ТАБ: Контакты (друзья + входящие заявки) -->
+        <div id="tab_contacts" class="tab_content hidden">
+          <% def find_friend(friendship)
+               if friendship.friend
+                 friendship.friend.id != @user.id ? friendship.friend : friendship.user
+               end
+             end %>
+
+          <%# Входящие заявки (только для владельца профиля) %>
+          <% if @current_user == @user && @received_requests.any? %>
+            <div class="mb-6">
+              <h4 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+                <%= t '.subscribers' %>
+                <span class="ml-1.5 bg-indigo-600 text-white text-xs rounded-full px-1.5 py-0.5"><%= @received_requests.count %></span>
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <% @received_requests.each do |request| %>
+                  <% next unless request.user %>
+                  <div class="flex items-center justify-between gap-3 bg-gray-800 rounded-xl p-3 border border-indigo-700/30">
+                    <a href="<%= user_profile_path(request.user) %>" class="flex items-center gap-3 min-w-0 flex-1">
+                      <span class="relative shrink-0">
+                        <% if request.user.avatar.attached? %>
+                          <%= image_tag url_for(request.user.avatar), class: "h-10 w-10 rounded-full object-cover" %>
+                        <% else %>
+                          <%= image_tag 'empty-avatar.jpg', class: "h-10 w-10 rounded-full" %>
+                        <% end %>
+                        <% if request.user.can_see_online?(current_user) && request.user.online? %>
+                          <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-400 ring-1 ring-gray-800"></span>
+                        <% end %>
+                      </span>
+                      <span class="text-sm font-medium text-gray-200 truncate"><%= request.user.name %></span>
+                    </a>
+                    <div class="flex gap-1 shrink-0">
+                      <%= button_to t('.accept'), user_friendship_path(@current_user, request), method: :put,
+                            class: "text-xs bg-green-700 text-white px-2 py-1 rounded hover:bg-green-600 transition-colors" %>
+                      <%= button_to t('.decline'), cancel_user_friendship_path(@current_user, request), method: :delete,
+                            class: "text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded hover:bg-red-900/50 transition-colors" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <%# Принятые друзья %>
+          <% if @friendships.count > 0 %>
+            <% if @current_user == @user && @received_requests.any? %>
+              <h4 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3"><%= t '.friends_tab' %></h4>
+            <% end %>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <% @friendships.each do |friendship| %>
+                <% friend = find_friend(friendship) %>
+                <% next unless friend %>
+                <div class="flex items-center justify-between gap-3 bg-gray-800 rounded-xl p-3 border border-gray-700/50">
+                  <a href="<%= user_profile_path(friend) %>" class="flex items-center gap-3 min-w-0 flex-1">
+                    <span class="relative shrink-0">
+                      <% if friend.avatar.attached? %>
+                        <%= image_tag url_for(friend.avatar), class: "h-10 w-10 rounded-full object-cover" %>
+                      <% else %>
+                        <%= image_tag 'empty-avatar.jpg', class: "h-10 w-10 rounded-full" %>
+                      <% end %>
+                      <% if friend.can_see_online?(current_user) && friend.online? %>
+                        <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-400 ring-1 ring-gray-800"></span>
+                      <% end %>
+                    </span>
+                    <span class="text-sm font-medium text-gray-200 truncate hover:text-indigo-400 transition-colors">
+                      <%= friend.name %>
+                    </span>
+                  </a>
+                  <% if @current_user == @user %>
+                    <%= button_to t('.remove'), user_friendship_path(@current_user, friendship), method: :delete,
+                          class: "shrink-0 text-xs text-red-500 hover:text-red-400 transition-colors" %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% elsif @current_user != @user || @received_requests.empty? %>
+            <p class="text-center py-16 text-gray-500 text-sm"><%= t '.no_friends' %></p>
+          <% end %>
+        </div>
+
+        <!-- ТАБ: Достижения (полная сетка) -->
+        <div id="user_achievements" class="tab_content hidden">
+          <%= render partial: 'users/achievements_tab', locals: { user_achievements: @user.user_achievements.order(:earned_at) } %>
+        </div>
+
+      </div><!-- END RIGHT AREA -->
+    </div><!-- END GRID -->
+  </div><!-- END MAX-W -->
+  <% end %>
 </div>

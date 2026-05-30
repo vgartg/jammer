@@ -1,0 +1,68 @@
+<div class="bg-gray-900 min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-5xl">
+    <h1 class="text-2xl font-bold text-white mb-6"><%= t '.title' %></h1>
+
+    <%= form_with url: admin_achievements_path, method: :get, local: true, class: "mb-6" do |f| %>
+      <div class="flex flex-wrap gap-3">
+        <%= f.text_field :search, value: params[:search], placeholder: t('.search_label'),
+                         class: "rounded-lg bg-gray-800 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white
+                                 placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full max-w-xs" %>
+        <%= f.submit t('admin.shared.search'),
+                     class: "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors cursor-pointer" %>
+        <%= link_to t('admin.shared.reset'), admin_achievements_path,
+                    class: "rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors" %>
+      </div>
+    <% end %>
+
+    <div class="space-y-3">
+      <% @users.each do |user| %>
+        <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-4">
+          <div class="flex flex-col lg:flex-row lg:items-start gap-4">
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="font-semibold text-white"><%= user.name %></span>
+                <span class="text-sm text-gray-400"><%= user.email %></span>
+                <span class="rounded-full bg-gray-700 text-gray-300 px-2 py-0.5 text-xs"><%= user.role %></span>
+              </div>
+
+              <% if user.user_achievements.any? %>
+                <div class="flex flex-wrap gap-2">
+                  <% user.user_achievements.each do |ua| %>
+                    <span class="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium
+                      <%= ua.achievement_key.include?('gold') ? 'bg-yellow-500/20 text-yellow-300 ring-1 ring-yellow-500/30' :
+                          ua.achievement_key.include?('silver') ? 'bg-gray-500/30 text-gray-300 ring-1 ring-gray-500/30' :
+                          ua.achievement_key.include?('bronze') ? 'bg-orange-500/20 text-orange-300 ring-1 ring-orange-500/30' :
+                          'bg-purple-500/20 text-purple-300 ring-1 ring-purple-500/30' %>">
+                      <%= t("achievements.#{ua.achievement_key}.name", default: ua.achievement_key) %>
+                      <%= button_to t('.revoke'), admin_achievement_path(ua), method: :delete,
+                                    data: { turbo_confirm: t('admin.shared.confirm') },
+                                    class: 'ml-1 text-red-400 hover:text-red-300 bg-transparent border-0 cursor-pointer p-0 text-xs' %>
+                    </span>
+                  <% end %>
+                </div>
+              <% else %>
+                <p class="text-sm text-gray-500"><%= t '.no_achievements' %></p>
+              <% end %>
+            </div>
+
+            <div class="shrink-0">
+              <%= form_with url: admin_achievements_path, method: :post, local: true, class: "flex items-center gap-2" do |f| %>
+                <%= f.hidden_field :user_id, value: user.id %>
+                <%= f.select :achievement_key,
+                             @available_achievements.map { |k| [t("achievements.#{k}.name", default: k), k] },
+                             { prompt: t('.select_achievement') },
+                             class: 'rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none' %>
+                <%= f.submit t('.grant'),
+                             class: 'rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors cursor-pointer' %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-4">
+      <%= render partial: 'helpers/pagy' %>
+    </div>
+  </div>
+</div>

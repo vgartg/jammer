@@ -11,6 +11,7 @@ ru:
       title: "Что-то пошло не так"
       description: "На нашей стороне произошла ошибка. Пожалуйста, попробуйте снова через некоторое время."
       home_link: "На главную"
+      report_hint: "Если ошибка повторяется, пожалуйста, напишите нам на"
   activerecord:
     models:
       tag: "Тег"
@@ -46,6 +47,17 @@ ru:
       report:
         reason: "Причина"
         comment: "Комментарий"
+      asset:
+        title: "Название"
+        description: "Описание"
+        files: "Файлы"
+        preview: "Превью"
+        guide: "Руководство"
+        category: "Категория"
+      team:
+        name: "Название"
+        description: "Описание"
+        avatar: "Аватар"
     errors:
       models:
         game:
@@ -74,6 +86,19 @@ ru:
               taken: "вы уже отправили жалобу на эту сущность"
         jam_rating_setting:
           both_disabled: "нельзя выключить и жюри, и аудиторию одновременно"
+        asset:
+          attributes:
+            title:
+              blank: "не может быть пустым"
+              too_short: "слишком короткое (минимум %{count} символа)"
+              too_long: "слишком длинное (максимум %{count} символов)"
+            files:
+              blank: "обязательны для загрузки"
+              too_large: "размер не должен превышать 200 MB"
+            preview:
+              wrong_format: "должен быть в формате .jpg, .jpeg, .png, .gif или .webp"
+            guide:
+              wrong_format: "должен быть в формате .pdf, .doc или .docx"
   buttons:
     save: "Сохранить"
     change_avatar: "Сменить аватарку"
@@ -84,6 +109,7 @@ ru:
     add_friend: "Добавить в друзья"
     cancel: "Отмена"
     close: "Закрыть"
+    confirm: "Вы уверены?"
   search: "Поиск..."
   home:
     title: "Прототип сервиса Jammer"
@@ -95,16 +121,20 @@ ru:
       users: "Пользователи"
       games: "Игры"
       jams: "Джемы"
+      assets: "Ассеты"
+      teams: "Команды"
       sign_up: "Регистрация"
       log_in: "Авторизация"
       sign_out: "Выход"
-      dashboard: "Панель управления"
+      dashboard: "Новости"
       language: "Язык"
     footer:
+      contacts: "Контакты"
       copyright: "Все права защищены."
       fsi_text: 'Проект реализован при поддержке Фонда содействия инновациям в рамках программы «Студенческий стартап» мероприятия «Платформа университетского технологического предпринимательства» федерального проекта «Технологии»'
     left-menu:
       requests: "Запросы"
+      notifications: "Уведомления"
       settings: "Настройки"
       plug: "Заглушка"
     application:
@@ -121,7 +151,7 @@ ru:
       contact: "Если у вас есть вопросы, свяжитесь с нами по адресу:"
   dashboard:
     index:
-      title: "Панель управления"
+      title: "Новости"
       games_reviews: "Ваши отзывы на игры: "
       rating: "Оценка: "
       games_rating: "Средняя оценка ваших игр: "
@@ -130,6 +160,10 @@ ru:
       no_comment: "Комментарий не оставлен"
       my_jams: "Мои джемы"
       no_jams: "Вы пока не участвуете и не администрируете ни в одном джеме."
+      announcements_title: "Объявления платформы"
+      announcement_release_badge: "Релиз"
+      announcement_general_badge: "Обновление"
+      no_announcements: "Объявлений пока нет."
   games:
     create:
       success: "Игра успешно создана!"
@@ -222,6 +256,18 @@ ru:
       title: "Друзья"
       empty: "Друзей пока нет"
       btn: "Удалить из друзей"
+      remove_btn: "Удалить"
+      tab_friends: "Друзья"
+      tab_incoming: "Входящие"
+      tab_outgoing: "Исходящие"
+      wants_to_friend: "Хочет добавить вас в друзья"
+      request_pending: "Запрос в ожидании"
+      find_friends: "Найти друзей"
+      accept: "Принять"
+      cancel: "Отклонить"
+      cancel_inv: "Отменить"
+      sent_empt: "Исходящих запросов пока нет"
+      inc_empt: "Входящих запросов пока нет"
     requests:
       sent: "Отправленные приглашения"
       income: "Входящие приглашения"
@@ -375,6 +421,22 @@ ru:
       creator: "Создатель:"
       no_author: "Автор не найден"
       hosts: "Хосты:"
+  frozen:
+    title: "Аккаунт заморожен"
+    reason: "Причина:"
+    frozen_at: "Заморозка установлена:"
+    frozen_until: "Заморожен до:"
+    indefinitely: "Бессрочно"
+    contact: "Если у вас есть вопросы, напишите нам:"
+  contacts:
+    title: "Контакты"
+    subtitle: "Здесь вы найдёте информацию о команде проекта Jammer."
+    github_title: "GitHub"
+    founders_title: "Основатели"
+    founders_title_short: "Основатель"
+    current_devs_title: "Текущие разработчики"
+    past_devs_title: "Также принимали участие в разработке продукта"
+    email_title: "Обратная связь"
   users:
     destroy:
       success: "Аккаунт успешно удален."
@@ -404,6 +466,14 @@ ru:
       info_tab: "Информация"
       friends_tab: "Друзья"
       subscribers: "Подписчики"
+      achievements_tab: "Достижения"
+      tab_games: "Игры"
+      tab_jams: "Джемы"
+      stat_games: "Игры"
+      stat_jams: "Джемы"
+      stat_friends: "Друзья"
+      stat_achievements: "Ачивки"
+      joined: "На платформе с"
       remove: "Удалить из друзей"
       accept: "Принять заявку"
       decline: "Отклонить заявку"
@@ -419,6 +489,14 @@ ru:
       role_author: "Автор"
       role_host: "Хост"
       role_admin: "Админ"
+    private_profile:
+      title: "Профиль скрыт"
+      description: "Этот пользователь скрыл свой профиль. Информация доступна только друзьям."
+      back: "Назад"
+      add_friend: "Добавить в друзья"
+      request_pending: "Запрос отправлен"
+    show:
+      admin_hidden_profile_notice: "Администратор: профиль этого пользователя скрыт от обычных посетителей."
     new:
       title: "Зарегистрируйте свой аккаунт"
       email: "Адрес электронной почты"
@@ -464,6 +542,12 @@ ru:
           drag: "Перетащите сюда изображение или нажмите, чтобы выбрать файл"
           recommendation: "Рекомендуемый размер: 1920x1080 пикселей"
           preview_alt: "Предварительный просмотр изображения"
+          background_position: "Обрезка заставки"
+          background_preview: "Предпросмотр"
+          crop_hint: "Перетащите изображение, чтобы выбрать нужную область"
+          pos_top: "Сверху"
+          pos_center: "По центру"
+          pos_bottom: "Снизу"
         nickname: "Отображаемое имя"
         real_name: "Настоящее имя"
         email:
@@ -485,6 +569,10 @@ ru:
           label1: "Кто видит джемы, которые я администрирую?"
           label2: "Кто видит джемы, в которых я участвую?"
           hint: "Выберите, кто может видеть джемы, которыми вы управляете и в которых участвуете."
+        profile_hidden:
+          title: "Закрытый профиль"
+          hint: "При закрытом профиле посетители видят только ваше имя и аватар, но не остальную информацию. Полный профиль открывается только друзьям."
+          label: "Включить закрытый профиль"
         password:
           title: "Сменить пароль"
           hint: "Обновите пароль, связанный с вашей учетной записью."
@@ -561,6 +649,8 @@ ru:
       accept: "принял заявку в друзья"
       sent: "отправил запрос в друзья"
       accept_jury_invite: "Принять приглашение"
+      destroy_all: "Удалить все"
+      delete_one: "Удалить"
     actions:
       accepted_friendship: "принял вашу заявку в друзья"
       accepted_friend_request: "принял вашу заявку в друзья"
@@ -572,6 +662,10 @@ ru:
       sent_jam_jury_invite: "пригласил вас в жюри"
       accepted_jam_jury_invite: "принял приглашение в жюри"
       new_report: "оставил новую жалобу на %{type} (id %{id})"
+      achievement_granted: "выдал вам достижение"
+      earned_achievement: "вы получили новое достижение"
+      team_invite_received: "пригласил вас в команду"
+      admin_message: "— сообщение от администрации"
   email_confirms:
     edit:
       title: "Подтверждение почты"
@@ -732,6 +826,9 @@ ru:
       confirm: "Вы уверены?"
       tags: "Теги"
       author_unknown: "Автор неизвестен"
+      name: "Имя"
+      role: "Роль"
+      created_at: "Дата создания"
       status_hint: "0 - Модерация; 1 - Одобрено; 2 - Отклонено"
       rejection_reason: "Причина отклонения"
       rejection_reasons:
@@ -742,16 +839,27 @@ ru:
       rejection_reason_placeholder: "Введите причину или выберите готовую выше"
     actions:
       index:
-        title: "Действия администраторов"
+        title: "Журнал действий"
         admin: "Администратор"
         record_type: "Тип записи"
         record_id: "ID записи"
         action: "Действие"
         changes: "Изменения"
         date: "Дата"
-        old_values: "Старые значения:"
-        new_values: "Новые значения:"
+        old_values: "До"
+        new_values: "После"
         no_changes: "Изменений нет"
+        by: "автор:"
+        changes_field: "Поле"
+        no_actions: "Записей не найдено"
+        filter_admin: "Администратор"
+        filter_all: "Все"
+        filter_resource: "Тип объекта"
+        filter_action_type: "Действие"
+        filter_date_from: "С даты"
+        filter_date_to: "По дату"
+        filter_apply: "Применить"
+        filter_reset: "Сбросить"
     games:
       index:
         search_label: "Поиск игр"
@@ -774,6 +882,7 @@ ru:
         logo: "Логотип"
     users:
       index:
+        title: "Пользователи"
         search_label: "Поиск пользователей"
         not_found: 'Пользователи не найдены по запросу "%{query}".'
         create_user: "Создать пользователя"
@@ -858,6 +967,86 @@ ru:
         registered_users: "Зарегистрированные пользователи"
         user_count: "Количество пользователей"
         date: "Дата"
+    announcements:
+      created: "Объявление создано."
+      updated: "Объявление обновлено."
+      deleted: "Объявление удалено."
+      index:
+        title: "Объявления"
+        new: "Новое объявление"
+        type: "Тип"
+        version: "Версия"
+        title_col: "Заголовок"
+        published: "Опубликовано"
+        published_at: "Дата публикации"
+        author: "Автор"
+        not_found: "Объявлений не найдено."
+      form:
+        type_label: "Тип"
+        type_general: "Общее"
+        type_release: "Релиз"
+        title_en: "Заголовок (EN)"
+        title_ru: "Заголовок (RU)"
+        body_en: "Текст (EN)"
+        body_ru: "Текст (RU)"
+        version: "Версия (например, 0.7.0)"
+        version_hint: "Формат: Major.Minor.Patch"
+        published: "Опубликовано"
+        save: "Сохранить"
+        save_and_publish: "Сохранить и опубликовать"
+        unpublish: "Снять с публикации"
+    teams:
+      deleted: "Команда удалена."
+      index:
+        title: "Команды"
+        leader: "Лидер"
+        members: "Участники"
+        search_label: "Поиск команд"
+        not_found: "Команды не найдены."
+        created_at: "Создано"
+    assets:
+      deleted: "Ассет удалён."
+      index:
+        title: "Ассеты"
+        category: "Категория"
+        author: "Автор"
+        downloads: "Скачивания"
+        search_label: "Поиск ассетов"
+        not_found: "Ассеты не найдены."
+        created_at: "Создано"
+    messages:
+      title: "Отправить уведомление"
+      sent: "Уведомление отправлено %{count} пользователям."
+      no_recipients: "Подходящих получателей для выбранной цели не найдено."
+      label_title: "Заголовок"
+      label_body: "Текст"
+      placeholder_title: "Заголовок уведомления..."
+      placeholder_body: "Текст уведомления (можно использовать обычный текст)..."
+      body_hint: "Текст будет показан пользователям в их уведомлениях."
+      target_label: "Кому отправить"
+      target_all: "Всем пользователям"
+      target_user: "Конкретному пользователю"
+      target_team: "Участникам команды"
+      target_jam: "Участникам джема"
+      user_id_label: "ID или имя пользователя"
+      user_id_placeholder: "Введите ID или имя..."
+      team_label: "Выберите команду"
+      team_placeholder: "— выберите команду —"
+      jam_label: "Выберите джем"
+      jam_placeholder: "— выберите джем —"
+      send_btn: "Отправить уведомление"
+    achievements:
+      granted: "Достижение выдано."
+      revoked: "Достижение отозвано."
+      invalid_key: "Неверный ключ достижения."
+      already_has: "У пользователя уже есть это достижение."
+      index:
+        title: "Достижения"
+        search_label: "Поиск пользователей"
+        grant: "Выдать"
+        revoke: "Отозвать"
+        select_achievement: "Выберите достижение..."
+        no_achievements: "Достижений пока нет."
   admins:
     index:
       title: "Панель администратора"
@@ -883,6 +1072,21 @@ ru:
       actions:
         title: "Журнал действий"
         description: "История действий администраторов"
+      announcements:
+        title: "Объявления"
+        description: "Управление объявлениями платформы"
+      teams:
+        title: "Команды"
+        description: "Управление командами"
+      assets:
+        title: "Ассеты"
+        description: "Управление ассетами"
+      achievements:
+        title: "Достижения"
+        description: "Управление достижениями пользователей"
+      messages:
+        title: "Уведомления"
+        description: "Отправить уведомления пользователям платформы"
   moderator:
     shared:
       back: "Назад"
@@ -952,3 +1156,226 @@ ru:
       audit:
         title: "Журнал действий"
         description: "История действий администраторов и модераторов"
+  assets:
+    categories:
+      sprite: "Спрайт"
+      sound: "Звук"
+      font: "Шрифт"
+      shader: "Шейдер"
+      3d_model: "3D Модель"
+      music: "Музыка"
+      sfx: "Звуковой эффект"
+      tileset: "Тайлсет"
+      ui: "UI"
+      other: "Прочее"
+    create:
+      success: "Ассет успешно загружен."
+    update:
+      success: "Ассет обновлён."
+    destroy:
+      success: "Ассет удалён."
+    download:
+      no_file: "Файл не прикреплён."
+    index:
+      title: "Ассеты"
+      new_asset: "Загрузить ассет"
+      search_placeholder: "Поиск ассетов..."
+      search_btn: "Найти"
+      no_assets: "Ассетов пока нет"
+      be_first: "Станьте первым, кто поделится ассетом!"
+      has_guide: "Гайд"
+    show:
+      download: "Скачать"
+      download_guide: "Скачать гайд"
+      author: "Автор"
+      files_title: "Файлы"
+      downloads_count:
+        one: "%{count} скачивание"
+        few: "%{count} скачивания"
+        many: "%{count} скачиваний"
+        other: "%{count} скачиваний"
+      edit: "Редактировать"
+      delete: "Удалить"
+    new:
+      title: "Загрузить новый ассет"
+    edit:
+      title: "Редактировать ассет"
+    form:
+      title: "Название"
+      description: "Описание"
+      category: "Категория"
+      preview: "Превью"
+      files: "Файлы ассета"
+      guide: "Гайд (необязательно)"
+      guide_hint: "Загрузите PDF или Word документ с описанием использования ассета."
+      hint_click: "Нажмите для выбора файлов"
+      preview_formats: "JPG, PNG, GIF, WebP"
+      files_hint: "Любой формат файлов. До 200 МБ на файл."
+      guide_formats: "PDF, DOC, DOCX"
+      btn: "Загрузить ассет"
+  teams:
+    create:
+      success: "Команда успешно создана."
+    update:
+      success: "Команда обновлена."
+    destroy:
+      success: "Команда удалена."
+    index:
+      title: "Команды"
+      new_team: "Создать команду"
+      search_placeholder: "Поиск команд..."
+      search_btn: "Найти"
+      no_teams: "Команд пока нет"
+      leader: "Лидер"
+      members_count:
+        one: "%{count} участник"
+        few: "%{count} участника"
+        many: "%{count} участников"
+        other: "%{count} участников"
+    show:
+      leader: "Лидер"
+      founded: "Основана"
+      members: "Участники"
+      pending_requests: "Заявки"
+      role_leader: "Лидер"
+      role_member: "Участник"
+      join: "Вступить"
+      leave: "Покинуть команду"
+      request_pending: "Заявка на рассмотрении"
+      cancel_request: "Отозвать заявку"
+      accept: "Принять"
+      decline: "Отклонить"
+      kick: "Исключить"
+      edit: "Редактировать"
+      delete: "Удалить"
+      invite_title: "Пригласить участников"
+      invite_search_label: "Поиск по имени"
+      invite_search_btn: "Найти"
+      invite_btn: "Пригласить"
+      no_users_found: "Пользователи не найдены."
+      invite_sent_title: "Отправленные приглашения"
+      invited_pending: "Приглашение отправлено, ожидается ответ"
+      you_are_invited: "Вас пригласили в команду «%{team}»"
+      accept_invite: "Принять"
+      decline_invite: "Отклонить"
+    new:
+      title: "Создать команду"
+    edit:
+      title: "Редактировать команду"
+    _form:
+      name: "Название команды"
+      description: "Описание"
+      avatar: "Аватар команды"
+      btn: "Создать команду"
+      membership_type: "Тип вступления"
+      membership_open: "Открытая"
+      membership_open_hint: "Любой желающий может вступить сразу"
+      membership_closed: "По приглашению"
+      membership_closed_hint: "Вступление только после одобрения лидером"
+    form:
+      name: "Название команды"
+      description: "Описание"
+      avatar: "Аватар команды"
+      btn: "Создать команду"
+      membership_type: "Тип вступления"
+      membership_open: "Открытая"
+      membership_open_hint: "Любой желающий может вступить сразу"
+      membership_closed: "По приглашению"
+      membership_closed_hint: "Вступление только после одобрения лидером"
+  team_memberships:
+    create:
+      success: "Заявка на вступление отправлена."
+      joined: "Вы успешно вступили в команду."
+      already_member: "Вы уже являетесь участником этой команды."
+      request_pending: "Ваша заявка уже на рассмотрении."
+    invite:
+      success: "Приглашение отправлено."
+      user_not_found: "Пользователь не найден."
+      already_member: "Пользователь уже является участником или подал заявку."
+    update:
+      success: "Статус участника обновлён."
+    destroy:
+      success: "Участник удалён из команды."
+  achievements:
+    page_title: "Достижения"
+    page_subtitle: "Список всех достижений платформы и условий их получения."
+    none_earned: "Достижений пока нет."
+    categories:
+      game_rated: "Рейтинги игр"
+      rated_games: "Оценки игр"
+      games_uploaded: "Загруженные игры"
+      jam_participants: "Участники джемов"
+      assets_created: "Ассеты"
+      friends_count: "Друзья"
+      teams_led: "Команды"
+    tiers:
+      bronze: "Бронза"
+      silver: "Серебро"
+      gold: "Золото"
+      special: "Особое"
+    game_rated_bronze:
+      name: "Восходящая звезда"
+      description: "Ваши игры оценили 10 раз."
+    game_rated_silver:
+      name: "Любимец публики"
+      description: "Ваши игры оценили 100 раз."
+    game_rated_gold:
+      name: "Легенда"
+      description: "Ваши игры оценили 1000 раз."
+    rated_games_bronze:
+      name: "Критик"
+      description: "Вы оценили 10 игр."
+    rated_games_silver:
+      name: "Опытный критик"
+      description: "Вы оценили 100 игр."
+    rated_games_gold:
+      name: "Мастер-критик"
+      description: "Вы оценили 1000 игр."
+    games_uploaded_bronze:
+      name: "Разработчик"
+      description: "Вы опубликовали 3 игры."
+    games_uploaded_silver:
+      name: "Плодовитый"
+      description: "Вы опубликовали 10 игр."
+    games_uploaded_gold:
+      name: "Студия"
+      description: "Вы опубликовали 50 игр."
+    jam_participants_bronze:
+      name: "Организатор"
+      description: "В ваших джемах суммарно участвовало 25 человек."
+    jam_participants_silver:
+      name: "Строитель сообщества"
+      description: "В ваших джемах суммарно участвовало 50 человек."
+    jam_participants_gold:
+      name: "Легенда джемов"
+      description: "В ваших джемах суммарно участвовало 100 человек."
+    jammer_developer:
+      name: "Разработчик Jammer"
+      description: "Основной вкладчик в платформу Jammer."
+    asset_creator_bronze:
+      name: "Создатель ассетов"
+      description: "Загрузили 3 ассета."
+    asset_creator_silver:
+      name: "Мастер ассетов"
+      description: "Загрузили 10 ассетов."
+    asset_creator_gold:
+      name: "Фабрика контента"
+      description: "Загрузили 30 ассетов."
+    social_butterfly:
+      name: "Душа компании"
+      description: "Завели 10 друзей на платформе."
+    team_founder:
+      name: "Капитан команды"
+      description: "Основали собственную команду."
+    first_blood:
+      name: "Первая игра"
+      description: "Опубликовали первую принятую игру."
+    jammer_sponsor:
+      name: "Спонсор Jammer"
+      description: "Поддержали развитие платформы Jammer."
+    jam_first_time:
+      name: "Первый джем"
+      description: "Впервые приняли участие в джеме."
+    jack_of_all_trades:
+      name: "Мастер на все руки"
+      description: "Загрузили ассет, опубликовали игру и поучаствовали в джеме."

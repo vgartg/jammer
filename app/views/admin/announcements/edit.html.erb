@@ -1,0 +1,15 @@
+<div class="bg-gray-900 min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-2xl">
+    <div class="flex flex-wrap items-center gap-3 mb-6">
+      <%= link_to t('admin.shared.back'), admin_announcements_path,
+                  class: 'text-gray-400 hover:text-gray-200 text-sm' %>
+      <h1 class="text-2xl font-bold text-white">#<%= @announcement.id %> — <%= @announcement.title_en %></h1>
+      <% if @announcement.published? %>
+        <span class="rounded-full bg-green-500/20 text-green-300 ring-1 ring-green-500/30 px-3 py-1 text-xs font-medium">
+          <%= t('admin.announcements.form.published') %> <%= @announcement.published_at&.strftime('%d.%m.%Y') %>
+        </span>
+      <% end %>
+    </div>
+    <%= render 'form' %>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="min-h-full flex flex-col items-center justify-center px-6 py-24 sm:py-32 lg:px-8">
+  <div class="text-center max-w-lg w-full">
+    <a href="/" class="inline-block mb-10">
+      <img src="<%= asset_path('whitewithoutwall.png') %>" alt="Jammer" width="120" class="mx-auto">
+    </a>
+
+    <div class="bg-gray-800 border border-red-500/40 rounded-2xl p-8 text-left">
+      <div class="flex items-center gap-3 mb-4">
+        <svg class="w-7 h-7 text-red-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+        </svg>
+        <h1 class="text-xl font-bold text-red-400"><%= t 'frozen.title' %></h1>
+      </div>
+
+      <div class="space-y-3 text-gray-300 text-sm">
+        <p>
+          <span class="text-gray-400 font-medium"><%= t 'frozen.reason' %></span>
+          <%= current_user.frozen_reason.presence || '—' %>
+        </p>
+        <p>
+          <span class="text-gray-400 font-medium"><%= t 'frozen.frozen_at' %></span>
+          <%= current_user.frozen_at&.in_time_zone&.strftime("%d.%m.%Y %H:%M") || '—' %>
+        </p>
+        <p>
+          <span class="text-gray-400 font-medium"><%= t 'frozen.frozen_until' %></span>
+          <%= current_user.unfreeze_at.present? ? current_user.unfreeze_at.in_time_zone.strftime("%d.%m.%Y %H:%M") : t('frozen.indefinitely') %>
+        </p>
+        <p class="pt-2 text-gray-400">
+          <%= t 'frozen.contact' %>
+          <a href="mailto:jammer.website@internet.ru" class="text-blue-400 hover:underline">jammer.website@internet.ru</a>
+        </p>
+      </div>
+
+      <div class="mt-6">
+        <%= button_to t('buttons.sign_out'), logout_path, method: :delete,
+                      class: "w-full flex justify-center rounded-md bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600 transition-colors" %>
+      </div>
+    </div>
+  </div>
+</div>

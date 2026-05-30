@@ -63,26 +63,65 @@
             </div>
           </div>
 
-          <div class="field col-span-full">
-            <label for="background_image" class="block text-sm font-medium text-white"><%= t '.account.image.background_image' %></label>
-            <div data-controller="background-image">
-              <div class="relative mt-2">
-                <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
-                  <% if @user.background_image.attached? %>
-                    <img data-background-image-target="currentBackgroundImg"
-                         id="current-background-img" src="<%= url_for(@user.background_image) %>"
-                         alt="Current Background Image" class="mb-4 w-full h-auto object-cover rounded-md"/>
-                  <% end %>
-                  <img data-background-image-target="previewImg" id="preview-img" src="#" alt="<%= t '.account.image.preview_alt' %>" class="mt-4 hidden w-full h-auto object-cover rounded-md">
-                  <input data-background-image-target="input" type="file" name="user[background_image]"
-                         id="background_image"
-                         class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
-                  <p class="text-gray-500 mt-4 text-sm">
-                    <%= t 'games.form.hint1' %>
-                  </p>
-                  <p class="text-gray-500 text-xs">
-                    <%= t 'games.form.recommend' %>
-                  </p>
+          <div class="field col-span-full" data-controller="bg-position-picker">
+            <label class="block text-sm font-medium text-white"><%= t '.account.image.background_image' %></label>
+
+            <div class="mt-2">
+              <!-- Текущая заставка -->
+              <% if @user.background_image.attached? %>
+                <div class="relative rounded-xl overflow-hidden h-32 bg-gray-700 mb-3">
+                  <img src="<%= url_for(@user.background_image) %>"
+                       alt=""
+                       class="w-full h-full object-cover">
+                  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span class="text-xs text-white/50 bg-black/30 px-2 py-0.5 rounded"><%= t '.account.image.background_preview' %></span>
+                  </div>
+                </div>
+              <% end %>
+
+              <!-- Превью после кропа (до сохранения формы) -->
+              <div class="relative rounded-xl overflow-hidden h-32 bg-gray-700 mb-3 hidden" id="bg-crop-preview-wrap">
+                <img src="" id="bg-crop-preview-img" alt="" class="w-full h-full object-cover"
+                     data-bg-position-picker-target="preview">
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <span class="text-xs text-white/50 bg-black/30 px-2 py-0.5 rounded"><%= t '.account.image.background_preview' %></span>
+                </div>
+              </div>
+
+              <label class="inline-flex items-center gap-2 cursor-pointer rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white hover:bg-white/20">
+                <%= t '.account.image.background_image' %>
+                <input type="file"
+                       name="user[background_image]"
+                       id="background_image"
+                       class="hidden"
+                       accept="image/jpeg,image/png,image/webp"
+                       data-bg-position-picker-target="fileInput">
+              </label>
+              <p class="mt-1 text-xs text-gray-400"><%= t '.account.image.recommendation' %></p>
+            </div>
+
+            <!-- Модальное окно кроппера -->
+            <div data-bg-position-picker-target="modal"
+                 class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+              <div class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden">
+                <div class="px-6 pt-5 pb-2">
+                  <h3 class="text-lg font-semibold text-white mb-3"><%= t '.account.image.background_position' %></h3>
+                  <p class="text-xs text-gray-400 mb-3"><%= t '.account.image.crop_hint' %></p>
+                  <div class="bg-gray-700 rounded-lg overflow-hidden" style="max-height: 360px;">
+                    <img data-bg-position-picker-target="image" src="" alt="" style="display:block; max-width:100%;">
+                  </div>
+                </div>
+                <div class="bg-gray-700 px-6 py-3 flex justify-end gap-3">
+                  <button type="button"
+                          data-bg-position-picker-target="cancelButton"
+                          class="rounded-md border border-gray-500 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600">
+                    <%= t 'buttons.cancel' %>
+                  </button>
+                  <button type="button"
+                          data-bg-position-picker-target="cropButton"
+                          class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+                    <%= t 'buttons.save' %>
+                  </button>
                 </div>
               </div>
             </div>
@@ -253,7 +292,10 @@
                                value: @user.phone_number,
                                autocomplete: 'tel',
                                type: 'tel',
-                               placeholder: '+7 (___) ___-__-__',
+                               placeholder: '+7 (999) 999 99 99',
+                               pattern: '\+7 \(\d{3}\) \d{3} \d{2} \d{2}',
+                               title: '+7 (999) 999 99 99',
+                               data: { phone_mask: true },
                                class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
                       shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                       focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
@@ -423,6 +465,28 @@
       <% end %>
     </div>
 
+    <!-- Скрытие профиля -->
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.profile_hidden.title' %></h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.profile_hidden.hint' %></p>
+      </div>
+
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2 flex items-start pt-16' } do |f| %>
+        <div class="flex items-center gap-3">
+          <%= f.check_box :profile_hidden, id: 'profile_hidden',
+                          class: 'h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600' %>
+          <label for="profile_hidden" class="text-sm text-gray-300 cursor-pointer">
+            <%= t '.security.profile_hidden.label' %>
+          </label>
+        </div>
+        <div class="ml-4">
+          <%= f.submit t('buttons.save'),
+                       class: "rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
         <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.password.title' %></h2>
@@ -522,100 +586,6 @@
 
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.password.title' %></h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.password.hint' %></p>
-      </div>
-
-      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
-        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-          <% unless @user.oauth_user? %>
-            <div class="col-span-full">
-              <label for="current-password" class="block text-sm font-medium leading-6 text-white">
-                <%= t '.security.password.current' %>
-              </label>
-              <div class="mt-2">
-                <%= f.password_field :current_password, id: 'current-password', autocomplete: 'current-password',
-                                     class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1
-                       ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500
-                       sm:text-sm sm:leading-6' %>
-              </div>
-            </div>
-          <% end %>
-
-          <div class="col-span-full">
-            <label for="new-password" class="block text-sm font-medium leading-6 text-white"><%= t '.security.password.new' %></label>
-            <div class="mt-2">
-              <%= f.password_field :password, id: 'new-password', autocomplete: 'new-password',
-                                   class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm
-                     ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
-                     focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
-            </div>
-          </div>
-
-          <div class="col-span-full">
-            <label for="confirm-password" class="block text-sm font-medium leading-6 text-white">
-              <%= t '.security.password.confirm' %>
-            </label>
-            <div class="mt-2">
-              <%= f.password_field :password_confirmation, id: 'confirm-password', autocomplete: 'confirm-password',
-                                   class: 'block w-full rounded-md border-0 bg-white/5 py-1.5
-                     text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2
-                      focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-8 flex">
-          <% if @user.id == session[:current_user] %>
-            <%= f.submit t("buttons.save"), id: "new-password-button-save",
-                         class: "mt-4 flex w-50 justify-center rounded-md border
-                         border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white
-                         shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
-                          focus:ring-offset-2 cursor-pointer" %>
-          <% end %>
-        </div>
-
-      <% end %>
-    </div>
-
-    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-      <div>
-        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.log_out_sessions.title' %></h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">
-          <%= t '.security.log_out_sessions.hint1' %>
-        </p>
-        <p class="mt-1 text-sm leading-6 text-red-400">
-          <% t '.security.log_out_sessions.attention' %>
-          <span class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.log_out_sessions.hint2' %></span>
-        </p>
-      </div>
-
-      <%= form_tag logout_other_sessions_sessions_path, method: :post, class: 'md:col-span-2' do %>
-        <% unless @user.oauth_user? %>
-          <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-            <div class="col-span-full">
-              <label for="logout-password" class="block text-sm font-medium leading-6 text-white"><%= t '.security.log_out_sessions.pswd' %></label>
-              <div class="mt-2">
-                <%= password_field_tag :password, nil, id: 'logout-password', autocomplete: 'logout-password',
-                                       class: 'block w-full rounded-md border-0
-                                        bg-white/5 py-1.5 text-white shadow-sm ring-1
-                                    ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500
-                                    sm:text-sm sm:leading-6' %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-
-        <div class="mt-8 flex">
-          <%= submit_tag t('buttons.log_out_sessions'), class: 'rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold
-                    text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2
-                    focus-visible:outline-offset-2 focus-visible:outline-indigo-500' %>
-        </div>
-      <% end %>
-    </div>
-
-    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-      <div>
         <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.active_sessions.title' %></h2>
         <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.active_sessions.hint' %>:</p>
       </div>
@@ -682,7 +652,6 @@
             }
         });
     </script>
-
     <div data-controller="modal">
       <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
         <div>
@@ -762,12 +731,13 @@
 
       <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
         <div class="space-y-6">
-          <% [
+          <% notification_settings = [
             [:notify_friend_requests, t('.notifications.friend_requests')],
             [:notify_jam_invites,     t('.notifications.jam_invites')],
             [:notify_status_changes,  t('.notifications.status_changes')],
-            [:notify_moderation,      t('.notifications.moderation')]
-          ].each do |field, label| %>
+          ]
+          notification_settings << [:notify_moderation, t('.notifications.moderation')] if current_user.admin? || current_user.moderator?
+          notification_settings.each do |field, label| %>
             <div class="flex items-center justify-between rounded-lg bg-white/5 px-4 py-3">
               <span class="text-sm font-medium text-white"><%= label %></span>
               <label class="relative inline-flex cursor-pointer items-center">

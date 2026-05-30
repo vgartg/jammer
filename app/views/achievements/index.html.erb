@@ -1,0 +1,68 @@
+<div class="bg-gray-900 min-h-screen">
+  <div class="max-w-5xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+
+    <div class="mb-10">
+      <h1 class="text-3xl font-bold text-white"><%= t 'achievements.page_title' %></h1>
+      <p class="mt-2 text-gray-400 text-sm"><%= t 'achievements.page_subtitle' %></p>
+    </div>
+
+    <% tier_badge = {
+         bronze:  { bg: 'bg-amber-500/20 text-amber-400 border border-amber-600/40', dot: 'bg-amber-500' },
+         silver:  { bg: 'bg-gray-400/20 text-gray-300 border border-gray-500/40',   dot: 'bg-gray-400' },
+         gold:    { bg: 'bg-yellow-400/20 text-yellow-300 border border-yellow-500/40', dot: 'bg-yellow-400' },
+         special: { bg: 'bg-purple-500/20 text-purple-300 border border-purple-600/40', dot: 'bg-purple-500' }
+       } %>
+
+    <% categories = @achievements.group_by { |_, cfg| cfg[:category] } %>
+    <% categories.each do |category, items| %>
+      <section class="mb-10">
+        <% if category != :special %>
+          <h2 class="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-4 pl-1">
+            <%= t("achievements.categories.#{category}", default: category.to_s.humanize) %>
+          </h2>
+        <% else %>
+          <h2 class="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-4 pl-1">
+            <%= t('achievements.tiers.special') %>
+          </h2>
+        <% end %>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <% items.each do |key, cfg| %>
+            <% tier = cfg[:tier] %>
+            <% badge = tier_badge[tier] %>
+            <div class="flex items-start gap-4 bg-gray-800 rounded-2xl border border-gray-700/60 p-4 hover:border-gray-600/80 transition-colors">
+              <div class="flex-shrink-0 h-14 w-14 rounded-xl flex items-center justify-center
+                          <%= case tier
+                              when :bronze  then 'bg-amber-950/80'
+                              when :silver  then 'bg-gray-700'
+                              when :gold    then 'bg-yellow-950/80'
+                              when :special then 'bg-purple-950/80'
+                              end %>">
+                <% if File.exist?(Rails.root.join("app/assets/images/achievements/#{key}.svg")) %>
+                  <%= image_tag "achievements/#{key}.svg", class: "h-10 w-10", alt: key %>
+                <% else %>
+                  <svg class="h-7 w-7 text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.29 9.71 2 12 2c2.29 0 4.544.29 6.75.721v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0"/>
+                  </svg>
+                <% end %>
+              </div>
+
+              <div class="min-w-0 flex-1">
+                <div class="flex items-start justify-between gap-2 flex-wrap">
+                  <p class="font-semibold text-white text-sm leading-snug"><%= t "achievements.#{key}.name" %></p>
+                  <span class="text-[10px] font-medium px-2 py-0.5 rounded-full shrink-0 <%= badge[:bg] %>">
+                    <%= t "achievements.tiers.#{tier}" %>
+                  </span>
+                </div>
+                <p class="text-xs text-gray-400 mt-1 leading-relaxed"><%= t "achievements.#{key}.description" %></p>
+                <% if cfg[:threshold] %>
+                  <p class="text-xs text-indigo-400 mt-2 font-medium">× <%= cfg[:threshold] %></p>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+  </div>
+</div>

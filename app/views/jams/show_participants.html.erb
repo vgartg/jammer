@@ -1,52 +1,45 @@
-<div class="bg-white">
-  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
-    <div class="flex justify-between items-center">
+<div class="bg-gray-900 min-h-screen">
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center mb-6">
       <% if @users.empty? %>
-        <h2 class="px-4 text-2xl font-bold tracking-tight text-gray-900">
-          <%= t '.no_participants' %>
-        </h2>
+        <h2 class="text-2xl font-bold tracking-tight text-white"><%= t '.no_participants' %></h2>
       <% else %>
-        <h2 class="px-4 text-2xl font-bold tracking-tight text-gray-900">
-          <%= t '.title' %>
-        </h2>
+        <h2 class="text-2xl font-bold tracking-tight text-white"><%= t '.title' %></h2>
         <% if current_user && @jam.can_manage?(current_user) %>
-          <span class="text-sm text-gray-500"><%= t('.remove_hint') %></span>
+          <span class="text-sm text-gray-400"><%= t('.remove_hint') %></span>
         <% end %>
       <% end %>
     </div>
-    <div class="grid sm:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       <% @users.each do |user| %>
-        <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 flex items-center space-x-4 relative">
-          <a href='<%= '/users/' + user.id.to_s %>' class="flex items-center space-x-4 flex-grow">
-            <span class="relative">
+        <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 hover:ring-indigo-500/40 transition-all p-4 flex items-center gap-3 relative">
+          <a href="<%= '/users/' + user.id.to_s %>" class="flex items-center gap-3 flex-1 min-w-0">
+            <span class="relative shrink-0">
               <% if user && user.avatar.attached? %>
-                <%= image_tag url_for(user.avatar), alt: "Profile Picture",
-                              class: "h-16 w-16 rounded-full" %>
+                <%= image_tag url_for(user.avatar), alt: user.name, class: "h-12 w-12 rounded-full object-cover" %>
               <% else %>
-                <%= image_tag 'empty-avatar.jpg', alt: "Profile Picture", class: "h-16 w-16 rounded-full" %>
+                <%= image_tag 'empty-avatar.jpg', alt: user.name, class: "h-12 w-12 rounded-full object-cover" %>
               <% end %>
               <% if user.can_see_online?(current_user) %>
                 <% if user.online? %>
-                  <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
+                  <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-400 ring-2 ring-gray-800"></span>
                 <% elsif user.last_active_at %>
-                  <span class="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-gray-400 ring-2 ring-white"></span>
+                  <span class="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-gray-500 ring-2 ring-gray-800"></span>
                 <% end %>
               <% end %>
             </span>
-            <div>
-              <h2 class="text-lg font-semibold text-gray-800"><%= user.name %></h2>
+            <div class="min-w-0">
+              <h3 class="text-sm font-semibold text-white truncate"><%= user.name %></h3>
               <% if user.can_see_online?(current_user) %>
-                <p class="mt-6"
-                   data-controller="online">
+                <p class="text-xs text-gray-400" data-controller="online">
                   <% if user.last_active_at.present? %>
-                    <span id="user-status" class="text-sm text-gray-600"
+                    <span id="user-status-<%= user.id %>"
                           data-online-target="lastActiveAt"
                           data-last-active-at="<%= user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
                           data-action="load->online#updateStatus"></span>
                   <% else %>
-                    <span class="text-sm text-gray-600">
-                      <%= t 'users.profile.offline' %>
-                    </span>
+                    <%= t 'users.profile.offline' %>
                   <% end %>
                 </p>
               <% end %>
@@ -54,12 +47,10 @@
           </a>
 
           <% if current_user && @jam.can_manage?(current_user) %>
-            <div class="ml-2">
-              <%= button_to t('.remove'), remove_participant_jam_path(@jam, user_id: user.id),
-                            method: :delete,
-                            data: { confirm: t('.remove_confirm') },
-                            class: "text-sm text-red-600 hover:text-red-800 underline" %>
-            </div>
+            <%= button_to t('.remove'), remove_participant_jam_path(@jam, user_id: user.id),
+                          method: :delete,
+                          data: { confirm: t('.remove_confirm') },
+                          class: "text-xs text-red-400 hover:text-red-300 underline shrink-0" %>
           <% end %>
         </div>
       <% end %>

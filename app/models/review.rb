@@ -10,11 +10,22 @@ class Review < ApplicationRecord
   validates :comment, length: { maximum: 1000 }, allow_nil: true
 
   after_save :recalculate_rating
+  after_save :check_achievements
   after_destroy :recalculate_rating
+  after_destroy :check_achievements_after_destroy
 
   private
 
   def recalculate_rating
     Rating.update_average_rating(game, jam_id)
+  end
+
+  def check_achievements
+    AchievementService.check_and_award(user)
+    AchievementService.check_and_award(game.author) if game.author != user
+  end
+
+  def check_achievements_after_destroy
+    AchievementService.check_and_award(user)
   end
 end

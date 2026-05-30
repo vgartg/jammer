@@ -1,4 +1,8 @@
 class Game < ActiveRecord::Base
+  STATUS_MODERATION = 0
+  STATUS_ACCEPTED   = 1
+  STATUS_REJECTED   = 2
+
   validates :name, :description, presence: true
   validates :cover, presence: true
   validates :game_file, presence: true
@@ -8,6 +12,8 @@ class Game < ActiveRecord::Base
   has_many :ratings
   has_many :reviews
   has_many :jam_submissions, dependent: :destroy
+
+  after_save :check_author_achievements, if: :saved_change_to_status?
 
   attr_accessor :admin_edit, :moderator_edit
 
@@ -54,6 +60,10 @@ class Game < ActiveRecord::Base
   validates :reason, presence: true, if: -> { status == 2 }
 
   private
+
+  def check_author_achievements
+    AchievementService.check_and_award(author)
+  end
 
   def game_file_format
     if game_file.attached?

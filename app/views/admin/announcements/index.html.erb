@@ -1,0 +1,73 @@
+<div class="bg-gray-900 min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
+      <h1 class="text-2xl font-bold text-white"><%= t '.title' %></h1>
+      <%= link_to t('.new'), new_admin_announcement_path,
+                  class: 'rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 transition-colors' %>
+    </div>
+
+    <% if @announcements.any? %>
+      <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 overflow-hidden">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10 text-gray-400 text-xs uppercase tracking-wider">
+              <th class="py-3 px-4 text-left">ID</th>
+              <th class="py-3 px-4 text-left"><%= t '.type' %></th>
+              <th class="py-3 px-4 text-left"><%= t '.version' %></th>
+              <th class="py-3 px-4 text-left"><%= t '.title_col' %></th>
+              <th class="py-3 px-4 text-left"><%= t '.published' %></th>
+              <th class="py-3 px-4 text-left"><%= t '.published_at' %></th>
+              <th class="py-3 px-4 text-left"><%= t '.author' %></th>
+              <th class="py-3 px-4"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5 text-gray-300">
+            <% @announcements.each do |ann| %>
+              <tr class="hover:bg-white/5 transition-colors">
+                <td class="py-3 px-4 text-gray-500 text-xs"><%= ann.id %></td>
+                <td class="py-3 px-4">
+                  <% if ann.announcement_type == 'release' %>
+                    <span class="rounded-full bg-indigo-500/20 text-indigo-300 ring-1 ring-indigo-500/30 px-2 py-0.5 text-xs font-medium">
+                      <%= t 'admin.announcements.form.type_release' %>
+                    </span>
+                  <% else %>
+                    <span class="rounded-full bg-gray-700 text-gray-300 px-2 py-0.5 text-xs font-medium">
+                      <%= t 'admin.announcements.form.type_general' %>
+                    </span>
+                  <% end %>
+                </td>
+                <td class="py-3 px-4 text-gray-400"><%= ann.version.presence || '—' %></td>
+                <td class="py-3 px-4 font-medium text-white"><%= ann.title_en %></td>
+                <td class="py-3 px-4">
+                  <% if ann.published? %>
+                    <span class="text-green-400 font-bold">✓</span>
+                  <% else %>
+                    <span class="text-gray-600">—</span>
+                  <% end %>
+                </td>
+                <td class="py-3 px-4 text-gray-500 text-xs"><%= ann.published_at&.strftime('%d.%m.%Y %H:%M') || '—' %></td>
+                <td class="py-3 px-4 text-gray-400"><%= ann.author.name %></td>
+                <td class="py-3 px-4">
+                  <div class="flex gap-2">
+                    <%= link_to t('admin.shared.edit'), edit_admin_announcement_path(ann),
+                                class: 'rounded bg-indigo-600/80 text-white py-1 px-3 text-xs hover:bg-indigo-600 transition-colors' %>
+                    <%= button_to t('admin.shared.delete'), admin_announcement_path(ann), method: :delete,
+                                  data: { turbo_confirm: t('admin.shared.confirm') },
+                                  class: 'rounded bg-red-600/80 text-white py-1 px-3 text-xs hover:bg-red-600 transition-colors' %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-4">
+        <%= render partial: 'helpers/pagy' %>
+      </div>
+    <% else %>
+      <div class="text-center py-16">
+        <p class="text-gray-400"><%= t '.not_found' %></p>
+      </div>
+    <% end %>
+  </div>
+</div>
