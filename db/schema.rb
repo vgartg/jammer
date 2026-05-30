@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_30_000003) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_30_000005) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,6 +50,15 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_30_000003) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "admin_messages", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "body", null: false
+    t.bigint "sender_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sender_id"], name: "index_admin_messages_on_sender_id"
   end
 
   create_table "administration_tracking", force: :cascade do |t|
@@ -363,6 +372,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_30_000003) do
     t.boolean "notify_jam_invites", default: true, null: false
     t.boolean "notify_status_changes", default: true, null: false
     t.boolean "notify_moderation", default: true, null: false
+    t.boolean "profile_hidden", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true, where: "(provider IS NOT NULL)"
@@ -371,6 +381,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_30_000003) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "admin_messages", "users", column: "sender_id"
   add_foreign_key "administration_tracking", "users", column: "admin_id"
   add_foreign_key "games", "users", column: "author_id"
   add_foreign_key "games_tags", "games"

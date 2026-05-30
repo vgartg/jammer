@@ -1,0 +1,121 @@
+<div class="max-w-2xl mx-auto px-4 py-10">
+  <h1 class="text-2xl font-bold text-gray-900 mb-8"><%= t 'admin.messages.title' %></h1>
+
+  <%= render partial: 'helpers/flash_notices' %>
+
+  <%= form_with url: admin_messages_path, method: :post, local: true do |f| %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+    <div class="space-y-6 bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+
+      <!-- Заголовок -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1"><%= t 'admin.messages.label_title' %></label>
+        <%= f.text_field :title,
+                         name: 'admin_message[title]',
+                         class: 'block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
+                         placeholder: t('admin.messages.placeholder_title'),
+                         required: true %>
+      </div>
+
+      <!-- Текст -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1"><%= t 'admin.messages.label_body' %></label>
+        <%= f.text_area :body,
+                        name: 'admin_message[body]',
+                        rows: 5,
+                        class: 'block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
+                        placeholder: t('admin.messages.placeholder_body'),
+                        required: true %>
+        <p class="text-xs text-gray-500 mt-1"><%= t 'admin.messages.body_hint' %></p>
+      </div>
+
+      <!-- Кому -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2"><%= t 'admin.messages.target_label' %></label>
+        <div class="space-y-2" id="target-type-group">
+          <label class="flex items-center gap-2">
+            <input type="radio" name="target_type" value="all" checked class="text-indigo-600">
+            <span class="text-sm text-gray-700"><%= t 'admin.messages.target_all' %></span>
+          </label>
+          <label class="flex items-center gap-2">
+            <input type="radio" name="target_type" value="user" class="text-indigo-600">
+            <span class="text-sm text-gray-700"><%= t 'admin.messages.target_user' %></span>
+          </label>
+          <label class="flex items-center gap-2">
+            <input type="radio" name="target_type" value="team" class="text-indigo-600">
+            <span class="text-sm text-gray-700"><%= t 'admin.messages.target_team' %></span>
+          </label>
+          <label class="flex items-center gap-2">
+            <input type="radio" name="target_type" value="jam" class="text-indigo-600">
+            <span class="text-sm text-gray-700"><%= t 'admin.messages.target_jam' %></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Конкретный пользователь -->
+      <div id="target-user-block" class="hidden">
+        <label class="block text-sm font-medium text-gray-700 mb-1"><%= t 'admin.messages.user_id_label' %></label>
+        <input type="text" name="target_user_id"
+               class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                      focus:outline-none focus:ring-2 focus:ring-indigo-500"
+               placeholder="<%= t 'admin.messages.user_id_placeholder' %>">
+      </div>
+
+      <!-- Команда -->
+      <div id="target-team-block" class="hidden">
+        <label class="block text-sm font-medium text-gray-700 mb-1"><%= t 'admin.messages.team_label' %></label>
+        <select name="target_team_id"
+                class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                       focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option value=""><%= t 'admin.messages.team_placeholder' %></option>
+          <% @teams.each do |team| %>
+            <option value="<%= team.id %>"><%= team.name %></option>
+          <% end %>
+        </select>
+      </div>
+
+      <!-- Джем -->
+      <div id="target-jam-block" class="hidden">
+        <label class="block text-sm font-medium text-gray-700 mb-1"><%= t 'admin.messages.jam_label' %></label>
+        <select name="target_jam_id"
+                class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                       focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option value=""><%= t 'admin.messages.jam_placeholder' %></option>
+          <% @jams.each do |jam| %>
+            <option value="<%= jam.id %>"><%= jam.name %></option>
+          <% end %>
+        </select>
+      </div>
+
+      <div class="flex justify-end">
+        <%= f.submit t('admin.messages.send_btn'),
+                     class: "rounded-md bg-indigo-600 px-5 py-2 text-sm font-semibold text-white
+                             hover:bg-indigo-700 cursor-pointer transition-colors" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const radios = document.querySelectorAll('input[name="target_type"]');
+    const blocks = {
+      user: document.getElementById('target-user-block'),
+      team: document.getElementById('target-team-block'),
+      jam:  document.getElementById('target-jam-block'),
+    };
+
+    function updateVisibility() {
+      const val = document.querySelector('input[name="target_type"]:checked')?.value;
+      Object.entries(blocks).forEach(([key, el]) => {
+        if (el) el.classList.toggle('hidden', key !== val);
+      });
+    }
+
+    radios.forEach(r => r.addEventListener('change', updateVisibility));
+    updateVisibility();
+  });
+</script>

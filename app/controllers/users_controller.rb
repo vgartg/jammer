@@ -11,6 +11,16 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @current_user = current_user
+    @viewing_own_profile = @current_user&.id == @user.id
+    @is_admin = @current_user&.admin?
+
+    if @user.profile_hidden? && !@viewing_own_profile && !@is_admin
+      render 'users/private_profile', status: :ok
+      return
+    end
+
+    @profile_hidden_admin_view = @user.profile_hidden? && @is_admin && !@viewing_own_profile
+
     if @current_user
       @notifications = @current_user.notifications
       @friendship = @current_user.friendship_with(@user)
@@ -134,6 +144,7 @@ class UsersController < ApplicationController
           .permit(:name, :email, :password, :password_confirmation, :avatar, :background_image,
                   :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
                   :visibility, :jams_administrating_visibility, :jams_participating_visibility, :theme, :is_online_today,
-                  :notify_friend_requests, :notify_jam_invites, :notify_status_changes, :notify_moderation)
+                  :notify_friend_requests, :notify_jam_invites, :notify_status_changes, :notify_moderation,
+                  :profile_hidden)
   end
 end

@@ -146,6 +146,8 @@ Rails.application.routes.draw do
     get '/notifications', to: 'notifications#index'
 
     get '/settings', to: 'settings#index'
+    get '/frozen', to: 'frozen#show', as: 'frozen'
+    get '/contacts', to: 'contacts#index', as: 'contacts'
 
   # Admin
   get '/admin', to: 'admins#index'
@@ -168,6 +170,7 @@ Rails.application.routes.draw do
     resources :teams, only: %i[index destroy]
     resources :assets, only: %i[index destroy]
     resources :achievements, only: %i[index create destroy]
+    resources :messages, only: %i[new create]
   end
 
   # Moderator

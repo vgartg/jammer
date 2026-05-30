@@ -423,6 +423,28 @@
       <% end %>
     </div>
 
+    <!-- Скрытие профиля -->
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.profile_hidden.title' %></h2>
+        <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.profile_hidden.hint' %></p>
+      </div>
+
+      <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2 flex items-start pt-16' } do |f| %>
+        <div class="flex items-center gap-3">
+          <%= f.check_box :profile_hidden, id: 'profile_hidden',
+                          class: 'h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600' %>
+          <label for="profile_hidden" class="text-sm text-gray-300 cursor-pointer">
+            <%= t '.security.profile_hidden.label' %>
+          </label>
+        </div>
+        <div class="ml-4">
+          <%= f.submit t('buttons.save'),
+                       class: "rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
         <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.password.title' %></h2>

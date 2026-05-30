@@ -11,6 +11,7 @@ en:
       title: "Something went wrong"
       description: "We're sorry — something on our end went wrong. Please try again in a moment."
       home_link: "Go home"
+      report_hint: "If the error persists, please email us at"
   activerecord:
     models:
       tag: "Tag"
@@ -104,6 +105,7 @@ en:
       dashboard: "Dashboard"
       language: "Language"
     footer:
+      contacts: "Contacts"
       copyright: "All rights reserved."
       fsi_text: 'The project was implemented with the support of the Foundation for Assistance to Small Innovative Enterprises (FASIE) within the framework of the Student Startup program of the University Technological Entrepreneurship Platform event of the Technologies federal project.'
     left-menu:
@@ -381,6 +383,21 @@ en:
       creator: "Creator:"
       no_author: "Author not found"
       hosts: "Hosts:"
+  frozen:
+    title: "Account Frozen"
+    reason: "Reason:"
+    frozen_at: "Frozen at:"
+    frozen_until: "Frozen until:"
+    indefinitely: "Indefinitely"
+    contact: "If you have any questions, contact us at"
+  contacts:
+    title: "Contacts"
+    subtitle: "Here you can find information about the Jammer project team."
+    github_title: "GitHub"
+    founders_title: "Founders"
+    current_devs_title: "Current Developers"
+    past_devs_title: "Past Contributors"
+    email_title: "Contact"
   users:
     destroy:
       success: "The account has been successfully deleted."
@@ -426,6 +443,12 @@ en:
       role_author: "Author"
       role_host: "Host"
       role_admin: "Admin"
+    private_profile:
+      title: "Profile is private"
+      description: "This user has hidden their profile from other visitors."
+      back: "Go back"
+    show:
+      admin_hidden_profile_notice: "Admin view: this user's profile is hidden from regular visitors."
     new:
       title: "Sign up your account"
       email: "Email address"
@@ -492,6 +515,10 @@ en:
           label1: "Who can see jams I administrate?"
           label2: "Who can see jams I participate?"
           hint: "Select who can see jams you are administrating and participating."
+        profile_hidden:
+          title: "Hide Profile"
+          hint: "When enabled, your profile will only be visible to you and administrators."
+          label: "Hide my profile from other users"
         password:
           title: "Change password"
           hint: "Update your password associated with your account."
@@ -581,6 +608,7 @@ en:
       new_report: "filed a new report on %{type} (id %{id})"
       achievement_granted: "granted you an achievement"
       team_invite_received: "invited you to join the team"
+      admin_message: "— message from administration"
   email_confirms:
     edit:
       title: "Email confirmation"
@@ -914,6 +942,26 @@ en:
         search_label: "Search assets"
         not_found: "No assets found."
         created_at: "Created"
+    messages:
+      title: "Send Notification"
+      sent: "Notification sent to %{count} users."
+      label_title: "Title"
+      label_body: "Message"
+      placeholder_title: "Notification title..."
+      placeholder_body: "Notification text..."
+      body_hint: "The text will be shown to users in their notifications."
+      target_label: "Send to"
+      target_all: "All users"
+      target_user: "Specific user"
+      target_team: "Team members"
+      target_jam: "Jam participants"
+      user_id_label: "User ID or username"
+      user_id_placeholder: "Enter ID or name..."
+      team_label: "Select team"
+      team_placeholder: "— select team —"
+      jam_label: "Select jam"
+      jam_placeholder: "— select jam —"
+      send_btn: "Send notification"
     achievements:
       granted: "Achievement granted."
       revoked: "Achievement revoked."
@@ -963,6 +1011,9 @@ en:
       achievements:
         title: "Achievements"
         description: "User achievement management"
+      messages:
+        title: "Notifications"
+        description: "Send platform notifications to users"
   moderator:
     shared:
       back: "Back"

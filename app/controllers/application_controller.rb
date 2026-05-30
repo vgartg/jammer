@@ -39,10 +39,11 @@ class ApplicationController < ActionController::Base
         Session.where(user_id: user.id, ip_address: request.remote_ip, browser: browser).destroy_all
         Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
         @current_user = user
+        return @current_user if @current_user.email_confirmed
       end
     end
 
-    return @current_user if @current_user&.email_confirmed && session[:session_id].present? && @current_user.sessions.exists?
+    return @current_user if @current_user&.email_confirmed && @current_user.sessions.exists?
 
     @current_user = nil
   end
@@ -194,13 +195,16 @@ class ApplicationController < ActionController::Base
     if current_user.unfreeze_at && current_user.unfreeze_at < Time.current
       current_user.update(frozen_at: nil, unfreeze_at: nil, frozen_reason: nil, is_frozen: false)
     else
-      flash[:alert] = t('controllers.application.account_frozen')
-      redirect_to dashboard_path unless request.fullpath == dashboard_path
+      redirect_to frozen_path unless frozen_or_logout_path?
     end
   end
 
   def logout_action?
     request.path == logout_path
+  end
+
+  def frozen_or_logout_path?
+    logout_action? || request.path.end_with?('/frozen')
   end
 
   def set_time_zone(&block)
