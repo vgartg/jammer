@@ -54,8 +54,11 @@ class TeamsController < ApplicationController
   end
 
   def destroy
-    @team.destroy
-    flash[:success] = t('teams.destroy.success')
+    if @team.destroy
+      flash[:success] = t('teams.destroy.success')
+    else
+      flash[:failure] = @team.errors.full_messages
+    end
     redirect_to teams_path
   end
 
