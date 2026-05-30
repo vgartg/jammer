@@ -57,7 +57,7 @@
                 <!-- Частично закрашенная звезда -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" viewBox="0 0 24 24" stroke="currentColor">
                   <defs>
-                    <clipPath id="partialStarClip<%= star %>">
+                    <clipPath id="partialStarClipNoJam<%= star %>">
                       <rect x="0" y="0" width="<%= (@average_rating_no_jam - @average_rating_no_jam.floor) * 24 %>" height="24"/>
                     </clipPath>
                   </defs>
@@ -65,7 +65,7 @@
                         d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" fill="yellow"
                         d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"
-                        clip-path="url(#partialStarClip<%= star %>)"/>
+                        clip-path="url(#partialStarClipNoJam<%= star %>)"/>
                 </svg>
               <% else %>
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="gray" viewBox="0 0 24 24" stroke="currentColor">
@@ -95,7 +95,7 @@
               <% elsif partial_star %>
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" viewBox="0 0 24 24" stroke="currentColor">
                   <defs>
-                    <clipPath id="partialStarClip<%= star %>">
+                    <clipPath id="partialStarClipInJams<%= star %>">
                       <rect x="0" y="0" width="<%= (@average_rating_in_jams - @average_rating_in_jams.floor) * 24 %>" height="24"/>
                     </clipPath>
                   </defs>
@@ -103,7 +103,7 @@
                         d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"/>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" fill="yellow"
                         d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.64 2 9.24l5.46 4.73-1.64 7.03L12 17.27z"
-                        clip-path="url(#partialStarClip<%= star %>)"/>
+                        clip-path="url(#partialStarClipInJams<%= star %>)"/>
                 </svg>
               <% else %>
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1" fill="gray" viewBox="0 0 24 24" stroke="currentColor">
