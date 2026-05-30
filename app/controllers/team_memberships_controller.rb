@@ -102,8 +102,11 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
-    @membership.destroy
-    flash[:success] = t('team_memberships.destroy.success')
+    if @membership.destroy
+      flash[:success] = t('team_memberships.destroy.success')
+    else
+      flash[:failure] = @membership.errors.full_messages
+    end
     redirect_to team_profile_path(@team)
   end
 

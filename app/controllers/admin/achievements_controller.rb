@@ -41,9 +41,13 @@ module Admin
     def destroy
       achievement = UserAchievement.find(params[:id])
       user = achievement.user
-      create_administration_record(current_user, user, { achievement: achievement.achievement_key }, 'revoke_achievement')
-      achievement.destroy
-      flash[:success] = t('admin.achievements.revoked')
+      key = achievement.achievement_key
+      if achievement.destroy
+        create_administration_record(current_user, user, { achievement: key }, 'revoke_achievement')
+        flash[:success] = t('admin.achievements.revoked')
+      else
+        flash[:failure] = achievement.errors.full_messages
+      end
       redirect_to admin_achievements_path
     end
   end
