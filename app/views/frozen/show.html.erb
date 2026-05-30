@@ -20,7 +20,7 @@
         </p>
         <p>
           <span class="text-gray-400 font-medium"><%= t 'frozen.frozen_at' %></span>
-          <%= current_user.frozen_at.in_time_zone.strftime("%d.%m.%Y %H:%M") %>
+          <%= current_user.frozen_at&.in_time_zone&.strftime("%d.%m.%Y %H:%M") || '—' %>
         </p>
         <p>
           <span class="text-gray-400 font-medium"><%= t 'frozen.frozen_until' %></span>

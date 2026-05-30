@@ -48,6 +48,11 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
+    if user == @team.leader
+      flash[:failure] = t('team_memberships.invite.already_member')
+      return redirect_to team_profile_path(@team)
+    end
+
     existing = @team.team_memberships.find_by(user: user)
     membership = if existing
       if %w[pending accepted].include?(existing.status)
