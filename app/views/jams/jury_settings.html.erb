@@ -1,32 +1,35 @@
-<div class="mx-auto max-w-5xl px-4 py-8">
-  <h1 class="text-2xl font-semibold mb-6"><%= t('.title') %></h1>
+<div class="bg-gray-900 min-h-screen">
+  <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+    <h1 class="text-2xl font-bold text-white mb-8"><%= t('.title') %></h1>
 
-  <div class="mb-8 p-4 rounded border bg-white">
-    <h2 class="text-lg font-medium mb-3"><%= t('.invite_title') %></h2>
+    <!-- Invite section -->
+    <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-6 mb-6">
+      <h2 class="text-lg font-semibold text-white mb-4"><%= t('.invite_title') %></h2>
+      <label class="block text-sm font-medium text-gray-300 mb-2"><%= t('.search_user_label') %></label>
 
-    <label class="block text-sm font-medium text-gray-700"><%= t('.search_user_label') %></label>
+      <%= form_with url: jury_search_jam_path(@jam),
+                    method: :get,
+                    data: {
+                      controller: "autosubmit",
+                      autosubmit_too_short_value: t('.search_too_short')
+                    } do |f| %>
+        <%= f.text_field :q,
+                         placeholder: t('.search_placeholder'),
+                         class: "w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white
+                                 placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none",
+                         data: { action: "input->autosubmit#submit" } %>
+      <% end %>
 
-    <%= form_with url: jury_search_jam_path(@jam),
-                  method: :get,
-                  data: {
-                    controller: "autosubmit",
-                    autosubmit_too_short_value: t('.search_too_short')
-                  } do |f| %>
+      <turbo-frame id="jury_search_results">
+        <div class="mt-3 text-sm text-gray-500"><%= t('.search_prompt') %></div>
+      </turbo-frame>
+    </div>
 
-      <%= f.text_field :q,
-                       placeholder: t('.search_placeholder'),
-                       class: "mt-2 w-full rounded border px-3 py-2",
-                       data: { action: "input->autosubmit#submit" } %>
-    <% end %>
-
-    <turbo-frame id="jury_search_results">
-      <div class="mt-3 text-sm text-gray-500">
-        <%= t('.search_prompt') %>
-      </div>
-    </turbo-frame>
+    <!-- Contributors table -->
+    <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 overflow-hidden">
+      <turbo-frame id="jam_contributors_table">
+        <%= render partial: "jams/jury_contributors_table", locals: { jam: @jam, contributors: @contributors } %>
+      </turbo-frame>
+    </div>
   </div>
-
-  <turbo-frame id="jam_contributors_table">
-    <%= render partial: "jams/jury_contributors_table", locals: { jam: @jam, contributors: @contributors } %>
-  </turbo-frame>
 </div>

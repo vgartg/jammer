@@ -1,15 +1,23 @@
-<div data-controller="visits"
-     data-visits-active-users-label-value="<%= t('.active_users') %>"
-     data-visits-registered-users-label-value="<%= t('.registered_users') %>"
-     data-visits-user-count-label-value="<%= t('.user_count') %>"
-     data-visits-date-label-value="<%= t('.date') %>"
-     class="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-  <h1 class="text-2xl font-bold text-center mb-4 text-gray-800"><%= t('.title') %></h1>
+<div class="bg-gray-900 min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-5xl">
+    <h1 class="text-2xl font-bold text-white mb-6"><%= t('.title') %></h1>
 
-  <select id="time-frame" data-action="change->visits#changeTimeFrame" class="mb-4">
-    <option value="30"><%= t('.last_30_days') %></option>
-    <option value="90"><%= t('.last_90_days') %></option>
-  </select>
+    <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-6"
+         data-controller="visits"
+         data-visits-registered-users-label-value="<%= t('.registered_users') %>"
+         data-visits-user-count-label-value="<%= t('.user_count') %>"
+         data-visits-date-label-value="<%= t('.date') %>">
 
-  <canvas data-visits-target="chart" class="w-full h-64 border border-gray-200 rounded-lg shadow-sm"></canvas>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-base font-semibold text-white"><%= t('.registered_users') %></h2>
+        <select id="time-frame" data-action="change->visits#changeTimeFrame"
+                class="rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-1.5 text-sm text-white focus:ring-2 focus:ring-indigo-500">
+          <option value="30"><%= t('.last_30_days') %></option>
+          <option value="90"><%= t('.last_90_days') %></option>
+        </select>
+      </div>
+
+      <canvas data-visits-target="chart" class="w-full rounded-lg"></canvas>
+    </div>
+  </div>
 </div>

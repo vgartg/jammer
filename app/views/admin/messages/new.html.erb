@@ -1,107 +1,91 @@
-<div class="max-w-2xl mx-auto px-4 py-10">
-  <h1 class="text-2xl font-bold text-gray-900 mb-8"><%= t 'admin.messages.title' %></h1>
+<div class="bg-gray-900 min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-2xl">
+    <h1 class="text-2xl font-bold text-white mb-8"><%= t 'admin.messages.title' %></h1>
 
-  <%= render partial: 'helpers/flash_notices' %>
+    <%= render partial: 'helpers/flash_notices' %>
 
-  <%= form_with url: admin_messages_path, method: :post, local: true do |f| %>
+    <%= form_with url: admin_messages_path, method: :post, local: true do |f| %>
+      <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-6 space-y-6">
 
-    <div class="space-y-6 bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-1"><%= t 'admin.messages.label_title' %></label>
+          <%= f.text_field :title,
+                           name: 'admin_message[title]',
+                           class: 'block w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white
+                                   placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none',
+                           placeholder: t('admin.messages.placeholder_title'),
+                           required: true %>
+        </div>
 
-      <!-- Заголовок -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1"><%= t 'admin.messages.label_title' %></label>
-        <%= f.text_field :title,
-                         name: 'admin_message[title]',
-                         class: 'block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
-                         placeholder: t('admin.messages.placeholder_title'),
-                         required: true %>
-      </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-1"><%= t 'admin.messages.label_body' %></label>
+          <%= f.text_area :body,
+                          name: 'admin_message[body]',
+                          rows: 5,
+                          class: 'block w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white
+                                  placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none',
+                          placeholder: t('admin.messages.placeholder_body'),
+                          required: true %>
+          <p class="text-xs text-gray-500 mt-1"><%= t 'admin.messages.body_hint' %></p>
+        </div>
 
-      <!-- Текст -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1"><%= t 'admin.messages.label_body' %></label>
-        <%= f.text_area :body,
-                        name: 'admin_message[body]',
-                        rows: 5,
-                        class: 'block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
-                        placeholder: t('admin.messages.placeholder_body'),
-                        required: true %>
-        <p class="text-xs text-gray-500 mt-1"><%= t 'admin.messages.body_hint' %></p>
-      </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2"><%= t 'admin.messages.target_label' %></label>
+          <div class="space-y-2" id="target-type-group">
+            <% [['all', t('admin.messages.target_all')], ['user', t('admin.messages.target_user')],
+                ['team', t('admin.messages.target_team')], ['jam', t('admin.messages.target_jam')]].each do |val, lbl| %>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="target_type" value="<%= val %>" <%= 'checked' if val == 'all' %>
+                       class="text-indigo-500 bg-gray-700 border-gray-600">
+                <span class="text-sm text-gray-300"><%= lbl %></span>
+              </label>
+            <% end %>
+          </div>
+        </div>
 
-      <!-- Кому -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2"><%= t 'admin.messages.target_label' %></label>
-        <div class="space-y-2" id="target-type-group">
-          <label class="flex items-center gap-2">
-            <input type="radio" name="target_type" value="all" checked class="text-indigo-600">
-            <span class="text-sm text-gray-700"><%= t 'admin.messages.target_all' %></span>
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="radio" name="target_type" value="user" class="text-indigo-600">
-            <span class="text-sm text-gray-700"><%= t 'admin.messages.target_user' %></span>
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="radio" name="target_type" value="team" class="text-indigo-600">
-            <span class="text-sm text-gray-700"><%= t 'admin.messages.target_team' %></span>
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="radio" name="target_type" value="jam" class="text-indigo-600">
-            <span class="text-sm text-gray-700"><%= t 'admin.messages.target_jam' %></span>
-          </label>
+        <div id="target-user-block" class="hidden">
+          <label class="block text-sm font-medium text-gray-300 mb-1"><%= t 'admin.messages.user_id_label' %></label>
+          <div class="relative">
+            <input type="text" id="user-search-input" autocomplete="off"
+                   class="block w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white
+                          placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                   placeholder="<%= t 'admin.messages.user_id_placeholder' %>">
+            <input type="hidden" name="target_user_id" id="target_user_id_hidden">
+            <ul id="user-search-results"
+                class="hidden absolute z-10 mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg shadow-lg max-h-48 overflow-auto text-sm text-white">
+            </ul>
+          </div>
+        </div>
+
+        <div id="target-team-block" class="hidden">
+          <label class="block text-sm font-medium text-gray-300 mb-1"><%= t 'admin.messages.team_label' %></label>
+          <select name="target_team_id"
+                  class="block w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            <option value=""><%= t 'admin.messages.team_placeholder' %></option>
+            <% @teams.each do |team| %>
+              <option value="<%= team.id %>"><%= team.name %></option>
+            <% end %>
+          </select>
+        </div>
+
+        <div id="target-jam-block" class="hidden">
+          <label class="block text-sm font-medium text-gray-300 mb-1"><%= t 'admin.messages.jam_label' %></label>
+          <select name="target_jam_id"
+                  class="block w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            <option value=""><%= t 'admin.messages.jam_placeholder' %></option>
+            <% @jams.each do |jam| %>
+              <option value="<%= jam.id %>"><%= jam.name %></option>
+            <% end %>
+          </select>
+        </div>
+
+        <div class="flex justify-end">
+          <%= f.submit t('admin.messages.send_btn'),
+                       class: "rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white hover:bg-indigo-700 cursor-pointer transition-colors" %>
         </div>
       </div>
-
-      <!-- Конкретный пользователь -->
-      <div id="target-user-block" class="hidden">
-        <label class="block text-sm font-medium text-gray-700 mb-1"><%= t 'admin.messages.user_id_label' %></label>
-        <div class="relative">
-          <input type="text" id="user-search-input" autocomplete="off"
-                 class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                        focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                 placeholder="<%= t 'admin.messages.user_id_placeholder' %>">
-          <input type="hidden" name="target_user_id" id="target_user_id_hidden">
-          <ul id="user-search-results"
-              class="hidden absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-48 overflow-auto text-sm">
-          </ul>
-        </div>
-      </div>
-
-      <!-- Команда -->
-      <div id="target-team-block" class="hidden">
-        <label class="block text-sm font-medium text-gray-700 mb-1"><%= t 'admin.messages.team_label' %></label>
-        <select name="target_team_id"
-                class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          <option value=""><%= t 'admin.messages.team_placeholder' %></option>
-          <% @teams.each do |team| %>
-            <option value="<%= team.id %>"><%= team.name %></option>
-          <% end %>
-        </select>
-      </div>
-
-      <!-- Джем -->
-      <div id="target-jam-block" class="hidden">
-        <label class="block text-sm font-medium text-gray-700 mb-1"><%= t 'admin.messages.jam_label' %></label>
-        <select name="target_jam_id"
-                class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          <option value=""><%= t 'admin.messages.jam_placeholder' %></option>
-          <% @jams.each do |jam| %>
-            <option value="<%= jam.id %>"><%= jam.name %></option>
-          <% end %>
-        </select>
-      </div>
-
-      <div class="flex justify-end">
-        <%= f.submit t('admin.messages.send_btn'),
-                     class: "rounded-md bg-indigo-600 px-5 py-2 text-sm font-semibold text-white
-                             hover:bg-indigo-700 cursor-pointer transition-colors" %>
-      </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>
 
 <script>
@@ -139,13 +123,10 @@
             .then(r => r.json())
             .then(function (users) {
               resultsList.innerHTML = '';
-              if (!users.length) {
-                resultsList.classList.add('hidden');
-                return;
-              }
+              if (!users.length) { resultsList.classList.add('hidden'); return; }
               users.forEach(function (u) {
                 const li = document.createElement('li');
-                li.className = 'px-3 py-2 cursor-pointer hover:bg-indigo-50';
+                li.className = 'px-3 py-2 cursor-pointer hover:bg-gray-600';
                 li.textContent = u.name + ' (id: ' + u.id + ')';
                 li.addEventListener('click', function () {
                   searchInput.value = u.name;

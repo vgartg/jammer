@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
   # validates :jams_administrating_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
   validates :jams_participating_visibility, inclusion: { in: [VISIBILITY_ALL, VISIBILITY_FRIENDS, VISIBILITY_NONE] }
   validates :theme, inclusion: { in: [THEME_LIGHT, THEME_DARK] }
+  validates :background_position, format: { with: /\A[\w\s.%]+\z/ }, allow_blank: true
 
   validate :password_length, on: :create, unless: :oauth_user?
   has_secure_password validations: false

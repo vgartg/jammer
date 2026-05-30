@@ -4,7 +4,6 @@ import Chart from "chart.js/auto";
 export default class extends Controller {
     static targets = ["chart"];
     static values = {
-        activeUsersLabel: String,
         registeredUsersLabel: String,
         userCountLabel: String,
         dateLabel: String
@@ -15,27 +14,15 @@ export default class extends Controller {
     }
 
     fetchData(days) {
-        const visitsPromise = fetch(`/admin/visits_data?days=${days}`).then(response => response.json());
-        const registrationsPromise = fetch(`/admin/registrations_data?days=${days}`).then(response => response.json());
-
-        Promise.all([visitsPromise, registrationsPromise])
-            .then(([visitsData, registrationsData]) => {
-                this.renderChart(visitsData, registrationsData);
-            })
+        fetch(`/admin/registrations_data?days=${days}`)
+            .then(response => response.json())
+            .then(data => this.renderChart(data))
             .catch(error => console.error("Error fetching data:", error));
     }
 
-    renderChart(visitsData, registrationsData) {
-        const dates = Object.keys(visitsData);
-        const visits = Object.values(visitsData);
-        const registrations = Object.values(registrationsData);
-
-        const maxLength = Math.max(visits.length, registrations.length);
-        const registrationCounts = new Array(maxLength).fill(0);
-
-        dates.forEach((date, index) => {
-            registrationCounts[index] = registrationsData[date] || 0;
-        });
+    renderChart(registrationsData) {
+        const dates = Object.keys(registrationsData);
+        const counts = dates.map(d => registrationsData[d] || 0);
 
         if (this.chart) {
             this.chart.destroy();
@@ -47,41 +34,34 @@ export default class extends Controller {
                 labels: dates,
                 datasets: [
                     {
-                        label: this.activeUsersLabelValue,
-                        data: visits,
-                        borderColor: "rgba(75, 192, 192, 1)",
-                        backgroundColor: "rgba(75, 192, 192, 0.2)",
-                        fill: true,
-                    },
-                    {
                         label: this.registeredUsersLabelValue,
-                        data: registrationCounts,
-                        borderColor: "rgba(153, 102, 255, 1)",
-                        backgroundColor: "rgba(153, 102, 255, 0.2)",
+                        data: counts,
+                        borderColor: "rgba(99, 102, 241, 1)",
+                        backgroundColor: "rgba(99, 102, 241, 0.15)",
                         fill: true,
+                        tension: 0.4,
                     }
                 ]
             },
             options: {
                 responsive: true,
+                plugins: {
+                    legend: { labels: { color: "#d1d5db" } }
+                },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: this.userCountLabelValue
-                        },
+                        grid: { color: "rgba(255,255,255,0.05)" },
                         ticks: {
-                            callback: function(value) {
-                                return Number.isInteger(value) ? value : '';
-                            }
-                        }
+                            color: "#9ca3af",
+                            callback: value => Number.isInteger(value) ? value : ''
+                        },
+                        title: { display: true, text: this.userCountLabelValue, color: "#9ca3af" }
                     },
                     x: {
-                        title: {
-                            display: true,
-                            text: this.dateLabelValue
-                        }
+                        grid: { color: "rgba(255,255,255,0.05)" },
+                        ticks: { color: "#9ca3af" },
+                        title: { display: true, text: this.dateLabelValue, color: "#9ca3af" }
                     }
                 }
             }
@@ -89,7 +69,6 @@ export default class extends Controller {
     }
 
     changeTimeFrame(event) {
-        const selectedDays = event.target.value;
-        this.fetchData(selectedDays);
+        this.fetchData(event.target.value);
     }
 }

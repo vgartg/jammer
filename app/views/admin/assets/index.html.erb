@@ -1,53 +1,66 @@
-<div class="overflow-x-auto">
-  <div class="flex flex-col md:flex-row items-center bg-gray-100 p-4 rounded-lg shadow-md mb-6 justify-between flex-wrap gap-4">
-    <h2 class="text-xl font-bold text-gray-800"><%= t '.title' %></h2>
-    <%= form_with url: admin_assets_path, method: :get, local: true, class: "flex items-center gap-2" do |f| %>
-      <%= f.text_field :search, value: params[:search], placeholder: t('.search_label'),
-          class: 'border border-gray-300 rounded-lg p-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500' %>
-      <%= f.submit t('admin.shared.search'), class: 'bg-blue-500 text-white py-2 px-3 rounded text-sm hover:bg-blue-600' %>
-      <%= link_to t('admin.shared.reset'), admin_assets_path, class: 'text-gray-500 hover:text-gray-700 text-sm' %>
+<div class="bg-gray-900 min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    <h1 class="text-2xl font-bold text-white mb-6"><%= t '.title' %></h1>
+
+    <%= form_with url: admin_assets_path, method: :get, local: true, class: "mb-6" do |f| %>
+      <div class="flex flex-wrap gap-3">
+        <%= f.text_field :search, value: params[:search], placeholder: t('.search_label'),
+                         class: "rounded-lg bg-gray-800 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white
+                                 placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full max-w-xs" %>
+        <%= f.submit t('admin.shared.search'),
+                     class: "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors cursor-pointer" %>
+        <%= link_to t('admin.shared.reset'), admin_assets_path,
+                    class: "rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors" %>
+      </div>
+    <% end %>
+
+    <% if @assets.any? %>
+      <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 overflow-hidden">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10 text-gray-400 text-xs uppercase tracking-wider">
+              <th class="py-3 px-4 text-left">ID</th>
+              <th class="py-3 px-4 text-left"><%= t 'assets.index.title' %></th>
+              <th class="py-3 px-4 text-left"><%= t '.category' %></th>
+              <th class="py-3 px-4 text-left"><%= t '.author' %></th>
+              <th class="py-3 px-4 text-left"><%= t '.downloads' %></th>
+              <th class="py-3 px-4 text-left"><%= t '.created_at' %></th>
+              <th class="py-3 px-4"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5 text-gray-300">
+            <% @assets.each do |asset| %>
+              <tr class="hover:bg-white/5 transition-colors">
+                <td class="py-3 px-4 text-gray-500 text-xs"><%= asset.id %></td>
+                <td class="py-3 px-4">
+                  <%= link_to asset.title, asset_profile_path(asset),
+                              class: 'text-indigo-300 hover:text-indigo-200 hover:underline', target: '_blank' %>
+                </td>
+                <td class="py-3 px-4">
+                  <span class="rounded-full bg-indigo-500/20 text-indigo-300 ring-1 ring-indigo-500/30 px-2 py-0.5 text-xs font-medium">
+                    <%= t "assets.categories.#{asset.category}" %>
+                  </span>
+                </td>
+                <td class="py-3 px-4 text-gray-400"><%= asset.author.name %></td>
+                <td class="py-3 px-4 text-gray-400"><%= asset.downloads_count %></td>
+                <td class="py-3 px-4 text-gray-500 text-xs"><%= asset.created_at.strftime('%d.%m.%Y') %></td>
+                <td class="py-3 px-4">
+                  <%= button_to t('admin.shared.delete'), admin_asset_path(asset), method: :delete,
+                                data: { turbo_confirm: t('admin.shared.confirm') },
+                                class: 'rounded bg-red-600/80 text-white py-1 px-3 text-xs hover:bg-red-600 transition-colors' %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-4">
+        <%= render partial: 'helpers/pagy' %>
+      </div>
+    <% else %>
+      <div class="text-center py-16">
+        <p class="text-gray-400"><%= t '.not_found' %></p>
+      </div>
     <% end %>
   </div>
-
-  <% if @assets.any? %>
-    <table class="min-w-full bg-white border border-gray-200">
-      <thead>
-        <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-          <th class="py-3 px-4 text-left">ID</th>
-          <th class="py-3 px-4 text-left"><%= t 'assets.index.title' %></th>
-          <th class="py-3 px-4 text-left"><%= t '.category' %></th>
-          <th class="py-3 px-4 text-left"><%= t '.author' %></th>
-          <th class="py-3 px-4 text-left"><%= t '.downloads' %></th>
-          <th class="py-3 px-4 text-left"><%= t '.created_at' %></th>
-          <th class="py-3 px-4 text-left"></th>
-        </tr>
-      </thead>
-      <tbody class="text-gray-600 text-sm">
-        <% @assets.each do |asset| %>
-          <tr class="border-b border-gray-200 hover:bg-gray-50">
-            <td class="py-3 px-4"><%= asset.id %></td>
-            <td class="py-3 px-4 font-medium">
-              <%= link_to asset.title, asset_profile_path(asset), class: 'text-blue-600 hover:underline', target: '_blank' %>
-            </td>
-            <td class="py-3 px-4">
-              <span class="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-700">
-                <%= t "assets.categories.#{asset.category}" %>
-              </span>
-            </td>
-            <td class="py-3 px-4"><%= asset.author.name %></td>
-            <td class="py-3 px-4"><%= asset.downloads_count %></td>
-            <td class="py-3 px-4 text-gray-500"><%= asset.created_at.strftime('%d.%m.%Y') %></td>
-            <td class="py-3 px-4">
-              <%= button_to t('admin.shared.delete'), admin_asset_path(asset), method: :delete,
-                  data: { turbo_confirm: t('admin.shared.confirm') },
-                  class: 'text-red-500 hover:underline text-sm bg-transparent border-0 cursor-pointer p-0' %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <%= render partial: 'helpers/pagy' %>
-  <% else %>
-    <p class="text-gray-500 m-8"><%= t '.not_found' %></p>
-  <% end %>
 </div>

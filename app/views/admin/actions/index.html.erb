@@ -1,50 +1,133 @@
-<h1 class="text-2xl font-bold mb-6 text-center"><%= t('.title') %></h1>
-<div class="overflow-x-auto px-4">
-  <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-    <thead>
-    <tr class="bg-gray-200 text-gray-600 uppercase text-xs md:text-sm">
-      <th class="py-3 px-6 text-left"><%= t('.admin') %></th>
-      <th class="py-3 px-6 text-left"><%= t('.record_type') %></th>
-      <th class="py-3 px-6 text-left"><%= t('.record_id') %></th>
-      <th class="py-3 px-6 text-left"><%= t('.action') %></th>
-      <th class="py-3 px-6 text-left"><%= t('.changes') %></th>
-      <th class="py-3 px-6 text-left"><%= t('.date') %></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @actions.each do |action| %>
-      <tr class="border-b hover:bg-gray-100">
-        <td class="py-3 px-6 text-sm md:text-base"><%= action.admin_id %></td>
-        <td class="py-3 px-6 text-sm md:text-base"><%= action.structure_type %></td>
-        <td class="py-3 px-6 text-sm md:text-base"><%= action.structure_id %></td>
-        <td class="py-3 px-6 text-sm md:text-base"><%= action.action %></td>
-        <td class="py-3 px-6 text-sm md:text-base">
-          <% changes = action.changed_fields %>
-          <% if changes.present? && changes.is_a?(Hash) %>
-            <div>
-              <strong><%= t('.old_values') %></strong>
-              <ul>
-                <% changes['old_attributes'].each do |key, value| %>
-                  <li><%= "#{key}: #{value}" %></li>
-                <% end %>
-              </ul>
-            </div>
-            <div>
-              <strong><%= t('.new_values') %></strong>
-              <ul>
-                <% changes['new_attributes'].each do |key, value| %>
-                  <li><%= "#{key}: #{value}" %></li>
-                <% end %>
-              </ul>
-            </div>
-          <% else %>
-            <span><%= t('.no_changes') %></span>
-          <% end %>
-        </td>
-        <td class="py-3 px-6 text-sm md:text-base"><%= action.created_at.in_time_zone.strftime("%Y-%m-%d %H:%M:%S") %></td>
-      </tr>
+<div class="bg-gray-900 min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    <h1 class="text-2xl font-bold text-white mb-6"><%= t('.title') %></h1>
+
+    <!-- Filters -->
+    <%= form_with url: admin_actions_path, method: :get, local: true, class: "mb-6" do |f| %>
+      <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1"><%= t('.filter_admin') %></label>
+          <%= f.select :admin_id,
+                       options_from_collection_for_select(@admins, :id, :name, params[:admin_id]),
+                       { include_blank: t('.filter_all') },
+                       class: "w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none" %>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1"><%= t('.filter_resource') %></label>
+          <%= f.select :resource_type,
+                       options_for_select(@resource_types.map { |t| [t, t] }, params[:resource_type]),
+                       { include_blank: t('.filter_all') },
+                       class: "w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none" %>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1"><%= t('.filter_action_type') %></label>
+          <%= f.select :action_type,
+                       options_for_select(@action_types.map { |a| [a.to_s.humanize, a] }, params[:action_type]),
+                       { include_blank: t('.filter_all') },
+                       class: "w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none" %>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1"><%= t('.filter_date_from') %></label>
+          <%= f.date_field :date_from, value: params[:date_from],
+                           class: "w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none" %>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1"><%= t('.filter_date_to') %></label>
+          <%= f.date_field :date_to, value: params[:date_to],
+                           class: "w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none" %>
+        </div>
+        <div class="sm:col-span-2 lg:col-span-5 flex gap-3">
+          <%= f.submit t('.filter_apply'),
+                       class: "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors cursor-pointer" %>
+          <%= link_to t('.filter_reset'), admin_actions_path,
+                      class: "rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors" %>
+        </div>
+      </div>
     <% end %>
-    </tbody>
-  </table>
+
+    <!-- Log entries -->
+    <% if @actions.any? %>
+      <div class="space-y-3">
+        <% @actions.each do |action| %>
+          <% changes = action.changed_fields %>
+          <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-4">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div class="flex items-center gap-3 flex-wrap">
+                <!-- Action badge -->
+                <% badge_class = case action.action
+                   when 'create' then 'bg-green-500/20 text-green-300 ring-1 ring-green-500/30'
+                   when 'update' then 'bg-yellow-500/20 text-yellow-300 ring-1 ring-yellow-500/30'
+                   when 'destroy', 'delete' then 'bg-red-500/20 text-red-300 ring-1 ring-red-500/30'
+                   else 'bg-gray-700 text-gray-300 ring-1 ring-gray-600'
+                   end %>
+                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold <%= badge_class %>">
+                  <%= action.action.to_s.upcase %>
+                </span>
+
+                <!-- Resource type + id -->
+                <span class="text-sm font-medium text-white">
+                  <%= action.structure_type %>
+                  <span class="text-gray-400">#<%= action.structure_id %></span>
+                </span>
+
+                <!-- Admin -->
+                <span class="text-sm text-gray-400">
+                  <%= t('.by') %>
+                  <% if action.admin %>
+                    <a href="<%= user_profile_path(action.admin) %>" class="text-indigo-300 hover:text-indigo-200 hover:underline">
+                      <%= action.admin.name %>
+                    </a>
+                  <% else %>
+                    <span class="text-gray-500">#<%= action.admin_id %></span>
+                  <% end %>
+                </span>
+              </div>
+
+              <!-- Date -->
+              <span class="text-xs text-gray-500 shrink-0">
+                <%= action.created_at.in_time_zone.strftime("%d.%m.%Y %H:%M") %>
+              </span>
+            </div>
+
+            <!-- Changes -->
+            <% if changes.present? && changes.is_a?(Hash) %>
+              <div class="mt-3 rounded-lg bg-gray-700/50 p-3 text-xs font-mono overflow-x-auto">
+                <% old_attrs = changes['old_attributes'] || {} %>
+                <% new_attrs = changes['new_attributes'] || {} %>
+                <% all_keys = (old_attrs.keys + new_attrs.keys).uniq %>
+                <% if all_keys.any? %>
+                  <table class="w-full text-left">
+                    <thead>
+                      <tr class="text-gray-500">
+                        <th class="pr-4 pb-1 font-medium"><%= t('.changes_field') %></th>
+                        <th class="pr-4 pb-1 font-medium text-red-400/70"><%= t('.old_values') %></th>
+                        <th class="font-medium text-green-400/70"><%= t('.new_values') %></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% all_keys.each do |key| %>
+                        <tr class="border-t border-gray-600/50">
+                          <td class="pr-4 py-0.5 text-gray-400"><%= key %></td>
+                          <td class="pr-4 py-0.5 text-red-300/80"><%= old_attrs[key].to_s.truncate(80) %></td>
+                          <td class="py-0.5 text-green-300/80"><%= new_attrs[key].to_s.truncate(80) %></td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="mt-6">
+        <%= render partial: 'helpers/pagy' %>
+      </div>
+    <% else %>
+      <div class="text-center py-16">
+        <p class="text-gray-400"><%= t('.no_actions') %></p>
+      </div>
+    <% end %>
+  </div>
 </div>
-<%= render partial: 'helpers/pagy' %>

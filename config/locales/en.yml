@@ -825,6 +825,9 @@ en:
       confirm: "Are you sure?"
       tags: "Tags"
       author_unknown: "Author unknown"
+      name: "Name"
+      role: "Role"
+      created_at: "Created at"
       status_hint: "0 - Moderation; 1 - Approved; 2 - Rejected"
       rejection_reason: "Rejection reason"
       rejection_reasons:
@@ -835,16 +838,27 @@ en:
       rejection_reason_placeholder: "Enter a reason or pick one above"
     actions:
       index:
-        title: "Admin actions"
+        title: "Action log"
         admin: "Admin"
         record_type: "Record type"
         record_id: "Record ID"
         action: "Action"
         changes: "Changes"
         date: "Date"
-        old_values: "Old values:"
-        new_values: "New values:"
+        old_values: "Before"
+        new_values: "After"
         no_changes: "No changes"
+        by: "by:"
+        changes_field: "Field"
+        no_actions: "No records found"
+        filter_admin: "Admin"
+        filter_all: "All"
+        filter_resource: "Resource type"
+        filter_action_type: "Action type"
+        filter_date_from: "From date"
+        filter_date_to: "To date"
+        filter_apply: "Apply"
+        filter_reset: "Reset"
     games:
       index:
         search_label: "Search games"
@@ -867,6 +881,7 @@ en:
         logo: "Logo"
     users:
       index:
+        title: "Users"
         search_label: "Search users"
         not_found: 'No users found for query "%{query}".'
         create_user: "Create user"
@@ -1257,6 +1272,11 @@ en:
       description: "Description"
       avatar: "Team Avatar"
       btn: "Create Team"
+      membership_type: "Membership type"
+      membership_open: "Open"
+      membership_open_hint: "Anyone can join immediately"
+      membership_closed: "By invitation"
+      membership_closed_hint: "Joining requires leader approval"
   team_memberships:
     create:
       success: "Join request sent."

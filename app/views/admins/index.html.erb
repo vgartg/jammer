@@ -1,101 +1,36 @@
-<div class="p-16">
-  <h1 class="text-3xl font-bold mb-6"><%= t('.title') %></h1>
+<div class="bg-gray-900 min-h-screen px-6 py-12 lg:px-8">
+  <div class="mx-auto max-w-6xl">
+    <h1 class="text-3xl font-bold text-white mb-8"><%= t('.title') %></h1>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
-      <div>
-        <h2 class="text-xl font-semibold mb-2"><%= t('.users.title') %></h2>
-        <p class="text-gray-600 mb-4"><%= t('.users.description') %></p>
-      </div>
-      <%= link_to t('.go'), admin_users_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
-    </div>
-
-    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
-      <div>
-        <h2 class="text-xl font-semibold mb-2"><%= t('.games.title') %></h2>
-        <p class="text-gray-600 mb-4"><%= t('.games.description') %></p>
-      </div>
-      <%= link_to t('.go'), admin_games_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
-    </div>
-
-    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
-      <div>
-        <h2 class="text-xl font-semibold mb-2"><%= t('.jams.title') %></h2>
-        <p class="text-gray-600 mb-4"><%= t('.jams.description') %></p>
-      </div>
-      <%= link_to t('.go'), admin_jams_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
-    </div>
-
-    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
-      <div>
-        <h2 class="text-xl font-semibold mb-2"><%= t('.stats.title') %></h2>
-        <p class="text-gray-600 mb-4"><%= t('.stats.description') %></p>
-      </div>
-      <%= link_to t('.go'), admin_visits_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
-    </div>
-
-    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
-      <div>
-        <h2 class="text-xl font-semibold mb-2"><%= t('.settings.title') %></h2>
-        <p class="text-gray-600 mb-4"><%= t('.settings.description') %></p>
-      </div>
-      <%= link_to t('.go'), '', class: 'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition mt-4' %>
-    </div>
-
-    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
-      <div>
-        <h2 class="text-xl font-semibold mb-2"><%= t('.support.title') %></h2>
-        <p class="text-gray-600 mb-4"><%= t('.support.description') %></p>
-      </div>
-      <%= link_to t('.go'), '', class: 'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition mt-4' %>
-    </div>
-
-    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
-      <div>
-        <h2 class="text-xl font-semibold mb-2"><%= t('.actions.title') %></h2>
-        <p class="text-gray-600 mb-4"><%= t('.actions.description') %></p>
-      </div>
-      <%= link_to t('.go'), admin_actions_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
-    </div>
-
-    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
-      <div>
-        <h2 class="text-xl font-semibold mb-2"><%= t('.announcements.title') %></h2>
-        <p class="text-gray-600 mb-4"><%= t('.announcements.description') %></p>
-      </div>
-      <%= link_to t('.go'), admin_announcements_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
-    </div>
-
-    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
-      <div>
-        <h2 class="text-xl font-semibold mb-2"><%= t('.teams.title') %></h2>
-        <p class="text-gray-600 mb-4"><%= t('.teams.description') %></p>
-      </div>
-      <%= link_to t('.go'), admin_teams_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
-    </div>
-
-    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
-      <div>
-        <h2 class="text-xl font-semibold mb-2"><%= t('.assets.title') %></h2>
-        <p class="text-gray-600 mb-4"><%= t('.assets.description') %></p>
-      </div>
-      <%= link_to t('.go'), admin_assets_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
-    </div>
-
-    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
-      <div>
-        <h2 class="text-xl font-semibold mb-2"><%= t('.achievements.title') %></h2>
-        <p class="text-gray-600 mb-4"><%= t('.achievements.description') %></p>
-      </div>
-      <%= link_to t('.go'), admin_achievements_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
-    </div>
-
-    <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full">
-      <div>
-        <h2 class="text-xl font-semibold mb-2"><%= t('.messages.title') %></h2>
-        <p class="text-gray-600 mb-4"><%= t('.messages.description') %></p>
-      </div>
-      <%= link_to t('.go'), new_admin_message_path, class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mt-4' %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <% [
+        { key: 'users',         path: admin_users_path,         icon: 'M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z' },
+        { key: 'games',         path: admin_games_path,         icon: 'M21 12a9 9 0 11-18 0 9 9 0 0118 0z M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z' },
+        { key: 'jams',          path: admin_jams_path,          icon: 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5' },
+        { key: 'teams',         path: admin_teams_path,         icon: 'M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z' },
+        { key: 'assets',        path: admin_assets_path,        icon: 'M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z' },
+        { key: 'achievements',  path: admin_achievements_path,  icon: 'M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0' },
+        { key: 'messages',      path: new_admin_message_path,   icon: 'M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0' },
+        { key: 'announcements', path: admin_announcements_path,  icon: 'M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.125m-1.014 8.006A23.91 23.91 0 0119.175 12m0-3.875a23.91 23.91 0 00-1.014-5.125M19.175 12c0 2.071-.295 4.074-.84 5.966M4.82 3l.38 1.125M4.82 3a23.74 23.74 0 00.395 14.06M4.82 3A23.747 23.747 0 013 4.125' },
+        { key: 'stats',         path: admin_visits_path,         icon: 'M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z' },
+        { key: 'actions',       path: admin_actions_path,        icon: 'M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z' },
+      ].each do |item| %>
+        <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 hover:ring-indigo-500/40 transition-all p-5 flex flex-col justify-between">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-indigo-600/20 flex items-center justify-center">
+              <svg class="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="<%= item[:icon] %>"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-base font-semibold text-white"><%= t(".#{item[:key]}.title") %></h2>
+              <p class="mt-1 text-sm text-gray-400"><%= t(".#{item[:key]}.description") %></p>
+            </div>
+          </div>
+          <%= link_to t('.go'), item[:path],
+                      class: 'mt-4 inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors' %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

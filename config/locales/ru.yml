@@ -825,6 +825,9 @@ ru:
       confirm: "Вы уверены?"
       tags: "Теги"
       author_unknown: "Автор неизвестен"
+      name: "Имя"
+      role: "Роль"
+      created_at: "Дата создания"
       status_hint: "0 - Модерация; 1 - Одобрено; 2 - Отклонено"
       rejection_reason: "Причина отклонения"
       rejection_reasons:
@@ -835,16 +838,27 @@ ru:
       rejection_reason_placeholder: "Введите причину или выберите готовую выше"
     actions:
       index:
-        title: "Действия администраторов"
+        title: "Журнал действий"
         admin: "Администратор"
         record_type: "Тип записи"
         record_id: "ID записи"
         action: "Действие"
         changes: "Изменения"
         date: "Дата"
-        old_values: "Старые значения:"
-        new_values: "Новые значения:"
+        old_values: "До"
+        new_values: "После"
         no_changes: "Изменений нет"
+        by: "автор:"
+        changes_field: "Поле"
+        no_actions: "Записей не найдено"
+        filter_admin: "Администратор"
+        filter_all: "Все"
+        filter_resource: "Тип объекта"
+        filter_action_type: "Действие"
+        filter_date_from: "С даты"
+        filter_date_to: "По дату"
+        filter_apply: "Применить"
+        filter_reset: "Сбросить"
     games:
       index:
         search_label: "Поиск игр"
@@ -867,6 +881,7 @@ ru:
         logo: "Логотип"
     users:
       index:
+        title: "Пользователи"
         search_label: "Поиск пользователей"
         not_found: 'Пользователи не найдены по запросу "%{query}".'
         create_user: "Создать пользователя"
@@ -1261,6 +1276,11 @@ ru:
       description: "Описание"
       avatar: "Аватар команды"
       btn: "Создать команду"
+      membership_type: "Тип вступления"
+      membership_open: "Открытая"
+      membership_open_hint: "Любой желающий может вступить сразу"
+      membership_closed: "По приглашению"
+      membership_closed_hint: "Вступление только после одобрения лидером"
   team_memberships:
     create:
       success: "Заявка на вступление отправлена."

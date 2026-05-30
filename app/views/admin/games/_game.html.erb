@@ -1,25 +1,36 @@
-<tbody class="text-gray-600 text-sm font-light">
 <% @games.each do |game| %>
-  <tr class="border-b hover:bg-gray-100">
-    <th scope="row" class="py-3 px-6"><%= game.id %></th>
-    <td class="py-3 px-6">
+  <tr class="hover:bg-white/5 transition-colors text-gray-300">
+    <td class="py-3 px-4 text-gray-500 text-xs"><%= game.id %></td>
+    <td class="py-3 px-4">
       <% if game.author_id.present? %>
-        <a class="break-all hover:underline" href="<%= user_profile_path(game.author) %>">
-          <%= truncate(game.author.name, length: 15) %>
+        <a class="text-indigo-300 hover:text-indigo-200 hover:underline break-all" href="<%= user_profile_path(game.author) %>">
+          <%= truncate(game.author.name, length: 20) %>
         </a>
       <% else %>
-        <span><%= t('admin.shared.author_unknown') %></span>
+        <span class="text-gray-500"><%= t('admin.shared.author_unknown') %></span>
       <% end %>
     </td>
-    <td class="py-3 px-6 hover:underline">
-      <%= link_to truncate(game.name, length: 15), game_profile_path(game), class: 'break-all' %>
+    <td class="py-3 px-4">
+      <%= link_to truncate(game.name, length: 25), game_profile_path(game),
+                  class: 'text-indigo-300 hover:text-indigo-200 hover:underline break-all' %>
     </td>
-    <td class="py-3 px-10"><%= game.status %></td>
-    <td class="py-3 px-6"><%= game.created_at.strftime("%Y-%m-%d %H:%M") %></td>
-    <td class="py-3 px-6 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-      <%= link_to t('admin.shared.edit'), edit_admin_game_path(game), class: 'bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600' %>
-      <%= link_to t('admin.shared.delete'), admin_game_path(game), class: 'bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600', data: { turbo_method: :delete, turbo_confirm: t('admin.shared.confirm') } %>
+    <td class="py-3 px-4">
+      <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
+        <%= game.status.to_s == '1' ? 'bg-green-500/20 text-green-300 ring-1 ring-green-500/30' :
+            game.status.to_s == '2' ? 'bg-red-500/20 text-red-300 ring-1 ring-red-500/30' :
+            'bg-yellow-500/20 text-yellow-300 ring-1 ring-yellow-500/30' %>">
+        <%= game.status %>
+      </span>
+    </td>
+    <td class="py-3 px-4 text-gray-500 text-xs"><%= game.created_at.strftime("%d.%m.%Y %H:%M") %></td>
+    <td class="py-3 px-4">
+      <div class="flex gap-2">
+        <%= link_to t('admin.shared.edit'), edit_admin_game_path(game),
+                    class: 'rounded bg-indigo-600/80 text-white py-1 px-3 text-xs hover:bg-indigo-600 transition-colors' %>
+        <%= link_to t('admin.shared.delete'), admin_game_path(game),
+                    class: 'rounded bg-red-600/80 text-white py-1 px-3 text-xs hover:bg-red-600 transition-colors',
+                    data: { turbo_method: :delete, turbo_confirm: t('admin.shared.confirm') } %>
+      </div>
     </td>
   </tr>
 <% end %>
-</tbody>

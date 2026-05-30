@@ -1,54 +1,58 @@
-<div class="overflow-x-auto">
-  <div class="flex flex-col md:flex-row items-center bg-gray-100 p-4 rounded-lg shadow-md mb-6 justify-between flex-wrap">
-    <%= form_with url: admin_games_path, method: :get, class: "pb-4", local: true do |form| %>
-      <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4 w-full">
-        <div class="flex items-center w-full md:w-auto">
-          <%= form.label :query, t('.search_label'), class: 'block font-semibold text-gray-700 mr-2' %>
-          <%= form.text_field :query, value: params[:query], placeholder: '', class: 'border border-gray-300 rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full' %>
-        </div>
-        <div class="flex items-center space-x-2 mt-2 md:mt-0">
-          <%= form.submit t('admin.shared.search'), class: 'bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-150 ease-in-out shadow' %>
-          <%= link_to t('admin.shared.reset'), admin_games_path, class: 'text-gray-500 hover:text-gray-700 font-semibold' %>
-        </div>
+<div class="bg-gray-900 min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    <h1 class="text-2xl font-bold text-white mb-6"><%= t('admins.index.games.title') %></h1>
+
+    <%= form_with url: admin_games_path, method: :get, local: true, class: "mb-6" do |form| %>
+      <div class="flex flex-wrap gap-3">
+        <%= form.text_field :query, value: params[:query], placeholder: t('.search_label'),
+                            class: "rounded-lg bg-gray-800 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white
+                                    placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none w-full max-w-xs" %>
+        <%= form.submit t('admin.shared.search'),
+                        class: "rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition-colors cursor-pointer" %>
+        <%= link_to t('admin.shared.reset'), admin_games_path,
+                    class: "rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors" %>
+      </div>
+    <% end %>
+
+    <% if @games.any? %>
+      <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 overflow-hidden">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10 text-gray-400 text-xs uppercase tracking-wider">
+              <th class="py-3 px-4 text-left">
+                <%= link_to 'ID', admin_games_path(sort_by: 'id', direction: toggle_direction('id')), class: "hover:text-white" %>
+                <%= sort_arrow('id') %>
+              </th>
+              <th class="py-3 px-4 text-left">
+                <%= link_to t('admin.shared.author_unknown').split.first, admin_games_path(sort_by: 'author_id', direction: toggle_direction('author_id')), class: "hover:text-white" %>
+              </th>
+              <th class="py-3 px-4 text-left">
+                <%= link_to t('admin.shared.name'), admin_games_path(sort_by: 'name', direction: toggle_direction('name')), class: "hover:text-white" %>
+                <%= sort_arrow('name') %>
+              </th>
+              <th class="py-3 px-4 text-left">
+                <%= link_to t('admin.shared.search'), admin_games_path(sort_by: 'status', direction: toggle_direction('status')), class: "hover:text-white" %>
+                <%= sort_arrow('status') %>
+              </th>
+              <th class="py-3 px-4 text-left">
+                <%= link_to t('admin.shared.created_at'), admin_games_path(sort_by: 'created_at', direction: toggle_direction('created_at')), class: "hover:text-white" %>
+                <%= sort_arrow('created_at') %>
+              </th>
+              <th class="py-3 px-4"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5">
+            <%= render partial: 'admin/games/game' %>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-4">
+        <%= render partial: 'helpers/pagy' %>
+      </div>
+    <% else %>
+      <div class="text-center py-16">
+        <p class="text-gray-400"><%= t('.not_found', query: params[:query]) %></p>
       </div>
     <% end %>
   </div>
-
-  <% if @games.any? %>
-    <div class="overflow-x-auto">
-      <table class="min-w-full bg-white border border-gray-200">
-        <thead>
-        <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-          <th scope="col" class="flex justify-center py-3 px-6 text-left">
-            <%= link_to 'Id', admin_games_path(sort_by: 'id', direction: toggle_direction('id')) %>
-            <%= sort_arrow('id') %>
-          </th>
-          <th scope="col" class="py-3 px-6 text-left">
-            <%= link_to 'Author_id', admin_games_path(sort_by: 'author_id', direction: toggle_direction('author_id')) %>
-            <%= sort_arrow('author_id') %>
-          </th>
-          <th scope="col" class="py-3 px-6 text-left">
-            <%= link_to 'Name', admin_games_path(sort_by: 'name', direction: toggle_direction('name')) %>
-            <%= sort_arrow('name') %>
-          </th>
-          <th scope="col" class="py-3 px-6 text-left">
-            <%= link_to 'Status', admin_games_path(sort_by: 'status', direction: toggle_direction('status')) %>
-            <%= sort_arrow('status') %>
-          </th>
-          <th scope="col" class="py-3 px-6 text-left">
-            <%= link_to 'Created At', admin_games_path(sort_by: 'created_at', direction: toggle_direction('created_at')) %>
-            <%= sort_arrow('created_at') %>
-          </th>
-          <th scope="col" class="py-3 px-6 text-left"></th>
-        </tr>
-        </thead>
-        <tbody class="text-gray-600 text-sm font-light">
-        <%= render partial: 'admin/games/game' %>
-        </tbody>
-      </table>
-    </div>
-    <%= render partial: 'helpers/pagy' %>
-  <% else %>
-    <p class="text-gray-500 m-8"><%= t('.not_found', query: params[:query]) %></p>
-  <% end %>
 </div>
