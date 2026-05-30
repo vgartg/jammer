@@ -92,11 +92,16 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
-    invited_self_responding = @membership.leader_invited? && current_user == @membership.user
-
-    unless current_user == @team.leader || current_user.admin? || invited_self_responding
-      flash[:failure] = t('controllers.application.insufficient_rights')
-      return redirect_to team_profile_path(@team)
+    if @membership.leader_invited?
+      unless current_user == @membership.user || current_user.admin?
+        flash[:failure] = t('controllers.application.insufficient_rights')
+        return redirect_to team_profile_path(@team)
+      end
+    else
+      unless current_user == @team.leader || current_user.admin?
+        flash[:failure] = t('controllers.application.insufficient_rights')
+        return redirect_to team_profile_path(@team)
+      end
     end
 
     if @membership.update(status: params[:status])
