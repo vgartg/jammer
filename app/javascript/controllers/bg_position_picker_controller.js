@@ -1,56 +1,81 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "stimulus"
+import Cropper from "cropperjs"
+import 'cropperjs/dist/cropper.css'
 
 export default class extends Controller {
-  static targets = ["fileInput", "modal", "previewImg", "slider", "positionInput", "mainPreview", "sliderValue"]
+  static targets = ["fileInput", "modal", "image", "cropButton", "cancelButton", "preview"]
 
-  open(event) {
+  connect() {
+    this.cropper = null
+    this.fileInputTarget.addEventListener('change', this.loadImage.bind(this))
+    this.cropButtonTarget.addEventListener('click', this.crop.bind(this))
+    this.cancelButtonTarget.addEventListener('click', this.cancel.bind(this))
+  }
+
+  loadImage(event) {
     const file = event.target.files[0]
     if (!file) return
 
     const reader = new FileReader()
     reader.onload = (e) => {
-      this.previewImgTarget.src = e.target.result
-      const current = this.positionInputTarget.value
-      const pct = this.#parsePositionToPct(current)
-      this.sliderTarget.value = pct
-      this.#applySliderToPreview(pct)
+      this.imageTarget.src = e.target.result
       this.modalTarget.classList.remove("hidden")
+
+      if (this.cropper) {
+        this.cropper.destroy()
+      }
+
+      this.cropper = new Cropper(this.imageTarget, {
+        aspectRatio: 4,
+        viewMode: 1,
+        dragMode: 'move',
+        autoCropArea: 1,
+        restore: false,
+        guides: false,
+        center: false,
+        highlight: false,
+        cropBoxMovable: false,
+        cropBoxResizable: false,
+        toggleDragModeOnDblclick: false,
+      })
     }
     reader.readAsDataURL(file)
   }
 
-  updatePreview() {
-    const val = this.sliderTarget.value
-    this.#applySliderToPreview(val)
-    if (this.hasSliderValueTarget) {
-      this.sliderValueTarget.textContent = `${val}%`
-    }
-  }
+  crop() {
+    if (!this.cropper) return
 
-  apply() {
-    const val = this.sliderTarget.value
-    this.positionInputTarget.value = `center ${val}%`
-    if (this.hasMainPreviewTarget) {
-      this.mainPreviewTarget.style.objectPosition = `center ${val}%`
-    }
-    this.modalTarget.classList.add("hidden")
+    const canvas = this.cropper.getCroppedCanvas({ width: 1200, height: 300 })
+
+    canvas.toBlob((blob) => {
+      if (this.hasPreviewTarget) {
+        this.previewTarget.src = URL.createObjectURL(blob)
+        this.previewTarget.classList.remove("hidden")
+        const wrap = document.getElementById('bg-crop-preview-wrap')
+        if (wrap) wrap.classList.remove("hidden")
+      }
+
+      const dt = new DataTransfer()
+      dt.items.add(new File([blob], 'background.jpg', { type: 'image/jpeg' }))
+      this.fileInputTarget.files = dt.files
+
+      this.close(false)
+    }, 'image/jpeg', 0.92)
   }
 
   cancel() {
+    this.close(true)
+  }
+
+  close(clearInput = true) {
     this.modalTarget.classList.add("hidden")
-    this.fileInputTarget.value = ""
-  }
-
-  #applySliderToPreview(val) {
-    this.previewImgTarget.style.objectPosition = `center ${val}%`
-  }
-
-  #parsePositionToPct(val) {
-    if (!val) return 50
-    if (val === "top") return 0
-    if (val === "center") return 50
-    if (val === "bottom") return 100
-    const m = val.match(/(\d+)%/)
-    return m ? parseInt(m[1]) : 50
+    if (clearInput) {
+      this.fileInputTarget.value = ""
+      if (this.hasPreviewTarget) this.previewTarget.classList.add("hidden")
+    }
+    if (this.cropper) {
+      this.cropper.destroy()
+      this.cropper = null
+    }
   }
 }

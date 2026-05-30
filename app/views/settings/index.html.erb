@@ -66,20 +66,27 @@
           <div class="field col-span-full" data-controller="bg-position-picker">
             <label class="block text-sm font-medium text-white"><%= t '.account.image.background_image' %></label>
 
-            <!-- Текущий превью + кнопка выбора -->
             <div class="mt-2">
+              <!-- Текущая заставка -->
               <% if @user.background_image.attached? %>
                 <div class="relative rounded-xl overflow-hidden h-32 bg-gray-700 mb-3">
                   <img src="<%= url_for(@user.background_image) %>"
                        alt=""
-                       class="w-full h-full object-cover"
-                       data-bg-position-picker-target="mainPreview"
-                       style="object-position: <%= @user.background_position || 'center 50%' %>">
+                       class="w-full h-full object-cover">
                   <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span class="text-xs text-white/50 bg-black/30 px-2 py-0.5 rounded"><%= t '.account.image.background_preview' %></span>
                   </div>
                 </div>
               <% end %>
+
+              <!-- Превью после кропа (до сохранения формы) -->
+              <div class="relative rounded-xl overflow-hidden h-32 bg-gray-700 mb-3 hidden" id="bg-crop-preview-wrap">
+                <img src="" id="bg-crop-preview-img" alt="" class="w-full h-full object-cover"
+                     data-bg-position-picker-target="preview">
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <span class="text-xs text-white/50 bg-black/30 px-2 py-0.5 rounded"><%= t '.account.image.background_preview' %></span>
+                </div>
+              </div>
 
               <label class="inline-flex items-center gap-2 cursor-pointer rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white hover:bg-white/20">
                 <%= t '.account.image.background_image' %>
@@ -87,49 +94,31 @@
                        name="user[background_image]"
                        id="background_image"
                        class="hidden"
-                       accept="image/*"
-                       data-bg-position-picker-target="fileInput"
-                       data-action="change->bg-position-picker#open">
+                       accept="image/jpeg,image/png,image/webp"
+                       data-bg-position-picker-target="fileInput">
               </label>
               <p class="mt-1 text-xs text-gray-400"><%= t '.account.image.recommendation' %></p>
             </div>
 
-            <%= f.hidden_field :background_position,
-                               value: @user.background_position || 'center 50%',
-                               data: { bg_position_picker_target: "positionInput" } %>
-
-            <!-- Модальное окно выбора позиции -->
+            <!-- Модальное окно кроппера -->
             <div data-bg-position-picker-target="modal"
-                 class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/75">
-              <div class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
-                <div class="px-6 pt-5 pb-4">
-                  <h3 class="text-lg font-semibold text-white mb-4"><%= t '.account.image.background_position' %></h3>
-                  <div class="relative rounded-lg overflow-hidden bg-gray-700" style="height: 220px;">
-                    <img data-bg-position-picker-target="previewImg"
-                         src=""
-                         alt=""
-                         class="w-full h-full object-cover">
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-400 mb-1">
-                      <span><%= t '.account.image.pos_top' %></span>
-                      <span data-bg-position-picker-target="sliderValue" class="text-indigo-300 font-medium">50%</span>
-                      <span><%= t '.account.image.pos_bottom' %></span>
-                    </div>
-                    <input type="range" min="0" max="100" value="50"
-                           data-bg-position-picker-target="slider"
-                           data-action="input->bg-position-picker#updatePreview"
-                           class="w-full h-2 bg-gray-600 rounded-full appearance-none cursor-pointer accent-indigo-500">
+                 class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+              <div class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden">
+                <div class="px-6 pt-5 pb-2">
+                  <h3 class="text-lg font-semibold text-white mb-3"><%= t '.account.image.background_position' %></h3>
+                  <p class="text-xs text-gray-400 mb-3"><%= t '.account.image.crop_hint' %></p>
+                  <div class="bg-gray-700 rounded-lg overflow-hidden" style="max-height: 360px;">
+                    <img data-bg-position-picker-target="image" src="" alt="" style="display:block; max-width:100%;">
                   </div>
                 </div>
                 <div class="bg-gray-700 px-6 py-3 flex justify-end gap-3">
                   <button type="button"
-                          data-action="click->bg-position-picker#cancel"
+                          data-bg-position-picker-target="cancelButton"
                           class="rounded-md border border-gray-500 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600">
                     <%= t 'buttons.cancel' %>
                   </button>
                   <button type="button"
-                          data-action="click->bg-position-picker#apply"
+                          data-bg-position-picker-target="cropButton"
                           class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
                     <%= t 'buttons.save' %>
                   </button>
