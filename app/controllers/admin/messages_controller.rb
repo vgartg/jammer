@@ -10,17 +10,19 @@ module Admin
 
     def create
       @message = AdminMessage.new(message_params.merge(sender: current_user))
-      unless @message.save
-        flash[:failure] = @message.errors.full_messages
-        redirect_to new_admin_message_path
-        return
-      end
+      recipient_ids = []
 
-      recipient_ids = resolve_recipient_ids
-      send_notifications(recipient_ids)
+      ApplicationRecord.transaction do
+        @message.save!
+        recipient_ids = resolve_recipient_ids
+        send_notifications(recipient_ids)
+      end
 
       create_administration_record(current_user, @message, {}, 'create')
       flash[:success] = t('admin.messages.sent', count: recipient_ids.size)
+      redirect_to new_admin_message_path
+    rescue ActiveRecord::RecordInvalid
+      flash[:failure] = @message.errors.full_messages
       redirect_to new_admin_message_path
     end
 

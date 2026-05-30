@@ -18,8 +18,11 @@ class TeamMembershipsController < ApplicationController
         flash[:failure] = t('team_memberships.create.request_pending')
         return redirect_to team_profile_path(@team)
       when 'declined'
-        existing.update!(status: 'pending', leader_invited: false)
-        flash[:success] = t('team_memberships.create.success')
+        if existing.update(status: 'pending', leader_invited: false)
+          flash[:success] = t('team_memberships.create.success')
+        else
+          flash[:failure] = existing.errors.full_messages
+        end
         return redirect_to team_profile_path(@team)
       end
     end
@@ -51,7 +54,11 @@ class TeamMembershipsController < ApplicationController
         flash[:failure] = t('team_memberships.invite.already_member')
         return redirect_to team_profile_path(@team)
       else
-        existing.tap { |m| m.update!(status: 'pending', leader_invited: true) }
+        unless existing.update(status: 'pending', leader_invited: true)
+          flash[:failure] = existing.errors.full_messages
+          return redirect_to team_profile_path(@team)
+        end
+        existing
       end
     else
       begin
