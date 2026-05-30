@@ -33,7 +33,8 @@ class AssetsController < ApplicationController
 
   def update
     update_params = asset_params
-    unless params.dig(:asset, :files).present?
+    files_param = params.dig(:asset, :files)
+    unless files_param.is_a?(Array) && files_param.any? { |f| f.respond_to?(:original_filename) }
       update_params = update_params.except('files')
     end
     if @asset.update(update_params)

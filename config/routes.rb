@@ -160,6 +160,7 @@ Rails.application.routes.draw do
       resources resource, only: %i[index new create edit update destroy]
     end
     resources :users do
+      collection { get :search }
       member do
         post :freeze
         post :unfreeze
@@ -172,7 +173,6 @@ Rails.application.routes.draw do
     resources :assets, only: %i[index destroy]
     resources :achievements, only: %i[index create destroy]
     resources :messages, only: %i[new create]
-    get '/users/search', to: 'users#search', as: 'user_search'
   end
 
   # Moderator

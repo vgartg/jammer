@@ -10,6 +10,7 @@ class Team < ApplicationRecord
   validates :description, length: { maximum: 500 }
 
   after_create :create_leader_membership
+  after_create :check_leader_achievements
 
   def accepted_members
     team_memberships.where(status: 'accepted').includes(:user).map(&:user)
@@ -29,5 +30,9 @@ class Team < ApplicationRecord
 
   def create_leader_membership
     team_memberships.create!(user: leader, role: 'leader', status: 'accepted')
+  end
+
+  def check_leader_achievements
+    AchievementService.check_and_award(leader)
   end
 end

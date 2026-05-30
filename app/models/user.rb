@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
   has_one_attached :background_image
   has_many :games, foreign_key: 'author_id', dependent: :destroy
   has_many :jams, foreign_key: 'author_id', dependent: :destroy
+  has_many :assets, foreign_key: 'author_id', dependent: :destroy
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships, dependent: :destroy
 

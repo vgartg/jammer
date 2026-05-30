@@ -11,6 +11,8 @@ class Asset < ApplicationRecord
   validates :category, inclusion: { in: CATEGORIES }
   validates :files, presence: true
 
+  after_create :check_author_achievements
+
   validate :guide_format
   validate :preview_format
   validate :files_size
@@ -19,6 +21,10 @@ class Asset < ApplicationRecord
   scope :search, ->(q) { where('LOWER(assets.title) LIKE ? OR LOWER(assets.description) LIKE ?', "%#{q.downcase}%", "%#{q.downcase}%") if q.present? }
 
   private
+
+  def check_author_achievements
+    AchievementService.check_and_award(author)
+  end
 
   ACCEPTABLE_GUIDE_TYPES = %w[
     application/pdf

@@ -93,10 +93,10 @@ export default class extends Controller {
                     formattedValue += ') ' + x.substring(4, 7);
                 }
                 if (x.length > 7) {
-                    formattedValue += '-' + x.substring(7, 9);
+                    formattedValue += ' ' + x.substring(7, 9);
                 }
                 if (x.length > 9) {
-                    formattedValue += '-' + x.substring(9, 11);
+                    formattedValue += ' ' + x.substring(9, 11);
                 }
 
                 e.target.value = formattedValue;

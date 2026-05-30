@@ -396,6 +396,7 @@ ru:
     subtitle: "Здесь вы найдёте информацию о команде проекта Jammer."
     github_title: "GitHub"
     founders_title: "Основатели"
+    founders_title_short: "Основатель"
     current_devs_title: "Текущие разработчики"
     past_devs_title: "Также принимали участие в разработке продукта"
     email_title: "Обратная связь"
@@ -429,6 +430,13 @@ ru:
       friends_tab: "Друзья"
       subscribers: "Подписчики"
       achievements_tab: "Достижения"
+      tab_games: "Игры"
+      tab_jams: "Джемы"
+      stat_games: "Игры"
+      stat_jams: "Джемы"
+      stat_friends: "Друзья"
+      stat_achievements: "Ачивки"
+      joined: "На платформе с"
       remove: "Удалить из друзей"
       accept: "Принять заявку"
       decline: "Отклонить заявку"
@@ -1257,3 +1265,30 @@ ru:
     jammer_developer:
       name: "Разработчик Jammer"
       description: "Основной вкладчик в платформу Jammer."
+    asset_creator_bronze:
+      name: "Создатель ассетов"
+      description: "Загрузили 3 ассета."
+    asset_creator_silver:
+      name: "Мастер ассетов"
+      description: "Загрузили 10 ассетов."
+    asset_creator_gold:
+      name: "Фабрика контента"
+      description: "Загрузили 30 ассетов."
+    social_butterfly:
+      name: "Душа компании"
+      description: "Завели 10 друзей на платформе."
+    team_founder:
+      name: "Капитан команды"
+      description: "Основали собственную команду."
+    first_blood:
+      name: "Первая игра"
+      description: "Опубликовали первую принятую игру."
+    jammer_sponsor:
+      name: "Спонсор Jammer"
+      description: "Поддержали развитие платформы Jammer."
+    jam_first_time:
+      name: "Первый джем"
+      description: "Впервые приняли участие в джеме."
+    jack_of_all_trades:
+      name: "Мастер на все руки"
+      description: "Загрузили ассет, опубликовали игру и поучаствовали в джеме."

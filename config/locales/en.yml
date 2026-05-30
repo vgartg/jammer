@@ -396,6 +396,7 @@ en:
     subtitle: "Here you can find information about the Jammer project team."
     github_title: "GitHub"
     founders_title: "Founders"
+    founders_title_short: "Founder"
     current_devs_title: "Current Developers"
     past_devs_title: "Past Contributors"
     email_title: "Contact"
@@ -429,6 +430,13 @@ en:
       friends_tab: "Friends"
       subscribers: "Subscribers"
       achievements_tab: "Achievements"
+      tab_games: "Games"
+      tab_jams: "Jams"
+      stat_games: "Games"
+      stat_jams: "Jams"
+      stat_friends: "Friends"
+      stat_achievements: "Achievements"
+      joined: "Member since"
       remove: "Remove friend"
       accept: "Accept invitation"
       decline: "Decline invitation"
@@ -1251,3 +1259,30 @@ en:
     jammer_developer:
       name: "Jammer Dev"
       description: "A core contributor to the Jammer platform."
+    asset_creator_bronze:
+      name: "Asset Creator"
+      description: "Uploaded 3 assets."
+    asset_creator_silver:
+      name: "Asset Master"
+      description: "Uploaded 10 assets."
+    asset_creator_gold:
+      name: "Content Factory"
+      description: "Uploaded 30 assets."
+    social_butterfly:
+      name: "Social Butterfly"
+      description: "Made 10 friends on the platform."
+    team_founder:
+      name: "Team Captain"
+      description: "Founded your own team."
+    first_blood:
+      name: "First Game"
+      description: "Published your first accepted game."
+    jammer_sponsor:
+      name: "Jammer Sponsor"
+      description: "Supported the development of the Jammer platform."
+    jam_first_time:
+      name: "First Jam"
+      description: "Participated in a jam for the first time."
+    jack_of_all_trades:
+      name: "Jack of All Trades"
+      description: "Uploaded an asset, published a game, and participated in a jam."
