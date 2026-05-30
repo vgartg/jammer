@@ -20,8 +20,8 @@ class TeamsController < ApplicationController
 
     if (current_user == @team.leader || current_user&.admin?) && params[:invite_search_q].present?
       q = "%#{params[:invite_search_q].downcase}%"
-      member_ids = all_memberships.select { |m| %w[pending accepted].include?(m.status) }.map(&:user_id)
-      @invite_results = User.where.not(id: member_ids).where('LOWER(name) LIKE ?', q).limit(10)
+      excluded_ids = all_memberships.select { |m| %w[pending accepted].include?(m.status) }.map(&:user_id) + [@team.leader_id]
+      @invite_results = User.where.not(id: excluded_ids).where('LOWER(name) LIKE ?', q).limit(10)
     end
   end
 
@@ -70,6 +70,7 @@ class TeamsController < ApplicationController
     q = params[:q].to_s.strip.downcase
     if q.length >= 2
       users = User.where.not(id: @team.team_memberships.where(status: %w[pending accepted]).select(:user_id))
+                  .where.not(id: @team.leader_id)
                   .where('LOWER(name) LIKE ?', "%#{q}%")
                   .limit(10)
       render json: users.map { |u| { id: u.id, name: u.name } }
