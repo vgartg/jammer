@@ -34,7 +34,7 @@
             <%= button_to t('.delete'), team_destroy_path(@team), method: :delete,
                 data: { turbo_confirm: t('buttons.confirm') },
                 class: "rounded-md bg-red-50 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-100" %>
-          <% elsif @user_membership.nil? %>
+          <% elsif @user_membership.nil? || @user_membership.status == 'declined' %>
             <%= button_to t('.join'), team_team_memberships_path(@team), method: :post,
                 class: "rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500" %>
           <% elsif @user_membership.status == 'pending' && !@user_membership.leader_invited? %>
