@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     @is_admin = @current_user&.admin?
 
     if @user.profile_hidden? && !@viewing_own_profile && !@is_admin
-      render 'users/private_profile', status: :ok
+      render 'users/private_profile', status: :forbidden
       return
     end
 
