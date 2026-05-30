@@ -451,6 +451,9 @@ en:
       success: "Successfully saved!"
     index:
       title: "All users"
+      search_label: "Search users"
+      search_btn: "Search"
+      not_found: 'No users found for "%{query}".'
     profile:
       full_name: "Full name"
       email: "Email"
@@ -883,9 +886,6 @@ en:
     users:
       index:
         title: "Users"
-        search_label: "Search users"
-        search_btn: "Search"
-        not_found: 'No users found for query "%{query}".'
         create_user: "Create user"
       new:
         title: "Create user"

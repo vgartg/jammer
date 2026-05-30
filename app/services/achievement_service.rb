@@ -151,11 +151,15 @@ class AchievementService
   end
 
   def total_ratings_received
-    @total_ratings_received ||= Review.joins(:game).where(games: { author_id: @user.id }).where.not(user_id: @user.id).count
+    @total_ratings_received ||= Review.joins(:game)
+                                      .where(games: { author_id: @user.id })
+                                      .where.not(user_id: @user.id)
+                                      .distinct
+                                      .count(:user_id)
   end
 
   def total_ratings_given
-    @total_ratings_given ||= Review.where(user: @user).count
+    @total_ratings_given ||= Review.where(user: @user).distinct.count(:game_id)
   end
 
   def games_uploaded_count

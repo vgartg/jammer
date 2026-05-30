@@ -451,6 +451,9 @@ ru:
       success: "Успешно сохранено!"
     index:
       title: "Все пользователи"
+      search_label: "Поиск пользователей"
+      search_btn: "Найти"
+      not_found: 'Пользователи не найдены по запросу "%{query}".'
     profile:
       full_name: "Полное имя"
       email: "Электронная почта"
@@ -883,9 +886,6 @@ ru:
     users:
       index:
         title: "Пользователи"
-        search_label: "Поиск пользователей"
-        search_btn: "Найти"
-        not_found: 'Пользователи не найдены по запросу "%{query}".'
         create_user: "Создать пользователя"
       new:
         title: "Создание пользователя"
