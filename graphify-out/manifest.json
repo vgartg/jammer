@@ -1,0 +1,1412 @@
+{
+  "/home/vgartg/RubymineProjects/STUDY/jammer/package.json": {
+    "mtime": 1779995890.7363346,
+    "ast_hash": "f2d0e713fa702f813513ab1ad14296ed",
+    "semantic_hash": "f2d0e713fa702f813513ab1ad14296ed"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/tailwind.config.js": {
+    "mtime": 1771097333.9719808,
+    "ast_hash": "e5b89280c6780dc0ebe30b8f4eb82a9a",
+    "semantic_hash": "e5b89280c6780dc0ebe30b8f4eb82a9a"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/.kamal/hooks/deploy-running": {
+    "mtime": 1779860283.231171,
+    "ast_hash": "f5b3836b4023c9d146ed7fe3bc63e2d3",
+    "semantic_hash": "f5b3836b4023c9d146ed7fe3bc63e2d3"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/application_system_test_case.rb": {
+    "mtime": 1771097333.9719808,
+    "ast_hash": "cedc4627064898cac0ae24c32c00cadf",
+    "semantic_hash": "cedc4627064898cac0ae24c32c00cadf"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/test_helper.rb": {
+    "mtime": 1771097333.978981,
+    "ast_hash": "d391a02f5917076b00192c7d924f125a",
+    "semantic_hash": "d391a02f5917076b00192c7d924f125a"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/channels/application_cable/connection_test.rb": {
+    "mtime": 1771097333.9730012,
+    "ast_hash": "9abd13843837b1b15465023d4228fc53",
+    "semantic_hash": "9abd13843837b1b15465023d4228fc53"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/models/session_test.rb": {
+    "mtime": 1771097333.978981,
+    "ast_hash": "c20ec2099a76af72f3c1db2dc535b646",
+    "semantic_hash": "c20ec2099a76af72f3c1db2dc535b646"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/models/notification_test.rb": {
+    "mtime": 1771097333.9788234,
+    "ast_hash": "098bc113137c19fb5c392d46dd1469a1",
+    "semantic_hash": "098bc113137c19fb5c392d46dd1469a1"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/models/report_test.rb": {
+    "mtime": 1771097333.978981,
+    "ast_hash": "3ff25f9fcc609c72f290fc3e4a0f4a08",
+    "semantic_hash": "3ff25f9fcc609c72f290fc3e4a0f4a08"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/models/jam_test.rb": {
+    "mtime": 1771097333.9788234,
+    "ast_hash": "76fd3f6e393e1581ebcebdc608f60431",
+    "semantic_hash": "76fd3f6e393e1581ebcebdc608f60431"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/models/game_test.rb": {
+    "mtime": 1771097333.9788234,
+    "ast_hash": "696f9c2d552113b5fbccc51d04e69ee4",
+    "semantic_hash": "696f9c2d552113b5fbccc51d04e69ee4"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/models/friendship_test.rb": {
+    "mtime": 1771097333.9788234,
+    "ast_hash": "6e5255924ded781ec187ad5593cd893b",
+    "semantic_hash": "6e5255924ded781ec187ad5593cd893b"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/models/user_test.rb": {
+    "mtime": 1780061279.9182012,
+    "ast_hash": "62948a886f23effe41942b91c04f8dad",
+    "semantic_hash": "62948a886f23effe41942b91c04f8dad"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/models/online_status_test.rb": {
+    "mtime": 1771097333.978981,
+    "ast_hash": "4bccdd31643355146191a441e8a60343",
+    "semantic_hash": "4bccdd31643355146191a441e8a60343"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/admins_controller.rb": {
+    "mtime": 1771097333.945361,
+    "ast_hash": "9ea3f06cefbd925d59a4de97b5818f72",
+    "semantic_hash": "9ea3f06cefbd925d59a4de97b5818f72"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/reviews_controller.rb": {
+    "mtime": 1779949913.0135822,
+    "ast_hash": "1acae3a03d267a0eee6243108e5c45a0",
+    "semantic_hash": "1acae3a03d267a0eee6243108e5c45a0"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/friendships_controller.rb": {
+    "mtime": 1780081166.5733624,
+    "ast_hash": "f927c499aa63eadc6273c59bcfad3893",
+    "semantic_hash": "f927c499aa63eadc6273c59bcfad3893"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/assets_controller.rb": {
+    "mtime": 1780096343.8636987,
+    "ast_hash": "cd416e05a2c7b33226f9ca2e68a0c76c",
+    "semantic_hash": "cd416e05a2c7b33226f9ca2e68a0c76c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/home_controller.rb": {
+    "mtime": 1780081166.5733624,
+    "ast_hash": "f331460635946ce0bf10a622f7547165",
+    "semantic_hash": "f331460635946ce0bf10a622f7547165"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/contacts_controller.rb": {
+    "mtime": 1780115102.696233,
+    "ast_hash": "c36ba63a6cc78b6ab99cea6b04617840",
+    "semantic_hash": "c36ba63a6cc78b6ab99cea6b04617840"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/notifications_controller.rb": {
+    "mtime": 1780081166.5743623,
+    "ast_hash": "fae78cc3b5182e1ad9836eac6a3af944",
+    "semantic_hash": "fae78cc3b5182e1ad9836eac6a3af944"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/dashboard_controller.rb": {
+    "mtime": 1780111525.746274,
+    "ast_hash": "2e9c16de35ad66841dce7457bcfcea1d",
+    "semantic_hash": "2e9c16de35ad66841dce7457bcfcea1d"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/ratings_controller.rb": {
+    "mtime": 1771097333.946798,
+    "ast_hash": "d8b722a482415ba239c3eecb7fc7b7ad",
+    "semantic_hash": "d8b722a482415ba239c3eecb7fc7b7ad"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/teams_controller.rb": {
+    "mtime": 1780122160.6775494,
+    "ast_hash": "4e1d2a0395887a702778d8b908b78e73",
+    "semantic_hash": "4e1d2a0395887a702778d8b908b78e73"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/jam_submissions_controller.rb": {
+    "mtime": 1771097333.9459805,
+    "ast_hash": "472cf3cbc356d9d6e861de1c0fd01146",
+    "semantic_hash": "472cf3cbc356d9d6e861de1c0fd01146"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/jam_votes_controller.rb": {
+    "mtime": 1779860283.232171,
+    "ast_hash": "83b39eff2bafb0109cf77644659c78a9",
+    "semantic_hash": "83b39eff2bafb0109cf77644659c78a9"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/application_controller.rb": {
+    "mtime": 1780119475.415852,
+    "ast_hash": "db7527a8d07bdcaf53817eeec7cf4c3d",
+    "semantic_hash": "db7527a8d07bdcaf53817eeec7cf4c3d"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/jams_controller.rb": {
+    "mtime": 1780081166.5733624,
+    "ast_hash": "0600b87563e6d32e6fb9c37d9e8696a7",
+    "semantic_hash": "0600b87563e6d32e6fb9c37d9e8696a7"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/jam_criterion_picks_controller.rb": {
+    "mtime": 1779860283.232171,
+    "ast_hash": "c0b77fac7fc2360290df69e92dbc3d5a",
+    "semantic_hash": "c0b77fac7fc2360290df69e92dbc3d5a"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/sessions_controller.rb": {
+    "mtime": 1780081166.5743623,
+    "ast_hash": "d6ab8cf651224dfee80052bdc1da901a",
+    "semantic_hash": "d6ab8cf651224dfee80052bdc1da901a"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/email_confirms_controller.rb": {
+    "mtime": 1780081166.5733624,
+    "ast_hash": "6edfc1b2dc9dfbd408b08bcdb327f053",
+    "semantic_hash": "6edfc1b2dc9dfbd408b08bcdb327f053"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/team_memberships_controller.rb": {
+    "mtime": 1780120483.6767714,
+    "ast_hash": "1ead7a6cbe9790b9a7e1b6bb13a624ba",
+    "semantic_hash": "1ead7a6cbe9790b9a7e1b6bb13a624ba"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/settings_controller.rb": {
+    "mtime": 1780081166.5743623,
+    "ast_hash": "71a799ed4ddacbce3ef4f42f488abd34",
+    "semantic_hash": "71a799ed4ddacbce3ef4f42f488abd34"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/errors_controller.rb": {
+    "mtime": 1780041572.3101532,
+    "ast_hash": "1db0f0b18f5af7f51c2b4a9b88bf9714",
+    "semantic_hash": "1db0f0b18f5af7f51c2b4a9b88bf9714"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/moderators_controller.rb": {
+    "mtime": 1780061279.9162014,
+    "ast_hash": "1cd476d29d1fa610e7a6f3ef5de2de63",
+    "semantic_hash": "1cd476d29d1fa610e7a6f3ef5de2de63"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/games_controller.rb": {
+    "mtime": 1780081166.5733624,
+    "ast_hash": "24ed8b592dede61cc40ae3a9fe8ec772",
+    "semantic_hash": "24ed8b592dede61cc40ae3a9fe8ec772"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/users_controller.rb": {
+    "mtime": 1780119327.791655,
+    "ast_hash": "b9622162e176f9cda487312afe8e99cd",
+    "semantic_hash": "b9622162e176f9cda487312afe8e99cd"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/oauth_controller.rb": {
+    "mtime": 1779995890.7353346,
+    "ast_hash": "14c8c36acc83854313a95b78700d4f65",
+    "semantic_hash": "14c8c36acc83854313a95b78700d4f65"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/reports_controller.rb": {
+    "mtime": 1780061279.9162014,
+    "ast_hash": "d25a19395ddd5cf9718e37060798f3cd",
+    "semantic_hash": "d25a19395ddd5cf9718e37060798f3cd"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/frozen_controller.rb": {
+    "mtime": 1780115101.775222,
+    "ast_hash": "33d0fc1b86d19c9b6f5b7e6d1ce27eff",
+    "semantic_hash": "33d0fc1b86d19c9b6f5b7e6d1ce27eff"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/admin/assets_controller.rb": {
+    "mtime": 1780097610.4811325,
+    "ast_hash": "394a3ff8f17990eb5a5b5b4c5a477497",
+    "semantic_hash": "394a3ff8f17990eb5a5b5b4c5a477497"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/admin/achievements_controller.rb": {
+    "mtime": 1780111513.00245,
+    "ast_hash": "dd071de061fe4436e8c8a58383cf71ca",
+    "semantic_hash": "dd071de061fe4436e8c8a58383cf71ca"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/admin/teams_controller.rb": {
+    "mtime": 1780097619.503206,
+    "ast_hash": "4e2d4d40a66e4649aec1af50e8c43522",
+    "semantic_hash": "4e2d4d40a66e4649aec1af50e8c43522"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/admin/announcements_controller.rb": {
+    "mtime": 1780097749.3354852,
+    "ast_hash": "e46624c74f2d2d67774a8c575ecf519b",
+    "semantic_hash": "e46624c74f2d2d67774a8c575ecf519b"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/admin/messages_controller.rb": {
+    "mtime": 1780120145.0747619,
+    "ast_hash": "c988c1755e6f6b6e926a27f26bc6bb92",
+    "semantic_hash": "c988c1755e6f6b6e926a27f26bc6bb92"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/admin/jams_controller.rb": {
+    "mtime": 1780061279.9152012,
+    "ast_hash": "cf38f2ee617322c51af43c03a3521e37",
+    "semantic_hash": "cf38f2ee617322c51af43c03a3521e37"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/admin/actions_controller.rb": {
+    "mtime": 1771097333.945253,
+    "ast_hash": "50cb0da2606d075711c34b758b7bf719",
+    "semantic_hash": "50cb0da2606d075711c34b758b7bf719"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/admin/visits_controller.rb": {
+    "mtime": 1771097333.945361,
+    "ast_hash": "7ec0ce8b6675a0e50a1fd378d62ccc6d",
+    "semantic_hash": "7ec0ce8b6675a0e50a1fd378d62ccc6d"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/admin/games_controller.rb": {
+    "mtime": 1780061279.9152012,
+    "ast_hash": "1d9b000183991454deab76d43d3886e9",
+    "semantic_hash": "1d9b000183991454deab76d43d3886e9"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/admin/users_controller.rb": {
+    "mtime": 1779860283.231171,
+    "ast_hash": "d4d017f05bb5bb44db8526f78f2ba4f5",
+    "semantic_hash": "d4d017f05bb5bb44db8526f78f2ba4f5"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/moderator/audit_controller.rb": {
+    "mtime": 1780061279.9162014,
+    "ast_hash": "12f2d37a076c88045f9dff33cc25a823",
+    "semantic_hash": "12f2d37a076c88045f9dff33cc25a823"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/moderator/jams_controller.rb": {
+    "mtime": 1780061279.9162014,
+    "ast_hash": "008e8b8d9c212816bce237c440f1158a",
+    "semantic_hash": "008e8b8d9c212816bce237c440f1158a"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/controllers/moderator/games_controller.rb": {
+    "mtime": 1780061279.9162014,
+    "ast_hash": "a662d99b0245bdaafec279f50a4f8c14",
+    "semantic_hash": "a662d99b0245bdaafec279f50a4f8c14"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/jobs/application_job.rb": {
+    "mtime": 1771097333.9499807,
+    "ast_hash": "bdecd79f2c18f1519c7d39f08ba41ea9",
+    "semantic_hash": "bdecd79f2c18f1519c7d39f08ba41ea9"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/channels/application_cable/channel.rb": {
+    "mtime": 1771097333.9450011,
+    "ast_hash": "e10b046bdcfb33d1a2c2a38b3236c1a4",
+    "semantic_hash": "e10b046bdcfb33d1a2c2a38b3236c1a4"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/channels/application_cable/connection.rb": {
+    "mtime": 1771097333.9450994,
+    "ast_hash": "3cebc08ddeaa0af967b3ff116cf5f03d",
+    "semantic_hash": "3cebc08ddeaa0af967b3ff116cf5f03d"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/sidekiq/daily_activity_job.rb": {
+    "mtime": 1779949913.0135822,
+    "ast_hash": "454878c6b064718749866ae7604262e5",
+    "semantic_hash": "454878c6b064718749866ae7604262e5"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/services/achievement_service.rb": {
+    "mtime": 1780083121.6666186,
+    "ast_hash": "a9a0e61e8d3c7a2038e0465bb93b8ae2",
+    "semantic_hash": "a9a0e61e8d3c7a2038e0465bb93b8ae2"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/helpers/application_helper.rb": {
+    "mtime": 1779860283.232171,
+    "ast_hash": "a243a2bee91f381a443ae57fd5be7b5f",
+    "semantic_hash": "a243a2bee91f381a443ae57fd5be7b5f"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/rating.rb": {
+    "mtime": 1771097333.9510853,
+    "ast_hash": "52512dae85da3631a81d9c7e387caf82",
+    "semantic_hash": "52512dae85da3631a81d9c7e387caf82"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/user.rb": {
+    "mtime": 1780097649.3054528,
+    "ast_hash": "5615454a033fa4e75607650fbf5d0736",
+    "semantic_hash": "5615454a033fa4e75607650fbf5d0736"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/jam_criterion.rb": {
+    "mtime": 1775413896.171755,
+    "ast_hash": "d194f47fa67d9c7125e69ffd549caeaa",
+    "semantic_hash": "d194f47fa67d9c7125e69ffd549caeaa"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/statistic_for_day.rb": {
+    "mtime": 1771097333.9510853,
+    "ast_hash": "94178b83ce363a31ffa4c4e5597296f9",
+    "semantic_hash": "94178b83ce363a31ffa4c4e5597296f9"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/jam_submission.rb": {
+    "mtime": 1780096261.15141,
+    "ast_hash": "71c153ab7037a9666d4ceba02d22e682",
+    "semantic_hash": "71c153ab7037a9666d4ceba02d22e682"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/tag.rb": {
+    "mtime": 1771097333.9510853,
+    "ast_hash": "7fe1d6a27abae3fce003b39190119208",
+    "semantic_hash": "7fe1d6a27abae3fce003b39190119208"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/jam_contributor.rb": {
+    "mtime": 1775413896.171755,
+    "ast_hash": "622291362d5775b4eda7699aeb7983de",
+    "semantic_hash": "622291362d5775b4eda7699aeb7983de"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/jam_nomination.rb": {
+    "mtime": 1775413896.171755,
+    "ast_hash": "b203c11af2f39288021347abcd66613b",
+    "semantic_hash": "b203c11af2f39288021347abcd66613b"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/game.rb": {
+    "mtime": 1780082519.3503826,
+    "ast_hash": "44ebd8c23852d7f82d532ea7c22428e6",
+    "semantic_hash": "44ebd8c23852d7f82d532ea7c22428e6"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/application_record.rb": {
+    "mtime": 1771097333.9509284,
+    "ast_hash": "8061f2304feb5db0f90c9086b9c30377",
+    "semantic_hash": "8061f2304feb5db0f90c9086b9c30377"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/team.rb": {
+    "mtime": 1780096266.169209,
+    "ast_hash": "ac1b53e90c0ce0c4c814aec5c82c50a7",
+    "semantic_hash": "ac1b53e90c0ce0c4c814aec5c82c50a7"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/administration_tracking.rb": {
+    "mtime": 1771097333.9506745,
+    "ast_hash": "bfdba4061211daf7f816e226899b6274",
+    "semantic_hash": "bfdba4061211daf7f816e226899b6274"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/notification.rb": {
+    "mtime": 1771097333.9510853,
+    "ast_hash": "1b59f6d220a7bb43eaf59a26e86e5f60",
+    "semantic_hash": "1b59f6d220a7bb43eaf59a26e86e5f60"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/report.rb": {
+    "mtime": 1779860283.233171,
+    "ast_hash": "542cd73efb8c2bdfae17380ed3697c19",
+    "semantic_hash": "542cd73efb8c2bdfae17380ed3697c19"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/team_membership.rb": {
+    "mtime": 1780096256.1355836,
+    "ast_hash": "5a1c7a1302fb107f34ffe475207c0f6f",
+    "semantic_hash": "5a1c7a1302fb107f34ffe475207c0f6f"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/admin_message.rb": {
+    "mtime": 1780115100.1532025,
+    "ast_hash": "32d6fef8bb435364b35c4382187a38eb",
+    "semantic_hash": "32d6fef8bb435364b35c4382187a38eb"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/session.rb": {
+    "mtime": 1771097333.9510853,
+    "ast_hash": "eeeb2dcc02479bcfba21306335038768",
+    "semantic_hash": "eeeb2dcc02479bcfba21306335038768"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/asset.rb": {
+    "mtime": 1780083094.9752445,
+    "ast_hash": "6ea152b80329a610b06ab79022d4e09e",
+    "semantic_hash": "6ea152b80329a610b06ab79022d4e09e"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/jam_criterion_pick.rb": {
+    "mtime": 1775413896.171755,
+    "ast_hash": "a069820c36ae68dba881e10d5f935e68",
+    "semantic_hash": "a069820c36ae68dba881e10d5f935e68"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/jam.rb": {
+    "mtime": 1779860283.233171,
+    "ast_hash": "8b72ce2ebb331a1cb84e83065b43c6d5",
+    "semantic_hash": "8b72ce2ebb331a1cb84e83065b43c6d5"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/announcement.rb": {
+    "mtime": 1780098060.707288,
+    "ast_hash": "efbaa18508e764108848bd5daff99307",
+    "semantic_hash": "efbaa18508e764108848bd5daff99307"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/review.rb": {
+    "mtime": 1780081836.133201,
+    "ast_hash": "f323b91376edd9329f14cddd7a85f144",
+    "semantic_hash": "f323b91376edd9329f14cddd7a85f144"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/jam_rating_setting.rb": {
+    "mtime": 1779860283.233171,
+    "ast_hash": "649f6bdc8e1e31786012995f56e7b0a3",
+    "semantic_hash": "649f6bdc8e1e31786012995f56e7b0a3"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/user_achievement.rb": {
+    "mtime": 1780081557.0923817,
+    "ast_hash": "541a294c27d7340527bf062356117a66",
+    "semantic_hash": "541a294c27d7340527bf062356117a66"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/friendship.rb": {
+    "mtime": 1780061279.9162014,
+    "ast_hash": "5cc5dd7f43ce8b639224afd1b89db8c9",
+    "semantic_hash": "5cc5dd7f43ce8b639224afd1b89db8c9"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/concerns/confirmable.rb": {
+    "mtime": 1779995890.7353346,
+    "ast_hash": "59988626293b60327d485e9188325381",
+    "semantic_hash": "59988626293b60327d485e9188325381"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/concerns/recoverable.rb": {
+    "mtime": 1779995890.7363346,
+    "ast_hash": "5ceabee4e41addff02591d32cd3b8605",
+    "semantic_hash": "5ceabee4e41addff02591d32cd3b8605"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/models/concerns/rememberable.rb": {
+    "mtime": 1771097333.9510853,
+    "ast_hash": "ecd2d555bbde3ad9e57612bf2d009ae4",
+    "semantic_hash": "ecd2d555bbde3ad9e57612bf2d009ae4"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/mailers/email_confirm_mailer.rb": {
+    "mtime": 1779860283.233171,
+    "ast_hash": "53b8e9713ef036ee1d59b33cfe31a8b2",
+    "semantic_hash": "53b8e9713ef036ee1d59b33cfe31a8b2"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/mailers/application_mailer.rb": {
+    "mtime": 1771097333.9499807,
+    "ast_hash": "46f2b141425a7811fb035fd6fb8c31bf",
+    "semantic_hash": "46f2b141425a7811fb035fd6fb8c31bf"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/animation.js": {
+    "mtime": 1771097333.9469807,
+    "ast_hash": "1e017a04d462eeff2685bd120b859fa7",
+    "semantic_hash": "1e017a04d462eeff2685bd120b859fa7"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/application.js": {
+    "mtime": 1771097333.947864,
+    "ast_hash": "52fdfbf67ba8df22b2e3da3d8536efc1",
+    "semantic_hash": "52fdfbf67ba8df22b2e3da3d8536efc1"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/update_activity.js": {
+    "mtime": 1771097333.9499807,
+    "ast_hash": "67d21ad693bc2487f3d4c2d3b6438f21",
+    "semantic_hash": "67d21ad693bc2487f3d4c2d3b6438f21"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/notifications_controller.js": {
+    "mtime": 1780001969.0710878,
+    "ast_hash": "85267f9562e5532370de33afc5b42d60",
+    "semantic_hash": "85267f9562e5532370de33afc5b42d60"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/hello_controller.js": {
+    "mtime": 1771097333.9480543,
+    "ast_hash": "2db0903d9e3b79bbeecc33a188ba3655",
+    "semantic_hash": "2db0903d9e3b79bbeecc33a188ba3655"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/application.js": {
+    "mtime": 1771097333.947864,
+    "ast_hash": "e99511ba6b1056659bed1f0083cae290",
+    "semantic_hash": "e99511ba6b1056659bed1f0083cae290"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/report_controller.js": {
+    "mtime": 1779860283.232171,
+    "ast_hash": "dbbcad7a4202a35e93286d1998201437",
+    "semantic_hash": "dbbcad7a4202a35e93286d1998201437"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/dashboard_controller.js": {
+    "mtime": 1771097333.9480543,
+    "ast_hash": "29a1b7f14d47aa1195f1d8d4d6ca4b5c",
+    "semantic_hash": "29a1b7f14d47aa1195f1d8d4d6ca4b5c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/autosubmit_controller.js": {
+    "mtime": 1779860283.232171,
+    "ast_hash": "fbf94b07352dae0235629cb23a4542b5",
+    "semantic_hash": "fbf94b07352dae0235629cb23a4542b5"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/profile_controller.js": {
+    "mtime": 1771097333.9489806,
+    "ast_hash": "2915d8f6480d57f42472a152a46056b6",
+    "semantic_hash": "2915d8f6480d57f42472a152a46056b6"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/header_controller.js": {
+    "mtime": 1771097333.9480543,
+    "ast_hash": "67e65af64ae2cf01dd9afe195e2c9fe2",
+    "semantic_hash": "67e65af64ae2cf01dd9afe195e2c9fe2"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/index.js": {
+    "mtime": 1779860283.232171,
+    "ast_hash": "c947e6d15b16775e13df730b555fc901",
+    "semantic_hash": "c947e6d15b16775e13df730b555fc901"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/user_controller.js": {
+    "mtime": 1771097333.9499807,
+    "ast_hash": "dfec4594c5dba9a931ce4a734915eeed",
+    "semantic_hash": "dfec4594c5dba9a931ce4a734915eeed"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/freeze_controller.js": {
+    "mtime": 1779860283.232171,
+    "ast_hash": "589ff2b5bbb496a6ebb2415ce11e87d0",
+    "semantic_hash": "589ff2b5bbb496a6ebb2415ce11e87d0"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/status_controller.js": {
+    "mtime": 1779949913.0135822,
+    "ast_hash": "b9b7e90c224d711f46d3363ae33cbbef",
+    "semantic_hash": "b9b7e90c224d711f46d3363ae33cbbef"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/online_controller.js": {
+    "mtime": 1771097333.9489806,
+    "ast_hash": "f5fe7fa6150540a96d86816ba9322b2f",
+    "semantic_hash": "f5fe7fa6150540a96d86816ba9322b2f"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/friends_controller.js": {
+    "mtime": 1771097333.9480543,
+    "ast_hash": "68d66d6243de4bcc81922573604a5482",
+    "semantic_hash": "68d66d6243de4bcc81922573604a5482"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/modal_controller.js": {
+    "mtime": 1779860283.232171,
+    "ast_hash": "d3530036966a88c870aa576dee48eea0",
+    "semantic_hash": "d3530036966a88c870aa576dee48eea0"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/jams_controller.js": {
+    "mtime": 1779860283.232171,
+    "ast_hash": "ba95f00fee9180ed0a6b011d9aea28bb",
+    "semantic_hash": "ba95f00fee9180ed0a6b011d9aea28bb"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/background_image_controller.js": {
+    "mtime": 1771097333.9480543,
+    "ast_hash": "336a8dc7a5f763122819bb26b94ff8ef",
+    "semantic_hash": "336a8dc7a5f763122819bb26b94ff8ef"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/star_rating_controller.js": {
+    "mtime": 1771097333.9489806,
+    "ast_hash": "e40826556a736796a90e355ad9dbe701",
+    "semantic_hash": "e40826556a736796a90e355ad9dbe701"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/toggle_truncate_controller.js": {
+    "mtime": 1771097333.9489806,
+    "ast_hash": "f284b3fed47abff66d734d0b989e3935",
+    "semantic_hash": "f284b3fed47abff66d734d0b989e3935"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/games_controller.js": {
+    "mtime": 1771097333.9480543,
+    "ast_hash": "6e9b7a752b062b3572582bcbb4125d89",
+    "semantic_hash": "6e9b7a752b062b3572582bcbb4125d89"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/settings_controller.js": {
+    "mtime": 1775413896.171755,
+    "ast_hash": "cb6fe5fadef052b4ecbefece6c9859bc",
+    "semantic_hash": "cb6fe5fadef052b4ecbefece6c9859bc"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/unfreeze_controller.js": {
+    "mtime": 1779860283.232171,
+    "ast_hash": "efef1b20f12d5ceab40bb20497c74146",
+    "semantic_hash": "efef1b20f12d5ceab40bb20497c74146"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/freeze_modal_controller.js": {
+    "mtime": 1771097333.9480543,
+    "ast_hash": "08df32e2b74cb88beff9af562ca8c251",
+    "semantic_hash": "08df32e2b74cb88beff9af562ca8c251"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/cropper_controller.js": {
+    "mtime": 1771097333.9480543,
+    "ast_hash": "708144de3e8652c5281ba4cb06d204ab",
+    "semantic_hash": "708144de3e8652c5281ba4cb06d204ab"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/theme_controller.js": {
+    "mtime": 1771097333.9489806,
+    "ast_hash": "99ddaf08d04139079f07f733b2e21856",
+    "semantic_hash": "99ddaf08d04139079f07f733b2e21856"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/criteria_rating_controller.js": {
+    "mtime": 1775413896.171755,
+    "ast_hash": "c228dc15457907d41ce4737a9c4679a0",
+    "semantic_hash": "c228dc15457907d41ce4737a9c4679a0"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/javascript/controllers/visits_controller.js": {
+    "mtime": 1779860283.232171,
+    "ast_hash": "9b498edfe3245d167d8f412a155ee6d8",
+    "semantic_hash": "9b498edfe3245d167d8f412a155ee6d8"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/config/manifest.js": {
+    "mtime": 1771097333.9420075,
+    "ast_hash": "f9c1373707ee71acb370961f3026f052",
+    "semantic_hash": "f9c1373707ee71acb370961f3026f052"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/bin/bundle": {
+    "mtime": 1771097333.963443,
+    "ast_hash": "dc4778da9d3fdda3fb9f9a5308462b3c",
+    "semantic_hash": "dc4778da9d3fdda3fb9f9a5308462b3c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/bin/docker-entrypoint": {
+    "mtime": 1771097333.963443,
+    "ast_hash": "a0147b4c9877facb2f185b1d5a2bbbd0",
+    "semantic_hash": "a0147b4c9877facb2f185b1d5a2bbbd0"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/.claude/settings.local.json": {
+    "mtime": 1780134491.9974916,
+    "ast_hash": "55d65691595026946f9e34f0f4f7e371",
+    "semantic_hash": "55d65691595026946f9e34f0f4f7e371"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/seeds.rb": {
+    "mtime": 1771097333.969981,
+    "ast_hash": "e6e3692fafc67aaa26ae5f3c4651531b",
+    "semantic_hash": "e6e3692fafc67aaa26ae5f3c4651531b"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/schema.rb": {
+    "mtime": 1780117258.062879,
+    "ast_hash": "a8ab7bbeae72fb8699c699f79baf4107",
+    "semantic_hash": "a8ab7bbeae72fb8699c699f79baf4107"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260224162325_create_jam_contributors.rb": {
+    "mtime": 1775413896.1737547,
+    "ast_hash": "fbeda3ee2cca2787700df1cba5158f18",
+    "semantic_hash": "fbeda3ee2cca2787700df1cba5158f18"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240711154558_create_users.rb": {
+    "mtime": 1771097333.966383,
+    "ast_hash": "a5cfe320cbf3a3688e9d74f4e28b8252",
+    "semantic_hash": "a5cfe320cbf3a3688e9d74f4e28b8252"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241110132743_add_jam_id_to_reviews.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "190f0861dc836f276a4cf14de3306485",
+    "semantic_hash": "190f0861dc836f276a4cf14de3306485"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20250216075843_add_frozen_to_users.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "1559031b6d6f64499dac1fb8a8e40149",
+    "semantic_hash": "1559031b6d6f64499dac1fb8a8e40149"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240814150222_add_background_image_to_users.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "50475dd92d439b182b26c1a1bd041443",
+    "semantic_hash": "50475dd92d439b182b26c1a1bd041443"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240723104023_create_tags.rb": {
+    "mtime": 1771097333.9664886,
+    "ast_hash": "485cbed30a93948daadac3750b584b5b",
+    "semantic_hash": "485cbed30a93948daadac3750b584b5b"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241121160120_create_administration_tracking.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "6b59ca12d7ee30ec44f64ff757cb4f0f",
+    "semantic_hash": "6b59ca12d7ee30ec44f64ff757cb4f0f"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240811035101_add_visibility_to_users.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "241a5dacf24570fc97a1634fcab602c6",
+    "semantic_hash": "241a5dacf24570fc97a1634fcab602c6"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241018083931_create_jam_submissions.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "a5f4209bd0de8835a49c79194e986787",
+    "semantic_hash": "a5f4209bd0de8835a49c79194e986787"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241027131605_add_users_can_votes_to_jam.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "d5a7126fa6d58d44b5eeb9a2445bb70e",
+    "semantic_hash": "d5a7126fa6d58d44b5eeb9a2445bb70e"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240831070633_create_notifications.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "4b9034b5ce5fd7708989d9b5e6d0782a",
+    "semantic_hash": "4b9034b5ce5fd7708989d9b5e6d0782a"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240830091945_add_fields_to_jam.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "3f14d29638680f66d04d513b2e6af3da",
+    "semantic_hash": "3f14d29638680f66d04d513b2e6af3da"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260224162345_create_jam_nominations.rb": {
+    "mtime": 1775413896.1737547,
+    "ast_hash": "e96cedb36c88490f16f1df06332859c8",
+    "semantic_hash": "e96cedb36c88490f16f1df06332859c8"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241109123133_add_user_to_ratings.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "939662140db4b8259668887433fc0a9c",
+    "semantic_hash": "939662140db4b8259668887433fc0a9c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241011112743_add_theme_to_users.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "0f05e8965d474c9183005548624d5dbd",
+    "semantic_hash": "0f05e8965d474c9183005548624d5dbd"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240830101010_add_description_to_jams.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "a8ee248413c49482834cc6bf6faf9c08",
+    "semantic_hash": "a8ee248413c49482834cc6bf6faf9c08"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260529000003_create_team_memberships.rb": {
+    "mtime": 1780081540.9603744,
+    "ast_hash": "3821facb499533905d4a30598f302272",
+    "semantic_hash": "3821facb499533905d4a30598f302272"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20250216080058_add_frozen_reason_to_users.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "bb2a0f207474674fe6c44066e5e2adef",
+    "semantic_hash": "bb2a0f207474674fe6c44066e5e2adef"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240724110122_add_last_seen_at_to_users.rb": {
+    "mtime": 1771097333.9664886,
+    "ast_hash": "36694569f574add25ae1db73b05d75f8",
+    "semantic_hash": "36694569f574add25ae1db73b05d75f8"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240723104031_create_games_tags.rb": {
+    "mtime": 1771097333.9664886,
+    "ast_hash": "aa7d1ee8d83d83d5fb3fabe324a06db7",
+    "semantic_hash": "aa7d1ee8d83d83d5fb3fabe324a06db7"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241122174300_add_jam_participating_visibility_to_users.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "5df5356008df8f17ff8d68940981d642",
+    "semantic_hash": "5df5356008df8f17ff8d68940981d642"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240901160442_change_default_of_read_in_notifications.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "59b9d526fa62f363d91d1f76066abe10",
+    "semantic_hash": "59b9d526fa62f363d91d1f76066abe10"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241122174050_remove_jam_visibility_from_users.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "4badf73a724989810f78fefeecfc295d",
+    "semantic_hash": "4badf73a724989810f78fefeecfc295d"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241109101842_create_ratings.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "64668c0feb260be563973c55c60e8d5c",
+    "semantic_hash": "64668c0feb260be563973c55c60e8d5c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241011200200_create_jams_tags.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "29b8d5bd10cf980ebd137b680083f9c8",
+    "semantic_hash": "29b8d5bd10cf980ebd137b680083f9c8"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240716121409_add_users_key.rb": {
+    "mtime": 1771097333.9664886,
+    "ast_hash": "69a33dda0222e9ac046cbf8403493b4b",
+    "semantic_hash": "69a33dda0222e9ac046cbf8403493b4b"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260529140000_add_notify_moderation_to_users.rb": {
+    "mtime": 1780061279.9172013,
+    "ast_hash": "966b8a320010492508637321bbe0cb02",
+    "semantic_hash": "966b8a320010492508637321bbe0cb02"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241109102252_create_reviews.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "579552cc3e6a25798e17736cb4cd4219",
+    "semantic_hash": "579552cc3e6a25798e17736cb4cd4219"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260309093059_add_winner_game_to_jam_nominations.rb": {
+    "mtime": 1775413896.1737547,
+    "ast_hash": "2e86fce7b169531dad880166440f1f23",
+    "semantic_hash": "2e86fce7b169531dad880166440f1f23"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260224162329_create_jam_rating_settings.rb": {
+    "mtime": 1775413896.1737547,
+    "ast_hash": "610da18e0fedcedcfbe3f83923f9bda1",
+    "semantic_hash": "610da18e0fedcedcfbe3f83923f9bda1"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241021123251_add_participants_to_jams.rb": {
+    "mtime": 1776788301.100995,
+    "ast_hash": "560c92e48f23d75bcbb6088c55bcf04b",
+    "semantic_hash": "560c92e48f23d75bcbb6088c55bcf04b"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241122174452_add_jam_administrating_visibility_to_users.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "15829b5b12e1a376ddb11ef313953bb2",
+    "semantic_hash": "15829b5b12e1a376ddb11ef313953bb2"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241109133849_remove_user_id_from_ratings.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "2f464dbb3b70533e89f2bb25bc7a2b2c",
+    "semantic_hash": "2f464dbb3b70533e89f2bb25bc7a2b2c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241013094009_create_active_storage_variant_records.active_storage.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "b0616de77b15723cc11b178e303e2ad2",
+    "semantic_hash": "b0616de77b15723cc11b178e303e2ad2"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20250225172916_create_statistic_for_days.rb": {
+    "mtime": 1771097333.969981,
+    "ast_hash": "a1e8f3b7043d32fd29189cfb5e8e7cc6",
+    "semantic_hash": "a1e8f3b7043d32fd29189cfb5e8e7cc6"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260530000001_create_announcements.rb": {
+    "mtime": 1780117188.1843853,
+    "ast_hash": "f5d89b52d409dc9047ed9dd36bc04c1b",
+    "semantic_hash": "f5d89b52d409dc9047ed9dd36bc04c1b"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20250225172649_add_is_online_today_to_users.rb": {
+    "mtime": 1771097333.969981,
+    "ast_hash": "94f9d3167439439ecd3a0a98ff60299a",
+    "semantic_hash": "94f9d3167439439ecd3a0a98ff60299a"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240810193344_create_sessions.rb": {
+    "mtime": 1771097333.9664886,
+    "ast_hash": "f6edd845cab3671e66296d2b0a2d1d4e",
+    "semantic_hash": "f6edd845cab3671e66296d2b0a2d1d4e"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241109133355_add_average_rating_to_games.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "9080fb507429196264ab23833bd213e6",
+    "semantic_hash": "9080fb507429196264ab23833bd213e6"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260225103103_add_comment_to_reviews.rb": {
+    "mtime": 1775413896.1737547,
+    "ast_hash": "11e94b08a0ca2223e534e9f207af6bbe",
+    "semantic_hash": "11e94b08a0ca2223e534e9f207af6bbe"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260225105142_add_vote_type_to_reviews.rb": {
+    "mtime": 1775413896.1737547,
+    "ast_hash": "73835cfcf46de1667bfb86068d551327",
+    "semantic_hash": "73835cfcf46de1667bfb86068d551327"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20250225180248_delete_column_updated_at_from_statistic_for_days.rb": {
+    "mtime": 1771097333.969981,
+    "ast_hash": "f59cc4e1ba5fae116577ae8c5b74a6fa",
+    "semantic_hash": "f59cc4e1ba5fae116577ae8c5b74a6fa"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241013094008_add_service_name_to_active_storage_blobs.active_storage.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "4c309232bb5c60be4ab975f030b5599c",
+    "semantic_hash": "4c309232bb5c60be4ab975f030b5599c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260529081922_add_notification_preferences_to_users.rb": {
+    "mtime": 1780061279.9172013,
+    "ast_hash": "2945d05d6a27fbbe764a82f60cd3207f",
+    "semantic_hash": "2945d05d6a27fbbe764a82f60cd3207f"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240713213158_create_friendships.rb": {
+    "mtime": 1771097333.9664886,
+    "ast_hash": "fa47c79728af9274d666afd48fd2593e",
+    "semantic_hash": "fa47c79728af9274d666afd48fd2593e"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241021055106_add_email_confirmed_to_users.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "a7c03152d17301655bfb8756e5cc2251",
+    "semantic_hash": "a7c03152d17301655bfb8756e5cc2251"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260530000003_add_team_id_to_jam_submissions.rb": {
+    "mtime": 1780117193.2243476,
+    "ast_hash": "c95b3cb18d342fad189b55d45ca6baed",
+    "semantic_hash": "c95b3cb18d342fad189b55d45ca6baed"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260530000004_create_admin_messages.rb": {
+    "mtime": 1780115084.8820167,
+    "ast_hash": "d32ee3f69b05e3362a071def4d7db66c",
+    "semantic_hash": "d32ee3f69b05e3362a071def4d7db66c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20250215144557_add_reason_to_jams.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "39dfac2f69e7ada7c56d4db8e03c271d",
+    "semantic_hash": "39dfac2f69e7ada7c56d4db8e03c271d"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260530000002_add_leader_invited_to_team_memberships.rb": {
+    "mtime": 1780096232.6022964,
+    "ast_hash": "d93a7a85b9557d790084b3165b175690",
+    "semantic_hash": "d93a7a85b9557d790084b3165b175690"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241020092925_add_user_id_to_jam_submissions.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "4e2291a52696ade9453c9c4767268fb9",
+    "semantic_hash": "4e2291a52696ade9453c9c4767268fb9"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241021112345_add_list_of_games_to_jams.rb": {
+    "mtime": 1776788301.100995,
+    "ast_hash": "088593e07fe08aeded5948403f0c66c3",
+    "semantic_hash": "088593e07fe08aeded5948403f0c66c3"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240724220302_add_last_active_at_to_users.rb": {
+    "mtime": 1771097333.9664886,
+    "ast_hash": "2e4ade95a2e3227d71ab7a36138ea98a",
+    "semantic_hash": "2e4ade95a2e3227d71ab7a36138ea98a"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20250128085412_create_reports.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "0c63de53e21fbbf2a326ad742eec88cd",
+    "semantic_hash": "0c63de53e21fbbf2a326ad742eec88cd"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260224162333_create_jam_criteria.rb": {
+    "mtime": 1775413896.1737547,
+    "ast_hash": "ab0466abc6d3637d6d4f1200917b994d",
+    "semantic_hash": "ab0466abc6d3637d6d4f1200917b994d"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20250216081501_rename_frozen_column_in_users.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "69309198662c40ff24296bd8d5edb4d3",
+    "semantic_hash": "69309198662c40ff24296bd8d5edb4d3"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241121171004_add_action_to_administration_tracking.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "b649a2110307f9c99b1aa44e1b69e872",
+    "semantic_hash": "b649a2110307f9c99b1aa44e1b69e872"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241109133904_remove_rating_id_from_reviews.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "8304550270139ed5106c71c611ec3ad7",
+    "semantic_hash": "8304550270139ed5106c71c611ec3ad7"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241018084033_remove_submitted_at_from_jam_submissions.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "e571d07662d31b2a04402201cab645c1",
+    "semantic_hash": "e571d07662d31b2a04402201cab645c1"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260526174328_add_oauth_to_users.rb": {
+    "mtime": 1779860283.236171,
+    "ast_hash": "8e63de30089bd6acdd6f30107091e627",
+    "semantic_hash": "8e63de30089bd6acdd6f30107091e627"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241110101645_remove_average_rating_from_games.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "496c6b65c3c0d0f5cb8d0c1dbe9a9ebe",
+    "semantic_hash": "496c6b65c3c0d0f5cb8d0c1dbe9a9ebe"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260529000002_create_teams.rb": {
+    "mtime": 1780081540.9233744,
+    "ast_hash": "047148dab924413d8bc7f911c8bceaec",
+    "semantic_hash": "047148dab924413d8bc7f911c8bceaec"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240712161155_create_games.rb": {
+    "mtime": 1771097333.9664886,
+    "ast_hash": "3f70f55e090a02f28e817bd1419ad540",
+    "semantic_hash": "3f70f55e090a02f28e817bd1419ad540"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241013094010_remove_not_null_on_active_storage_blobs_checksum.active_storage.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "cd9b069cb482d63477d89187568d3cb4",
+    "semantic_hash": "cd9b069cb482d63477d89187568d3cb4"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241013185805_add_browser_to_sessions.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "20653596cb7ab46efbb2b747f58c184f",
+    "semantic_hash": "20653596cb7ab46efbb2b747f58c184f"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241012214552_add_jams_visibility_to_users.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "8d4c9abd595c87992df0c242e2a91d9e",
+    "semantic_hash": "8d4c9abd595c87992df0c242e2a91d9e"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240715122254_create_active_storage_tables.active_storage.rb": {
+    "mtime": 1771097333.9664886,
+    "ast_hash": "bfc06b9b494c33231a4291c41803b704",
+    "semantic_hash": "bfc06b9b494c33231a4291c41803b704"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241108121622_add_status_to_games_and_jams.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "39dcd4d5d6457df761af7b832f37ae34",
+    "semantic_hash": "39dcd4d5d6457df761af7b832f37ae34"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240730105718_add_link_username_and_timezone_to_users.rb": {
+    "mtime": 1771097333.9664886,
+    "ast_hash": "60081398f23e117e1e94a4057a951c68",
+    "semantic_hash": "60081398f23e117e1e94a4057a951c68"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241109134210_remove_user_mark_from_ratings.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "d4891abb73cb1853074e0ed8d31d85a8",
+    "semantic_hash": "d4891abb73cb1853074e0ed8d31d85a8"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240830091903_create_jams.rb": {
+    "mtime": 1771097333.966981,
+    "ast_hash": "28a8bea3bd7927997cd93def1b161ce0",
+    "semantic_hash": "28a8bea3bd7927997cd93def1b161ce0"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260304161654_add_archived_to_jam_criteria.rb": {
+    "mtime": 1775413896.1737547,
+    "ast_hash": "19d4d26572cc7ece050b1b73e4d2b96f",
+    "semantic_hash": "19d4d26572cc7ece050b1b73e4d2b96f"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260530000005_add_profile_hidden_to_users.rb": {
+    "mtime": 1780115085.7000268,
+    "ast_hash": "3fbdce0c00e7c3688464544605294500",
+    "semantic_hash": "3fbdce0c00e7c3688464544605294500"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241101210455_add_role_to_users.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "06292decebf72042a3e228ae0eefad94",
+    "semantic_hash": "06292decebf72042a3e228ae0eefad94"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260304145916_create_jam_criterion_picks.rb": {
+    "mtime": 1775413896.1737547,
+    "ast_hash": "67ac35e4c31c90bceb5de8d840e11112",
+    "semantic_hash": "67ac35e4c31c90bceb5de8d840e11112"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20250215144547_add_reason_to_games.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "44423ee132395f8b6062aeedea3b8edb",
+    "semantic_hash": "44423ee132395f8b6062aeedea3b8edb"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241118145552_create_action_text_tables.action_text.rb": {
+    "mtime": 1771097333.9689808,
+    "ast_hash": "85eab6c5e4c9c64d0e1743359ac3a336",
+    "semantic_hash": "85eab6c5e4c9c64d0e1743359ac3a336"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241109132649_change_jam_id_in_ratings_to_nullable.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "f6631e888d6df5a4afdcc5806aaa44b5",
+    "semantic_hash": "f6631e888d6df5a4afdcc5806aaa44b5"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20240714183511_edit_users.rb": {
+    "mtime": 1771097333.9664886,
+    "ast_hash": "dc87044ba5608b07c9c1e0ec7ba7be26",
+    "semantic_hash": "dc87044ba5608b07c9c1e0ec7ba7be26"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260529000004_create_user_achievements.rb": {
+    "mtime": 1780081541.0023744,
+    "ast_hash": "4ccbb489c2b3b6517792b96118ec3ee7",
+    "semantic_hash": "4ccbb489c2b3b6517792b96118ec3ee7"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260309093124_remove_method_from_jam_nominations.rb": {
+    "mtime": 1775413896.1737547,
+    "ast_hash": "658078573359925e5720ed14aa6c0187",
+    "semantic_hash": "658078573359925e5720ed14aa6c0187"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241109115646_add_user_mark_to_ratings.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "17a76d49073d5e94e079e325a9834024",
+    "semantic_hash": "17a76d49073d5e94e079e325a9834024"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20241109132932_add_game_id_to_reviews.rb": {
+    "mtime": 1771097333.9679809,
+    "ast_hash": "12945af04760b7d2591ea3b33fdeaa60",
+    "semantic_hash": "12945af04760b7d2591ea3b33fdeaa60"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/db/migrate/20260529000001_create_assets.rb": {
+    "mtime": 1780081540.8733745,
+    "ast_hash": "19f6eec51c624e2ddef396f7209580a4",
+    "semantic_hash": "19f6eec51c624e2ddef396f7209580a4"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/schedule.rb": {
+    "mtime": 1771097333.9655945,
+    "ast_hash": "5708e07b98dd127aafa40ccb8f6fa699",
+    "semantic_hash": "5708e07b98dd127aafa40ccb8f6fa699"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/routes.rb": {
+    "mtime": 1780115218.2104719,
+    "ast_hash": "bd39d07e987e73c87605e6ea612e2602",
+    "semantic_hash": "bd39d07e987e73c87605e6ea612e2602"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/environment.rb": {
+    "mtime": 1771097333.9641235,
+    "ast_hash": "4ebd9828afbedc445df934c03d1c1c64",
+    "semantic_hash": "4ebd9828afbedc445df934c03d1c1c64"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/boot.rb": {
+    "mtime": 1771097333.9641235,
+    "ast_hash": "f2a38b2deda6eac97797b5f9bf97e2b5",
+    "semantic_hash": "f2a38b2deda6eac97797b5f9bf97e2b5"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/application.rb": {
+    "mtime": 1780040980.764261,
+    "ast_hash": "1cb95bc58f1500885736fec19c6cc23b",
+    "semantic_hash": "1cb95bc58f1500885736fec19c6cc23b"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/puma.rb": {
+    "mtime": 1771097333.9655945,
+    "ast_hash": "1c328678267d0037722e7394b754a4c6",
+    "semantic_hash": "1c328678267d0037722e7394b754a4c6"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/initializers/inflections.rb": {
+    "mtime": 1771097333.9649808,
+    "ast_hash": "4d8360e6000fde0c58ac3e2fbc50ba95",
+    "semantic_hash": "4d8360e6000fde0c58ac3e2fbc50ba95"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/initializers/content_security_policy.rb": {
+    "mtime": 1771097333.9649637,
+    "ast_hash": "5d156e71b6b6e6ccafebaa0494875799",
+    "semantic_hash": "5d156e71b6b6e6ccafebaa0494875799"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/initializers/omniauth.rb": {
+    "mtime": 1779995890.7363346,
+    "ast_hash": "7b3ab861fa6637e4fc4f72113a91207c",
+    "semantic_hash": "7b3ab861fa6637e4fc4f72113a91207c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/initializers/assets.rb": {
+    "mtime": 1771097333.9649637,
+    "ast_hash": "ecd91f81602aa424e4cfce057b865787",
+    "semantic_hash": "ecd91f81602aa424e4cfce057b865787"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/initializers/app_version.rb": {
+    "mtime": 1771097333.964658,
+    "ast_hash": "eb83392ffc0fa9c7732a3435badab9fc",
+    "semantic_hash": "eb83392ffc0fa9c7732a3435badab9fc"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/initializers/filter_parameter_logging.rb": {
+    "mtime": 1771097333.9649637,
+    "ast_hash": "5ce27e310307f174a947c44050925292",
+    "semantic_hash": "5ce27e310307f174a947c44050925292"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/initializers/new_framework_defaults_8_0.rb": {
+    "mtime": 1771097333.9649808,
+    "ast_hash": "adb691b72e7ed99abd97d6ed04db4136",
+    "semantic_hash": "adb691b72e7ed99abd97d6ed04db4136"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/initializers/permissions_policy.rb": {
+    "mtime": 1771097333.9649808,
+    "ast_hash": "bfd2d267f2faeda72b8159526c9fbc40",
+    "semantic_hash": "bfd2d267f2faeda72b8159526c9fbc40"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/environments/development.rb": {
+    "mtime": 1771097333.9641235,
+    "ast_hash": "f118a1d7c72dc7e01b6933c9bde9fcf3",
+    "semantic_hash": "f118a1d7c72dc7e01b6933c9bde9fcf3"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/environments/test.rb": {
+    "mtime": 1771097333.964658,
+    "ast_hash": "2b851fec68c4a73d7a61b0daaeedaf1a",
+    "semantic_hash": "2b851fec68c4a73d7a61b0daaeedaf1a"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/environments/production.rb": {
+    "mtime": 1779995890.7363346,
+    "ast_hash": "02ba4db480119e61be01d14bc88b2d31",
+    "semantic_hash": "02ba4db480119e61be01d14bc88b2d31"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/lib/subdomain.rb": {
+    "mtime": 1771097333.9706051,
+    "ast_hash": "ee9914fcc4b6be41741e94eb6c00400e",
+    "semantic_hash": "ee9914fcc4b6be41741e94eb6c00400e"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/lib/admin_constraint.rb": {
+    "mtime": 1780061279.9182012,
+    "ast_hash": "74f770268d62eac5724f0a06ab0995e6",
+    "semantic_hash": "74f770268d62eac5724f0a06ab0995e6"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/CONTRIBUTING.md": {
+    "mtime": 1779949913.011583,
+    "ast_hash": "789490029ad4a064a9a70a09ef9e4897",
+    "semantic_hash": "789490029ad4a064a9a70a09ef9e4897"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/LICENSE.txt": {
+    "mtime": 1779707715.259475,
+    "ast_hash": "676ee92d5f45f3f0bd3b1d462228fc7c",
+    "semantic_hash": "676ee92d5f45f3f0bd3b1d462228fc7c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/SECURITY.md": {
+    "mtime": 1779949913.0125828,
+    "ast_hash": "a7d5ae5401d763829aec612eb32402f3",
+    "semantic_hash": "a7d5ae5401d763829aec612eb32402f3"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/README.md": {
+    "mtime": 1780037613.1563637,
+    "ast_hash": "acff1568f30c93525d676c10b97e9bdc",
+    "semantic_hash": "acff1568f30c93525d676c10b97e9bdc"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/CLAUDE.md": {
+    "mtime": 1779994199.7093518,
+    "ast_hash": "fa9c68f531e655b493837779125a4c19",
+    "semantic_hash": "fa9c68f531e655b493837779125a4c19"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/.github/workflows/rubyonrails.yml": {
+    "mtime": 1771097333.9403777,
+    "ast_hash": "9cfea9f05e63e0cb102b731d889e2074",
+    "semantic_hash": "9cfea9f05e63e0cb102b731d889e2074"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/fixtures/jams.yml": {
+    "mtime": 1771097333.977981,
+    "ast_hash": "f06888823d257e72365d39ff95950ade",
+    "semantic_hash": "f06888823d257e72365d39ff95950ade"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/fixtures/games.yml": {
+    "mtime": 1771097333.977981,
+    "ast_hash": "76ca911d417af4a0d37e9f09939ab4df",
+    "semantic_hash": "76ca911d417af4a0d37e9f09939ab4df"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/fixtures/users.yml": {
+    "mtime": 1771097333.977981,
+    "ast_hash": "2e52578700412d235e985b9b122639ff",
+    "semantic_hash": "2e52578700412d235e985b9b122639ff"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/fixtures/action_text/rich_texts.yml": {
+    "mtime": 1771097333.9733555,
+    "ast_hash": "977c973fdd6eaf619daab8214d38bd10",
+    "semantic_hash": "977c973fdd6eaf619daab8214d38bd10"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/public/404.html": {
+    "mtime": 1771097333.9719775,
+    "ast_hash": "a5fd9ef8cae318af16d6bd4f90668e36",
+    "semantic_hash": "a5fd9ef8cae318af16d6bd4f90668e36"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/public/robots.txt": {
+    "mtime": 1771097333.9719808,
+    "ast_hash": "6363df73ea6632db60772abc7d2014d1",
+    "semantic_hash": "6363df73ea6632db60772abc7d2014d1"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/public/422.html": {
+    "mtime": 1771097333.9719808,
+    "ast_hash": "e7a198066c84adaa11525c3793c8eb6f",
+    "semantic_hash": "e7a198066c84adaa11525c3793c8eb6f"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/public/406-unsupported-browser.html": {
+    "mtime": 1771097333.9719775,
+    "ast_hash": "bada3ebefe021629ee9a747691e9883d",
+    "semantic_hash": "bada3ebefe021629ee9a747691e9883d"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/public/400.html": {
+    "mtime": 1771097333.970981,
+    "ast_hash": "99679afb367ec79a70522bff363016c7",
+    "semantic_hash": "99679afb367ec79a70522bff363016c7"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/public/500.html": {
+    "mtime": 1771097333.9719808,
+    "ast_hash": "c152eec112d6875a5f97460a636f3f7e",
+    "semantic_hash": "c152eec112d6875a5f97460a636f3f7e"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/cable.yml": {
+    "mtime": 1771097333.9641235,
+    "ast_hash": "43237c7bf8ae72f2926be85082fc9ea3",
+    "semantic_hash": "43237c7bf8ae72f2926be85082fc9ea3"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/version.yml": {
+    "mtime": 1780122338.8880303,
+    "ast_hash": "7f915bd8735412da031081cf4f78c8e5",
+    "semantic_hash": "7f915bd8735412da031081cf4f78c8e5"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/sidekiq.yml": {
+    "mtime": 1771097333.9655945,
+    "ast_hash": "f48902517c265aa491a28a94808bde1c",
+    "semantic_hash": "f48902517c265aa491a28a94808bde1c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/database.yml": {
+    "mtime": 1778139199.674148,
+    "ast_hash": "56d8dca095364c2def4a0df893ef6b98",
+    "semantic_hash": "56d8dca095364c2def4a0df893ef6b98"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/deploy.yml": {
+    "mtime": 1779996628.4359875,
+    "ast_hash": "1c0446cdd86c325182e5c5c65cfd239b",
+    "semantic_hash": "1c0446cdd86c325182e5c5c65cfd239b"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/storage.yml": {
+    "mtime": 1771097333.9659808,
+    "ast_hash": "0a701c2f5720392b63d322a1330d733e",
+    "semantic_hash": "0a701c2f5720392b63d322a1330d733e"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/locales/en.yml": {
+    "mtime": 1780119532.7906435,
+    "ast_hash": "7fb0578a2f8b16dee8fa8464ba061241",
+    "semantic_hash": "7fb0578a2f8b16dee8fa8464ba061241"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/config/locales/ru.yml": {
+    "mtime": 1780119553.6979244,
+    "ast_hash": "82a25ff2653de05be15e76b4882c531f",
+    "semantic_hash": "82a25ff2653de05be15e76b4882c531f"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/docs/ideas.md": {
+    "mtime": 1780115742.3126857,
+    "ast_hash": "b1694a3097c7e6fcfe4ee59b29eefa4b",
+    "semantic_hash": "b1694a3097c7e6fcfe4ee59b29eefa4b"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/test/fixtures/files/cover.jpg": {
+    "mtime": 1771097333.976981,
+    "ast_hash": "f94fbf5401e498a50d915d68f80ebb40",
+    "semantic_hash": "f94fbf5401e498a50d915d68f80ebb40"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/withwhitewall.png": {
+    "mtime": 1771097333.9439805,
+    "ast_hash": "74bd83df1aa15f9fb3485ee1d4b76f53",
+    "semantic_hash": "74bd83df1aa15f9fb3485ee1d4b76f53"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/fsi_1.svg": {
+    "mtime": 1776774702.7904668,
+    "ast_hash": "6598c18b3099f4107f550ad9f21fb646",
+    "semantic_hash": "6598c18b3099f4107f550ad9f21fb646"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/whitewithoutwall.png": {
+    "mtime": 1771097333.9429805,
+    "ast_hash": "3ff3815dbcba76869d4e999a9d22cf88",
+    "semantic_hash": "3ff3815dbcba76869d4e999a9d22cf88"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/fsi.jpg": {
+    "mtime": 1775413896.1707554,
+    "ast_hash": "24343acd5bd095a82b1101f4ed04c5de",
+    "semantic_hash": "24343acd5bd095a82b1101f4ed04c5de"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/withblackwall.png": {
+    "mtime": 1771097333.9429805,
+    "ast_hash": "0391017dd11ee5c20b0a117c2109fc5d",
+    "semantic_hash": "0391017dd11ee5c20b0a117c2109fc5d"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/blackwithouttitle.png": {
+    "mtime": 1771097333.9424007,
+    "ast_hash": "0c4c3903f1bc3cd5574370217210d02f",
+    "semantic_hash": "0c4c3903f1bc3cd5574370217210d02f"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/blackwithoutwall.png": {
+    "mtime": 1771097333.9424007,
+    "ast_hash": "e57653204fb0bbbd0002220a5bb03798",
+    "semantic_hash": "e57653204fb0bbbd0002220a5bb03798"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/fsi_2.svg": {
+    "mtime": 1776774095.982346,
+    "ast_hash": "a09f638689652d20ab90bba6de771961",
+    "semantic_hash": "a09f638689652d20ab90bba6de771961"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/empty-avatar.jpg": {
+    "mtime": 1771097333.9424007,
+    "ast_hash": "b02bff2b3c9aac5f1f3d83f3619d9dc9",
+    "semantic_hash": "b02bff2b3c9aac5f1f3d83f3619d9dc9"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/whitewithouttitle.png": {
+    "mtime": 1779707715.260475,
+    "ast_hash": "b8c1d3c3cc546021e8878a7288733782",
+    "semantic_hash": "b8c1d3c3cc546021e8878a7288733782"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/games_uploaded_bronze.svg": {
+    "mtime": 1780081767.7462912,
+    "ast_hash": "10441ddd533e61e57bb1a3784db4fbf7",
+    "semantic_hash": "10441ddd533e61e57bb1a3784db4fbf7"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/jam_participants_silver.svg": {
+    "mtime": 1780081784.4372714,
+    "ast_hash": "391486052d185a34b0c8f89df9b3d9dc",
+    "semantic_hash": "391486052d185a34b0c8f89df9b3d9dc"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/jam_participants_bronze.svg": {
+    "mtime": 1780081780.0472767,
+    "ast_hash": "0e1287dbdc5cab26a9d1ab827a175d15",
+    "semantic_hash": "0e1287dbdc5cab26a9d1ab827a175d15"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/rated_games_silver.svg": {
+    "mtime": 1780081760.472299,
+    "ast_hash": "28f1fb28f59ef3cbf788110f8a9ddcc7",
+    "semantic_hash": "28f1fb28f59ef3cbf788110f8a9ddcc7"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/game_rated_bronze.svg": {
+    "mtime": 1780081746.0623143,
+    "ast_hash": "1efb463f79cf9aa49dd3a2e5c30452ee",
+    "semantic_hash": "1efb463f79cf9aa49dd3a2e5c30452ee"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/games_uploaded_silver.svg": {
+    "mtime": 1780081771.2252872,
+    "ast_hash": "af67ce04b565ebb619b1132808c90be8",
+    "semantic_hash": "af67ce04b565ebb619b1132808c90be8"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/jam_participants_gold.svg": {
+    "mtime": 1780081788.9422657,
+    "ast_hash": "cb556ef9b9b445c77978346ac2aa0b4f",
+    "semantic_hash": "cb556ef9b9b445c77978346ac2aa0b4f"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/games_uploaded_gold.svg": {
+    "mtime": 1780081774.7182832,
+    "ast_hash": "f0e86bb095e527355794aba16c983d3f",
+    "semantic_hash": "f0e86bb095e527355794aba16c983d3f"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/rated_games_gold.svg": {
+    "mtime": 1780081763.450296,
+    "ast_hash": "5de7b44d8b722727b560dee5409c212c",
+    "semantic_hash": "5de7b44d8b722727b560dee5409c212c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/rated_games_bronze.svg": {
+    "mtime": 1780081757.5123024,
+    "ast_hash": "95bda13e4ba9c7112ed7cc8ff9d4a24c",
+    "semantic_hash": "95bda13e4ba9c7112ed7cc8ff9d4a24c"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/game_rated_gold.svg": {
+    "mtime": 1780081753.6213064,
+    "ast_hash": "7373a28dcb4e2a75fbc2c8ee1974f83b",
+    "semantic_hash": "7373a28dcb4e2a75fbc2c8ee1974f83b"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/game_rated_silver.svg": {
+    "mtime": 1780081749.6213107,
+    "ast_hash": "8dab7bdee024671a577d20ca6a5345b9",
+    "semantic_hash": "8dab7bdee024671a577d20ca6a5345b9"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/app/assets/images/achievements/jammer_developer.svg": {
+    "mtime": 1780081793.8642597,
+    "ast_hash": "b00013273f371b723765349f562ea7dc",
+    "semantic_hash": "b00013273f371b723765349f562ea7dc"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/public/apple-touch-icon-precomposed.png": {
+    "mtime": 1771097333.9719808,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/public/icon.svg": {
+    "mtime": 1771097333.9719808,
+    "ast_hash": "2add52a0cba32f1b7f42233d99f8226e",
+    "semantic_hash": "2add52a0cba32f1b7f42233d99f8226e"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/public/exit.svg": {
+    "mtime": 1771097333.9719808,
+    "ast_hash": "e906f3de8f8b7be8d854b760db4fa182",
+    "semantic_hash": "e906f3de8f8b7be8d854b760db4fa182"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/public/apple-touch-icon.png": {
+    "mtime": 1771097333.9719808,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/home/vgartg/RubymineProjects/STUDY/jammer/public/icon.png": {
+    "mtime": 1771097333.9719808,
+    "ast_hash": "a437696465ac551d699c4171c4095dea",
+    "semantic_hash": "a437696465ac551d699c4171c4095dea"
+  }
+}

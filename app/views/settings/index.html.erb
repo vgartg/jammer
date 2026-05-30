@@ -253,7 +253,10 @@
                                value: @user.phone_number,
                                autocomplete: 'tel',
                                type: 'tel',
-                               placeholder: '+7 (___) ___-__-__',
+                               placeholder: '+7 (999) 999 99 99',
+                               pattern: '\+7\s?\(?\d{3}\)?\s?\d{3}\s?\d{2}\s?\d{2}',
+                               title: '+7 (999) 999 99 99',
+                               data: { phone_mask: true },
                                class: 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-white
                       shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset
                       focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
@@ -609,6 +612,24 @@
                 this.textContent = this.dataset.showText;
             }
         });
+    </script>
+    <script>
+      document.addEventListener('turbo:load', function () {
+        const phoneInput = document.querySelector('input[data-phone-mask]');
+        if (!phoneInput) return;
+        phoneInput.addEventListener('input', function () {
+          let digits = this.value.replace(/\D/g, '');
+          if (digits.startsWith('8')) digits = '7' + digits.slice(1);
+          if (!digits.startsWith('7')) digits = '7' + digits;
+          digits = digits.slice(0, 11);
+          let formatted = '+7';
+          if (digits.length > 1) formatted += ' (' + digits.slice(1, 4);
+          if (digits.length >= 4) formatted += ') ' + digits.slice(4, 7);
+          if (digits.length >= 7) formatted += ' ' + digits.slice(7, 9);
+          if (digits.length >= 9) formatted += ' ' + digits.slice(9, 11);
+          this.value = formatted;
+        });
+      });
     </script>
 
     <div data-controller="modal">

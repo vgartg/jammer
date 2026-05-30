@@ -28,13 +28,16 @@
   <div class="mt-4">
     <%= f.label :preview, t('.preview'), class: "block text-sm font-medium text-white" %>
     <div class="mt-2">
-      <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative text-gray-500">
-        <% if @asset.persisted? && @asset.preview.attached? %>
-          <img src="<%= url_for(@asset.preview) %>" alt="preview" class="mt-2 w-full h-auto object-cover rounded-md mb-2">
+      <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative text-gray-500" id="preview-drop-zone">
+        <% if @asset.persisted? && @asset.preview.attached? && !@asset.preview.blob.new_record? %>
+          <img src="<%= url_for(@asset.preview) %>" alt="preview" class="mt-2 w-full h-auto object-cover rounded-md mb-2" id="preview-img">
+        <% else %>
+          <img id="preview-img" class="mt-2 w-full h-auto object-cover rounded-md mb-2 hidden" alt="preview">
         <% end %>
         <%= f.file_field :preview, accept: ".jpg,.jpeg,.png,.gif,.webp",
+            id: 'asset_preview_input',
             class: "absolute inset-0 opacity-0 cursor-pointer" %>
-        <p class="text-sm"><%= t '.hint_click' %></p>
+        <p class="text-sm" id="preview-hint"><%= t '.hint_click' %></p>
         <p class="text-xs"><%= t '.preview_formats' %></p>
       </div>
     </div>
@@ -45,13 +48,16 @@
     <div class="mt-2">
       <div class="border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative text-gray-500">
         <% if @asset.persisted? && @asset.files.attached? %>
-          <ul class="mb-2 text-left text-sm text-gray-300">
-            <% @asset.files.each do |file| %>
+          <ul class="mb-2 text-left text-sm text-gray-300" id="files-list">
+            <% @asset.files.select { |f| !f.blob.new_record? }.each do |file| %>
               <li><%= file.filename %> (<%= number_to_human_size(file.byte_size) %>)</li>
             <% end %>
           </ul>
+        <% else %>
+          <ul class="mb-2 text-left text-sm text-gray-300 hidden" id="files-list"></ul>
         <% end %>
         <%= f.file_field :files, multiple: true,
+            id: 'asset_files_input',
             class: "absolute inset-0 opacity-0 cursor-pointer" %>
         <p class="text-sm"><%= t '.hint_click' %></p>
         <p class="text-xs"><%= t '.files_hint' %></p>
@@ -78,3 +84,38 @@
   <%= submit_tag (@asset.persisted? ? t('buttons.save') : t('.btn')),
       class: "mt-6 flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
 <% end %>
+
+<script>
+  document.addEventListener('turbo:load', function () {
+    const previewInput = document.getElementById('asset_preview_input');
+    const previewImg = document.getElementById('preview-img');
+    const previewHint = document.getElementById('preview-hint');
+    if (previewInput && previewImg) {
+      previewInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewImg.src = e.target.result;
+          previewImg.classList.remove('hidden');
+          if (previewHint) previewHint.textContent = file.name;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    const filesInput = document.getElementById('asset_files_input');
+    const filesList = document.getElementById('files-list');
+    if (filesInput && filesList) {
+      filesInput.addEventListener('change', function () {
+        filesList.innerHTML = '';
+        filesList.classList.remove('hidden');
+        Array.from(this.files).forEach(function (f) {
+          const li = document.createElement('li');
+          li.textContent = f.name + ' (' + (f.size / 1024 / 1024).toFixed(2) + ' MB)';
+          filesList.appendChild(li);
+        });
+      });
+    }
+  });
+</script>

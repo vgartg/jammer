@@ -102,7 +102,7 @@ ru:
       sign_up: "Регистрация"
       log_in: "Авторизация"
       sign_out: "Выход"
-      dashboard: "Главная"
+      dashboard: "Новости"
       language: "Язык"
     footer:
       contacts: "Контакты"
@@ -126,7 +126,7 @@ ru:
       contact: "Если у вас есть вопросы, свяжитесь с нами по адресу:"
   dashboard:
     index:
-      title: "Главная"
+      title: "Новости"
       games_reviews: "Ваши отзывы на игры: "
       rating: "Оценка: "
       games_rating: "Средняя оценка ваших игр: "

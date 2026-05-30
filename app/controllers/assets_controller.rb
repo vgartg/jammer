@@ -52,6 +52,8 @@ class AssetsController < ApplicationController
   end
 
   def download
+    return head :no_content if request.headers['Sec-Purpose'] == 'prefetch'
+
     unless @asset.files.attached?
       flash[:failure] = t('assets.download.no_file')
       return redirect_to asset_profile_path(@asset)
@@ -63,7 +65,7 @@ class AssetsController < ApplicationController
     file ||= @asset.files.first
 
     @asset.increment!(:downloads_count)
-    redirect_to url_for(file), allow_other_host: true
+    redirect_to rails_blob_url(file.blob, disposition: 'attachment'), allow_other_host: true
   end
 
   private

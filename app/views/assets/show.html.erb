@@ -43,7 +43,8 @@
 
         <div class="flex flex-wrap gap-3 mt-6">
           <% if @asset.files.size == 1 %>
-            <%= link_to asset_download_path(@asset),
+            <%= link_to asset_download_path(@asset), target: '_blank',
+                data: { turbo_prefetch: false },
                 class: "inline-flex items-center gap-2 rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" do %>
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
@@ -53,7 +54,8 @@
           <% end %>
 
           <% if @asset.guide.attached? %>
-            <%= link_to url_for(@asset.guide), target: '_blank',
+            <%= link_to rails_blob_url(@asset.guide.blob, disposition: 'attachment'), target: '_blank',
+                data: { turbo: false },
                 class: "inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50" do %>
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
@@ -89,6 +91,7 @@
                   <span class="truncate flex-1"><%= file.filename %></span>
                   <span class="shrink-0 text-xs text-gray-400"><%= number_to_human_size(file.byte_size) %></span>
                   <%= link_to asset_download_path(@asset, blob_signed_id: file.blob.signed_id),
+                      target: '_blank', data: { turbo_prefetch: false },
                       class: "shrink-0 text-indigo-600 hover:text-indigo-500" do %>
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
