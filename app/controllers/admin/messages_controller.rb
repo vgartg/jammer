@@ -40,7 +40,7 @@ module Admin
               raw = params[:target_user_id].to_s.strip
               return [] if raw.blank?
               user = User.find_by(id: raw.to_i.nonzero? ? raw : nil) || User.find_by(name: raw)
-              user && user.id != current_user.id ? [user.id] : []
+              user && user.email_confirmed? && user.id != current_user.id ? [user.id] : []
             when 'team'
               team = Team.find_by(id: params[:target_team_id])
               return [] unless team
