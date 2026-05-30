@@ -50,9 +50,9 @@ class ApplicationController < ActionController::Base
 
   def notifications
     return unless current_user
-    return @notifications if @notifications
+    return @_dropdown_notifications if @_dropdown_notifications
 
-    @notifications = fetch_notifications(current_user)
+    @_dropdown_notifications = fetch_notifications(current_user)
   end
 
   def sign_in(user)

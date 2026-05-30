@@ -35,14 +35,14 @@
                 <%= t('.context_jam_html', jam: @jam.name) %>
               </div>
             <% else %>
-              <div class="mt-4 rounded-md border border-gray-700 bg-gray-50 px-4 py-3 text-sm text-gray-300">
+              <div class="mt-4 rounded-md border border-gray-700 bg-gray-800 px-4 py-3 text-sm text-gray-300">
                 <%= t('.context_overall') %>
               </div>
             <% end %>
           <% end %>
 
           <div class="mt-4 text-center">
-            <h2 class="text-lg font-semibold">
+            <h2 class="text-lg font-semibold text-white">
               <%= @jam_id.present? ? t('.jam_rating') : t('.rating') %>
             </h2>
             <p class="text-xl font-bold text-white inline-flex items-center">
@@ -120,7 +120,7 @@
                 %>
 
                 <div class="mt-6 text-center">
-                  <h2 class="text-lg font-semibold"><%= t('.your_criteria_score') %></h2>
+                  <h2 class="text-lg font-semibold text-white"><%= t('.your_criteria_score') %></h2>
 
                   <p class="text-xl font-bold text-white inline-flex items-center mt-2">
                     <% if my_total_cnt > 0 %>
@@ -153,7 +153,7 @@
             <% else %>
               <!-- Star Rating -->
               <div class="mt-4 text-center">
-                <h2 class="text-lg font-semibold">
+                <h2 class="text-lg font-semibold text-white">
                   <%= t '.rate' %>
                 </h2>
               </div>

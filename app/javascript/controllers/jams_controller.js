@@ -280,8 +280,8 @@ export default class extends Controller {
         this.searchFormTarget.classList.remove("hidden");
         this.myJamsTarget.classList.add("hidden");
 
-        this.showAllTarget.classList.add("font-bold", "text-gray-800");
-        this.showMineTarget.classList.remove("font-bold", "text-gray-800");
+        this.showAllTarget.classList.add("font-bold", "text-white");
+        this.showMineTarget.classList.remove("font-bold", "text-white");
     }
 
     displayMyJams() {
@@ -289,8 +289,8 @@ export default class extends Controller {
         this.allJamsTarget.classList.add("hidden");
         this.searchFormTarget.classList.add("hidden");
 
-        this.showMineTarget.classList.add("font-bold", "text-gray-800");
-        this.showAllTarget.classList.remove("font-bold", "text-gray-800");
+        this.showMineTarget.classList.add("font-bold", "text-white");
+        this.showAllTarget.classList.remove("font-bold", "text-white");
     }
 
     toggleJams(event) {

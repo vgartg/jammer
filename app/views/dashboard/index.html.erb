@@ -1,40 +1,44 @@
-<div class="bg-white">
-  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
-    <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-bold tracking-tight text-gray-900">
-        <%= t 'layouts.header.dashboard' %>
-      </h2>
+<div class="bg-gray-900 min-h-screen">
+  <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold text-white"><%= t 'layouts.header.dashboard' %></h2>
     </div>
 
     <% if @announcements.any? %>
-      <div class="mt-6 space-y-3">
-        <h3 class="text-lg font-semibold text-gray-900"><%= t '.announcements_title' %></h3>
+      <div class="space-y-3">
+        <h3 class="text-sm font-semibold uppercase tracking-widest text-gray-500 mb-4"><%= t '.announcements_title' %></h3>
         <% @announcements.each do |ann| %>
-          <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-            <div class="flex flex-wrap items-center gap-2 mb-1">
+          <div class="rounded-2xl border <%= ann.announcement_type == 'release' ? 'border-indigo-700/40 bg-indigo-950/30' : 'border-gray-700/60 bg-gray-800' %> p-5">
+            <div class="flex flex-wrap items-center gap-2 mb-2">
               <% if ann.announcement_type == 'release' %>
-                <span class="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-800">
+                <span class="rounded-full bg-indigo-600/30 border border-indigo-500/40 px-2.5 py-0.5 text-xs font-semibold text-indigo-300">
                   <%= t '.announcement_release_badge' %>
                 </span>
                 <% if ann.version.present? %>
-                  <span class="font-mono font-bold text-indigo-700 text-sm">v<%= ann.version %></span>
+                  <span class="font-mono font-bold text-indigo-400 text-sm">v<%= ann.version %></span>
                 <% end %>
               <% else %>
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+                <span class="rounded-full bg-gray-700/60 border border-gray-600/40 px-2.5 py-0.5 text-xs font-medium text-gray-400">
                   <%= t '.announcement_general_badge' %>
                 </span>
               <% end %>
-              <span class="font-medium text-gray-900"><%= ann.title %></span>
-              <span class="text-xs text-gray-400 ml-auto"><%= ann.published_at&.strftime('%d.%m.%Y') %></span>
+              <span class="font-semibold text-white"><%= ann.title %></span>
+              <span class="text-xs text-gray-500 ml-auto"><%= ann.published_at&.strftime('%d.%m.%Y') %></span>
             </div>
             <% if ann.body.present? %>
-              <p class="text-sm text-gray-600 line-clamp-2"><%= ann.body.truncate(150) %></p>
+              <p class="text-sm text-gray-300 leading-relaxed"><%= ann.body.truncate(300) %></p>
             <% end %>
           </div>
         <% end %>
       </div>
     <% else %>
-      <p class="mt-6 text-sm text-gray-500"><%= t '.no_announcements' %></p>
+      <div class="text-center py-20">
+        <svg class="mx-auto h-12 w-12 text-gray-700" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"/>
+        </svg>
+        <p class="mt-4 text-gray-500 text-sm"><%= t '.no_announcements' %></p>
+      </div>
     <% end %>
 
   </div>

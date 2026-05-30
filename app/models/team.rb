@@ -8,6 +8,7 @@ class Team < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true, length: { minimum: 2, maximum: 50 }
   validates :description, length: { maximum: 500 }
+  validates :open_membership, inclusion: { in: [true, false] }
 
   after_create :create_leader_membership
   after_create :check_leader_achievements

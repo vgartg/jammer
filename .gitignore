@@ -47,3 +47,5 @@ yarn-error.log
 # Kamal secrets
 .kamal/secrets*
 package-lock.json
+
+/graphify-out

@@ -21,7 +21,8 @@
     <!-- Обложка -->
     <div class="h-48 w-full overflow-hidden">
       <% if @user.background_image.attached? %>
-        <%= image_tag url_for(@user.background_image), class: "w-full h-full object-cover", alt: "" %>
+        <%= image_tag url_for(@user.background_image), class: "w-full h-full object-cover", alt: "",
+              style: "object-position: #{@user.background_position.presence || 'center'}" %>
       <% else %>
         <div class="w-full h-full bg-gradient-to-br from-indigo-900 via-gray-900 to-gray-800"></div>
       <% end %>
@@ -106,6 +107,40 @@
   </div>
 
   <!-- ============ ОСНОВНАЯ СЕТКА ============ -->
+  <% if @profile_hidden_for_viewer %>
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-16 mt-4">
+      <div class="relative rounded-2xl overflow-hidden">
+        <!-- Блюр-заглушка -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 blur-sm pointer-events-none select-none opacity-40" aria-hidden="true">
+          <div class="space-y-4">
+            <div class="bg-gray-800 rounded-xl p-5 border border-gray-700/50 h-36"></div>
+            <div class="bg-gray-800 rounded-xl p-5 border border-gray-700/50 h-48"></div>
+            <div class="bg-gray-800 rounded-xl p-5 border border-gray-700/50 h-32"></div>
+          </div>
+          <div class="lg:col-span-2">
+            <div class="bg-gray-800/50 rounded-xl h-12 mb-5 border border-gray-700/50"></div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <% 6.times do %>
+                <div class="aspect-video rounded-xl bg-gray-800 border border-gray-700/50"></div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <!-- Оверлей -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+          <div class="bg-gray-900/90 border border-gray-700/60 rounded-2xl px-8 py-8 max-w-sm shadow-2xl backdrop-blur-sm">
+            <div class="flex items-center justify-center w-14 h-14 rounded-2xl bg-gray-800 border border-gray-700/50 mx-auto mb-4">
+              <svg class="w-7 h-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2"><%= t 'users.private_profile.title' %></h3>
+            <p class="text-sm text-gray-400 leading-relaxed"><%= t 'users.private_profile.description' %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-16">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -487,4 +522,5 @@
       </div><!-- END RIGHT AREA -->
     </div><!-- END GRID -->
   </div><!-- END MAX-W -->
+  <% end %>
 </div>

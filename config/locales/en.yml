@@ -54,6 +54,10 @@ en:
         preview: "Preview"
         guide: "Guide"
         category: "Category"
+      team:
+        name: "Name"
+        description: "Description"
+        avatar: "Avatar"
     errors:
       models:
         game:
@@ -561,8 +565,13 @@ en:
           hint: "Select who can see jams you are administrating and participating."
         profile_hidden:
           title: "Private Profile"
-          hint: "When enabled, visitors see only your name and avatar, but no other information. Your full profile is visible only to mutually confirmed friends."
+          hint: "When enabled, visitors see only your name and avatar, but no other information. Your full profile is visible only to friends."
           label: "Enable private profile"
+        background_position: "Background position"
+        background_preview: "Preview"
+        pos_top: "Top"
+        pos_center: "Center"
+        pos_bottom: "Bottom"
         password:
           title: "Change password"
           hint: "Update your password associated with your account."
@@ -1238,6 +1247,11 @@ en:
       description: "Description"
       avatar: "Team Avatar"
       btn: "Create Team"
+      membership_type: "Membership type"
+      membership_open: "Open"
+      membership_open_hint: "Anyone can join immediately"
+      membership_closed: "By invitation"
+      membership_closed_hint: "Joining requires leader approval"
     form:
       name: "Team Name"
       description: "Description"
@@ -1246,6 +1260,7 @@ en:
   team_memberships:
     create:
       success: "Join request sent."
+      joined: "You have successfully joined the team."
       already_member: "You are already a member of this team."
       request_pending: "Your request is already pending."
     invite:
@@ -1258,6 +1273,14 @@ en:
       success: "Removed from team."
   achievements:
     none_earned: "No achievements yet."
+    categories:
+      game_rated: "Game ratings"
+      rated_games: "Games rated"
+      games_uploaded: "Games uploaded"
+      jam_participants: "Jam participants"
+      assets_created: "Assets"
+      friends_count: "Friends"
+      teams_led: "Teams"
     tiers:
       bronze: "Bronze"
       silver: "Silver"

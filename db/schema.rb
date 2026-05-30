@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_30_000005) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_30_144536) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -320,6 +320,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_30_000005) do
     t.integer "leader_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "open_membership", default: true, null: false
     t.index ["leader_id"], name: "index_teams_on_leader_id"
     t.index ["name"], name: "index_teams_on_name", unique: true
   end
@@ -373,6 +374,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_30_000005) do
     t.boolean "notify_status_changes", default: true, null: false
     t.boolean "notify_moderation", default: true, null: false
     t.boolean "profile_hidden", default: false, null: false
+    t.string "background_position", default: "center"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true, where: "(provider IS NOT NULL)"
@@ -383,7 +385,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_30_000005) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_messages", "users", column: "sender_id"
   add_foreign_key "administration_tracking", "users", column: "admin_id"
-  add_foreign_key "announcements", "users", column: "author_id"
   add_foreign_key "games", "users", column: "author_id"
   add_foreign_key "games_tags", "games"
   add_foreign_key "games_tags", "tags"
@@ -397,7 +398,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_30_000005) do
   add_foreign_key "jam_nominations", "games", column: "winner_game_id"
   add_foreign_key "jam_nominations", "jams"
   add_foreign_key "jam_rating_settings", "jams"
-  add_foreign_key "jam_submissions", "teams", column: "team_id"
   add_foreign_key "jams_tags", "jams"
   add_foreign_key "jams_tags", "tags"
   add_foreign_key "reports", "users", column: "reporter_id"

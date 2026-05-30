@@ -2,7 +2,7 @@
      data-jams-invalid-dates-value="<%= t('controllers.jams.invalid_dates') %>"
      data-jams-deadline-before-start-value="<%= t('controllers.jams.date_deadline_before_start') %>"
      data-jams-end-before-deadline-value="<%= t('controllers.jams.date_end_before_deadline') %>">
-  <%= form_with(model: @jam, url: path, local: true) do |f| %>
+  <%= form_with(model: @jam, url: path, local: true, html: { novalidate: true }) do |f| %>
     <div class="mt-4">
       <%= f.label :name, t('.name'), class: "block text-sm font-medium text-white" %>
       <div class="mt-2">

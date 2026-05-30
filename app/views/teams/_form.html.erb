@@ -1,4 +1,4 @@
-<%= form_with(model: @team, url: path, local: true, html: { multipart: true }) do |f| %>
+<%= form_with(model: @team, url: path, local: true, html: { multipart: true, novalidate: true }) do |f| %>
   <div class="mt-4">
     <%= f.label :name, t('.name'), class: "block text-sm font-medium text-white" %>
     <div class="mt-2">
@@ -27,6 +27,30 @@
         <p class="text-sm"><%= t 'assets._form.hint_click' %></p>
         <p class="text-xs"><%= t 'assets._form.preview_formats' %></p>
       </div>
+    </div>
+  </div>
+
+  <div class="mt-6">
+    <label class="block text-sm font-medium text-white mb-2"><%= t('.membership_type') %></label>
+    <div class="flex gap-3">
+      <label class="flex-1 flex items-start gap-3 rounded-xl border p-4 cursor-pointer transition-colors
+                    <%= @team.open_membership? ? 'border-indigo-500 bg-indigo-900/20' : 'border-gray-700 hover:border-gray-500' %>">
+        <%= f.radio_button :open_membership, 'true', class: "mt-0.5 text-indigo-500 border-gray-600 bg-gray-800",
+            id: "open_membership_true" %>
+        <div>
+          <p class="text-sm font-medium text-white"><%= t('.membership_open') %></p>
+          <p class="text-xs text-gray-400 mt-0.5"><%= t('.membership_open_hint') %></p>
+        </div>
+      </label>
+      <label class="flex-1 flex items-start gap-3 rounded-xl border p-4 cursor-pointer transition-colors
+                    <%= !@team.open_membership? ? 'border-indigo-500 bg-indigo-900/20' : 'border-gray-700 hover:border-gray-500' %>">
+        <%= f.radio_button :open_membership, 'false', class: "mt-0.5 text-indigo-500 border-gray-600 bg-gray-800",
+            id: "open_membership_false" %>
+        <div>
+          <p class="text-sm font-medium text-white"><%= t('.membership_closed') %></p>
+          <p class="text-xs text-gray-400 mt-0.5"><%= t('.membership_closed_hint') %></p>
+        </div>
+      </label>
     </div>
   </div>
 

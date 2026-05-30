@@ -8,6 +8,8 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
+    join_status = @team.open_membership? ? 'accepted' : 'pending'
+
     existing = @team.team_memberships.find_by(user: current_user)
     if existing
       case existing.status
@@ -18,8 +20,8 @@ class TeamMembershipsController < ApplicationController
         flash[:failure] = t('team_memberships.create.request_pending')
         return redirect_to team_profile_path(@team)
       when 'declined'
-        if existing.update(status: 'pending', leader_invited: false)
-          flash[:success] = t('team_memberships.create.success')
+        if existing.update(status: join_status, leader_invited: false)
+          flash[:success] = join_status == 'accepted' ? t('team_memberships.create.joined') : t('team_memberships.create.success')
         else
           flash[:failure] = existing.errors.full_messages
         end
@@ -28,8 +30,8 @@ class TeamMembershipsController < ApplicationController
     end
 
     begin
-      @team.team_memberships.create!(user: current_user, role: 'member', status: 'pending')
-      flash[:success] = t('team_memberships.create.success')
+      @team.team_memberships.create!(user: current_user, role: 'member', status: join_status)
+      flash[:success] = join_status == 'accepted' ? t('team_memberships.create.joined') : t('team_memberships.create.success')
     rescue ActiveRecord::RecordNotUnique
       flash[:failure] = t('team_memberships.create.already_member')
     end

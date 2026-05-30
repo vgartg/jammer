@@ -17,11 +17,7 @@ class UsersController < ApplicationController
     @friendship = @current_user&.friendship_with(@user)
     @is_mutual_friend = @friendship&.status == 'accepted'
 
-    if @user.profile_hidden? && !@viewing_own_profile && !@is_admin && !@is_mutual_friend
-      render 'users/private_profile'
-      return
-    end
-
+    @profile_hidden_for_viewer = @user.profile_hidden? && !@viewing_own_profile && !@is_admin && !@is_mutual_friend
     @profile_hidden_admin_view = @user.profile_hidden? && @is_admin && !@viewing_own_profile
 
     @notifications = @current_user.notifications if @current_user
@@ -143,7 +139,7 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user)
           .permit(:name, :email, :password, :password_confirmation, :avatar, :background_image,
-                  :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
+                  :background_position, :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
                   :visibility, :jams_administrating_visibility, :jams_participating_visibility, :theme, :is_online_today,
                   :notify_friend_requests, :notify_jam_invites, :notify_status_changes, :notify_moderation,
                   :profile_hidden)

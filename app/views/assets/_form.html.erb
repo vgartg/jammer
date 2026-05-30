@@ -1,4 +1,4 @@
-<%= form_with(model: @asset, url: path, local: true, html: { multipart: true }) do |f| %>
+<%= form_with(model: @asset, url: path, local: true, html: { multipart: true, novalidate: true }) do |f| %>
   <div class="mt-4">
     <%= f.label :title, t('.title'), class: "block text-sm font-medium text-white" %>
     <div class="mt-2">
