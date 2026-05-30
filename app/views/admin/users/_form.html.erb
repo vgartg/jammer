@@ -222,15 +222,15 @@
               </div>
 
               <div>
-                <%= f.label :jams_visibility, class: 'block text-sm font-medium text-gray-700' %>
-                <%= f.select :jams_visibility,
+                <%= f.label :jams_participating_visibility, class: 'block text-sm font-medium text-gray-700' %>
+                <%= f.select :jams_participating_visibility,
                              options_for_select([
                                                   ['All'],
                                                   ['Friends'],
                                                   ['None']
-                                                ], selected: user.jams_visibility),
+                                                ], selected: user.jams_participating_visibility),
                              {},
-                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'%>
+                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-500'%>
               </div>
 
               <div>

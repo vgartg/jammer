@@ -157,7 +157,7 @@ module Admin
       params.require(:user).permit(
         :email, :name, :email_confirmed, :password, :password_confirmation, :role, :avatar, :background_image,
         :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
-        :visibility, :jams_visibility, :theme, :is_frozen, :frozen_at, :unfreeze_at, :frozen_reason
+        :visibility, :jams_participating_visibility, :theme, :is_frozen, :frozen_at, :unfreeze_at, :frozen_reason
       ).merge(admin_edit: true)
     end
   end
