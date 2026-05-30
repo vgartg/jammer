@@ -76,6 +76,11 @@ class TeamMembershipsController < ApplicationController
       return redirect_to team_profile_path(@team)
     end
 
+    unless @membership.status == 'pending'
+      flash[:failure] = t('controllers.application.insufficient_rights')
+      return redirect_to team_profile_path(@team)
+    end
+
     invited_self_responding = @membership.leader_invited? && @membership.status == 'pending' &&
                               current_user == @membership.user &&
                               %w[accepted declined].include?(params[:status])
