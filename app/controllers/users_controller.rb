@@ -128,6 +128,8 @@ class UsersController < ApplicationController
     @current_user = current_user
     @notifications = current_user&.notifications
     setup_profile_context
+    @friendships = @user.friendships.where(status: 'accepted') + @user.inverse_friendships.where(status: 'accepted')
+    @received_requests = @user.inverse_friendships.where(status: 'pending')
   end
 
   private
