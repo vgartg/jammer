@@ -78,7 +78,7 @@
             <% @received_requests.each do |request| %>
               <% if request.user %>
                 <div class="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4">
-                  <a href='<%= 'profile_path_for(request.user) %>' class="flex items-center space-x-4 flex-grow">
+                  <a href='<%= profile_path_for(request.user) %>' class="flex items-center space-x-4 flex-grow">
                   <span class="relative">
                     <% if request.user.avatar.attached? %>
                       <%= image_tag url_for(request.user.avatar), alt: "Profile Picture",
