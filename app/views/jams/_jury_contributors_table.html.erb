@@ -18,7 +18,7 @@
       <% contributors.each do |c| %>
         <tr class="border-b">
           <td class="py-2">
-            <%= link_to c.user.name, user_profile_path(c.user), class: "text-indigo-600 hover:text-indigo-900" %>
+            <%= link_to c.user.name, profile_path_for(c.user), class: "text-indigo-600 hover:text-indigo-900" %>
           </td>
 
           <td class="py-2"><%= c.status %></td>

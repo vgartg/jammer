@@ -75,7 +75,7 @@
             <% else %>
               <%= image_tag 'empty-avatar.jpg', class: "h-10 w-10 rounded-full object-cover" %>
             <% end %>
-            <%= link_to @asset.author.name, user_profile_path(@asset.author), class: "text-sm font-medium text-white hover:text-indigo-400 transition-colors" %>
+            <%= link_to @asset.author.name, profile_path_for(@asset.author), class: "text-sm font-medium text-white hover:text-indigo-400 transition-colors" %>
           </div>
         </div>
 

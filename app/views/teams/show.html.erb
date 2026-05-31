@@ -30,7 +30,7 @@
           </div>
           <p class="text-sm text-gray-500 mb-3">
             <%= t '.leader' %>:
-            <%= link_to @team.leader.name, user_profile_path(@team.leader), class: "text-indigo-400 hover:text-indigo-300 transition-colors" %>
+            <%= link_to @team.leader.name, profile_path_for(@team.leader), class: "text-indigo-400 hover:text-indigo-300 transition-colors" %>
             <span class="mx-1.5">&bull;</span>
             <%= t '.founded' %>: <%= @team.created_at.strftime('%d.%m.%Y') %>
           </p>
@@ -82,7 +82,7 @@
                   <%= image_tag 'empty-avatar.jpg', class: "h-9 w-9 rounded-full shrink-0" %>
                 <% end %>
                 <div class="min-w-0">
-                  <%= link_to membership.user.name, user_profile_path(membership.user),
+                  <%= link_to membership.user.name, profile_path_for(membership.user),
                       class: "text-sm font-medium text-gray-200 hover:text-indigo-400 transition-colors truncate block" %>
                   <% if membership.role == 'leader' %>
                     <span class="text-xs text-indigo-400 font-medium"><%= t '.role_leader' %></span>
@@ -118,7 +118,7 @@
                     <% else %>
                       <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full shrink-0" %>
                     <% end %>
-                    <%= link_to membership.user.name, user_profile_path(membership.user),
+                    <%= link_to membership.user.name, profile_path_for(membership.user),
                         class: "text-sm font-medium text-gray-200 hover:text-indigo-400 transition-colors truncate" %>
                   </div>
                   <div class="flex gap-1 shrink-0">
@@ -149,7 +149,7 @@
                     <% else %>
                       <%= image_tag 'empty-avatar.jpg', class: "h-8 w-8 rounded-full shrink-0" %>
                     <% end %>
-                    <%= link_to membership.user.name, user_profile_path(membership.user),
+                    <%= link_to membership.user.name, profile_path_for(membership.user),
                         class: "text-sm font-medium text-gray-200 truncate hover:text-indigo-400 transition-colors" %>
                   </div>
                   <span class="text-xs text-gray-500 shrink-0"><%= t '.invited_pending' %></span>

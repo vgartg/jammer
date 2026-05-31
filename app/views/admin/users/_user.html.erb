@@ -2,7 +2,7 @@
   <tr class="hover:bg-white/5 transition-colors text-gray-300">
     <td class="py-3 px-4 text-gray-500 text-xs"><%= user.id %></td>
     <td class="py-3 px-4">
-      <%= link_to user.name, user_profile_path(user), class: 'text-indigo-300 hover:text-indigo-200 hover:underline break-all' %>
+      <%= link_to user.name, profile_path_for(user), class: 'text-indigo-300 hover:text-indigo-200 hover:underline break-all' %>
     </td>
     <td class="py-3 px-4 text-gray-400 break-all"><%= user.email %></td>
     <td class="py-3 px-4">

@@ -91,7 +91,7 @@
               <div>
                 <span class="font-medium text-white"><%= t('.creator') %></span>
                 <% if @jam.author.present? %>
-                  <%= link_to @jam.author.name, user_profile_path(@jam.author), class: "text-indigo-600 hover:text-indigo-900" %>
+                  <%= link_to @jam.author.name, profile_path_for(@jam.author), class: "text-indigo-600 hover:text-indigo-900" %>
                 <% else %>
                   <span class="text-gray-500"><%= t('.no_author') %></span>
                 <% end %>
@@ -103,7 +103,7 @@
                 <% if hosts.any? %>
                   <div class="mt-1 flex flex-wrap gap-2">
                     <% hosts.each do |host| %>
-                      <%= link_to host.name, user_profile_path(host),
+                      <%= link_to host.name, profile_path_for(host),
                                   class: "bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-indigo-200" %>
                     <% end %>
                   </div>

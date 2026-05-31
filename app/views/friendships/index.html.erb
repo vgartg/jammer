@@ -36,7 +36,7 @@
             <% friend = find_friend(friendship) %>
             <% next unless friend %>
             <div class="flex items-center gap-4 bg-gray-800 rounded-2xl p-4 border border-gray-700/60 hover:border-gray-500/80 transition-all group">
-              <a href="<%= user_profile_path(friend) %>" class="relative flex-shrink-0">
+              <a href="<%= profile_path_for(friend) %>" class="relative flex-shrink-0">
                 <% if friend.avatar.attached? %>
                   <%= image_tag url_for(friend.avatar), alt: friend.name, class: "h-14 w-14 rounded-2xl object-cover" %>
                 <% else %>
@@ -48,7 +48,7 @@
               </a>
 
               <div class="flex-1 min-w-0">
-                <a href="<%= user_profile_path(friend) %>" class="font-semibold text-white hover:text-indigo-400 transition-colors truncate block">
+                <a href="<%= profile_path_for(friend) %>" class="font-semibold text-white hover:text-indigo-400 transition-colors truncate block">
                   <%= friend.name %>
                 </a>
                 <% if friend.can_see_online?(current_user) %>
@@ -88,7 +88,7 @@
           <% @received_requests.each do |request| %>
             <% next unless request.user %>
             <div class="flex items-center gap-4 bg-gray-800 rounded-2xl p-4 border border-indigo-700/30 hover:border-indigo-600/50 transition-all">
-              <a href="<%= user_profile_path(request.user) %>" class="relative flex-shrink-0">
+              <a href="<%= profile_path_for(request.user) %>" class="relative flex-shrink-0">
                 <% if request.user.avatar.attached? %>
                   <%= image_tag url_for(request.user.avatar), alt: request.user.name, class: "h-14 w-14 rounded-2xl object-cover" %>
                 <% else %>
@@ -100,7 +100,7 @@
               </a>
 
               <div class="flex-1 min-w-0">
-                <a href="<%= user_profile_path(request.user) %>" class="font-semibold text-white hover:text-indigo-400 transition-colors truncate block">
+                <a href="<%= profile_path_for(request.user) %>" class="font-semibold text-white hover:text-indigo-400 transition-colors truncate block">
                   <%= request.user.name %>
                 </a>
                 <p class="text-xs text-gray-500 mt-0.5"><%= t '.wants_to_friend' %></p>
@@ -131,7 +131,7 @@
           <% @sent_requests.each do |request| %>
             <% next unless request.friend %>
             <div class="flex items-center gap-4 bg-gray-800 rounded-2xl p-4 border border-gray-700/60 hover:border-gray-500/80 transition-all group">
-              <a href="<%= user_profile_path(request.friend) %>" class="relative flex-shrink-0">
+              <a href="<%= profile_path_for(request.friend) %>" class="relative flex-shrink-0">
                 <% if request.friend.avatar.attached? %>
                   <%= image_tag url_for(request.friend.avatar), alt: request.friend.name, class: "h-14 w-14 rounded-2xl object-cover" %>
                 <% else %>
@@ -140,7 +140,7 @@
               </a>
 
               <div class="flex-1 min-w-0">
-                <a href="<%= user_profile_path(request.friend) %>" class="font-semibold text-white hover:text-indigo-400 transition-colors truncate block">
+                <a href="<%= profile_path_for(request.friend) %>" class="font-semibold text-white hover:text-indigo-400 transition-colors truncate block">
                   <%= request.friend.name %>
                 </a>
                 <p class="text-xs text-gray-500 mt-0.5"><%= t '.request_pending' %></p>

@@ -3,7 +3,7 @@
     <td class="py-3 px-4 text-gray-500 text-xs"><%= game.id %></td>
     <td class="py-3 px-4">
       <% if game.author_id.present? %>
-        <a class="text-indigo-300 hover:text-indigo-200 hover:underline break-all" href="<%= user_profile_path(game.author) %>">
+        <a class="text-indigo-300 hover:text-indigo-200 hover:underline break-all" href="<%= profile_path_for(game.author) %>">
           <%= truncate(game.author.name, length: 20) %>
         </a>
       <% else %>

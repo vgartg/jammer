@@ -14,7 +14,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       <% @users.each do |user| %>
         <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 hover:ring-indigo-500/40 transition-all p-4 flex items-center gap-3 relative">
-          <a href="<%= '/users/' + user.id.to_s %>" class="flex items-center gap-3 flex-1 min-w-0">
+          <a href="<%= profile_path_for(user) %>" class="flex items-center gap-3 flex-1 min-w-0">
             <span class="relative shrink-0">
               <% if user && user.avatar.attached? %>
                 <%= image_tag url_for(user.avatar), alt: user.name, class: "h-12 w-12 rounded-full object-cover" %>

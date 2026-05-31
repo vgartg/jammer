@@ -364,7 +364,7 @@
             </h2>
             <div class="prose prose-sm mt-2 text-gray-500">
               <% if @game.author.present? %>
-                <a class="text-indigo-600 hover:text-indigo-900" href="<%= user_profile_path(@game.author) %>">
+                <a class="text-indigo-600 hover:text-indigo-900" href="<%= profile_path_for(@game.author) %>">
                   <%= @game.author.name %>
                 </a>
               <% else %>

@@ -100,7 +100,7 @@
                       </a>
 
                     <% elsif notification.actor %>
-                      <a href="<%= user_profile_path(notification.actor) %>" class="block rounded-xl overflow-hidden w-10 h-10 bg-gray-700">
+                      <a href="<%= profile_path_for(notification.actor) %>" class="block rounded-xl overflow-hidden w-10 h-10 bg-gray-700">
                         <% if notification.actor.avatar.attached? %>
                           <%= image_tag url_for(notification.actor.avatar), alt: notification.actor.name, class: "w-10 h-10 object-cover" %>
                         <% else %>
@@ -146,7 +146,7 @@
 
                         <% elsif notification.actor %>
                           <p class="text-xs font-medium text-white truncate">
-                            <a href="<%= user_profile_path(notification.actor) %>" class="hover:text-indigo-400 transition-colors">
+                            <a href="<%= profile_path_for(notification.actor) %>" class="hover:text-indigo-400 transition-colors">
                               <%= notification.actor.name %>
                             </a>
                           </p>
@@ -235,7 +235,7 @@
           <div class="hidden absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2
               shadow-lg ring-1 ring-gray-900/5 focus:outline-none" role="menu" aria-orientation="vertical"
                aria-labelledby="user-menu-button" tabindex="-1" id="dashboard_profile_menu">
-            <%= button_to t('buttons.profile'), user_profile_path(id: session[:current_user]), method: :get,
+            <%= button_to t('buttons.profile'), profile_path_for(current_user), method: :get,
                           class: "block px-3 py-1 text-sm leading-6 text-gray-900" %>
             <%= button_to t('buttons.sign_out'), logout_path, method: :delete,
                           class: "block px-3 py-1 text-sm leading-6 text-gray-900" %>

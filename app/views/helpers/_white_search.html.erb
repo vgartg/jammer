@@ -63,7 +63,7 @@
             shadow-lg ring-1 ring-gray-900/5 focus:outline-none" role="menu" aria-orientation="vertical"
              aria-labelledby="user-menu-button" tabindex="-1" id="dashboard_profile_menu">
           <!-- Active: "bg-gray-50", Not Active: "" -->
-          <%= button_to t('buttons.profile'), user_profile_path(id: session[:current_user]), method: :get,
+          <%= button_to t('buttons.profile'), profile_path_for(current_user), method: :get,
                         class: "block px-3 py-1 text-sm leading-6 text-gray-900" %>
           <%= button_to t('buttons.sign_out'), logout_path, method: :delete,
                         class: "block px-3 py-1 text-sm leading-6 text-gray-900" %>

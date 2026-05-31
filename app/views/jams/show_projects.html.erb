@@ -76,7 +76,7 @@
                 </div>
 
                 <% if game.author.present? %>
-                  <a href="<%= user_profile_path(game.author) %>" class="mt-2 block text-xs text-gray-400 hover:text-gray-200 truncate">
+                  <a href="<%= profile_path_for(game.author) %>" class="mt-2 block text-xs text-gray-400 hover:text-gray-200 truncate">
                     <%= game.author.name %>
                   </a>
                 <% else %>

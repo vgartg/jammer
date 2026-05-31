@@ -452,7 +452,7 @@
                 <% @received_requests.each do |request| %>
                   <% next unless request.user %>
                   <div class="flex items-center justify-between gap-3 bg-gray-800 rounded-xl p-3 border border-indigo-700/30">
-                    <a href="<%= user_profile_path(request.user) %>" class="flex items-center gap-3 min-w-0 flex-1">
+                    <a href="<%= profile_path_for(request.user) %>" class="flex items-center gap-3 min-w-0 flex-1">
                       <span class="relative shrink-0">
                         <% if request.user.avatar.attached? %>
                           <%= image_tag url_for(request.user.avatar), class: "h-10 w-10 rounded-full object-cover" %>
@@ -487,7 +487,7 @@
                 <% friend = find_friend(friendship) %>
                 <% next unless friend %>
                 <div class="flex items-center justify-between gap-3 bg-gray-800 rounded-xl p-3 border border-gray-700/50">
-                  <a href="<%= user_profile_path(friend) %>" class="flex items-center gap-3 min-w-0 flex-1">
+                  <a href="<%= profile_path_for(friend) %>" class="flex items-center gap-3 min-w-0 flex-1">
                     <span class="relative shrink-0">
                       <% if friend.avatar.attached? %>
                         <%= image_tag url_for(friend.avatar), class: "h-10 w-10 rounded-full object-cover" %>

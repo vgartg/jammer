@@ -17,6 +17,10 @@ module ApplicationHelper
     end
   end
 
+  def profile_path_for(user)
+    user.link_username.present? ? frontpage_path(username: user.link_username) : user_profile_path(user)
+  end
+
   def notification_message(notification)
     return '' if notification.blank? || notification.action.blank?
 

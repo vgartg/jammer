@@ -16,7 +16,7 @@
     <% if @users.any? %>
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <% @users.each do |user| %>
-          <%= link_to user_path(user), class: "group flex items-center gap-4 rounded-2xl border border-gray-700/60 bg-gray-800 p-4 hover:border-gray-500/80 transition-all hover:shadow-xl hover:shadow-black/40" do %>
+          <%= link_to profile_path_for(user), class: "group flex items-center gap-4 rounded-2xl border border-gray-700/60 bg-gray-800 p-4 hover:border-gray-500/80 transition-all hover:shadow-xl hover:shadow-black/40" do %>
             <span class="relative shrink-0">
               <% if user.avatar.attached? %>
                 <%= image_tag url_for(user.avatar), alt: user.name, class: "h-14 w-14 rounded-xl object-cover" %>

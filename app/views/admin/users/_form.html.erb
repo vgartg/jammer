@@ -263,7 +263,7 @@
               <% @user_friendships.each do |friendship| %>
                 <% friend = find_user_friend(friendship, @user) %>
                 <% next unless friend %>
-                <%= link_to user_profile_path(friend), class: "flex items-center gap-3 bg-gray-700/50 rounded-lg px-3 py-2 hover:bg-gray-700 transition-colors" do %>
+                <%= link_to profile_path_for(friend), class: "flex items-center gap-3 bg-gray-700/50 rounded-lg px-3 py-2 hover:bg-gray-700 transition-colors" do %>
                   <% if friend.avatar.attached? %>
                     <%= image_tag url_for(friend.avatar), class: "h-9 w-9 rounded-full object-cover shrink-0" %>
                   <% else %>
@@ -285,7 +285,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               <% @user_sent_requests.each do |req| %>
                 <% next unless req.friend %>
-                <%= link_to user_profile_path(req.friend), class: "flex items-center gap-3 bg-gray-700/50 rounded-lg px-3 py-2 hover:bg-gray-700 transition-colors" do %>
+                <%= link_to profile_path_for(req.friend), class: "flex items-center gap-3 bg-gray-700/50 rounded-lg px-3 py-2 hover:bg-gray-700 transition-colors" do %>
                   <% if req.friend.avatar.attached? %>
                     <%= image_tag url_for(req.friend.avatar), class: "h-9 w-9 rounded-full object-cover shrink-0" %>
                   <% else %>
@@ -307,7 +307,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               <% @user_received_requests.each do |req| %>
                 <% next unless req.user %>
-                <%= link_to user_profile_path(req.user), class: "flex items-center gap-3 bg-gray-700/50 rounded-lg px-3 py-2 hover:bg-gray-700 transition-colors" do %>
+                <%= link_to profile_path_for(req.user), class: "flex items-center gap-3 bg-gray-700/50 rounded-lg px-3 py-2 hover:bg-gray-700 transition-colors" do %>
                   <% if req.user.avatar.attached? %>
                     <%= image_tag url_for(req.user.avatar), class: "h-9 w-9 rounded-full object-cover shrink-0" %>
                   <% else %>

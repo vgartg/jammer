@@ -4,7 +4,7 @@
     <th scope="row" class="py-3 px-6"><%= game.id %></th>
     <td class="py-3 px-6">
       <% if game.author_id.present? %>
-        <a class="break-all hover:underline" href="<%= user_profile_path(game.author) %>">
+        <a class="break-all hover:underline" href="<%= profile_path_for(game.author) %>">
           <%= truncate(game.author.name, length: 15) %>
         </a>
       <% else %>

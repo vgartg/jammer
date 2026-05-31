@@ -74,7 +74,7 @@
                 <span class="text-sm text-gray-400">
                   <%= t('.by') %>
                   <% if action.admin %>
-                    <a href="<%= user_profile_path(action.admin) %>" class="text-indigo-300 hover:text-indigo-200 hover:underline">
+                    <a href="<%= profile_path_for(action.admin) %>" class="text-indigo-300 hover:text-indigo-200 hover:underline">
                       <%= action.admin.name %>
                     </a>
                   <% else %>

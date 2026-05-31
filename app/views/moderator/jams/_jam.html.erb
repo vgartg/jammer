@@ -4,7 +4,7 @@
     <th scope="row" class="py-3 px-6"><%= jam.id %></th>
     <td class="py-3 px-6">
       <% if jam.author_id.present? %>
-        <a class="break-all hover:underline" href="<%= user_profile_path(jam.author) %>">
+        <a class="break-all hover:underline" href="<%= profile_path_for(jam.author) %>">
           <%= truncate(jam.author.name, length: 15) %>
         </a>
       <% else %>
