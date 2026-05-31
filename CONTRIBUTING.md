@@ -9,8 +9,7 @@ git clone https://github.com/vgartg/jammer.git
 cd jammer
 bundle install
 yarn install
-bundle exec rake db:create
-bundle exec rake db:migrate
+bundle exec rake db:create db:migrate
 foreman start -f Procfile.dev
 ```
 
@@ -42,7 +41,3 @@ This starts the Rails server alongside the asset build in watch mode. The app sh
 ## Bugs and feature requests
 
 Use the [issue tracker](https://github.com/vgartg/jammer/issues) and pick the right template. If it's a security issue, check [SECURITY.md](SECURITY.md) first - those should not be public issues.
-
-## Code of Conduct
-
-This project follows the [Contributor Covenant](CODE_OF_CONDUCT.md). By participating, you agree to abide by its terms.
