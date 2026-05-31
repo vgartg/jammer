@@ -152,7 +152,7 @@
                     <%= link_to membership.user.name, profile_path_for(membership.user),
                         class: "text-sm font-medium text-gray-200 truncate hover:text-indigo-400 transition-colors" %>
                   </div>
-                  <span class="text-xs text-gray-500 shrink-0"><%= t '.invited_pending' %></span>
+                  <span class="text-xs text-gray-500 shrink-0"><%= membership.created_at.strftime('%d.%m.%Y') %></span>
                 </div>
               <% end %>
             </div>

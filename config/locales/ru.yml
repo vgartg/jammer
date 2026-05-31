@@ -127,6 +127,8 @@ ru:
       log_in: "Авторизация"
       sign_out: "Выход"
       dashboard: "Новости"
+      achievements: "Достижения"
+      contacts: "Контакты"
       language: "Язык"
     footer:
       contacts: "Контакты"
