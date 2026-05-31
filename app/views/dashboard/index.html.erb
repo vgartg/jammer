@@ -27,13 +27,15 @@
               <span class="text-xs text-gray-500 ml-auto"><%= ann.published_at&.strftime('%d.%m.%Y') %></span>
             </div>
             <% if ann.body.present? %>
-              <div class="text-sm text-gray-300 leading-relaxed prose-invert space-y-1">
-                <%= simple_format ann.body, class: 'text-sm text-gray-300 leading-relaxed' %>
+              <div class="text-sm text-gray-300 leading-relaxed [&>p]:mb-3 [&>p:last-child]:mb-0">
+                <%= simple_format ann.body, class: 'text-sm text-gray-300' %>
               </div>
             <% end %>
           </div>
         <% end %>
       </div>
+
+      <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
     <% else %>
       <div class="text-center py-20">
         <svg class="mx-auto h-12 w-12 text-gray-700" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">

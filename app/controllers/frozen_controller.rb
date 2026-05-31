@@ -4,6 +4,6 @@ class FrozenController < ApplicationController
   layout 'error'
 
   def show
-    redirect_to dashboard_path unless current_user&.is_frozen?
+    redirect_to news_path unless current_user&.is_frozen?
   end
 end

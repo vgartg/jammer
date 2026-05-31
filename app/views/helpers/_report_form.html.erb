@@ -12,38 +12,48 @@
     <%= t '.open_btn' %>
   </button>
 
+  <%# Report modal %>
   <div
-    class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden"
     data-report-target="modal">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-      <h2 class="text-xl font-bold mb-4 text-gray-800"><%= t '.title' %></h2>
+    <div class="bg-gray-800 border border-gray-700/60 rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="text-base font-semibold text-white"><%= t '.title' %></h2>
+        <button type="button"
+                class="rounded-lg p-1 text-gray-500 hover:text-gray-300 hover:bg-gray-700/50 transition-colors"
+                data-action="click->report#close">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
       <form data-action="submit->report#submit" action="/reports" method="post">
         <div class="mb-4">
-          <label for="complaint" class="block text-gray-700 font-medium mb-2"><%= t '.reason_label' %></label>
+          <label for="complaint" class="block text-sm font-medium text-gray-300 mb-1.5"><%= t '.reason_label' %></label>
           <textarea
             id="complaint"
             name="reason"
             rows="4"
             maxlength="300"
-            class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:outline-none resize-none"
+            class="w-full rounded-xl bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-red-500 focus:outline-none resize-none"
             placeholder="<%= t '.reason_placeholder' %>"
             data-action="input->report#validateLength"
             data-report-target="textarea"
             required></textarea>
-          <p class="text-red-500 text-sm hidden" data-report-target="warning"><%= t '.max_length' %></p>
+          <p class="text-red-400 text-xs mt-1 hidden" data-report-target="warning"><%= t '.max_length' %></p>
         </div>
         <input type="hidden" name="reportable_type" value="<%= report_item.class.name %>">
         <input type="hidden" name="reportable_id" value=<%= report_item.id %>>
-        <div class="flex justify-end space-x-4">
+        <div class="flex justify-end gap-3 mt-5">
           <button
             type="button"
-            class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition"
+            class="rounded-xl bg-gray-700 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors"
             data-action="click->report#close">
             <%= t('buttons.cancel') %>
           </button>
           <button
             type="submit"
-            class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">
+            class="rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 transition-colors">
             <%= t '.submit' %>
           </button>
         </div>
@@ -51,31 +61,51 @@
     </div>
   </div>
 
+  <%# Success modal %>
   <div
-    class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden"
     data-report-target="successModal">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-      <h2 class="text-xl font-bold mb-4 text-green-600"><%= t '.success_title' %></h2>
-      <p class="text-gray-700 mb-4"><%= t '.success_body' %></p>
-      <button
-        class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-        data-action="click->report#closeSuccess">
-        <%= t('buttons.close') %>
-      </button>
+    <div class="bg-gray-800 border border-gray-700/60 rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-500/20 border border-green-600/40 flex items-center justify-center">
+          <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/>
+          </svg>
+        </div>
+        <h2 class="text-base font-semibold text-green-400"><%= t '.success_title' %></h2>
+      </div>
+      <p class="text-sm text-gray-300 mb-5"><%= t '.success_body' %></p>
+      <div class="flex justify-end">
+        <button
+          class="rounded-xl bg-gray-700 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors"
+          data-action="click->report#closeSuccess">
+          <%= t('buttons.close') %>
+        </button>
+      </div>
     </div>
   </div>
 
+  <%# Error modal %>
   <div
-    class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden"
     data-report-target="errorModal">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-      <h2 class="text-xl font-bold mb-4 text-red-600"><%= t '.error_title' %></h2>
-      <p class="text-gray-700 mb-4" data-report-target="errorMessage"></p>
-      <button
-        class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-        data-action="click->report#closeError click->report#close">
-        <%= t('buttons.close') %>
-      </button>
+    <div class="bg-gray-800 border border-gray-700/60 rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-red-500/20 border border-red-600/40 flex items-center justify-center">
+          <svg class="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
+          </svg>
+        </div>
+        <h2 class="text-base font-semibold text-red-400"><%= t '.error_title' %></h2>
+      </div>
+      <p class="text-sm text-gray-300 mb-5" data-report-target="errorMessage"></p>
+      <div class="flex justify-end">
+        <button
+          class="rounded-xl bg-gray-700 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors"
+          data-action="click->report#closeError click->report#close">
+          <%= t('buttons.close') %>
+        </button>
+      </div>
     </div>
   </div>
 </div>

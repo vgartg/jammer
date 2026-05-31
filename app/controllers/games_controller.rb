@@ -81,7 +81,7 @@ class GamesController < ApplicationController
     return unless @game.status != 1 && current_user != @game.author
 
     flash[:failure] = @game.status == 2 ? t('controllers.games.rejected') : t('controllers.games.moderation_pending')
-    redirect_to dashboard_path
+    redirect_to news_path
   end
 
   def submit
@@ -108,7 +108,7 @@ class GamesController < ApplicationController
       User.notify_staff(current_user, 'awaiting_game_moderation', @game)
       flash[:success] ||= []
       flash[:success] << translate("games.create.success")
-      redirect_to dashboard_path
+      redirect_to news_path
     else
       flash[:failure] ||= []
       flash[:failure].concat(@game.errors.full_messages)
@@ -149,7 +149,7 @@ class GamesController < ApplicationController
       flash[:failure] ||= []
       flash[:failure] << t('games.destroy.failure')
     end
-    redirect_to dashboard_path
+    redirect_to news_path
   end
 
   private
@@ -158,7 +158,7 @@ class GamesController < ApplicationController
     return if current_user.games.find_by_id(params[:id])
 
     flash[:failure] = t('controllers.application.insufficient_rights')
-    redirect_to dashboard_path
+    redirect_to news_path
   end
 
   def game_params

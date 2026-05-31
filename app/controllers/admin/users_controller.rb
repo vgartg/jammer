@@ -42,7 +42,12 @@ module Admin
     end
 
     def update
-      if @user.update(user_params)
+      permitted = user_params
+      if permitted[:password].blank?
+        permitted.delete(:password)
+        permitted.delete(:password_confirmation)
+      end
+      if @user.update(permitted)
         flash[:success] = t('controllers.admin.users.updated')
 
         changes = @user.previous_changes.except('updated_at')

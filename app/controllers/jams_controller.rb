@@ -121,7 +121,7 @@ class JamsController < ApplicationController
     return unless @jam.status != 1 && current_user != @jam.author
 
     flash[:failure] = @jam.status == 2 ? t('controllers.jams.rejected') : t('controllers.jams.moderation_pending')
-    redirect_to dashboard_path
+    redirect_to news_path
   end
 
   def create
@@ -138,7 +138,7 @@ class JamsController < ApplicationController
       User.notify_staff(current_user, 'awaiting_jam_moderation', @jam)
       flash[:success] ||= []
       flash[:success] << t('jams.create.success')
-      redirect_to dashboard_path
+      redirect_to news_path
     else
       flash[:failure] ||= []
       flash[:failure].concat(@jam.errors.full_messages)
@@ -165,7 +165,7 @@ class JamsController < ApplicationController
       submission.update(game_id: @game.id)
       redirect_to jam_profile_path(params[:id])
     else
-      redirect_to dashboard_path
+      redirect_to news_path
     end
   end
 
@@ -542,7 +542,7 @@ class JamsController < ApplicationController
   def author_or_admin
     unless current_user && (current_user == @jam.author || current_user.role.in?([1, 2]))
       flash[:failure] = t('controllers.application.insufficient_rights')
-      redirect_to dashboard_path
+      redirect_to news_path
     end
   end
 
@@ -550,7 +550,7 @@ class JamsController < ApplicationController
     return if current_user.jams.find_by_id(params[:id])
 
     flash[:failure] = t('controllers.application.insufficient_rights')
-    redirect_to dashboard_path
+    redirect_to news_path
   end
 
   def jam_params
@@ -590,14 +590,14 @@ class JamsController < ApplicationController
   def jam_manage_check
     unless @jam.can_manage?(current_user)
       flash[:failure] = t('controllers.application.insufficient_rights')
-      redirect_to dashboard_path
+      redirect_to news_path
     end
   end
 
   def jam_configure_check
     unless @jam.can_configure?(current_user)
       flash[:failure] = t('controllers.application.insufficient_rights')
-      redirect_to dashboard_path
+      redirect_to news_path
     end
   end
 

@@ -24,6 +24,6 @@ class ReviewsController < ApplicationController
     return if current_user && (current_user.role == 'admin' || review.user_id == current_user.id)
 
     flash[:failure] = t('controllers.application.insufficient_rights')
-    redirect_to dashboard_path
+    redirect_to news_path
   end
 end

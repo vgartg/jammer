@@ -28,7 +28,7 @@ class OauthController < ApplicationController
       end
       redirect_to settings_path
     else
-      redirect_to dashboard_path
+      redirect_to news_path
     end
   end
 

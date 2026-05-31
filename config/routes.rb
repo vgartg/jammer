@@ -25,7 +25,9 @@ Rails.application.routes.draw do
     get '/auth/failure', to: 'oauth#failure', as: 'oauth_failure'
 
     # Auth Zone
-    get '/dashboard', to: 'dashboard#index'
+    get '/news', to: 'dashboard#index', as: 'news'
+    get '/dashboard', to: redirect { |params, _req| params[:locale].present? ? "/#{params[:locale]}/news" : '/news' }
+
     get '/users/:id', to: 'users#show', as: 'user_profile'
     get '/users', to: 'users#index'
 

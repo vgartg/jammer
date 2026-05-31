@@ -42,7 +42,7 @@ class SessionsController < ApplicationController
     Session.create_session(user.id, session[:session_id], request.remote_ip, browser)
 
     remember(user) if params[:remember_me] == '1'
-    redirect_to dashboard_path
+    redirect_to news_path
   end
 
   def destroy

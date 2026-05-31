@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_no_authentication
-    redirect_to dashboard_path if current_user
+    redirect_to news_path if current_user
   end
 
   def current_user
@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
     return if @user && @user.role == 'admin'
 
     flash[:failure] = t('controllers.application.insufficient_rights')
-    redirect_to dashboard_path
+    redirect_to news_path
   end
 
   def moderator?
@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
     return if @user && !@user.basic?
 
     flash[:failure] = t('controllers.application.insufficient_rights')
-    redirect_to dashboard_path
+    redirect_to news_path
   end
 
   def create_administration_record(admin, item, changes, action)

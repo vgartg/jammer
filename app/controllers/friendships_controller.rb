@@ -46,7 +46,7 @@ class FriendshipsController < ApplicationController
     else
       flash[:alert] = t 'friendships.update.alert'
     end
-    redirect_to sender ? user_profile_path(sender) : dashboard_path
+    redirect_to sender ? user_profile_path(sender) : news_path
   end
 
   def cancel
@@ -58,7 +58,7 @@ class FriendshipsController < ApplicationController
     @friendship.destroy
     flash[:notice] = t 'friendships.update.notice'
     other = (friend && friend.id != current_user.id) ? friend : user
-    redirect_to other ? user_profile_path(other) : dashboard_path
+    redirect_to other ? user_profile_path(other) : news_path
   end
 
   def destroy
@@ -70,7 +70,7 @@ class FriendshipsController < ApplicationController
     @friendship.destroy
     flash[:notice] = t 'friendships.update.notice'
     other = (friend && friend.id != current_user.id) ? friend : user
-    redirect_to other ? user_profile_path(other) : dashboard_path
+    redirect_to other ? user_profile_path(other) : news_path
   end
 
   private

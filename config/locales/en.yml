@@ -913,6 +913,9 @@ en:
         personal_link: "Personal link"
         phone_number: "Phone number"
         birthday: "Birthday"
+        last_active_at: "Last online"
+        password_leave_blank: "Leave blank to keep unchanged"
+        never: "Never"
         no_info: "No information"
         freeze:
           freeze: "Freeze"
@@ -1289,7 +1292,7 @@ en:
       already_member: "You are already a member of this team."
       request_pending: "Your request is already pending."
     invite:
-      success: "Invitation sent."
+      success: "Invitation sent to %{name}."
       user_not_found: "User not found."
       already_member: "User is already a member or has a pending request."
     update:
@@ -1297,10 +1300,11 @@ en:
     destroy:
       success: "Removed from team."
   achievements:
-    page_title: "Achievements"
+    page_title: "All achievements"
     page_subtitle: "List of all platform achievements and the conditions for obtaining them"
     all_achievements: "All achievements"
     my_achievements: "My achievements"
+    earned: "Earned"
     none_earned: "No achievements yet."
     categories:
       game_rated: "Game ratings"

@@ -913,6 +913,9 @@ ru:
         personal_link: "Персональная ссылка"
         phone_number: "Номер телефона"
         birthday: "Дата рождения"
+        last_active_at: "Последний онлайн"
+        password_leave_blank: "Оставьте пустым, чтобы не менять"
+        never: "Не заходил(а)"
         no_info: "Информации нет"
         freeze:
           freeze: "Заморозить"
@@ -1293,7 +1296,7 @@ ru:
       already_member: "Вы уже являетесь участником этой команды."
       request_pending: "Ваша заявка уже на рассмотрении."
     invite:
-      success: "Приглашение отправлено."
+      success: "Приглашение отправлено пользователю %{name}."
       user_not_found: "Пользователь не найден."
       already_member: "Пользователь уже является участником или подал заявку."
     update:
@@ -1301,10 +1304,11 @@ ru:
     destroy:
       success: "Участник удалён из команды."
   achievements:
-    page_title: "Достижения"
+    page_title: "Все достижения"
     page_subtitle: "Список всех достижений платформы и условий их получения"
     all_achievements: "Все достижения"
     my_achievements: "Мои достижения"
+    earned: "Получено"
     none_earned: "Достижений пока нет."
     categories:
       game_rated: "Рейтинги игр"

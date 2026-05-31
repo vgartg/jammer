@@ -76,7 +76,7 @@ class TeamMembershipsController < ApplicationController
       end
     end
     User.create_notification(user, current_user, 'team_invite_received', membership)
-    flash[:success] = t('team_memberships.invite.success')
+    flash[:success] = t('team_memberships.invite.success', name: user.name)
     redirect_to team_profile_path(@team)
   end
 

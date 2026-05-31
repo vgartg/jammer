@@ -2,7 +2,7 @@ class DashboardController < ApplicationController
   helper_method :find_friend
 
   def index
-    @announcements = Announcement.published.limit(5).to_a
+    @pagy, @announcements = pagy(Announcement.published, limit: 10)
     return unless current_user
 
     @user = current_user

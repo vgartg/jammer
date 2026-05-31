@@ -1,6 +1,7 @@
 class AchievementsController < ApplicationController
   def index
     @achievements = AchievementService::ACHIEVEMENTS
+    @earned_keys = current_user ? current_user.user_achievements.pluck(:achievement_key).to_set : Set.new
   end
 
   def panel

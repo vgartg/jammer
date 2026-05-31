@@ -20,7 +20,7 @@ class EmailConfirmsController < ApplicationController
       remember(@user) if params[:remember_me] == '1'
       flash[:success] ||= []
       flash[:success] << t('email_confirms.update.success')
-      redirect_to dashboard_path
+      redirect_to news_path
     else
       flash[:failure] ||= []
       flash[:failure] << t('email_confirms.update.failure')

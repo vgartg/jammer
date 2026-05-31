@@ -89,7 +89,7 @@ class TeamsController < ApplicationController
     return if current_user == @team.leader || current_user.admin?
 
     flash[:failure] = t('controllers.application.insufficient_rights')
-    redirect_to dashboard_path
+    redirect_to news_path
   end
 
   def team_params

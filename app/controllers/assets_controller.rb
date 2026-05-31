@@ -83,7 +83,7 @@ class AssetsController < ApplicationController
     return if current_user == @asset.author || current_user.admin?
 
     flash[:failure] = t('controllers.application.insufficient_rights')
-    redirect_to dashboard_path
+    redirect_to news_path
   end
 
   def asset_params
