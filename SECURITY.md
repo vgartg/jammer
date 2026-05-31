@@ -1,28 +1,22 @@
-# Security Policy
+# Безопасность
 
-## Supported versions
+## Поддерживаемые версии
 
-Only the latest commit on `master` is maintained. There are no versioned releases with separate security support windows.
+Поддерживается только последний коммит в `master`. Отдельных веток с долгосрочной поддержкой нет.
 
-## Reporting a vulnerability
+## Как сообщить об уязвимости
 
-If you find a security issue in Jammer, please don't open a public GitHub issue. That exposes the problem before it's fixed.
+Не открывай публичный issue — это засветит проблему до того, как она будет исправлена.
 
-Instead, email **jammer.website@internet.ru** directly. Include:
+Напиши на **jammer.website@internet.ru**. Укажи:
 
-- What the issue is and what an attacker could do with it
-- Steps to reproduce or a proof-of-concept
-- The affected commit hash if you know it
-- Your suggested fix, if you have one
+- В чём суть и что атакующий может с этим сделать
+- Шаги воспроизведения или PoC
+- Хеш коммита, если знаешь
+- Свой вариант фикса, если есть
 
-### What happens next
+В течение 5 рабочих дней придёт подтверждение, в течение 14 дней — оценка серьёзности. Сроки публичного раскрытия обсудим вместе до того, как что-то появится в открытом доступе.
 
-- You'll get an acknowledgement within **5 business days**
-- A severity assessment within **14 days**
-- We'll coordinate the fix and disclosure timeline with you before anything goes public
+## Автоматические проверки
 
-## Automated checks
-
-Every push and PR to `master` runs [`bundler-audit`](https://github.com/rubysec/bundler-audit) and [`brakeman`](https://github.com/presidentbeef/brakeman) via GitHub Actions. A failing audit blocks the merge. So if a gem you depend on picks up a CVE, it surfaces immediately - not weeks later.
-
-See [`.github/workflows/rubyonrails.yml`](.github/workflows/rubyonrails.yml) for the full pipeline config.
+Каждый push и PR в `master` прогоняет [`bundler-audit`](https://github.com/rubysec/bundler-audit) и [`brakeman`](https://github.com/presidentbeef/brakeman) через GitHub Actions. Упавший аудит блокирует слияние. Конфиг — в [`.github/workflows/rubyonrails.yml`](.github/workflows/rubyonrails.yml).

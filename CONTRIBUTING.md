@@ -1,8 +1,6 @@
-# Contributing to Jammer
+# Участие в разработке
 
-Glad you want to contribute. Here's everything you need to get set up and get your changes into `master`.
-
-## Local setup
+## Настройка
 
 ```bash
 git clone https://github.com/vgartg/jammer.git
@@ -13,31 +11,36 @@ bundle exec rake db:create db:migrate
 foreman start -f Procfile.dev
 ```
 
-This starts the Rails server alongside the asset build in watch mode. The app should be at [localhost:3000](http://localhost:3000).
+Запускает Rails-сервер и сборку ассетов в режиме watch. Приложение будет на [localhost:3000](http://localhost:3000).
 
-## Workflow
+База данных для dev/test — PostgreSQL. Убедись, что он запущен и доступен до `db:create`.
 
-1. Fork the repo and create a branch off `master`:
-   ```bash
-   git checkout -b short-description
-   ```
-2. Make focused commits with clear messages - one logical change per commit.
-3. Before opening a PR, run what CI runs:
-   ```bash
-   bundle exec rails test
-   bundle exec bundler-audit --update
-   bundle exec brakeman -q
-   bundle exec rubocop
-   ```
-4. Push and open a pull request against `master`. Fill in the PR description.
+## Как работать
 
-## Conventions
+Форкни репо, создай ветку от `master`:
 
-- RuboCop handles Ruby style. Keep the working tree clean - CI will reject a linting failure.
-- Follow standard Rails conventions for naming, file layout, and migrations.
-- Migrations should be reversible.
-- Add or update tests for any behavior change. We don't merge untested logic.
+```bash
+git checkout -b short-description
+```
 
-## Bugs and feature requests
+Коммиты делай небольшими и по одному изменению за раз. Перед PR прогони то же, что запускает CI:
 
-Use the [issue tracker](https://github.com/vgartg/jammer/issues) and pick the right template. If it's a security issue, check [SECURITY.md](SECURITY.md) first - those should not be public issues.
+```bash
+bundle exec rails test
+bundle exec bundler-audit --update
+bundle exec brakeman -q
+bundle exec rubocop
+```
+
+Потом открывай PR в `master` с описанием что и зачем поменял.
+
+## Правила
+
+- Стиль кода — RuboCop. Если линтер ругается, CI не пропустит.
+- Миграции должны быть обратимы.
+- Новую логику покрывай тестами. Без тестов скорее всего не заведём.
+- Придерживайся стандартных Rails-конвенций по именованию и структуре файлов.
+
+## Баги и идеи
+
+Через [issue tracker](https://github.com/vgartg/jammer/issues). Для уязвимостей — сначала [SECURITY.md](SECURITY.md), в публичный issue уязвимости не пиши.

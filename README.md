@@ -5,54 +5,54 @@
 [![Rails](https://img.shields.io/badge/rails-8.0-CC0000?logo=rubyonrails&logoColor=white)](https://rubyonrails.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.txt)
 
-Jammer is a platform for running game jams and distributing games. You set up a jam, configure voting criteria, invite judges or open it to everyone - then collect submissions and watch the leaderboard take shape. Profiles, notifications, and friend connections work on top of that.
+Платформа для геймджемов и дистрибуции игр. Работает на [jammer.website](https://jammer.website).
 
-Live at [jammer.website](https://jammer.website).
-
-## Recognition
-
-- Winner of the **SFedU SBS Creative 2024** accelerator
-- Grant from the **Foundation for Assistance to Small Innovative Enterprises** (Innovation Promotion Fund)
+Создаёшь джем, настраиваешь критерии голосования, зовёшь жюри или открываешь для всех — дальше принимаешь заявки и следишь за таблицей результатов. Поверх этого работают профили, команды, уведомления и социальный слой.
 
 ---
 
-## Jammer v0.11.8 graph
-
-<img width="1280" height="755" alt="изображение" src="https://github.com/user-attachments/assets/7fc2776c-c226-43b5-b7c7-429b969d6e8a" />
+Победитель акселератора **SFedU SBS Creative 2024**, грант от **Фонда содействия инновациям**.
 
 ---
 
-## Features
+## Что умеет
 
-- **Game jams** - custom criteria, jury + audience voting modes, nomination awards, flexible scheduling
-- **Game distribution** - publish your game, collect ratings and community feedback
-- **Social layer** - friend requests, in-app notifications, personal profiles with custom subdomains
-- **Moderation** - admin and moderator dashboards, content reports, user freeze/unfreeze with audit logs
-- **Auth** - email confirmation, password reset, OAuth via GitHub and Google, persistent sessions
+**Джемы** — гибкое расписание (регистрация / прием работ / голосование — отдельные даты), несколько критериев с разными режимами (звёздный рейтинг или «один голос за игру»), жюри и публика голосуют независимо, номинации с победителями.
 
-## Stack
+**Игры** — публикация, теги, обложки, рейтинги от сообщества, подача на модерацию.
 
-- **Ruby 3.3.4 / Rails 8** with Sidekiq for background jobs
-- **Hotwire** (Turbo + Stimulus) + Tailwind CSS + esbuild - no separate SPA
-- **PostgreSQL** in dev/test, **SQLite 3 + ICU extension** in production
-- **Kamal** + Docker for deployment, Thruster as a reverse proxy
+**Команды** — создание команды, приглашения, заявки на вступление, роли участников.
 
-## Getting started
+**Профили** — персональные страницы `/u/username`, достижения, статистика активности, история участия в джемах.
 
-You need Ruby 3.3.4, PostgreSQL 11+, Node.js with Yarn, and `foreman` (`gem install foreman`).
+**Ассеты** — загрузка и раздача файлов (звуки, графика, шрифты) с возможностью скачивания.
+
+**Социальный слой** — друзья, уведомления внутри приложения, заморозка/разморозка аккаунтов с логом администратора.
+
+**Авторизация** — email + подтверждение, сброс пароля, OAuth через GitHub и Google, постоянные сессии.
+
+## Стек
+
+- Ruby 3.3.4 / Rails 8, Sidekiq для фоновых задач
+- Hotwire (Turbo + Stimulus) + Tailwind CSS + esbuild — без отдельного SPA
+- PostgreSQL в dev/test, SQLite 3 + ICU в проде
+- Kamal + Docker для деплоя, Thruster как reverse proxy
+
+## Запустить локально
+
+Нужны Ruby 3.3.4, PostgreSQL 11+, Node.js с Yarn и `foreman`.
 
 ```bash
 git clone https://github.com/vgartg/jammer.git
 cd jammer
 bundle install
 yarn install
-bundle exec rake db:create
-bundle exec rake db:migrate
+bundle exec rake db:create db:migrate
 foreman start -f Procfile.dev
 ```
 
-Open [localhost:3000](http://localhost:3000). That's it.
+Открывай [localhost:3000](http://localhost:3000).
 
-## Contributing
+## Участие в разработке
 
-Pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup details and workflow. Security issues go to [SECURITY.md](SECURITY.md) - not a public GitHub issue.
+PR приветствуются. Детали — в [CONTRIBUTING.md](CONTRIBUTING.md). Уязвимости — на [SECURITY.md](SECURITY.md), не в публичный issue.
