@@ -14,6 +14,7 @@
     <div class="space-y-2">
       <% @notifications.each do |notification| %>
         <% next if notification.notifiable.nil? && notification.actor.nil? %>
+        <% next if notification.notifiable_type == 'UserAchievement' && notification.notifiable.nil? %>
         <% rendered_any = true %>
 
         <div class="flex items-start gap-4 bg-gray-800 rounded-2xl p-4 border <%= notification.read ? 'border-gray-700/50' : 'border-indigo-700/40' %> hover:border-gray-600/80 transition-all group">

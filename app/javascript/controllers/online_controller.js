@@ -67,7 +67,7 @@ export default class extends Controller {
         let lastNum = number % 10;
         if (lastNum === 1) return titles[1];
         if ([2, 3, 4].includes(lastNum)) return titles[2];
-        return titles[0];FДостижения
+        return titles[0];
     }
 
     getLocale() {

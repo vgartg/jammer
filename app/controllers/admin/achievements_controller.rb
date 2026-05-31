@@ -28,7 +28,7 @@ module Admin
         return redirect_to admin_achievements_path
       end
       create_administration_record(current_user, user, { achievement: key }, 'grant_achievement')
-      User.create_notification(user, current_user, 'achievement_granted', achievement)
+      User.create_notification(user, user, 'earned_achievement', achievement)
       flash[:success] = t('admin.achievements.granted')
       redirect_to admin_achievements_path
     end
@@ -37,6 +37,7 @@ module Admin
       achievement = UserAchievement.find(params[:id])
       user = achievement.user
       key = achievement.achievement_key
+      Notification.where(notifiable: achievement).destroy_all
       if achievement.destroy
         create_administration_record(current_user, user, { achievement: key }, 'revoke_achievement')
         flash[:success] = t('admin.achievements.revoked')
