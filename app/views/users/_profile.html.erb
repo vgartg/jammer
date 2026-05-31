@@ -72,7 +72,7 @@
         <p data-controller="online" class="mt-1">
           <span class="text-xs text-gray-500"
                 data-online-target="lastActiveAt"
-                data-last-active-at="<%= @user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+                data-last-active-at="<%= @user.last_active_at.utc.iso8601 %>"
                 data-action="load->online#updateStatus"></span>
         </p>
       <% end %>

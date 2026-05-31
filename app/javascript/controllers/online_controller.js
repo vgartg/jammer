@@ -11,15 +11,11 @@ export default class extends Controller {
 
     updateStatus() {
 
-        let lastActiveAtString = this.lastActiveAtTarget.dataset.lastActiveAt;
-        let lastActiveAtUTC = new Date(lastActiveAtString);
-
-        let userTimezoneOffset = new Date().getTimezoneOffset() * 60000; // в миллисекундах
-        let lastActiveAtLocal = new Date(lastActiveAtUTC.getTime() - userTimezoneOffset);
+        let lastActiveAt = new Date(this.lastActiveAtTarget.dataset.lastActiveAt);
 
         let statusElement = this.lastActiveAtTarget;
         let now = new Date();
-        let timeDiff = now - lastActiveAtLocal;
+        let timeDiff = now - lastActiveAt;
 
         let secondsDiff = Math.floor(timeDiff / 1000);
         let minutesDiff = Math.floor(secondsDiff / 60);

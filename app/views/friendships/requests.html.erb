@@ -47,7 +47,7 @@
                           <% if request.friend.last_active_at.present? %>
       <span id="user-status" class="text-sm text-gray-600"
             data-online-target="lastActiveAt"
-            data-last-active-at="<%= request.friend.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+            data-last-active-at="<%= request.friend.last_active_at.utc.iso8601 %>"
             data-action="load->online#updateStatus"></span>
                           <% else %>
                             <span class="text-sm text-gray-600">Offline</span>
@@ -104,7 +104,7 @@
                           <% if request.user.last_active_at.present? %>
       <span id="user-status" class="text-sm text-gray-600"
             data-online-target="lastActiveAt"
-            data-last-active-at="<%= request.user.last_active_at.strftime('%Y-%m-%dT%H:%M:%S') %>"
+            data-last-active-at="<%= request.user.last_active_at.utc.iso8601 %>"
             data-action="load->online#updateStatus"></span>
                           <% else %>
                             <span class="text-sm text-gray-600">Offline</span>
