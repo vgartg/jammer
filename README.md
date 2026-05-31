@@ -5,13 +5,16 @@
 [![Rails](https://img.shields.io/badge/rails-8.0-CC0000?logo=rubyonrails&logoColor=white)](https://rubyonrails.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.txt)
 
-A platform for running game jams and distributing games. Live at [jammer.website](https://jammer.website).
+A platform for running game jams and distributing games and assets. Winner of the **SFedU SBS Creative 2024** accelerator. Grant from the **Foundation for Assistance to Small Innovative Enterprises**.
+Live at [jammer.website](https://jammer.website).
 
 You set up a jam, configure voting criteria, invite judges or open it to everyone, then collect submissions and watch the leaderboard fill in. Profiles, teams, achievements, and friend connections work on top of that.
 
 ---
 
-Winner of the **SFedU SBS Creative 2024** accelerator. Grant from the **Foundation for Assistance to Small Innovative Enterprises**.
+## Jammer Graph
+
+<img width="1280" height="755" alt="image" src="https://github.com/user-attachments/assets/8af3827b-914d-46b0-9441-d28ea53c6656" />
 
 ---
 
