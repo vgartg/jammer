@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   before_action :authenticate_user, only: %i[edit_user update_user destroy]
-  before_action :require_subdomain, only: :frontpage
 
   def new
     return unless current_user
@@ -127,8 +126,8 @@ class UsersController < ApplicationController
   end
 
   def frontpage
-    subdomain = Subdomain.extract_subdomain(request)
-    @user = User.find_by_link_username(subdomain)
+    @user = User.find_by_link_username(params[:username])
+    return render_404 unless @user
     @current_user = current_user
     @notifications = current_user&.notifications
     setup_profile_context

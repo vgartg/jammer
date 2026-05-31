@@ -10,9 +10,7 @@ Rails.application.routes.draw do
     get 'up' => 'rails/health#show', as: :rails_health_check
     root to: 'home#index'
 
-    constraints(Subdomain) do
-      get '/', to: 'users#frontpage', as: 'frontpage'
-    end
+    get '/u/:username', to: 'users#frontpage', as: 'frontpage'
 
     # Registration and Auth
     get '/register', to: 'users#new'

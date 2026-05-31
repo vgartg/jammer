@@ -181,11 +181,11 @@
             </div>
             <% if @user.link_username.present? %>
               <p class="mt-2 text-gray-400 sm:text-sm" data-settings-target="fullLink">
-                https://<%= @user.link_username %>.jammer.ru/
+                jammer.website/u/<%= @user.link_username %>
               </p>
             <% else %>
               <p class="mt-2 text-gray-400 sm:text-sm" data-settings-target="fullLink">
-                https://username.jammer.ru/
+                jammer.website/u/username
               </p>
             <% end %>
           </div>

@@ -133,9 +133,9 @@ export default class extends Controller {
         this.usernameTarget.value = username;
 
         if (validUsername && username !== '') {
-            this.fullLinkTarget.textContent = `https://${username}.jammer.website/`;
+            this.fullLinkTarget.textContent = `jammer.website/u/${username}`;
         } else {
-            this.fullLinkTarget.textContent = `https://username.jammer.website/`;
+            this.fullLinkTarget.textContent = `jammer.website/u/username`;
         }
     }
 

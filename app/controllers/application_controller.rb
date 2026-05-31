@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   before_action :check_user_freeze, unless: :logout_action?
   helper_method :notifications
-  helper_method :require_subdomain
   before_action :update_last_active_at
   include Pagy::Backend
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -131,15 +130,6 @@ class ApplicationController < ActionController::Base
     render template: 'errors/not_found', layout: 'error', status: 404
   end
 
-  def require_subdomain
-    subdomain = Subdomain.extract_subdomain(request)
-    if %w[localhost 127].include?(subdomain) # Пока такой костыль, на продакшене нужно поменять
-      render 'home/index'
-    else
-      @subdomain_owner = User.find_by_link_username(subdomain)
-      render_404 unless @subdomain_owner
-    end
-  end
 
   def switch_locale(&action)
     locale = locale_from_url || locale_from_headers || I18n.default_locale
