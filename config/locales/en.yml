@@ -530,7 +530,10 @@ en:
         friend_requests: "Friend requests and acceptances"
         jam_invites: "Jam jury invitations"
         status_changes: "Game and jam moderation results"
-        moderation: "New submissions and reports (staff only)"
+        achievements: "Achievement notifications"
+        team_invites: "Team invitations"
+        admin_messages: "Platform announcements and messages"
+        moderation: "New submissions and reports"
         save: "Save preferences"
       placeholders:
         field: "Some field"
@@ -1296,6 +1299,7 @@ en:
   achievements:
     page_title: "Achievements"
     page_subtitle: "List of all platform achievements and the conditions for obtaining them"
+    all_achievements: "All achievements"
     none_earned: "No achievements yet."
     categories:
       game_rated: "Game ratings"

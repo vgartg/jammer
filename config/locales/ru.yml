@@ -530,7 +530,10 @@ ru:
         friend_requests: "Заявки в друзья и принятие"
         jam_invites: "Приглашения в жюри джемов"
         status_changes: "Результаты модерации игр и джемов"
-        moderation: "Новые заявки и жалобы (только для персонала)"
+        achievements: "Уведомления о достижениях"
+        team_invites: "Приглашения в команды"
+        admin_messages: "Объявления и сообщения платформы"
+        moderation: "Новые заявки и жалобы"
         save: "Сохранить настройки"
       placeholders:
         field: "Какое-то поле"
@@ -1300,6 +1303,7 @@ ru:
   achievements:
     page_title: "Достижения"
     page_subtitle: "Список всех достижений платформы и условий их получения"
+    all_achievements: "Все достижения"
     none_earned: "Достижений пока нет."
     categories:
       game_rated: "Рейтинги игр"

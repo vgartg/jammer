@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_30_144536) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_31_093900) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -375,6 +375,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_30_144536) do
     t.boolean "notify_moderation", default: true, null: false
     t.boolean "profile_hidden", default: false, null: false
     t.string "background_position", default: "center"
+    t.boolean "notify_achievements", default: true, null: false
+    t.boolean "notify_team_invites", default: true, null: false
+    t.boolean "notify_admin_messages", default: true, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true, where: "(provider IS NOT NULL)"

@@ -63,8 +63,9 @@
     </div>
 
     <div class="pt-2">
-      <%= link_to t('achievements.page_title'), achievements_path,
-            class: "block text-center text-xs text-indigo-400 hover:text-indigo-300 transition-colors" %>
+      <%= link_to t('achievements.all_achievements'), achievements_path,
+            class: "block text-center text-xs text-indigo-400 hover:text-indigo-300 transition-colors",
+            data: { turbo_frame: "_top" } %>
     </div>
 
   </div>

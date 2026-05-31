@@ -153,6 +153,7 @@ class UsersController < ApplicationController
                   :background_position, :status, :real_name, :location, :birthday, :phone_number, :timezone, :link_username,
                   :visibility, :jams_administrating_visibility, :jams_participating_visibility, :theme, :is_online_today,
                   :notify_friend_requests, :notify_jam_invites, :notify_status_changes, :notify_moderation,
+                  :notify_achievements, :notify_team_invites, :notify_admin_messages,
                   :profile_hidden)
   end
 end
