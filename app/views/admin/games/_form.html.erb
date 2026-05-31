@@ -1,157 +1,135 @@
-<div class="p-6" data-controller="settings">
-  <div class="mt-4">
-    <%= link_to t('admin.shared.back'), request.referer && URI(request.referer).path != request.fullpath ? URI(request.referer).path : admin_games_path, class: 'bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400' %>
-  </div>
+<div class="bg-gray-900 min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-3xl">
 
-  <div>
-    <div>
-      <%= form_with model: [:admin, game] do |f| %>
-        <div class="space-y-4 p-16">
-          <div class="flex items-center">
-            <div class="w-1/4">
-              <%= f.label :name, class: 'block text-sm font-medium text-gray-700' %>
-            </div>
-            <div class="w-3/4">
-              <%= f.text_field :name, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
-            </div>
+    <div class="flex items-center gap-4 mb-6">
+      <%= link_to t('admin.shared.back'),
+            request.referer && URI(request.referer).path != request.fullpath ? URI(request.referer).path : admin_games_path,
+            class: 'rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors' %>
+      <h1 class="text-xl font-bold text-white truncate"><%= game.name %></h1>
+    </div>
+
+    <%= form_with model: [:admin, game], class: "space-y-5" do |f| %>
+
+      <%# Name + description %>
+      <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <%= f.label :name, class: 'block text-sm font-medium text-gray-300 mb-1' %>
+            <%= f.text_field :name, class: 'w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm' %>
           </div>
-
-          <div class="flex items-center">
-            <div class="w-1/4">
-              <%= f.label :description, class: 'block text-sm font-medium text-gray-700' %>
-            </div>
-            <div class="w-3/4">
-              <%= f.text_field :description, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
-            </div>
-          </div>
-
-          <div data-controller="status">
-            <div class="flex items-center">
-              <div class="w-1/4">
-                <%= f.label :status, class: 'block text-sm font-medium text-gray-700' %>
-              </div>
-              <div class="w-3/4">
-                <p class="text-sm"><%= t('admin.shared.status_hint') %></p>
-                <%= f.select :status, options_for_select([['0', 0], ['1', 1], ['2', 2]], f.object.status),
-                             { target: 'status' },
-                             class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50',
-                             id: "game_status",
-                             data: { action: 'change->status#updateReasonField', status_target: 'status' } %>
-                <div data-status-target="reasonField" style="<%= f.object.status == 2 ? '' : 'display: none;' %>">
-                  <%= f.label :reason, t('admin.shared.rejection_reason'), class: 'block text-sm font-medium text-gray-700 mt-2' %>
-                  <div class="flex flex-wrap gap-2 mt-1 mb-1">
-                    <% [t('admin.shared.rejection_reasons.no_reason'), t('admin.shared.rejection_reasons.indecent_content'), t('admin.shared.rejection_reasons.advertising'), t('admin.shared.rejection_reasons.plagiarism')].each do |val| %>
-                      <button type="button" data-action="click->status#pick" data-status-value-param="<%= val %>" class="text-xs px-2 py-1 bg-gray-100 rounded hover:bg-gray-200 border border-gray-300"><%= val %></button>
-                    <% end %>
-                  </div>
-                  <%= f.text_field :reason, placeholder: t('admin.shared.rejection_reason_placeholder'), data: { status_target: 'customReason' }, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' %>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center">
-            <div class="w-1/4">
-              <%= f.label :cover, t('.cover'), class: "block text-sm font-medium text-gray-700" %>
-            </div>
-            <div class="w-3/4">
-              <label class="block text-sm font-medium text-gray-700 mb-2" for="game_cover">
-                <%= t('.cover') %>
-              </label>
-              <%= f.file_field :cover, class: "mt-1 block w-full text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:bg-gray-100 file:text-sm file:font-medium hover:file:bg-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" %>
-
-              <% if @game && @game.cover.attached? %>
-                <div class="mt-4">
-                  <%= image_tag url_for(@game.cover), alt: @game.name,
-                                class: "max-h-56 rounded-md bg-gray-200 object-cover object-center group-hover:opacity-75" %>
-                </div>
-              <% else %>
-                <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80 mt-4">
-                  <%= image_tag 'empty-avatar.jpg', alt: @game.name, class: "max-h-xs object-cover object-center" %>
-                </div>
-              <% end %>
-            </div>
-          </div>
-
-          <div class="flex items-center">
-            <div class="w-1/4">
-              <%= f.label :game_file, t('.game_file'),
-                             class: "block text-sm font-medium text-gray-700" %>
-            </div>
-            <div class="w-3/4">
-              <label class="block text-sm font-medium text-gray-700 mb-2" for="game_game_file">
-                <%= t('.game_file') %>
-              </label>
-              <%= f.file_field :game_file, accept: ".zip,.rar,.7z",
-                               class: "mt-1 block w-full text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:bg-gray-100 file:text-sm file:font-medium hover:file:bg-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" %>
-
-              <% if game.game_file.attached? %>
-                <p class="mt-2 text-sm text-gray-500">
-                  <%= t('.current_file') %>
-                  <%= link_to t('.download_archive'), url_for(@game.game_file),
-                              download: true,
-                              class: "text-indigo-600 hover:text-indigo-900 font-medium underline" %>
-                </p>
-              <% end %>
-            </div>
-          </div>
-
-          <div class="flex items-center">
-            <div class="w-1/4">
-              <%= f.label :tags, t('admin.shared.tags'), class: "block text-sm font-medium text-gray-700" %>
-            </div>
-            <div class="w-3/4">
-              <div class="mt-1">
-                <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>
-                  <div class="flex items-center">
-                    <%= b.check_box(class: "mr-2") %>
-                    <%= b.label(class: "text-sm font-medium text-gray-700") %>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center pb-16">
-            <div class="w-1/4"></div>
-            <div class="w-3/4">
-              <div class="mt-6 flex items-center space-x-2">
-                <%= f.submit t('admin.shared.save'), class: 'bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600' %>
-              </div>
-            </div>
+          <div>
+            <%= f.label :description, class: 'block text-sm font-medium text-gray-300 mb-1' %>
+            <%= f.text_field :description, class: 'w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm' %>
           </div>
         </div>
-      <% end %>
-    </div>
-  </div>
+      </div>
 
-  <% reviews = game.reviews.includes(:user).order(created_at: :desc) %>
-  <% if reviews.any? %>
-    <div class="mt-8 px-16">
-      <h2 class="text-lg font-semibold text-gray-800 mb-4"><%= t('admin.games.form.reviews_title') %></h2>
-      <div class="space-y-3">
-        <% reviews.each do |review| %>
-          <div class="flex items-start justify-between p-3 border rounded bg-gray-50">
-            <div class="text-sm text-gray-700">
-              <span class="font-medium"><%= review.user&.name || t('admin.shared.author_unknown') %></span>
-              <span class="ml-2 text-gray-500"><%= review.created_at.strftime('%Y-%m-%d') %></span>
-              <% if review.jam_id.present? %>
-                <span class="ml-2 text-indigo-600">[jam #<%= review.jam_id %>]</span>
-              <% end %>
-              <span class="ml-2">★ <%= review.user_mark %></span>
-              <% if review.criterion.present? %>
-                <p class="mt-1 text-gray-600"><%= review.criterion %></p>
-              <% end %>
-              <% if review.comment.present? %>
-                <p class="mt-1 text-gray-600 italic"><%= review.comment %></p>
-              <% end %>
-            </div>
-            <%= button_to t('admin.shared.delete'), game_review_path(game, review), method: :delete,
-                          data: { confirm: t('admin.shared.confirm') },
-                          class: 'ml-4 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 text-sm shrink-0' %>
+      <%# Status %>
+      <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-5" data-controller="status">
+        <p class="text-xs text-gray-500 mb-2"><%= t('admin.shared.status_hint') %></p>
+        <%= f.select :status, options_for_select([['0', 0], ['1', 1], ['2', 2]], f.object.status),
+              { target: 'status' },
+              class: 'w-full sm:w-40 rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm',
+              id: "game_status",
+              data: { action: 'change->status#updateReasonField', status_target: 'status' } %>
+        <div data-status-target="reasonField" class="mt-4" style="<%= f.object.status == 2 ? '' : 'display: none;' %>">
+          <p class="text-sm font-medium text-gray-300 mb-2"><%= t('admin.shared.rejection_reason') %></p>
+          <div class="flex flex-wrap gap-2 mb-2">
+            <% [t('admin.shared.rejection_reasons.no_reason'),
+                t('admin.shared.rejection_reasons.indecent_content'),
+                t('admin.shared.rejection_reasons.advertising'),
+                t('admin.shared.rejection_reasons.plagiarism')].each do |val| %>
+              <button type="button" data-action="click->status#pick" data-status-value-param="<%= val %>"
+                      class="text-xs px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 border border-gray-600 text-gray-300 transition-colors">
+                <%= val %>
+              </button>
+            <% end %>
+          </div>
+          <%= f.text_field :reason, placeholder: t('admin.shared.rejection_reason_placeholder'),
+                data: { status_target: 'customReason' },
+                class: 'w-full rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm' %>
+        </div>
+      </div>
+
+      <%# Cover %>
+      <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-5">
+        <p class="text-sm font-medium text-gray-300 mb-3"><%= t('.cover') %></p>
+        <% if @game&.cover&.attached? %>
+          <div class="mb-3">
+            <%= image_tag url_for(@game.cover), alt: @game.name, class: "max-h-48 rounded-lg object-cover" %>
           </div>
         <% end %>
+        <%= f.file_field :cover,
+              class: 'w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-700 file:text-gray-300 hover:file:bg-gray-600 file:cursor-pointer file:transition-colors' %>
       </div>
-    </div>
-  <% end %>
+
+      <%# Game file %>
+      <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-5">
+        <p class="text-sm font-medium text-gray-300 mb-3"><%= t('.game_file') %></p>
+        <% if game.game_file.attached? %>
+          <p class="text-xs text-gray-400 mb-2">
+            <%= t('.current_file') %>
+            <%= link_to t('.download_archive'), url_for(@game.game_file), download: true,
+                  class: "text-indigo-400 hover:text-indigo-300 font-medium underline" %>
+          </p>
+        <% end %>
+        <%= f.file_field :game_file, accept: ".zip,.rar,.7z",
+              class: 'w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-700 file:text-gray-300 hover:file:bg-gray-600 file:cursor-pointer file:transition-colors' %>
+      </div>
+
+      <%# Tags %>
+      <div class="bg-gray-800 rounded-xl ring-1 ring-white/10 p-5">
+        <p class="text-sm font-medium text-gray-300 mb-3"><%= t('admin.shared.tags') %></p>
+        <div class="flex flex-wrap gap-x-6 gap-y-2">
+          <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <%= b.check_box(class: "h-4 w-4 rounded border-gray-600 bg-gray-700 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-gray-800") %>
+              <span class="text-sm text-gray-300"><%= b.object.name %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <%# Submit %>
+      <div class="flex justify-end">
+        <%= f.submit t('admin.shared.save'),
+              class: 'rounded-lg bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors cursor-pointer' %>
+      </div>
+
+    <% end %>
+
+    <%# Reviews %>
+    <% reviews = game.reviews.includes(:user).order(created_at: :desc) %>
+    <% if reviews.any? %>
+      <div class="mt-8">
+        <h2 class="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-4"><%= t('.reviews_title') %></h2>
+        <div class="space-y-2">
+          <% reviews.each do |review| %>
+            <div class="flex items-start justify-between bg-gray-800 rounded-xl ring-1 ring-white/10 p-4">
+              <div class="text-sm min-w-0 flex-1 mr-4">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <span class="font-medium text-white"><%= review.user&.name || t('admin.shared.author_unknown') %></span>
+                  <span class="text-gray-500 text-xs"><%= review.created_at.strftime('%Y-%m-%d') %></span>
+                  <% if review.jam_id.present? %>
+                    <span class="text-indigo-400 text-xs">[jam #<%= review.jam_id %>]</span>
+                  <% end %>
+                  <span class="text-yellow-400">★ <%= review.user_mark %></span>
+                </div>
+                <% if review.criterion.present? %>
+                  <p class="text-gray-400 text-xs"><%= review.criterion %></p>
+                <% end %>
+                <% if review.comment.present? %>
+                  <p class="text-gray-400 text-xs italic mt-0.5"><%= review.comment %></p>
+                <% end %>
+              </div>
+              <%= button_to t('admin.shared.delete'), game_review_path(game, review), method: :delete,
+                    data: { turbo_confirm: t('admin.shared.confirm') },
+                    class: 'rounded-lg bg-red-600/80 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-600 transition-colors shrink-0' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
 </div>
