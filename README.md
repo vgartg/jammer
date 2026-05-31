@@ -16,7 +16,9 @@ Live at [jammer.website](https://jammer.website).
 
 ---
 
-<img width="1424" height="735" alt="Jammer platform screenshot" src="https://github.com/user-attachments/assets/eb324acf-299d-411e-85f0-3e5ce506488c" />
+## Jammer v0.11.8 graph
+
+<img width="1280" height="755" alt="изображение" src="https://github.com/user-attachments/assets/7fc2776c-c226-43b5-b7c7-429b969d6e8a" />
 
 ---
 
