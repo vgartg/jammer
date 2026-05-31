@@ -1294,6 +1294,8 @@ en:
     destroy:
       success: "Removed from team."
   achievements:
+    page_title: "Achievements"
+    page_subtitle: "List of all platform achievements and the conditions for obtaining them"
     none_earned: "No achievements yet."
     categories:
       game_rated: "Game ratings"

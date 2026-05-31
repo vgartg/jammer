@@ -151,6 +151,7 @@ Rails.application.routes.draw do
     get '/frozen', to: 'frozen#show', as: 'frozen'
     get '/contacts', to: 'contacts#index', as: 'contacts'
     get '/achievements', to: 'achievements#index', as: 'achievements'
+    get '/achievements/panel', to: 'achievements#panel', as: 'achievements_panel'
 
   # Admin
   get '/admin', to: 'admins#index'

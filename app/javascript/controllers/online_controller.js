@@ -28,9 +28,9 @@ export default class extends Controller {
 
         const translations = {
             en: {
-                onlineSinceDays: (daysDiff) => `Last seen ${daysDiff} ${this.dayTitle(daysDiff, ['days', 'day'])} ago`,
-                onlineSinceHours: (hoursDiff) => `Last seen ${hoursDiff} ${this.dayTitle(hoursDiff, ['hours', 'hour'])} ago`,
-                onlineSinceMinutes: (minutesDiff) => `Last seen ${minutesDiff} ${this.dayTitle(minutesDiff, ['minutes', 'minute'])} ago`,
+                onlineSinceDays: (daysDiff) => `Last seen ${daysDiff} ${this.dayTitle(daysDiff, ['days', 'day', 'days'])} ago`,
+                onlineSinceHours: (hoursDiff) => `Last seen ${hoursDiff} ${this.dayTitle(hoursDiff, ['hours', 'hour', 'hours'])} ago`,
+                onlineSinceMinutes: (minutesDiff) => `Last seen ${minutesDiff} ${this.dayTitle(minutesDiff, ['minutes', 'minute', 'minutes'])} ago`,
                 online: 'Online',
             },
             ru: {
@@ -67,7 +67,7 @@ export default class extends Controller {
         let lastNum = number % 10;
         if (lastNum === 1) return titles[1];
         if ([2, 3, 4].includes(lastNum)) return titles[2];
-        return titles[0];
+        return titles[0];FДостижения
     }
 
     getLocale() {

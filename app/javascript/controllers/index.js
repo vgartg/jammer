@@ -78,3 +78,6 @@ application.register("autosubmit", AutosubmitController)
 
 import BgPositionPickerController from "./bg_position_picker_controller"
 application.register("bg-position-picker", BgPositionPickerController)
+
+import AchievementsPanelController from "./achievements_panel_controller"
+application.register("achievements-panel", AchievementsPanelController)
