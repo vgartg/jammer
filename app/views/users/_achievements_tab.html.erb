@@ -6,36 +6,16 @@
         <% next unless earned_keys.include?(key) %>
         <% next unless File.exist?(Rails.root.join("app/assets/images/achievements/#{key}.svg")) %>
         <% ua = user_achievements.find { |a| a.achievement_key == key } %>
-        <div class="flex flex-col items-center gap-1 group relative"
+        <div class="flex flex-col items-center gap-1 group"
              title="<%= t "achievements.#{key}.name" %> — <%= t "achievements.#{key}.description" %>">
-          <div class="relative">
-            <%= image_tag "achievements/#{key}.svg", alt: t("achievements.#{key}.name"),
-                class: "h-14 w-14 drop-shadow-md transition-transform group-hover:scale-110" %>
-          </div>
+          <%= image_tag "achievements/#{key}.svg", alt: t("achievements.#{key}.name"),
+              class: "h-14 w-14 drop-shadow-md transition-transform group-hover:scale-110" %>
           <span class="text-center text-xs font-medium text-gray-700 leading-tight">
             <%= t "achievements.#{key}.name" %>
           </span>
           <span class="text-xs text-gray-400">
             <%= ua.earned_at.strftime('%m.%Y') %>
           </span>
-          <div class="pointer-events-none absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-10
-                      w-44 rounded-lg bg-gray-900 px-3 py-2 text-xs text-white opacity-0
-                      group-hover:opacity-100 transition-opacity shadow-lg">
-            <p class="font-semibold mb-1"><%= t "achievements.#{key}.name" %></p>
-            <p class="text-gray-300"><%= t "achievements.#{key}.description" %></p>
-            <div class="mt-1">
-              <% tier_label, tier_classes = case config[:tier]
-                 when :bronze then [t('achievements.tiers.bronze'), 'bg-amber-100 text-amber-800']
-                 when :silver then [t('achievements.tiers.silver'), 'bg-gray-100 text-gray-700']
-                 when :gold   then [t('achievements.tiers.gold'),   'bg-yellow-100 text-yellow-800']
-                 when :special then [t('achievements.tiers.special'), 'bg-purple-100 text-purple-800']
-                 end %>
-              <span class="inline-block rounded-full px-2 py-0.5 text-xs font-medium <%= tier_classes %>">
-                <%= tier_label %>
-              </span>
-            </div>
-            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-          </div>
         </div>
       <% end %>
     </div>

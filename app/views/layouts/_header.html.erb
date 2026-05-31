@@ -22,6 +22,7 @@
     <div class="hidden lg:flex lg:gap-x-12">
       <%#= link_to t(''), url_for(:users) %>
       <%= link_to t('.home'), url_for(:root), class: "text-sm font-semibold leading-6 text-white" %>
+      <%= link_to t('.dashboard'), dashboard_path, class: "text-sm font-semibold leading-6 text-white" %>
       <%= link_to t('.users'), url_for(:users), class: "text-sm font-semibold leading-6 text-white" %>
       <%= link_to t('.games'), url_for(:games_showcase), class: "text-sm font-semibold leading-6 text-white" %>
       <%= link_to t('.jams'), url_for(:jams_showcase), class: "text-sm font-semibold leading-6 text-white" %>
@@ -122,6 +123,8 @@
         <div class="-my-6 divide-y divide-gray-500/25">
           <div class="space-y-2 py-6">
             <%= link_to t('.home'), root_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
+            text-white hover:bg-gray-800" %>
+            <%= link_to t('.dashboard'), dashboard_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
             text-white hover:bg-gray-800" %>
             <%= link_to t('.users'), users_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7
             text-white hover:bg-gray-800" %>

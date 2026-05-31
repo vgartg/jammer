@@ -1304,6 +1304,7 @@ ru:
     page_title: "Достижения"
     page_subtitle: "Список всех достижений платформы и условий их получения"
     all_achievements: "Все достижения"
+    my_achievements: "Мои достижения"
     none_earned: "Достижений пока нет."
     categories:
       game_rated: "Рейтинги игр"

@@ -4,23 +4,21 @@
     <%# --- Earned badges --- %>
     <% if earned_keys.any? %>
       <div>
-        <h3 class="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3"><%= t 'achievements.page_title' %></h3>
-        <div class="flex flex-wrap gap-3">
+        <h3 class="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3"><%= t 'achievements.my_achievements' %></h3>
+        <div class="grid grid-cols-4 gap-2">
           <% AchievementService::ACHIEVEMENTS.each do |key, cfg| %>
             <% next unless earned_keys.include?(key) %>
             <% next unless File.exist?(Rails.root.join("app/assets/images/achievements/#{key}.svg")) %>
-            <div class="relative group flex flex-col items-center gap-1 cursor-default">
+            <%= link_to achievements_path, data: { turbo_frame: "_top" },
+                  class: "flex flex-col items-center gap-1 rounded-lg bg-gray-800/60 hover:bg-gray-700/60 transition-colors p-2 text-center",
+                  title: "#{t "achievements.#{key}.name"} — #{t "achievements.#{key}.description"}" do %>
               <%= image_tag "achievements/#{key}.svg",
                     alt: t("achievements.#{key}.name"),
-                    class: "h-10 w-10 drop-shadow-md" %>
-              <div class="pointer-events-none absolute bottom-full mb-1 left-1/2 -translate-x-1/2 z-20
-                          w-40 rounded-lg bg-gray-800 border border-gray-600 px-3 py-2 text-xs text-white
-                          opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
-                <p class="font-semibold"><%= t "achievements.#{key}.name" %></p>
-                <p class="text-gray-400 mt-0.5 text-[11px]"><%= t "achievements.#{key}.description" %></p>
-                <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
-              </div>
-            </div>
+                    class: "h-9 w-9 drop-shadow-md mx-auto" %>
+              <span class="text-[10px] text-gray-300 leading-tight line-clamp-2 w-full">
+                <%= t "achievements.#{key}.name" %>
+              </span>
+            <% end %>
           <% end %>
         </div>
       </div>
