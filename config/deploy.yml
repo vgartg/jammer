@@ -39,7 +39,6 @@ registry:
 builder:
   arch: amd64
   context: .
-  driver: docker
 
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
