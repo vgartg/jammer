@@ -71,6 +71,7 @@ gem 'net-imap', '>= 0.6.4'
 gem 'uri', '>= 1.0.4'
 gem 'thor', '>= 1.4.0'
 gem 'pagy', '~> 9.3'
+gem 'rails_autolink', '~> 1.1'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

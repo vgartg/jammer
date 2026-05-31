@@ -27,8 +27,8 @@
               <span class="text-xs text-gray-500 ml-auto"><%= ann.published_at&.strftime('%d.%m.%Y') %></span>
             </div>
             <% if ann.body.present? %>
-              <div class="text-sm text-gray-300 leading-relaxed [&>p]:mb-3 [&>p:last-child]:mb-0">
-                <%= simple_format ann.body, class: 'text-sm text-gray-300' %>
+              <div class="text-sm text-gray-300 leading-relaxed [&>p]:mb-3 [&>p:last-child]:mb-0 [&_a]:text-indigo-400 [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-indigo-300">
+                <%= format_announcement_body(ann.body) %>
               </div>
             <% end %>
           </div>

@@ -315,6 +315,10 @@ GEM
     rails-i18n (8.1.0)
       i18n (>= 0.7, < 2)
       railties (>= 8.0.0, < 9)
+    rails_autolink (1.1.8)
+      actionview (> 3.1)
+      activesupport (> 3.1)
+      railties (> 3.1)
     railties (8.0.5)
       actionpack (= 8.0.5)
       activesupport (= 8.0.5)
@@ -468,6 +472,7 @@ DEPENDENCIES
   rack-session (>= 2.1.1)
   rails (~> 8.0.4, >= 8.0.4.1)
   rails-i18n
+  rails_autolink (~> 1.1)
   rdoc (~> 7.2)
   rest-client
   rexml (>= 3.4.2)
