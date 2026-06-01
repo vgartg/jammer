@@ -7,6 +7,6 @@ class HomeController < ApplicationController
       games: Game.where(status: 1).count,
       users: User.count
     }
-    @recent_jams = Jam.order(created_at: :desc).limit(6)
+    @recent_jams = Jam.where(status: 1).order(created_at: :desc).limit(6)
   end
 end

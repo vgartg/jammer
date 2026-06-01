@@ -2,7 +2,7 @@ module Admin
   class UsersController < ApplicationController
     include Sortable
     before_action :admin?
-    before_action :set_user!, only: %i[edit update destroy]
+    before_action :set_user!, only: %i[edit update destroy destroy_notification]
     helper_method :find_user_friend
 
     def index
@@ -66,6 +66,12 @@ module Admin
       create_administration_record(current_user, @user, {}, 'delete') if @user.destroy
       flash[:success] = t('controllers.admin.users.deleted')
       redirect_to admin_users_path
+    end
+
+    def destroy_notification
+      notification = @user.notifications.find(params[:notification_id])
+      notification.destroy
+      redirect_to edit_admin_user_path(@user), status: :see_other
     end
 
     def freeze

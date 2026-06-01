@@ -167,6 +167,7 @@ Rails.application.routes.draw do
       member do
         post :freeze
         post :unfreeze
+        delete :destroy_notification
       end
     end
     get '/visits_data', to: 'visits#visits_data'
