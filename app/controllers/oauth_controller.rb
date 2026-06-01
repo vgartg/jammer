@@ -32,11 +32,11 @@ class OauthController < ApplicationController
     end
   end
 
-  KNOWN_OAUTH_FAILURES = %w[csrf_detected invalid_credentials access_denied invalid_session unknown].freeze
+  MAX_AVATAR_SIZE = 5 * 1024 * 1024
 
   def failure
     raw = params[:message].to_s
-    message = KNOWN_OAUTH_FAILURES.include?(raw) ? raw.humanize : 'Unknown error'
+    message = raw.match?(/\A\w+\z/) ? raw.humanize : 'Unknown error'
     flash[:failure] = t('oauth.failure', message: message)
     redirect_to login_path
   end
@@ -50,15 +50,20 @@ class OauthController < ApplicationController
     return unless uri.is_a?(URI::HTTP)
 
     require 'open-uri'
-    uri.open do |download|
-      data = download.read
-      content_type = download.content_type
+    uri.open('read_timeout' => 10) do |download|
+      data = download.read(MAX_AVATAR_SIZE + 1)
+      if data.bytesize > MAX_AVATAR_SIZE
+        Rails.logger.warn "OAuth avatar too large for user #{user.id}, skipping"
+        next
+      end
       user.avatar.attach(
         io: StringIO.new(data),
         filename: "avatar_#{user.id}.jpg",
-        content_type: content_type
+        content_type: download.content_type
       )
     end
+  rescue URI::InvalidURIError
+    Rails.logger.warn "OAuth avatar has invalid URL for user #{user.id}: #{image_url}"
   rescue => e
     Rails.logger.warn "OAuth avatar download failed for user #{user.id}: #{e.message}"
   end
