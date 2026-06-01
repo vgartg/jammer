@@ -35,7 +35,7 @@
                          data: { action: "input->jams#validateStartDates" },
                          class: "flatpickr" %>
       </div>
-      <div id="start_date-error-message" style="color: red;"></div>
+      <div id="start_date-error-message" class="mt-1 text-sm text-red-400"></div>
     </div>
 
     <div class="mt-4">
@@ -47,7 +47,7 @@
                          data: { action: "input->jams#validateDeadline" },
                          class: "flatpickr" %>
       </div>
-      <div id="deadline-error-message" style="color: red;"></div>
+      <div id="deadline-error-message" class="mt-1 text-sm text-red-400"></div>
     </div>
 
     <div class="mt-4">
@@ -59,7 +59,7 @@
                          data: { action: "input->jams#validateEndDates" },
                          class: "flatpickr" %>
       </div>
-      <div id="end_date-error-message" style="color: red;"></div>
+      <div id="end_date-error-message" class="mt-1 text-sm text-red-400"></div>
     </div>
 
 
@@ -126,7 +126,7 @@
           <label class="relative flex items-center justify-center rounded-lg border px-4 py-2 shadow-sm cursor-pointer
             text-center break-words transition transform hover:scale-105
             <%= 'bg-indigo-500 border-indigo-500 text-white' if f.object.tag_ids.include?(b.object.id) %>
-            <%= 'border-gray-300 text-gray-700' unless f.object.tag_ids.include?(b.object.id) %>"
+            <%= 'border-gray-600 text-gray-300' unless f.object.tag_ids.include?(b.object.id) %>"
                  style="min-height: 50px; max-width: 150px;"
                  data-controller="jams"
                  data-action="click->jams#toggleSelection"

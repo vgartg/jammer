@@ -56,7 +56,7 @@
               <% if @jam.tags.any? %>
                 <ul class="flex flex-wrap gap-2">
                   <% @jam.tags.each do |tag| %>
-                    <li class="bg-indigo-200 px-4 py-2 rounded-full text-sm font-medium text-indigo-700">
+                    <li class="bg-indigo-900/50 px-4 py-2 rounded-full text-sm font-medium text-indigo-300">
                       <%= tag.name %>
                     </li>
                   <% end %>
@@ -104,7 +104,7 @@
                   <div class="mt-1 flex flex-wrap gap-2">
                     <% hosts.each do |host| %>
                       <%= link_to host.name, profile_path_for(host),
-                                  class: "bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-indigo-200" %>
+                                  class: "bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full text-sm font-medium hover:bg-indigo-900" %>
                     <% end %>
                   </div>
                 <% else %>
@@ -117,7 +117,7 @@
           <% winners = @jam.jam_nominations.where.not(winner_game_id: nil).order(:position, :id) %>
 
           <% if winners.any? %>
-            <div class="mt-10 rounded-lg border bg-white p-4">
+            <div class="mt-10 rounded-xl bg-gray-800 ring-1 ring-white/10 p-4">
               <h2 class="text-lg font-semibold text-white"><%= t('.nominations_winners') %></h2>
 
               <div class="mt-4 space-y-3">
@@ -125,12 +125,12 @@
                   <% game = Game.find_by(id: n.winner_game_id) %>
                   <% next unless game %>
 
-                  <div class="flex items-center justify-between rounded border px-3 py-2">
+                  <div class="flex items-center justify-between rounded-lg border border-white/10 bg-gray-700/50 px-3 py-2">
                     <div class="font-medium text-white"><%= n.title %></div>
                     <div>
                       <%= link_to game.name,
                                   game_profile_path(game, jam_id: @jam.id),
-                                  class: "text-indigo-600 hover:text-indigo-900" %>
+                                  class: "text-indigo-400 hover:text-indigo-300" %>
                     </div>
                   </div>
                 <% end %>
