@@ -33,7 +33,7 @@
           <% else %>
             <%= link_to t('home.cta_join'), register_path,
                 class: "rounded-md bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors" %>
-            <%= link_to t('home.cta_explore'), jams_showcase_path,
+            <%= link_to jams_showcase_path,
                 class: "text-sm font-semibold leading-6 text-white" do %>
               <%= t 'home.cta_explore' %> <span aria-hidden="true">→</span>
             <% end %>
