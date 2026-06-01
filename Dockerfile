@@ -57,10 +57,8 @@ RUN yarn install --frozen-lockfile
 # Copy application code
 COPY . .
 
-# Build SQLite ICU extension
-RUN mkdir -p /rails/lib/sqlite_icu && \
-    curl -fsSL https://sqlite.org/src/raw/ext/icu/icu.c?ci=tip -o /tmp/icu.c && \
-    gcc -fPIC -shared /tmp/icu.c $(pkg-config --libs --cflags icu-uc icu-io) -o /rails/lib/sqlite_icu/icu.so
+# Build SQLite ICU extension (source vendored in lib/sqlite_icu/icu.c)
+RUN gcc -fPIC -shared /rails/lib/sqlite_icu/icu.c $(pkg-config --libs --cflags icu-uc icu-io) -o /rails/lib/sqlite_icu/icu.so
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
