@@ -20,7 +20,6 @@
     </div>
 
     <div class="hidden lg:flex lg:gap-x-3 xl:gap-x-6">
-      <%= link_to t('.home'), url_for(:root), class: "text-sm font-semibold leading-6 text-white whitespace-nowrap" %>
       <%= link_to t('.dashboard'), news_path, class: "text-sm font-semibold leading-6 text-white whitespace-nowrap" %>
       <%= link_to t('.users'), url_for(:users), class: "text-sm font-semibold leading-6 text-white whitespace-nowrap" %>
       <%= link_to t('.games'), url_for(:games_showcase), class: "text-sm font-semibold leading-6 text-white whitespace-nowrap" %>
@@ -122,7 +121,6 @@
       <div class="mt-6 flow-root">
         <div class="-my-6 divide-y divide-gray-500/25">
           <div class="space-y-2 py-6">
-            <%= link_to t('.home'), root_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800" %>
             <%= link_to t('.dashboard'), news_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800" %>
             <%= link_to t('.users'), users_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800" %>
             <%= link_to t('.games'), games_showcase_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800" %>

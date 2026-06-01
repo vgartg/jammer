@@ -55,6 +55,14 @@ class JamsController < ApplicationController
     end
     @winner_titles_by_game_id = winner_map
 
+    if current_user && @jam.judge?(current_user)
+      reviewed_ids = Review.where(jam_id: @jam.id, user_id: current_user.id).distinct.pluck(:game_id)
+      picked_ids   = JamCriterionPick.where(jam_id: @jam.id, voter_id: current_user.id).distinct.pluck(:game_id)
+      @judged_game_ids = (reviewed_ids + picked_ids).to_set
+    else
+      @judged_game_ids = Set.new
+    end
+
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
       @games = Game.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
