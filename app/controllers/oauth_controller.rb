@@ -32,8 +32,12 @@ class OauthController < ApplicationController
     end
   end
 
+  KNOWN_OAUTH_FAILURES = %w[csrf_detected invalid_credentials access_denied callback_error system_error].freeze
+
   def failure
-    flash[:failure] = t('oauth.failure', message: params[:message].to_s.humanize)
+    raw = params[:message].to_s
+    message = KNOWN_OAUTH_FAILURES.include?(raw) ? raw.humanize : 'Unknown error'
+    flash[:failure] = t('oauth.failure', message: message)
     redirect_to login_path
   end
 
@@ -42,13 +46,17 @@ class OauthController < ApplicationController
   def attach_oauth_avatar(user, image_url)
     return if image_url.blank? || user.avatar.attached?
 
+    uri = URI.parse(image_url)
+    return unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+
     require 'open-uri'
-    download = URI.open(image_url)  # rubocop:disable Security/Open
-    user.avatar.attach(
-      io: download,
-      filename: "avatar_#{user.id}.jpg",
-      content_type: download.content_type
-    )
+    uri.open do |download|
+      user.avatar.attach(
+        io: download,
+        filename: "avatar_#{user.id}.jpg",
+        content_type: download.content_type
+      )
+    end
   rescue => e
     Rails.logger.warn "OAuth avatar download failed for user #{user.id}: #{e.message}"
   end

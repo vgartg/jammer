@@ -130,8 +130,8 @@ module Admin
     def sort_users(users)
       sortable_columns = %w[id name email role created_at]
       sort_by = sortable_columns.include?(params[:sort_by]) ? params[:sort_by] : 'id'
-      direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
-      users.order("#{sort_by} #{direction}")
+      direction = params[:direction] == 'desc' ? :desc : :asc
+      users.order(sort_by => direction)
     end
 
     def search_users(users)
