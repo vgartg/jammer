@@ -35,8 +35,8 @@ class OauthController < ApplicationController
   MAX_AVATAR_SIZE = 5 * 1024 * 1024
 
   def failure
-    raw = params[:message].to_s
-    message = raw.match?(/\A\w+\z/) ? raw.humanize : 'Unknown error'
+    error_type = request.env['omniauth.error.type']&.to_s || ''
+    message = error_type.match?(/\A\w+\z/) ? error_type.humanize : 'Unknown error'
     flash[:failure] = t('oauth.failure', message: message)
     redirect_to login_path
   end

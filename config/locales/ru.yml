@@ -112,9 +112,27 @@ ru:
     confirm: "Вы уверены?"
   search: "Поиск..."
   home:
-    title: "Прототип сервиса Jammer"
-    description: "Онлайн-сервис для размещения, продажи и загрузки инди-игр"
+    title: "Jammer — платформа для гейм-джемов"
+    description: "Участвуй в игровых джемах, загружай свои игры и открывай новые инди-проекты"
     read_mode: "Узнать больше"
+    cta_join: "Присоединиться"
+    cta_explore: "Все джемы"
+    stats_jams: "Джемов проведено"
+    stats_games: "Игр загружено"
+    stats_users: "Разработчиков"
+    jams_section: "Последние джемы"
+    features_title: "Как это работает"
+    feature_1_title: "Участвуй в джемах"
+    feature_1_desc: "Регистрируйся на игровые джемы, создавай игры за ограниченное время и соревнуйся с другими разработчиками"
+    feature_2_title: "Загружай свои игры"
+    feature_2_desc: "Делись своими играми с сообществом — прикрепляй файлы, скриншоты и описания, получай оценки от других участников"
+    feature_3_title: "Голосуй и оценивай"
+    feature_3_desc: "Играй в работы других участников, ставь оценки по разным критериям и участвуй в формировании результатов"
+    jam_active: "Активен"
+    jam_voting: "Голосование"
+    jam_finished: "Завершён"
+    jam_upcoming: "Скоро"
+    no_jams: "Джемов пока нет"
   layouts:
     header:
       home: "Главная"
@@ -165,6 +183,7 @@ ru:
       announcements_title: "Объявления платформы"
       announcement_release_badge: "Релиз"
       announcement_general_badge: "Обновление"
+      announcement_information_badge: "Информация"
       no_announcements: "Объявлений пока нет."
   games:
     create:
@@ -365,6 +384,7 @@ ru:
       remove: "Удалить"
       remove_confirm: "Вы уверены, что хотите удалить этого участника из джема?"
       remove_hint: '(Нажмите "Удалить", чтобы исключить участника)'
+      back_to_jam: "Вернуться к джему"
     show_projects:
       title: "Список проектов"
       no_projects: "Ни одна игра еще не была загружена"
@@ -373,6 +393,7 @@ ru:
       remove_project: "Удалить проект"
       remove_project_confirm: "Вы уверены, что хотите отвязать эту игру от джема?"
       remove_hint: "(Вы можете удалить проект, нажав на кнопку рядом с игрой)"
+      back_to_jam: "Вернуться к джему"
     modal_content:
       title: "Выберите"
       your_games: "Ваши игры"
@@ -994,6 +1015,7 @@ ru:
         type_label: "Тип"
         type_general: "Общее"
         type_release: "Релиз"
+        type_information: "Информация"
         title_en: "Заголовок (EN)"
         title_ru: "Заголовок (RU)"
         body_en: "Текст (EN)"

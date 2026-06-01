@@ -1,7 +1,7 @@
 class Announcement < ApplicationRecord
   belongs_to :author, foreign_key: 'author_id', class_name: 'User'
 
-  TYPES = %w[general release].freeze
+  TYPES = %w[general release information].freeze
 
   validates :title_en, :title_ru, presence: true
   validates :announcement_type, inclusion: { in: TYPES }

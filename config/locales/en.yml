@@ -112,9 +112,27 @@ en:
     confirm: "Are you sure?"
   search: "Search..."
   home:
-    title: "Jammer service prototype"
-    description: "Online service for hosting, selling and downloading indie games"
-    read_mode: "Read more"
+    title: "Jammer — game jam platform"
+    description: "Participate in game jams, upload your games and discover new indie projects"
+    read_mode: "Learn more"
+    cta_join: "Join now"
+    cta_explore: "All jams"
+    stats_jams: "Jams hosted"
+    stats_games: "Games uploaded"
+    stats_users: "Developers"
+    jams_section: "Recent jams"
+    features_title: "How it works"
+    feature_1_title: "Join jams"
+    feature_1_desc: "Sign up for game jams, create games within a time limit and compete with other developers"
+    feature_2_title: "Upload your games"
+    feature_2_desc: "Share your games with the community — attach files, screenshots and descriptions, get ratings from other participants"
+    feature_3_title: "Vote and rate"
+    feature_3_desc: "Play other participants' entries, rate them by different criteria and help shape the final results"
+    jam_active: "Active"
+    jam_voting: "Voting"
+    jam_finished: "Finished"
+    jam_upcoming: "Upcoming"
+    no_jams: "No jams yet"
   layouts:
     header:
       home: "Home"
@@ -165,6 +183,7 @@ en:
       announcements_title: "Platform Announcements"
       announcement_release_badge: "Release"
       announcement_general_badge: "Update"
+      announcement_information_badge: "Information"
       no_announcements: "No announcements yet."
   games:
     create:
@@ -365,6 +384,7 @@ en:
       remove: "Remove"
       remove_confirm: "Are you sure you want to remove this participant from the jam?"
       remove_hint: '(Click "Remove" to exclude a participant)'
+      back_to_jam: "Back to jam"
     show_projects:
       title: "Projects"
       no_projects: "No games have been downloaded yet"
@@ -373,6 +393,7 @@ en:
       remove_project: "Remove project"
       remove_project_confirm: "Are you sure you want to detach this game from the jam?"
       remove_hint: "(You can remove a project by clicking the button next to the game)"
+      back_to_jam: "Back to jam"
     modal_content:
       title: "Choose"
       your_games: "Your games"
@@ -994,6 +1015,7 @@ en:
         type_label: "Type"
         type_general: "General"
         type_release: "Release"
+        type_information: "Information"
         title_en: "Title (EN)"
         title_ru: "Title (RU)"
         body_en: "Body (EN)"

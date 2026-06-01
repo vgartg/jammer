@@ -1,5 +1,13 @@
 <div class="bg-gray-900 min-h-screen">
   <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="mb-4">
+      <%= link_to jam_profile_path(@jam), class: "inline-flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors" do %>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+        </svg>
+        <%= t '.back_to_jam' %>
+      <% end %>
+    </div>
     <div class="flex justify-between items-center mb-6">
       <% if @users.empty? %>
         <h2 class="text-2xl font-bold tracking-tight text-white"><%= t '.no_participants' %></h2>
