@@ -67,8 +67,9 @@ class Game < ActiveRecord::Base
 
   def game_file_format
     if game_file.attached?
-      acceptable_types = %w[application/zip application/x-rar-compressed application/x-7z-compressed]
-      unless acceptable_types.include?(game_file.content_type)
+      acceptable_extensions = %w[.zip .rar .7z]
+      extension = File.extname(game_file.filename.to_s).downcase
+      unless acceptable_extensions.include?(extension)
         errors.add(:game_file, :wrong_format)
       end
     end

@@ -102,7 +102,9 @@ class GamesController < ApplicationController
   end
 
   def create
-    @game = Game.new(game_params.merge(author: current_user))
+    gp = game_params
+    gp = gp.merge(cover: params[:cover_cache]) if gp[:cover].blank? && params[:cover_cache].present?
+    @game = Game.new(gp.merge(author: current_user))
     @tags = Tag.all
     if @game.save
       User.notify_staff(current_user, 'awaiting_game_moderation', @game)

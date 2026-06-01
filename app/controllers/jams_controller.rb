@@ -582,9 +582,9 @@ class JamsController < ApplicationController
 
   def invalid_date
     failures = []
-    startDate = Date.parse(params[:jam][:start_date])
-    deadline = Date.parse(params[:jam][:deadline])
-    endDate = Date.parse(params[:jam][:end_date])
+    startDate = Date.parse(params[:jam][:start_date].to_s)
+    deadline  = Date.parse(params[:jam][:deadline].to_s)
+    endDate   = Date.parse(params[:jam][:end_date].to_s)
 
     deadline < startDate ? failures.push(t('controllers.jams.date_deadline_before_start')) : failures
     endDate < deadline ? failures.push(t('controllers.jams.date_end_before_deadline')) : failures
@@ -593,6 +593,8 @@ class JamsController < ApplicationController
     endDate.year < 2000 ? failures.push(t('controllers.jams.date_invalid_end')) : failures
 
     failures
+  rescue ArgumentError, TypeError
+    [t('controllers.jams.invalid_dates')]
   end
 
   def jam_manage_check
