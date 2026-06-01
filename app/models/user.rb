@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   validates :background_position, format: { with: /\A[\w\s.%]+\z/ }, allow_blank: true
 
   validate :password_length, on: :create, unless: :oauth_user?
+  validate :birthday_not_in_future
   has_secure_password validations: false
   has_one_attached :avatar
   has_one_attached :background_image
@@ -126,6 +127,12 @@ class User < ActiveRecord::Base
     return unless password.nil? || password.length < 5
 
     errors.add(:password, type: :invalid, message: 'must be at least 5 characters long')
+  end
+
+  def birthday_not_in_future
+    return if birthday.blank?
+
+    errors.add(:birthday, :invalid, message: 'cannot be in the future') if birthday > Date.today
   end
 
   def friend_request(user)

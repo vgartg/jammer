@@ -52,7 +52,9 @@
               <% notifications.first(8).each do |notification| %>
                 <% next if notification.notifiable.nil? && notification.actor.nil? %>
 
-                <div class="flex items-start gap-3 rounded-xl p-3 border <%= notification.read ? 'border-gray-700/50' : 'border-indigo-700/40' %> bg-gray-800 hover:border-gray-600/80 transition-all group">
+                <div class="flex items-start gap-3 rounded-xl p-3 border <%= notification.read ? 'border-gray-700/50' : 'border-indigo-700/40' %> bg-gray-800 hover:border-gray-600/80 transition-all group cursor-pointer"
+                     data-href="<%= notifications_path(anchor: "notification-#{notification.id}") %>"
+                     data-action="click->notifications#openNotification">
 
                   <%# Аватар %>
                   <div class="flex-shrink-0">

@@ -17,7 +17,7 @@
         <% next if notification.notifiable_type == 'UserAchievement' && notification.notifiable.nil? %>
         <% rendered_any = true %>
 
-        <div class="flex items-start gap-4 bg-gray-800 rounded-2xl p-4 border <%= notification.read ? 'border-gray-700/50' : 'border-indigo-700/40' %> hover:border-gray-600/80 transition-all group">
+        <div id="notification-<%= notification.id %>" class="flex items-start gap-4 bg-gray-800 rounded-2xl p-4 border <%= notification.read ? 'border-gray-700/50' : 'border-indigo-700/40' %> hover:border-gray-600/80 transition-all group">
 
           <%# Аватар %>
           <div class="flex-shrink-0">
@@ -165,3 +165,15 @@
     <% end %>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const el = document.querySelector(hash);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('!border-indigo-500', 'ring-1', 'ring-indigo-500/50');
+    setTimeout(() => el.classList.remove('!border-indigo-500', 'ring-1', 'ring-indigo-500/50'), 3000);
+  });
+</script>
