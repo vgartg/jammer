@@ -32,8 +32,12 @@ class OauthController < ApplicationController
     end
   end
 
+  MAX_AVATAR_SIZE = 5 * 1024 * 1024
+
   def failure
-    flash[:failure] = t('oauth.failure', message: params[:message].to_s.humanize)
+    raw = params[:message].to_s
+    message = raw.match?(/\A\w+\z/) ? raw.humanize : 'Unknown error'
+    flash[:failure] = t('oauth.failure', message: message)
     redirect_to login_path
   end
 
@@ -42,13 +46,24 @@ class OauthController < ApplicationController
   def attach_oauth_avatar(user, image_url)
     return if image_url.blank? || user.avatar.attached?
 
+    uri = URI.parse(image_url)
+    return unless uri.is_a?(URI::HTTP)
+
     require 'open-uri'
-    download = URI.open(image_url)  # rubocop:disable Security/Open
-    user.avatar.attach(
-      io: download,
-      filename: "avatar_#{user.id}.jpg",
-      content_type: download.content_type
-    )
+    uri.open('read_timeout' => 10) do |download|
+      data = download.read(MAX_AVATAR_SIZE + 1)
+      if data.bytesize > MAX_AVATAR_SIZE
+        Rails.logger.warn "OAuth avatar too large for user #{user.id}, skipping"
+        next
+      end
+      user.avatar.attach(
+        io: StringIO.new(data),
+        filename: "avatar_#{user.id}.jpg",
+        content_type: download.content_type
+      )
+    end
+  rescue URI::InvalidURIError
+    Rails.logger.warn "OAuth avatar has invalid URL for user #{user.id}: #{image_url}"
   rescue => e
     Rails.logger.warn "OAuth avatar download failed for user #{user.id}: #{e.message}"
   end

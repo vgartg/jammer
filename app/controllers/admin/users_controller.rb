@@ -1,5 +1,6 @@
 module Admin
   class UsersController < ApplicationController
+    include Sortable
     before_action :admin?
     before_action :set_user!, only: %i[edit update destroy]
     helper_method :find_user_friend
@@ -128,10 +129,7 @@ module Admin
     end
 
     def sort_users(users)
-      sortable_columns = %w[id name email role created_at]
-      sort_by = sortable_columns.include?(params[:sort_by]) ? params[:sort_by] : 'id'
-      direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
-      users.order("#{sort_by} #{direction}")
+      sort_relation(users, sortable_columns: %w[id name email role created_at])
     end
 
     def search_users(users)

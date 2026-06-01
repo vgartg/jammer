@@ -55,6 +55,14 @@ class JamsController < ApplicationController
     end
     @winner_titles_by_game_id = winner_map
 
+    if current_user && @jam.judge?(current_user)
+      reviewed_ids = Review.where(jam_id: @jam.id, user_id: current_user.id).distinct.pluck(:game_id)
+      picked_ids   = JamCriterionPick.where(jam_id: @jam.id, voter_id: current_user.id).distinct.pluck(:game_id)
+      @judged_game_ids = (reviewed_ids + picked_ids).to_set
+    else
+      @judged_game_ids = Set.new
+    end
+
     if should_search?
       lower_case_search = "%#{params[:search].downcase}%"
       @games = Game.where("LOWER(games.name) LIKE ? OR LOWER(games.description) LIKE ?",
@@ -569,20 +577,23 @@ class JamsController < ApplicationController
 
   def game_params
     params.require(:game)
-          .permit(:name, :description, :cover, :game_file, tag_ids: [])
+          .permit(:name, :description, :cover, :cover_cache, :game_file, tag_ids: [])
   end
 
   def invalid_date
     failures = []
-    startDate = Date.parse(params[:jam][:start_date])
-    deadline = Date.parse(params[:jam][:deadline])
-    endDate = Date.parse(params[:jam][:end_date])
 
-    deadline < startDate ? failures.push(t('controllers.jams.date_deadline_before_start')) : failures
-    endDate < deadline ? failures.push(t('controllers.jams.date_end_before_deadline')) : failures
-    startDate.year < 2000 ? failures.push(t('controllers.jams.date_invalid_start')) : failures
-    deadline.year < 2000 ? failures.push(t('controllers.jams.date_invalid_deadline')) : failures
-    endDate.year < 2000 ? failures.push(t('controllers.jams.date_invalid_end')) : failures
+    start_date = (Date.parse(params.dig(:jam, :start_date).to_s) rescue (failures << t('controllers.jams.date_invalid_start'); nil))
+    deadline   = (Date.parse(params.dig(:jam, :deadline).to_s)   rescue (failures << t('controllers.jams.date_invalid_deadline'); nil))
+    end_date   = (Date.parse(params.dig(:jam, :end_date).to_s)   rescue (failures << t('controllers.jams.date_invalid_end'); nil))
+
+    return failures if failures.any?
+
+    failures << t('controllers.jams.date_deadline_before_start') if deadline < start_date
+    failures << t('controllers.jams.date_end_before_deadline')   if end_date < deadline
+    failures << t('controllers.jams.date_invalid_start')         if start_date.year < 2000
+    failures << t('controllers.jams.date_invalid_deadline')      if deadline.year < 2000
+    failures << t('controllers.jams.date_invalid_end')           if end_date.year < 2000
 
     failures
   end

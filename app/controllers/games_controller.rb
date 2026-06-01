@@ -162,8 +162,10 @@ class GamesController < ApplicationController
   end
 
   def game_params
-    params.require(:game)
-          .permit(:name, :description, :cover, :game_file, tag_ids: [])
+    gp = params.require(:game)
+               .permit(:name, :description, :cover, :cover_cache, :game_file, tag_ids: [])
+    gp = gp.merge(cover: gp.delete(:cover_cache)) if gp[:cover].blank? && gp[:cover_cache].present?
+    gp
   end
 
   def submission_params

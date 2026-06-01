@@ -1,41 +1,44 @@
-<div class="p-4 rounded border bg-white">
-  <h2 class="text-lg font-medium mb-3"><%= t('jams.jury_contributors_table.title') %></h2>
+<div class="p-4 rounded-xl bg-gray-800">
+  <h2 class="text-lg font-medium mb-3 text-white"><%= t('jams.jury_contributors_table.title') %></h2>
 
   <%= form_with url: bulk_update_contributors_jam_path(jam), method: :patch do %>
     <table class="w-full text-sm">
       <thead>
-      <tr class="text-left border-b">
-        <th class="py-2"><%= t('jams.jury_contributors_table.user') %></th>
-        <th class="py-2"><%= t('jams.jury_contributors_table.status') %></th>
-        <th class="py-2"><%= t('jams.jury_contributors_table.host') %></th>
-        <th class="py-2"><%= t('jams.jury_contributors_table.admin') %></th>
-        <th class="py-2"><%= t('jams.jury_contributors_table.judge') %></th>
-        <th class="py-2"><%= t('jams.jury_contributors_table.actions') %></th>
+      <tr class="text-left border-b border-white/10">
+        <th class="py-2 text-gray-300"><%= t('jams.jury_contributors_table.user') %></th>
+        <th class="py-2 text-gray-300"><%= t('jams.jury_contributors_table.status') %></th>
+        <th class="py-2 text-gray-300"><%= t('jams.jury_contributors_table.host') %></th>
+        <th class="py-2 text-gray-300"><%= t('jams.jury_contributors_table.admin') %></th>
+        <th class="py-2 text-gray-300"><%= t('jams.jury_contributors_table.judge') %></th>
+        <th class="py-2 text-gray-300"><%= t('jams.jury_contributors_table.actions') %></th>
       </tr>
       </thead>
 
       <tbody>
       <% contributors.each do |c| %>
-        <tr class="border-b">
+        <tr class="border-b border-white/10">
           <td class="py-2">
-            <%= link_to c.user.name, profile_path_for(c.user), class: "text-indigo-600 hover:text-indigo-900" %>
+            <%= link_to c.user.name, profile_path_for(c.user), class: "text-indigo-400 hover:text-indigo-300" %>
           </td>
 
-          <td class="py-2"><%= c.status %></td>
+          <td class="py-2 text-gray-300"><%= c.status %></td>
 
           <td class="py-2">
             <%= hidden_field_tag "contributors[#{c.id}][host]", "0" %>
-            <%= check_box_tag "contributors[#{c.id}][host]", "1", c.host %>
+            <%= check_box_tag "contributors[#{c.id}][host]", "1", c.host,
+                              class: "h-4 w-4 rounded border-gray-600 bg-gray-700 text-indigo-600 focus:ring-indigo-500" %>
           </td>
 
           <td class="py-2">
             <%= hidden_field_tag "contributors[#{c.id}][admin]", "0" %>
-            <%= check_box_tag "contributors[#{c.id}][admin]", "1", c.admin %>
+            <%= check_box_tag "contributors[#{c.id}][admin]", "1", c.admin,
+                              class: "h-4 w-4 rounded border-gray-600 bg-gray-700 text-indigo-600 focus:ring-indigo-500" %>
           </td>
 
           <td class="py-2">
             <%= hidden_field_tag "contributors[#{c.id}][judge]", "0" %>
-            <%= check_box_tag "contributors[#{c.id}][judge]", "1", c.judge %>
+            <%= check_box_tag "contributors[#{c.id}][judge]", "1", c.judge,
+                              class: "h-4 w-4 rounded border-gray-600 bg-gray-700 text-indigo-600 focus:ring-indigo-500" %>
           </td>
 
           <td class="py-2 flex gap-2">

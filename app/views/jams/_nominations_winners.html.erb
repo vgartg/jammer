@@ -1,18 +1,20 @@
-<div class="mt-8 p-4 rounded border bg-white">
-  <h2 class="text-xl font-medium mb-2"><%= t('jams.nominations_winners.title') %></h2>
+<div class="mt-8 p-4 rounded-xl bg-gray-800 ring-1 ring-white/10">
+  <h2 class="text-xl font-medium mb-2 text-white"><%= t('jams.nominations_winners.title') %></h2>
 
   <% if nominations.empty? %>
-    <div class="text-sm text-gray-500"><%= t('jams.nominations_winners.empty') %></div>
+    <div class="text-sm text-gray-400"><%= t('jams.nominations_winners.empty') %></div>
   <% else %>
     <div class="space-y-3">
       <% nominations.each do |n| %>
-        <div class="flex items-center justify-between gap-3 border rounded p-3">
-          <div class="font-medium text-gray-900"><%= n.title %></div>
+        <div class="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-gray-700/50 p-3">
+          <div class="font-medium text-white"><%= n.title %></div>
 
           <%# ВАЖНО: никаких form_with тут %>
           <input type="hidden" name="nominations_winners[][id]" value="<%= n.id %>">
 
-          <select name="nominations_winners[][winner_game_id]" class="rounded border px-3 py-2">
+          <select name="nominations_winners[][winner_game_id]"
+                  class="rounded-lg bg-gray-700 border-0 ring-1 ring-white/10 px-3 py-2 text-sm text-white
+                         focus:ring-2 focus:ring-indigo-500 focus:outline-none">
             <option value=""><%= t('jams.nominations_winners.not_selected') %></option>
             <% games.each do |g| %>
               <option value="<%= g.id %>" <%= "selected" if n.winner_game_id == g.id %>>

@@ -1,5 +1,6 @@
 module Admin
   class JamsController < ApplicationController
+    include Sortable
     before_action :admin?
     before_action :set_jam!, only: %i[edit update destroy]
 
@@ -47,10 +48,7 @@ module Admin
     end
 
     def sort_jams(jams)
-      sortable_columns = %w[id author_id name status created_at]
-      sort_by = sortable_columns.include?(params[:sort_by]) ? params[:sort_by] : 'id'
-      direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
-      jams.order("#{sort_by} #{direction}")
+      sort_relation(jams, sortable_columns: %w[id author_id name status created_at])
     end
 
     def search_jams(jams)

@@ -7,3 +7,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  header[role="banner"] {
+    padding-top: env(safe-area-inset-top);
+    background-color: #111827; /* gray-900 fills the notch area */
+  }
+}

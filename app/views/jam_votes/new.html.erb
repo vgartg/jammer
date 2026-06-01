@@ -2,6 +2,14 @@
   <div class="pb-16 pt-6 sm:pb-24">
     <div class="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
 
+      <%= link_to jam_show_projects_path(@jam),
+            class: "inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-200 transition-colors mb-6" do %>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+        </svg>
+        <%= @jam.name %>
+      <% end %>
+
       <div class="flex justify-between items-center mb-8">
         <div>
           <h1 class="text-2xl font-medium text-white break-all"><%= @game.name %></h1>

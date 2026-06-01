@@ -1,5 +1,6 @@
 module Moderator
   class GamesController < ApplicationController
+    include Sortable
     before_action :authenticate_user
     before_action :moderator?
     before_action :set_game!, only: %i[edit update destroy]
@@ -48,10 +49,7 @@ module Moderator
     end
 
     def sort_games(games)
-      sortable_columns = %w[id author_id name status created_at]
-      sort_by = sortable_columns.include?(params[:sort_by]) ? params[:sort_by] : 'id'
-      direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
-      games.order("#{sort_by} #{direction}")
+      sort_relation(games, sortable_columns: %w[id author_id name status created_at])
     end
 
     def search_games(games)

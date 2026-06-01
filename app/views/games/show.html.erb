@@ -1,6 +1,15 @@
 <div id="page" class="bg-gray-900 min-h-screen">
   <div class="pb-16 pt-6 sm:pb-24">
     <div class="mx-auto mt-8 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <% if @jam_id.present? && @jam %>
+        <%= link_to jam_show_projects_path(@jam),
+              class: "inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-200 transition-colors mb-6" do %>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+          </svg>
+          <%= @jam.name %>
+        <% end %>
+      <% end %>
       <div class="lg:grid lg:grid-cols-12 lg:gap-x-8">
         <div class="lg:col-span-5 lg:col-start-8">
           <div class="flex justify-between">
@@ -251,7 +260,7 @@
             <% end %>
           <% end %>
 
-          <% if @jam_id.present? && @reviews.present? %>
+          <% if @jam_id.present? && @reviews.present? && !(current_user && @jam && @jam.can_vote_as_jury?(current_user)) %>
             <div class="mt-8 text-center">
               <h2 class="text-lg font-semibold text-white">
                 <% rs = @jam.rating_setting %>
@@ -381,9 +390,12 @@
             </h2>
             <div class="mt-4">
               <% if @game.game_file.attached? %>
-                <p class="text-red-600">
-                  <%= t '.warning' %>
-                </p>
+                <div class="flex items-center gap-2 text-gray-400 text-sm mb-2">
+                  <svg class="w-4 h-4 shrink-0 text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
+                  </svg>
+                  <span><%= t '.warning' %></span>
+                </div>
                 <a href="<%= url_for(@game.game_file) %>" download class="text-indigo-600 hover:text-indigo-900">
                   <%= t '.download' %>
                 </a>

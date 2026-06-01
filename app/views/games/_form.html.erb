@@ -26,10 +26,11 @@
       <%= f.label :cover, t('.image'), class: "block text-sm font-medium text-white" %>
       <div class="relative mt-2">
         <div class="text-gray-500 border-dashed border-2 border-gray-400 p-6 text-center rounded-md relative">
-          <% if @game.persisted? && @game.cover.attached? %>
+          <% if @game.cover.attached? %>
             <img data-games-target="coverPreviewImg" src="<%= url_for(@game.cover) %>"
                  alt="<%= t('.cover_preview_alt') %>"
                  class="mt-4 w-full h-auto object-cover rounded-md">
+            <%= hidden_field_tag "game[cover_cache]", @game.cover.signed_id unless @game.persisted? %>
           <% else %>
             <img data-games-target="coverPreviewImg" src="#"
                  alt="<%= t('.cover_preview_alt') %>"
@@ -39,7 +40,7 @@
           <%= f.file_field :cover,
                            id: "cover-input",
                            data: { action: "change->games#updateCoverPreview" },
-                           required: !@game.persisted? ? true : false,
+                           required: !@game.cover.attached?,
                            accept: ".jpg, .jpeg, .gif, .bmp, .svg, .tif, .png",
                            class: "absolute inset-0 opacity-0 cursor-pointer" %>
           <p data-games-target="coverText" class="<%= @game.present? ? 'mt-4' : 'mt-0' %> text-sm">
