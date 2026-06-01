@@ -132,7 +132,10 @@ class User < ActiveRecord::Base
   def birthday_not_in_future
     return if birthday.blank?
 
-    errors.add(:birthday, :invalid, message: 'cannot be in the future') if birthday > Date.today
+    parsed = Date.parse(birthday.to_s)
+    errors.add(:birthday, :invalid, message: 'cannot be in the future') if parsed > Date.today
+  rescue ArgumentError
+    errors.add(:birthday, :invalid, message: 'is not a valid date')
   end
 
   def friend_request(user)
