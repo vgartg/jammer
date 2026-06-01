@@ -32,7 +32,7 @@ class OauthController < ApplicationController
     end
   end
 
-  KNOWN_OAUTH_FAILURES = %w[csrf_detected invalid_credentials access_denied callback_error system_error].freeze
+  KNOWN_OAUTH_FAILURES = %w[csrf_detected invalid_credentials access_denied invalid_session unknown].freeze
 
   def failure
     raw = params[:message].to_s
@@ -47,14 +47,16 @@ class OauthController < ApplicationController
     return if image_url.blank? || user.avatar.attached?
 
     uri = URI.parse(image_url)
-    return unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+    return unless uri.is_a?(URI::HTTP)
 
     require 'open-uri'
     uri.open do |download|
+      data = download.read
+      content_type = download.content_type
       user.avatar.attach(
-        io: download,
+        io: StringIO.new(data),
         filename: "avatar_#{user.id}.jpg",
-        content_type: download.content_type
+        content_type: content_type
       )
     end
   rescue => e
