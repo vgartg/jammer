@@ -102,9 +102,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    gp = game_params
-    gp = gp.merge(cover: params[:cover_cache]) if gp[:cover].blank? && params[:cover_cache].present?
-    @game = Game.new(gp.merge(author: current_user))
+    @game = Game.new(game_params.merge(author: current_user))
     @tags = Tag.all
     if @game.save
       User.notify_staff(current_user, 'awaiting_game_moderation', @game)
@@ -164,8 +162,10 @@ class GamesController < ApplicationController
   end
 
   def game_params
-    params.require(:game)
-          .permit(:name, :description, :cover, :game_file, tag_ids: [])
+    gp = params.require(:game)
+               .permit(:name, :description, :cover, :cover_cache, :game_file, tag_ids: [])
+    gp = gp.merge(cover: gp.delete(:cover_cache)) if gp[:cover].blank? && gp[:cover_cache].present?
+    gp
   end
 
   def submission_params
