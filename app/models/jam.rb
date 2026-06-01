@@ -71,8 +71,7 @@ class Jam < ActiveRecord::Base
     return false unless user
     return false unless rating_setting.jury_enabled
     return false unless voting_open?
-    jc = contributor_record(user)
-    jc.present? && jc.judge?
+    judge?(user)
   end
 
   def can_vote_as_audience?(user)
