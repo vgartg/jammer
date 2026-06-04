@@ -12,6 +12,7 @@
     <div class="bg-gray-800 px-6 py-12 shadow sm:rounded-lg sm:px-12 ring-1 ring-white/10">
       <%= render partial: 'helpers/errors' %>
       <form class="space-y-6" action="<%= login_path %>" method="POST">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
         <div>
           <label for="email" class="block text-sm font-medium leading-6 text-gray-200">
             <%= t '.email' %>
