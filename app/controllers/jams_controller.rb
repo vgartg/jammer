@@ -2,7 +2,7 @@
 
 class JamsController < ApplicationController
   before_action :authenticate_user, only: %i[new create edit update submit_game participate delete_project]
-  before_action :set_jam, only: %i[edit update destroy
+  before_action :set_jam, only: %i[show edit update destroy
   show_projects show_participants remove_participant remove_project
   rating_settings update_rating_settings
   jury_settings jury_invite update_contributor remove_contributor accept_contributor_invite bulk_update_contributors
@@ -119,13 +119,10 @@ class JamsController < ApplicationController
   end
 
   def show
-    @jam = Jam.find(params[:id])
     @submission_open = @jam.submission_open?
-    @jsb = @jam && current_user ? @jam.jam_submissions.find_by(user_id: current_user.id) : nil
-    @game = @jsb && @jsb.game_id ? Game.find_by_id(@jsb.game_id) : nil
-    if current_user
-      @notifications = current_user.notifications
-    end
+    @jsb = current_user ? @jam.jam_submissions.find_by(user_id: current_user.id) : nil
+    @game = @jsb&.game_id ? Game.find_by_id(@jsb.game_id) : nil
+    @notifications = current_user.notifications if current_user
     if @jam.status != 1 && current_user != @jam.author
       flash[:failure] = @jam.status == 2 ? t('controllers.jams.rejected') : t('controllers.jams.moderation_pending')
       redirect_to news_path and return
@@ -547,8 +544,6 @@ class JamsController < ApplicationController
       format.html { redirect_to rating_settings_jam_path(@jam), status: :see_other }
     end
   end
-
-  private
 
   def set_jam
     @jam = Jam.find(params[:id])
