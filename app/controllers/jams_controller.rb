@@ -132,8 +132,9 @@ class JamsController < ApplicationController
     end
 
     @leaderboard_games = @jam.submitted_games
-      .joins(sanitize_sql_array(["LEFT JOIN ratings ON ratings.game_id = games.id AND ratings.jam_id = ?", @jam.id]))
+      .joins(Game.sanitize_sql_array(["LEFT JOIN ratings ON ratings.game_id = games.id AND ratings.jam_id = ?", @jam.id]))
       .select("games.*, COALESCE(ratings.average_rating, 0.0) AS jam_avg")
+      .where("ratings.average_rating > 0")
       .order(Arel.sql("COALESCE(ratings.average_rating, 0.0) DESC, games.name ASC"))
       .limit(5)
   end

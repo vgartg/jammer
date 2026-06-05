@@ -1,4 +1,4 @@
-<% if @leaderboard_games.any? { |g| g.jam_avg.to_f > 0 } %>
+<% if @leaderboard_games.any? %>
   <div class="mt-10 rounded-xl overflow-hidden ring-1 ring-white/10 shadow-lg">
     <div class="bg-gradient-to-r from-indigo-950 via-gray-800 to-gray-800 px-4 py-3 flex items-center gap-2 border-b border-white/10">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
