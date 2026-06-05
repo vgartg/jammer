@@ -115,9 +115,9 @@
           </div>
 
           <% winners = @jam.jam_nominations.where.not(winner_game_id: nil).order(:position, :id).to_a %>
-          <% winner_games = Game.where(id: winners.map(&:winner_game_id)).index_by(&:id) %>
 
           <% if winners.any? %>
+            <% winner_games = Game.where(id: winners.map(&:winner_game_id)).index_by(&:id) %>
             <div class="mt-10 rounded-xl bg-gray-800 ring-1 ring-white/10 p-4">
               <h2 class="text-lg font-semibold text-white"><%= t('.nominations_winners') %></h2>
 
