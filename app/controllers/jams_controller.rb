@@ -5,7 +5,7 @@ class JamsController < ApplicationController
   before_action :set_jam, only: %i[show edit update destroy
   show_projects show_participants remove_participant remove_project
   rating_settings update_rating_settings
-  jury_settings jury_invite update_contributor remove_contributor accept_contributor_invite bulk_update_contributors
+  jury_settings jury_search jury_invite update_contributor remove_contributor accept_contributor_invite bulk_update_contributors
   update_nomination_winner
 ]
   before_action :jam_manage_check, only: %i[
@@ -479,7 +479,6 @@ class JamsController < ApplicationController
   end
 
   def jury_search
-    @jam = Jam.find(params[:id])
     jam_manage_check
 
     q = params[:q].to_s.strip.downcase

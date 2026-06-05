@@ -108,7 +108,8 @@ class Jam < ActiveRecord::Base
 
   def leaderboard_games(limit: 5)
     submitted_games
-      .joins("INNER JOIN ratings ON ratings.game_id = games.id AND ratings.jam_id = #{id.to_i}")
+      .joins(:ratings)
+      .where(ratings: { jam_id: id })
       .select("games.*, ratings.average_rating AS jam_avg")
       .where("ratings.average_rating > 0")
       .order(Arel.sql("ratings.average_rating DESC, games.name ASC"))
