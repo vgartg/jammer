@@ -106,12 +106,15 @@ class Jam < ActiveRecord::Base
 
   validate :description_presence
 
+  # Uses ratings.average_rating (review marks only, no JamCriterionPick scores).
+  # See Game#jam_rating for the full formula used on individual game pages.
   def leaderboard_games(limit: 5)
     submitted_games
       .joins(:ratings)
       .where(ratings: { jam_id: id })
       .select("games.*, ratings.average_rating AS jam_avg")
       .where("ratings.average_rating > 0")
+      .distinct
       .order(Arel.sql("ratings.average_rating DESC, games.name ASC"))
       .limit(limit)
       .load

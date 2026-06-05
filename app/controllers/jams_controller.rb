@@ -127,7 +127,7 @@ class JamsController < ApplicationController
       redirect_to news_path and return
     end
 
-    @leaderboard_games = @jam.leaderboard_games
+    @leaderboard_games = @jam.voting_open? ? nil : @jam.leaderboard_games
   end
 
   def create
