@@ -126,15 +126,16 @@ class JamsController < ApplicationController
     if current_user
       @notifications = current_user.notifications
     end
+    if @jam.status != 1 && current_user != @jam.author
+      flash[:failure] = @jam.status == 2 ? t('controllers.jams.rejected') : t('controllers.jams.moderation_pending')
+      redirect_to news_path and return
+    end
+
     @leaderboard_games = @jam.submitted_games
-      .joins("LEFT JOIN ratings ON ratings.game_id = games.id AND ratings.jam_id = #{@jam.id.to_i}")
+      .joins(sanitize_sql_array(["LEFT JOIN ratings ON ratings.game_id = games.id AND ratings.jam_id = ?", @jam.id]))
       .select("games.*, COALESCE(ratings.average_rating, 0.0) AS jam_avg")
       .order(Arel.sql("COALESCE(ratings.average_rating, 0.0) DESC, games.name ASC"))
       .limit(5)
-    return unless @jam.status != 1 && current_user != @jam.author
-
-    flash[:failure] = @jam.status == 2 ? t('controllers.jams.rejected') : t('controllers.jams.moderation_pending')
-    redirect_to news_path
   end
 
   def create

@@ -1,10 +1,10 @@
-<% if @leaderboard_games.any? %>
+<% if @leaderboard_games.any? { |g| g.jam_avg.to_f > 0 } %>
   <div class="mt-10 rounded-xl overflow-hidden ring-1 ring-white/10 shadow-lg">
     <div class="bg-gradient-to-r from-indigo-950 via-gray-800 to-gray-800 px-4 py-3 flex items-center gap-2 border-b border-white/10">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 14a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L10 5.477l-3.763 1.105 1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 14a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.789l1.599.8L9 4.323V3a1 1 0 011-1zm-5 8.274l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L5 10.274zm10 0l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L15 10.274z" clip-rule="evenodd" />
       </svg>
-      <h2 class="text-base font-semibold text-white"><%= t('.leaderboard_title') %></h2>
+      <h2 class="text-base font-semibold text-white"><%= t('jams.show.leaderboard_title') %></h2>
     </div>
 
     <div class="bg-gray-800 divide-y divide-white/5">
