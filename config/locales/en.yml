@@ -348,6 +348,7 @@ en:
       hosts: "Hosts:"
       no_hosts: "No hosts assigned"
       nominations_winners: "Nomination winners"
+      leaderboard_title: "Top Jam Games"
       rating_settings: "Rating settings"
       jury_settings: "Jury settings"
       submission_closed: "Submissions are closed"

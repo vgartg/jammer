@@ -348,6 +348,7 @@ ru:
       hosts: "Хосты:"
       no_hosts: "Хосты не назначены"
       nominations_winners: "Победители по номинациям"
+      leaderboard_title: "Топ игр джема"
       rating_settings: "Настройки оценок"
       jury_settings: "Настройки жюри"
       submission_closed: "Приём работ завершён"
