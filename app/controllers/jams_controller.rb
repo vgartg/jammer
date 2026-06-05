@@ -6,6 +6,7 @@ class JamsController < ApplicationController
   show_projects show_participants remove_participant remove_project
   rating_settings update_rating_settings
   jury_settings jury_invite update_contributor remove_contributor accept_contributor_invite bulk_update_contributors
+  update_nomination_winner
 ]
   before_action :jam_manage_check, only: %i[
   edit update destroy
@@ -44,7 +45,6 @@ class JamsController < ApplicationController
   end
 
   def show_projects
-    @jam = Jam.find(params[:id])
     @tags = Tag.all
     @games = @jam.submitted_games.includes(:ratings)
 
@@ -76,7 +76,6 @@ class JamsController < ApplicationController
   end
 
   def show_participants
-    @jam = Jam.find(params[:id])
     @users = @jam.participants
   end
 
@@ -128,12 +127,7 @@ class JamsController < ApplicationController
       redirect_to news_path and return
     end
 
-    @leaderboard_games = @jam.submitted_games
-      .joins(Game.sanitize_sql_array(["LEFT JOIN ratings ON ratings.game_id = games.id AND ratings.jam_id = ?", @jam.id]))
-      .select("games.*, COALESCE(ratings.average_rating, 0.0) AS jam_avg")
-      .where("ratings.average_rating > 0")
-      .order(Arel.sql("COALESCE(ratings.average_rating, 0.0) DESC, games.name ASC"))
-      .limit(5)
+    @leaderboard_games = @jam.leaderboard_games
   end
 
   def create
@@ -505,7 +499,6 @@ class JamsController < ApplicationController
   end
 
   def update_nomination_winner
-    set_jam
     unless @jam.can_configure?(current_user)
       flash[:failure] = [t('controllers.application.insufficient_rights')]
       return redirect_to rating_settings_jam_path(@jam), status: :see_other

@@ -19,7 +19,7 @@
         <!-- Image gallery -->
         <div class="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
           <div class="flex flex-col lg:grid-cols-1 lg:grid-rows-3 lg:gap-8">
-            <% if @jam && @jam.cover.attached? %>
+            <% if @jam.cover.attached? %>
               <%= image_tag url_for(@jam.cover), alt: @jam.name,
                             class: "rounded-md bg-gray-200
                             object-cover object-center group-hover:opacity-75 w-3/4" %>
@@ -114,7 +114,8 @@
             </div>
           </div>
 
-          <% winners = @jam.jam_nominations.where.not(winner_game_id: nil).order(:position, :id) %>
+          <% winners = @jam.jam_nominations.where.not(winner_game_id: nil).order(:position, :id).to_a %>
+          <% winner_games = Game.where(id: winners.map(&:winner_game_id)).index_by(&:id) %>
 
           <% if winners.any? %>
             <div class="mt-10 rounded-xl bg-gray-800 ring-1 ring-white/10 p-4">
@@ -122,7 +123,7 @@
 
               <div class="mt-4 space-y-3">
                 <% winners.each do |n| %>
-                  <% game = Game.find_by(id: n.winner_game_id) %>
+                  <% game = winner_games[n.winner_game_id] %>
                   <% next unless game %>
 
                   <div class="flex items-center justify-between rounded-lg border border-white/10 bg-gray-700/50 px-3 py-2">
@@ -138,7 +139,7 @@
             </div>
           <% end %>
 
-          <%= render 'jams/leaderboard' %>
+          <%= render 'jams/leaderboard', jam: @jam, leaderboard_games: @leaderboard_games %>
 
           <% if current_user && @jam.can_manage?(current_user) %>
             <%= button_to t('.projects'), jam_show_projects_path(@jam), method: :get,

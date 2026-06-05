@@ -1,4 +1,6 @@
 class Rating < ApplicationRecord
+  validates :game_id, uniqueness: { scope: :jam_id }
+
   def self.update_average_rating(game, jam_id)
     if jam_id
       reviews = game.reviews.where(game_id: game.id, jam_id: jam_id).where.not(user_mark: 0)

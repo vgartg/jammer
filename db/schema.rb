@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_31_093900) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_05_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -119,6 +119,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_31_093900) do
     t.integer "status", default: 0
     t.string "reason"
     t.string "html5_id"
+    t.boolean "is_unlisted", default: false, null: false
+    t.string "custom_slug"
+    t.string "video_url"
+    t.index ["custom_slug"], name: "index_games_on_custom_slug", unique: true
     t.index ["name"], name: "index_games_on_name", unique: true
   end
 
@@ -219,7 +223,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_31_093900) do
     t.integer "status", default: 0
     t.string "reason"
     t.boolean "users_can_votes", default: false
+    t.boolean "is_private", default: false, null: false
+    t.string "invite_token"
     t.index ["author_id"], name: "index_jams_on_author_id"
+    t.index ["invite_token"], name: "index_jams_on_invite_token", unique: true
     t.index ["name"], name: "index_jams_on_name"
   end
 
@@ -249,6 +256,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_31_093900) do
     t.float "average_rating", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["game_id", "jam_id"], name: "index_ratings_on_game_id_and_jam_id", unique: true
     t.index ["game_id"], name: "index_ratings_on_game_id"
     t.index ["jam_id"], name: "index_ratings_on_jam_id"
   end
@@ -293,6 +301,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_31_093900) do
   create_table "statistic_for_days", force: :cascade do |t|
     t.integer "count_online_users", default: 0, null: false
     t.datetime "created_at", null: false
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "plan", default: "monthly", null: false
+    t.string "status", default: "pending", null: false
+    t.string "payment_id"
+    t.decimal "amount", precision: 10, scale: 2
+    t.datetime "starts_at"
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -378,6 +399,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_31_093900) do
     t.boolean "notify_achievements", default: true, null: false
     t.boolean "notify_team_invites", default: true, null: false
     t.boolean "notify_admin_messages", default: true, null: false
+    t.datetime "pro_until"
+    t.datetime "trial_used_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true, where: "(provider IS NOT NULL)"
@@ -405,4 +428,5 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_31_093900) do
   add_foreign_key "jams_tags", "tags"
   add_foreign_key "reports", "users", column: "reporter_id"
   add_foreign_key "sessions", "users"
+  add_foreign_key "subscriptions", "users"
 end

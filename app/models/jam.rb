@@ -106,6 +106,16 @@ class Jam < ActiveRecord::Base
 
   validate :description_presence
 
+  def leaderboard_games(limit: 5)
+    submitted_games
+      .joins("INNER JOIN ratings ON ratings.game_id = games.id AND ratings.jam_id = #{id.to_i}")
+      .select("games.*, ratings.average_rating AS jam_avg")
+      .where("ratings.average_rating > 0")
+      .order(Arel.sql("ratings.average_rating DESC, games.name ASC"))
+      .limit(limit)
+      .load
+  end
+
   private
   def description_presence
     if description.blank? || description.body.blank?

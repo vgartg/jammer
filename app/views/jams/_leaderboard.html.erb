@@ -1,4 +1,4 @@
-<% if @leaderboard_games.any? %>
+<% if leaderboard_games.any? %>
   <div class="mt-10 rounded-xl overflow-hidden ring-1 ring-white/10 shadow-lg">
     <div class="bg-gradient-to-r from-indigo-950 via-gray-800 to-gray-800 px-4 py-3 flex items-center gap-2 border-b border-white/10">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -8,8 +8,9 @@
     </div>
 
     <div class="bg-gray-800 divide-y divide-white/5">
+      <%# Dense rank: tied games share the same place number %>
       <% place = 0; prev_avg = nil %>
-      <% @leaderboard_games.each do |game| %>
+      <% leaderboard_games.each do |game| %>
         <% avg = game.jam_avg.to_f %>
         <% place += 1 if avg != prev_avg; prev_avg = avg %>
 
@@ -42,7 +43,7 @@
 
           <%# Game name %>
           <div class="flex-1 min-w-0">
-            <%= link_to game.name, game_profile_path(game, jam_id: @jam.id),
+            <%= link_to game.name, game_profile_path(game, jam_id: jam.id),
                 class: "text-sm font-medium truncate block #{name_cls}" %>
           </div>
 
