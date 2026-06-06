@@ -155,6 +155,7 @@ en:
       supported_by: "Supported by"
       fsi_1_alt: "Foundation for Assistance to Small Innovative Enterprises (FASIE)"
       fsi_2_alt: "Student Startup — University Technological Entrepreneurship Platform"
+      star_github: "Star on GitHub"
       fsi_text: 'The project was implemented with the support of the Foundation for Assistance to Small Innovative Enterprises (FASIE) within the framework of the Student Startup program of the University Technological Entrepreneurship Platform event of the Technologies federal project.'
     left-menu:
       requests: "Requests"
@@ -459,6 +460,7 @@ en:
   contacts:
     title: "Contacts"
     subtitle: "Here you can find information about the Jammer project team."
+    open_source_badge: "Open Source"
     github_title: "GitHub"
     founders_title: "Founders"
     founders_title_short: "Founder"
