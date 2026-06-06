@@ -10,16 +10,16 @@
     </div>
   </nav>
   <div class="border-t border-gray-700 mx-auto max-w-7xl px-4 py-8 lg:px-8">
-    <p class="text-center text-xs font-medium uppercase tracking-widest text-gray-500 mb-6"><%= t 'layouts.footer.supported_by' %></p>
+    <p class="text-center text-xs font-medium uppercase tracking-widest text-gray-400 mb-6"><%= t 'layouts.footer.supported_by' %></p>
     <div class="flex flex-wrap justify-center items-center gap-4 mb-6">
       <div class="rounded-xl bg-white px-5 py-3 shadow-sm">
-        <%= image_tag 'fsi_1.svg', class: "h-10 w-auto", alt: "ФСИ" %>
+        <%= image_tag 'fsi_1.svg', class: "h-10 w-auto", alt: t('layouts.footer.fsi_1_alt') %>
       </div>
       <div class="rounded-xl bg-gray-800 px-5 py-3 ring-1 ring-gray-700">
-        <%= image_tag 'fsi_2.svg', class: "h-10 w-auto", alt: "Студенческий стартап" %>
+        <%= image_tag 'fsi_2.svg', class: "h-10 w-auto", alt: t('layouts.footer.fsi_2_alt') %>
       </div>
     </div>
-    <p class="mx-auto max-w-2xl text-center text-xs leading-relaxed text-gray-500"><%= t 'layouts.footer.fsi_text' %></p>
+    <p class="mx-auto max-w-2xl text-center text-xs leading-relaxed text-gray-400"><%= t 'layouts.footer.fsi_text' %></p>
   </div>
   <div class="mx-auto flex max-w-7xl items-center justify-center py-4 px-6 lg:px-8">
     <a href="https://boosty.to/jammer_company/donate" target="_blank" rel="noopener noreferrer"

@@ -153,6 +153,8 @@ en:
       copyright: "All rights reserved."
       support_boosty: "Support the project"
       supported_by: "Supported by"
+      fsi_1_alt: "Foundation for Assistance to Small Innovative Enterprises (FASIE)"
+      fsi_2_alt: "Student Startup — University Technological Entrepreneurship Platform"
       fsi_text: 'The project was implemented with the support of the Foundation for Assistance to Small Innovative Enterprises (FASIE) within the framework of the Student Startup program of the University Technological Entrepreneurship Platform event of the Technologies federal project.'
     left-menu:
       requests: "Requests"
