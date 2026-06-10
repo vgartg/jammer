@@ -541,8 +541,6 @@ en:
       password: "Password"
       confirm: "Confirm your password"
       btn: "Sign up"
-      alternative: "Or continue with"
-      will_soon: "Will Soon"
       hint: "Have a member?"
       sign_in: "Sign in"
   settings:
@@ -661,8 +659,6 @@ en:
       remember: "Remember me"
       recover: "Forgot password?"
       btn: "Sign in"
-      alternative: "Or continue with"
-      will_soon: "Will Soon"
       hint: "Not a member?"
       sign_up: "Sign up"
       oauth_disabled_hint: "Previously signed in with GitHub or Google? Use \"Forgot password?\" above to set a password for your account."

@@ -47,7 +47,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user = current_user
-    if @user.oauth_user? || @user.authenticate(params[:user][:password])
+    if @user.needs_password? || @user.authenticate(params[:user][:password])
       @user.destroy
       flash[:success] ||= []
       flash[:success] << t('users.destroy.success')

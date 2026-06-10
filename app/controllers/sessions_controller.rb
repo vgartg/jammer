@@ -66,7 +66,7 @@ class SessionsController < ApplicationController
   end
 
   def logout_other_sessions
-    if current_user && (current_user.oauth_user? || current_user.authenticate(params[:password]))
+    if current_user && (current_user.needs_password? || current_user.authenticate(params[:password]))
       current_user.invalidate_other_sessions(session[:session_id])
       current_user.forget_me
       flash[:success] ||= []
