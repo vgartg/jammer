@@ -97,7 +97,7 @@ class UsersController < ApplicationController
         flash[:failure] << t('users.update_user.failure4')
         redirect_to settings_path
         return
-      elsif !@user.oauth_user? && user_params[:password] == params[:user][:current_password]
+      elsif !@user.needs_password? && user_params[:password] == params[:user][:current_password]
         flash[:failure] ||= []
         flash[:failure] << t('users.update_user.failure5')
         redirect_to settings_path
