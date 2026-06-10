@@ -1,16 +1,43 @@
-<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-    <h1 class="mb-6 text-2xl font-semibold"><%= t '.title' %></h1>
-    <%= form_with url: password_reset_path, class: 'space-y-4' do |f| %>
-  <div class="flex flex-col">
-    <label for="email" class="mb-2 font-medium text-gray-700">
-      <%= f.label :email, t('.email_label') %>
-    </label>
-    <%= f.email_field :email, value: params[:email], required: true, class: 'p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500' %>
+<div class="flex min-h-full flex-col justify-center bg-gray-900 py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="flex flex-col items-center">
+      <%= image_tag 'whitewithouttitle.png', class: "h-16 w-auto scale-150" %>
+      <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-white">
+        <%= t '.title' %>
+      </h2>
+    </div>
   </div>
 
-  <%= f.submit t('.submit'), class: 'w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500' %>
-  <%= link_to t('.back'), request.referer && URI(request.referer).path != request.fullpath ? URI(request.referer).path : login_path, class: 'inline-block mt-4 px-4 py-2 text-blue-600 bg-gray-200 rounded-lg hover:bg-gray-300' %>
-<% end %>
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+    <div class="bg-gray-800 px-6 py-12 shadow sm:rounded-lg sm:px-12 ring-1 ring-white/10">
+      <%= render partial: 'helpers/errors' %>
+      <%= form_with url: password_reset_path, class: 'space-y-6' do |f| %>
+        <div>
+          <label for="email" class="block text-sm font-medium leading-6 text-gray-200">
+            <%= t '.email_label' %>
+          </label>
+          <div class="mt-2">
+            <%= f.email_field :email, value: params[:email], required: true, id: 'email',
+                autocomplete: 'email',
+                class: 'block w-full rounded-md border-0 py-1.5 bg-gray-700 text-white shadow-sm
+                        ring-1 ring-inset ring-white/10 placeholder:text-gray-500
+                        focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.submit t('.submit'), class: 'flex w-full justify-center rounded-md bg-indigo-600
+              px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500
+              focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+              focus-visible:outline-indigo-600 cursor-pointer' %>
+        </div>
+      <% end %>
+    </div>
+
+    <p class="mt-10 text-center text-sm text-gray-400">
+      <%= link_to t('.back'),
+            (request.referer && URI(request.referer).path != request.fullpath ? URI(request.referer).path : login_path),
+            class: 'font-semibold leading-6 text-indigo-400 hover:text-indigo-300' %>
+    </p>
   </div>
 </div>

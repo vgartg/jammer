@@ -1,28 +1,58 @@
-<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+<div class="flex min-h-full flex-col justify-center bg-gray-900 py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="flex flex-col items-center">
+      <%= image_tag 'whitewithouttitle.png', class: "h-16 w-auto scale-150" %>
+      <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-white">
+        <%= t '.title' %>
+      </h2>
+    </div>
+  </div>
+
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-    <%= form_with model: @user, url: password_reset_path, method: :patch, class: 'max-w-md mx-auto p-8 bg-white rounded-lg shadow-lg' do |f| %>
-  <h2 class="text-2xl font-bold text-center mb-6"><%= t '.title' %></h2>
+    <div class="bg-gray-800 px-6 py-12 shadow sm:rounded-lg sm:px-12 ring-1 ring-white/10">
+      <%= render partial: 'helpers/errors' %>
+      <%= form_with model: @user, url: password_reset_path, method: :patch, class: 'space-y-6' do |f| %>
+        <%= f.hidden_field :password_reset_token, value: @password_reset_token %>
+        <%= f.hidden_field :email, value: @user.email %>
 
-  <%= f.hidden_field :password_reset_token, value: @password_reset_token %>
-  <%= f.hidden_field :email, value: @user.email %>
+        <div>
+          <label for="password" class="block text-sm font-medium leading-6 text-gray-200">
+            <%= t '.password_label' %>
+          </label>
+          <div class="mt-2">
+            <%= f.password_field :password, id: 'password', autocomplete: 'new-password',
+                class: 'block w-full rounded-md border-0 py-1.5 bg-gray-700 text-white shadow-sm
+                        ring-1 ring-inset ring-white/10 placeholder:text-gray-500
+                        focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
+          </div>
+        </div>
 
-  <div class="mb-4">
-    <%= f.label :password, t('.password_label'), class: 'block text-gray-700 text-sm font-semibold mb-1' %>
-    <%= f.password_field :password, class: 'shadow appearance-none border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-300 focus:border-blue-500' %>
-  </div>
+        <div>
+          <label for="password_confirmation" class="block text-sm font-medium leading-6 text-gray-200">
+            <%= t '.password_confirmation_label' %>
+          </label>
+          <div class="mt-2">
+            <%= f.password_field :password_confirmation, id: 'password_confirmation',
+                autocomplete: 'new-password',
+                class: 'block w-full rounded-md border-0 py-1.5 bg-gray-700 text-white shadow-sm
+                        ring-1 ring-inset ring-white/10 placeholder:text-gray-500
+                        focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6' %>
+          </div>
+        </div>
 
-  <div class="mb-4">
-    <%= f.label :password_confirmation, t('.password_confirmation_label'), class: 'block text-gray-700 text-sm font-semibold mb-1' %>
-    <%= f.password_field :password_confirmation, class: 'shadow appearance-none border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-300 focus:border-blue-500' %>
-  </div>
+        <div>
+          <%= f.submit t('buttons.save'), class: 'flex w-full justify-center rounded-md bg-indigo-600
+              px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500
+              focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+              focus-visible:outline-indigo-600 cursor-pointer' %>
+        </div>
+      <% end %>
+    </div>
 
-  <div class="flex items-center justify-between">
-    <%= f.submit t('buttons.save'), class: 'w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 rounded focus:outline-none focus:shadow-outline' %>
-  </div>
-
-  <div class="mt-4 text-center">
-    <p class="text-sm text-gray-600"><%= t '.back' %> <%= link_to t('.login'), login_path, class: 'text-blue-500 hover:underline' %></p>
-  </div>
-<% end %>
+    <p class="mt-10 text-center text-sm text-gray-400">
+      <%= t '.back' %>
+      <%= link_to t('.login'), login_path,
+          class: 'font-semibold leading-6 text-indigo-400 hover:text-indigo-300' %>
+    </p>
   </div>
 </div>
