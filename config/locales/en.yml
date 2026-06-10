@@ -134,6 +134,10 @@ en:
     jam_upcoming: "Upcoming"
     no_jams: "No jams yet"
   layouts:
+    oauth_no_password_banner:
+      title: "Action required: set a password for your account"
+      body: "You previously signed in using GitHub or Google. Login via these services has been disabled. Set a password to keep access to your account."
+      action: "Set password"
     header:
       home: "Home"
       users: "Users"
@@ -612,6 +616,8 @@ en:
         password:
           title: "Change password"
           hint: "Update your password associated with your account."
+          set_title: "Set a password"
+          set_hint: "Create a password to be able to sign in with your email address."
           current: "Current password"
           new: "New password"
           confirm: "Confirm password"
@@ -659,6 +665,7 @@ en:
       will_soon: "Will Soon"
       hint: "Not a member?"
       sign_up: "Sign up"
+      oauth_disabled_hint: "Previously signed in with GitHub or Google? Use \"Forgot password?\" above to set a password for your account."
   helpers:
     no_notif: "No notifications to display."
     show_all: "Show all"

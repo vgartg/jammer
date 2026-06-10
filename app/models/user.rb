@@ -64,6 +64,10 @@ class User < ActiveRecord::Base
     provider.present?
   end
 
+  def needs_password?
+    oauth_user? && password_digest.blank?
+  end
+
   def oauth_name_changed?
     oauth_requested_name.present? && oauth_requested_name != name
   end

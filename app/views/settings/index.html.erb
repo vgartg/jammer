@@ -490,8 +490,13 @@
 
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.password.title' %></h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.password.hint' %></p>
+        <% if @user.needs_password? %>
+          <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.password.set_title' %></h2>
+          <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.password.set_hint' %></p>
+        <% else %>
+          <h2 class="text-base font-semibold leading-7 text-white"><%= t '.security.password.title' %></h2>
+          <p class="mt-1 text-sm leading-6 text-gray-400"><%= t '.security.password.hint' %></p>
+        <% end %>
       </div>
 
       <%= form_for @user, url: user_path(@user), method: :put, html: { class: 'md:col-span-2' } do |f| %>
