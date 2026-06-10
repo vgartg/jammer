@@ -58,8 +58,6 @@ class User < ActiveRecord::Base
 
   scope :staff, -> { where(role: [:moderator, :admin]) }
 
-  attr_accessor :current_password
-
   def oauth_user?
     provider.present?
   end

@@ -66,17 +66,17 @@ class UsersController < ApplicationController
     @user = current_user
 
     if user_params[:password].present? || user_params[:password_confirmation].present? || params[:user][:current_password].present?
-      unless @user.oauth_user?
-        unless @user.authenticate(params[:user][:current_password])
+      unless @user.needs_password?
+        if params[:user][:current_password].blank?
           flash[:failure] ||= []
-          flash[:failure] << t('users.update_user.failure1')
+          flash[:failure] << t('users.update_user.failure2')
           redirect_to settings_path(anchor: params[:settings_section].presence)
           return
         end
 
-        if params[:user][:current_password].blank?
+        unless @user.authenticate(params[:user][:current_password])
           flash[:failure] ||= []
-          flash[:failure] << t('users.update_user.failure2')
+          flash[:failure] << t('users.update_user.failure1')
           redirect_to settings_path(anchor: params[:settings_section].presence)
           return
         end
