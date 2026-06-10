@@ -565,7 +565,7 @@
       </div>
 
       <%= form_tag logout_other_sessions_sessions_path, method: :post, class: 'md:col-span-2' do %>
-        <% unless @user.oauth_user? %>
+        <% unless @user.needs_password? %>
           <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
             <div class="col-span-full">
               <label for="logout-password" class="block text-sm font-medium leading-6 text-white">

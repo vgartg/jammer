@@ -643,6 +643,7 @@ en:
           pswd: "Password"
           cancel: "Cancel"
   oauth:
+    disabled: "Sign in via GitHub and Google has been disabled. Use email and password to sign in."
     failure: "Authentication failed: %{message}"
     no_email: "Could not retrieve email from provider. Please make sure your email is public."
     username_taken: "The username \"%{requested}\" was already taken, so we assigned you \"%{assigned}\". You can change it below."

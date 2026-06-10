@@ -1,5 +1,8 @@
 class OauthController < ApplicationController
   def callback
+    flash[:failure] = t('oauth.disabled')
+    redirect_to login_path and return unless request.env['omniauth.auth']
+
     auth = request.env['omniauth.auth']
 
     unless auth&.info&.email.present?
